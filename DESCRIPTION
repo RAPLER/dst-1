@@ -1,0 +1,31 @@
+Package: dst
+Type: Package
+Title: Using Dempster-Shafer Theory
+Version: 0.3
+Date: 2014-12-30
+Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
+Maintainer: Claude Boivin <webapp.cb@gmail.com>
+Description: This package allows you to make basic probability assignments on a set of
+    possibilities (events) and combine these events with Dempster's rule of combination.
+License: GPL-2
+Collate:
+    'bca.R'
+    'belplau.R'
+    'combmasses.R'
+    'dempster.R'
+    'dotprod.R'
+    'doubles.R'
+    'dsrwon.R'
+    'dstCombListfacts.R'
+    'dstCombListfacts2.R'
+    'identRow.R'
+    'initsing.R'
+    'inters.R'
+    'nzdsr.R'
+    'plautrans.R'
+    'probCombListfacts.R'
+    'rplau.R'
+    'smppmexample.R'
+    'tabresul.R'
+    'tabresulSingl.R'
+    
