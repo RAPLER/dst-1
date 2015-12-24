@@ -24,9 +24,11 @@ Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method f
 }
 \examples{
 ## Not run: 
+init<-initsing(3,c("a","b","c"))
 x<-list(DempsterRule=matrix(c(.2,.5,.3,0,0,1,1,1,1,0,1,1),nrow=3),con=0)
 y<-list(DempsterRule=matrix(c(.4,.6,0,1,0,1,1,1),nrow=2),con=0)
-r<-nzdsr(dsrwon(x,y))
+r1 <- nzdsr(dsrwon(init,x))
+r<-nzdsr(dsrwon(r1,y))
 plautrans(tabresul(r))
 ## End(Not run)
 }
