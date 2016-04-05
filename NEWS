@@ -1,8 +1,9 @@
-DST v0.3.01 (Release date: 2016-xx-xx)
+DST v0.4 (Release date: 2016-xx-xx)
 =================
 Changes:
 - added a NEWS file
 - example modified in documentation of function plautrans 
+- added utils (caplDecode)
 
 DST v0.3: Initial release (2015-01-13)
 ================

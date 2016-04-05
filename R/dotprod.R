@@ -9,9 +9,12 @@ dotprod<-function(SR,BD,g,f){
   for(i in 1:nrow(SR)){
     for(j in 1:ncol(BD)){
       temp<-ff(SR[i,1],BD[1,j])
+      # if the first table has more than one column
+      if (ncol(SR) > 1) {
         for (k in 2:ncol(SR)) {
           temp<-gg(temp,ff(SR[i,k],BD[k,j]))
         }
+      }
       resul[i,j]=temp
     }
   }

@@ -7,7 +7,7 @@
 \arguments{
   \item{SR}{A matrix of M rows by K columns.}
   \item{BD}{A matrix of K rows by N columns.}
-  \item{g}{An operator. It can be any of : +, -, *, /, &, |, ==, <=, etc.}
+  \item{g}{An operator. It can be any of : +, -, *, /, &, |, ==, <=, paste etc.}
   \item{f}{A second operator.}
 }
 \description{
@@ -49,6 +49,10 @@ dotprod(x3,t(y3),g="|",f="&")
 # [,1]  [,2]  [,3]  [,4] [,5]
 # [1,] FALSE FALSE  TRUE FALSE TRUE
 # [2,]  TRUE  TRUE FALSE  TRUE TRUE
+# Combine strings
+str1 <- matrix(c("foul", "fair"), ncol = 2)
+str2 <- matrix(c("true", "false"), ncol = 2)
+dotprod(t(str1), str2,g="paste",f="paste")
 ## End(Not run)
 }
 

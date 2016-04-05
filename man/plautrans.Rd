@@ -31,4 +31,6 @@ r1 <- nzdsr(dsrwon(init,x))
 r<-nzdsr(dsrwon(r1,y))
 plautrans(tabresul(r))
 ## End(Not run)
+## ajouter comme test la présence du vecteur ign
+## ajouter comme test qu'il faut le nb de singletons (tous) 
 }
