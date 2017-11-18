@@ -33,4 +33,4 @@ Collate:
     'tabresul.R'
     'tabresulSingl.R'
     'transfo.R'
-    
+RoxygenNote: 6.0.1
