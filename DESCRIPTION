@@ -1,13 +1,14 @@
 Package: dst
 Type: Package
 Title: Using Dempster-Shafer Theory
-Version: 0.4
-Date: 2016-02-29
+Version: 1.0.0
+Date: 2018-xx-xx
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
 Description: This package allows you to make basic probability assignments on a set of
     possibilities (events) and combine these events with Dempster's rule of combination.
 License: GPL-2
+BugReports: https://github.com/RAPLER/dst-1/issues
 Collate:
     'aplShape.R'
     'bca.R'
