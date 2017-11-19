@@ -11,7 +11,9 @@ License: GPL-2
 BugReports: https://github.com/RAPLER/dst-1/issues
 Collate:
     'aplShape.R'
+    'addTobca.R'
     'bca.R'
+    'bcaRel.R'
     'belplau.R'
     'butLast.R'
     'caplDecode.R'

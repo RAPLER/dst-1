@@ -2,4 +2,5 @@
 
 export(addTobca)
 export(bca)
+export(bcaRel)
 export(plautrans)
