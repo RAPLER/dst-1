@@ -3,4 +3,5 @@
 export(addTobca)
 export(bca)
 export(bcaRel)
+export(belplau)
 export(plautrans)
