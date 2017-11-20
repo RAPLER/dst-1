@@ -7,6 +7,7 @@ Changes:
 - bca: New version; handles a new class named "bcaspec". Parameters added to work with definitions on product spaces (relations).
 - bcaRel: New function to define a belief function on a product space.
 - belplau: Calculation of measures of belief, plausibility and ratio of plausibility.
+- decode: utility function
 
 - plau trans: example modified in documentation of function plautrans 
 - added utils (caplDecode)
