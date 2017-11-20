@@ -1,4 +1,4 @@
-caplDecode<-function(ind,base) { 
+decode<-function(ind,base) { 
 	if (length(base) == 1)
 		base<-array(base,aplShape(ind)) 
 	# b<- base^c((aplShape(ind)-1):0)

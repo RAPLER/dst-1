@@ -16,7 +16,7 @@ Collate:
     'bcaRel.R'
     'belplau.R'
     'butLast.R'
-    'caplDecode.R'
+    'decode.R'
     'combmasses.R'
     'dempster.R'
     'dotprod.R'
