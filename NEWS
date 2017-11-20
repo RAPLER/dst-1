@@ -12,6 +12,7 @@ Changes:
 - dotprod: utility function
 - plau trans: example modified in documentation of function plautrans 
 - double: utility function
+- dsrwon: Combination of two belief functions
 
 DST v0.3: Initial release of package on CRAN (2015-01-13)
 ================
