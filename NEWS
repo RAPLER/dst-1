@@ -16,7 +16,9 @@ Changes:
 - elim: Reduction of a relation. This is a new function. Starting from a belief fn on a product space, we choose a variable to remove and calculate the reduced belief function.
 - encode: New function. Utility function used to convert data in another number system.
 - initsing: Initialization of a frame of discernment
+- inters: Intersection of two tables of propositions
 - nameRows: New function: Naming the rows of a matrix of focal elements. 
+
 *******
 DST v0.3: Initial release of package on CRAN (2015-01-13)
 ================
