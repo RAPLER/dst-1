@@ -9,7 +9,7 @@ Changes:
 - belplau: Calculation of measures of belief, plausibility and ratio of plausibility.
 - decode: utility function
 - shape: utility function
-
+- dotprod: utility function
 - plau trans: example modified in documentation of function plautrans 
 - added utils (caplDecode)
 
