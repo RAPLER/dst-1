@@ -11,7 +11,7 @@ Changes:
 - shape: utility function
 - dotprod: utility function
 - plau trans: example modified in documentation of function plautrans 
-- added utils (caplDecode)
+- double: utility function
 
 DST v0.3: Initial release of package on CRAN (2015-01-13)
 ================
