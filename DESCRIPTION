@@ -22,6 +22,7 @@ Collate:
     'dstCombListfacts.R'
     'dstCombListfacts2.R'
     'elim.R'
+    'encode.R'
     'identRow.R'
     'initsing.R'
     'inters.R'

@@ -14,6 +14,8 @@ Changes:
 - double: utility function
 - dsrwon: Combination of two belief functions
 - elim: Reduction of a relation. This is a new function. Starting from a belief fn on a product space, we choose a variable to remove and calculate the reduced belief function.
+- encode: New function. Utility function used to convert data in another number system.
 
+*******
 DST v0.3: Initial release of package on CRAN (2015-01-13)
 ================
