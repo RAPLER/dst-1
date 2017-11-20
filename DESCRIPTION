@@ -21,6 +21,7 @@ Collate:
     'dsrwon.R'
     'dstCombListfacts.R'
     'dstCombListfacts2.R'
+    'elim.R'
     'identRow.R'
     'initsing.R'
     'inters.R'
