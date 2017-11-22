@@ -18,8 +18,6 @@ Collate:
     'dotprod.R'
     'doubles.R'
     'dsrwon.R'
-    'dstCombListfacts.R'
-    'dstCombListfacts2.R'
     'elim.R'
     'encode.R'
     'initsing.R'
@@ -27,10 +25,10 @@ Collate:
     'nameRows.R'
     'nzdsr.R'
     'plautrans.R'
-    'probCombListfacts.R'
     'productSpace.R'
     'reduction.R'
     'shape.R'
     'smppmexample.R'
     'tabresul.R'
 RoxygenNote: 6.0.1
+Suggests: testthat

@@ -12,8 +12,8 @@ An R package for the use of Dempster-Shafer Theory for combination of evidence.
 \tabular{ll}{
 Package: \tab dst\cr
 Type: \tab Package\cr
-Version: \tab 0.3\cr
-Date: \tab 2014-12-30\cr
+Version: \tab 1.0.0\cr
+Date: \tab 2018-01-01\cr
 License: \tab GPL version 2 or newer\cr
 LazyLoad: \tab yes\cr
 }

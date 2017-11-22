@@ -31,6 +31,7 @@ x3<-matrix(c(1,1,0,1), ncol=2, dimnames=list(NULL, c("a","b")))
 y3<-matrix(c(0,1,1,1), ncol=2, dimnames=list(NULL, c("a","b")))
 inters(x3,y3)
 x4 <-matrix(c(1,0,1,1,1,1,1,1),nrow=2, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c","d")))
+y4 <-matrix(c(1,0,0,1,1,1,1,1),nrow=2, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c","d")))
 inters(x4,y4)
 }
 \author{
