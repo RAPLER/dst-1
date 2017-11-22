@@ -10,7 +10,6 @@ Description: This package allows you to make basic probability assignments on a 
 License: GPL-2
 BugReports: https://github.com/RAPLER/dst-1/issues
 Collate:
-    'shape.R'
     'addTobca.R'
     'bca.R'
     'bcaRel.R'
@@ -30,6 +29,8 @@ Collate:
     'plautrans.R'
     'probCombListfacts.R'
     'productSpace.R'
+    'reduction.R'
+    'shape.R'
     'smppmexample.R'
     'tabresul.R'
     'tabresulSingl.R'

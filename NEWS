@@ -8,7 +8,6 @@ Changes:
 - bcaRel: New function to define a belief function on a product space.
 - belplau: Calculation of measures of belief, plausibility and ratio of plausibility.
 - decode: utility function
-- shape: utility function
 - dotprod: utility function
 - double: utility function
 - dsrwon: Combination of two belief functions
@@ -20,6 +19,11 @@ Changes:
 - nzdsr: Normalization of results from Dempster's rule of combination
 - plautrans: example modified in documentation of function
 - productSpace: New function. Representation of belief functions in their product space
+- reduction: utility function to obtain the summary of a vector for any operator
+- shape: utility function
+
+- Removal of obsolete functions:
+butLast, combmasses, dempster, rplau
 
 *******
 DST v0.3: Initial release of package on CRAN (2015-01-13)
