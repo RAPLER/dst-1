@@ -24,7 +24,7 @@ Changes:
 - tabresul:  Prepare a table of results. Update of function
 
 - Removal of obsolete functions:
-butLast, combmasses, dempster, rplau
+butLast, combmasses, dempster, rplau, transfo
 
 *******
 DST v0.3: Initial release of package on CRAN (2015-01-13)
