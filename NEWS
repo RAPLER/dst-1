@@ -21,6 +21,7 @@ Changes:
 - productSpace: New function. Representation of belief functions in their product space
 - reduction: utility function to obtain the summary of a vector for any operator
 - shape: utility function
+- tabresul:  Prepare a table of results. Update of function
 
 - Removal of obsolete functions:
 butLast, combmasses, dempster, rplau
