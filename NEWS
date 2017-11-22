@@ -18,6 +18,8 @@ Changes:
 - initsing: Initialization of a frame of discernment
 - inters: Intersection of two tables of propositions
 - nameRows: New function: Naming the rows of a matrix of focal elements. 
+-nzdsr: Normalization of results from Dempster's rule of combination
+
 
 *******
 DST v0.3: Initial release of package on CRAN (2015-01-13)

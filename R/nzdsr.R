@@ -1,35 +1,80 @@
-nzdsr<-function(x) 
-{
-  # Normalization of Dempster's rule of combination, Shafer method.
-  # 
-  # A normalization of the results from Dempster's rile of combination is done when there is a non zero mass allotted to the empty intersection. The method proposed by Shafer consist in dividing the results by 1 minus the mass allotted to the empty set.
-  # 
+#' Normalization of results from Dempster's rule of combination
+#'
+#' The combination of two bca distributions may produce a distribution with a non zero mass allocated to the empty set. This function produces a normalized distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
+#' @param x A list, normally the result of the combination of two belief functions that we want to normalize. (see \code{\link{dsrwon}}). A belief function in its bca form (see \code{\link{bca}}) may also be submitted.
+#' @param infovar A two column matrix containing the variable numbers and the size of the product frame of discernment of each variable.
+#' @param relnb Set at NULL.
+#' @return A list in the bca form: \itemize{
+#'   \item $combination: The table of focal elements with their associated mass.
+#'   \item $con The measure of conflict.
+#'   \item $n The node number.
+#'   }
+#' @author Claude Boivin, Stat.ASSQ
+#' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
+#' @examples 
+#' x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"), n=1)
+#' y1 <- bca(f=matrix(c(0,1,1,1),nrow=2, byrow = TRUE), m=c(0.5,0.5), cnames =c("yes", "no"), n=1)
+#' print("combination of x1 and y1")
+#' x1y1 <- dsrwon(x1,y1)
+#' nzdsr(x1y1) 
+#' 
+#' print("normalization of a bca definition.")
+#' y2 <- bca(f=matrix(c(0,0,0,1,0,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5,0.3), cnames =c("a", "b", "c"), n=1)
+#' nzdsr(y2)  
+#' @export
+#' 
+nzdsr<-function(x, infovar = NULL, relnb = NULL) {
+  if ( inherits(x, "bcaspec") == FALSE) {
+    stop("Input argument not of class bcaspec.")
+  }
+  if (is.null(x$I12)) {
+    nc <- ncol(x$tt)
+    frame <- bca(matrix(rep(1, nc), nrow=1), m=1)
+    x <- dsrwon(x,frame)
+  }
   w12<-x$combination
-  w1<-w12[,-1]
-  mac<-w12[,1]
+  w1<- x$tt
+  mac<-x$spec[,2]
   i12<-x$I12
-  nc=ncol(w12)-1  # tenir compte du cas où w12 a 1 ligne seul
-  tri<-x$TRI
+  nc=ncol(w1)  # tenir compte du cas où w1 a 1 ligne seul
+  tri<-x$sort_order
   con<-x$con
   ## remove empty set
   ind<-w12[tri[1],]
- # if ((sum(w12[1,1])!=0) & (sum(w12[1,-1])==0)) {
   if ((ind[1]!=0) & (sum(ind[-1])==0)) {
-    ivide<-tri[1]  
+    empty<-tri[1]  
     W2<-matrix(w1[tri[-1],],ncol=nc)
     ## calculate normalized masses
-    MACC<-mac[tri[-1]]/(1-mac[ivide]) 
-    MVIDE<-mac[ivide] 
+    MACC<-mac[tri[-1]]/(1-mac[empty]) 
+    m_empty<-mac[empty] 
   } 
   else {
-    ivide<-0 
+    empty<-0 
     W2<-matrix(w1,ncol=nc)
     MACC<-mac
-    MVIDE<-0
+    m_empty<-0
   }
+  tt <- W2
+  colnames(tt) <- colnames(x$tt)
+  rownames(tt) <- nameRows(tt)
+  spec <- cbind((1:nrow(tt)), MACC)
+  colnames(spec) <- c("specnb", "mass")
+  # test
+#  infovar <- matrix(c(x$n, ncol(tt)), ncol = 2)
+#  colnames(infovar) <- c("varnb", "size")
+  if (missing(infovar)) {
+    infovar <- matrix(c(x$n, ncol(tt)), ncol = 2)
+    colnames(infovar) <- c("varnb", "size")
+  }
+  infovaluenames <- colnames(x$tt) # On considère l'espace produit
+  if (missing(relnb)) { relnb <- 0 }
+  inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
+  colnames(inforel) <- c("relnb", "depth")
+  # fin test
   W2<-cbind(matrix(MACC,ncol=1),W2)
   colnames(W2)<-colnames(w12)
-  # W2 is the result of the normalization
-  # the measure of conflict "con" is copied in the list
-  list(DempsterRule=W2,con=con)
-}
+  rownames(W2) <- nameRows(W2)
+  z <- list(combination=W2,con=con, n= x$n, tt = tt, spec = spec, infovar = infovar, infovaluenames = x$infovaluenames, inforel = inforel)
+  class(z) <- append(class(z), "bcaspec")
+  return(z)
+    }
