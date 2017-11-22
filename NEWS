@@ -10,7 +10,6 @@ Changes:
 - decode: utility function
 - shape: utility function
 - dotprod: utility function
-- plau trans: example modified in documentation of function plautrans 
 - double: utility function
 - dsrwon: Combination of two belief functions
 - elim: Reduction of a relation. This is a new function. Starting from a belief fn on a product space, we choose a variable to remove and calculate the reduced belief function.
@@ -18,8 +17,9 @@ Changes:
 - initsing: Initialization of a frame of discernment
 - inters: Intersection of two tables of propositions
 - nameRows: New function: Naming the rows of a matrix of focal elements. 
--nzdsr: Normalization of results from Dempster's rule of combination
-
+- nzdsr: Normalization of results from Dempster's rule of combination
+- plautrans: example modified in documentation of function
+- productSpace: New function. Representation of belief functions in their product space
 
 *******
 DST v0.3: Initial release of package on CRAN (2015-01-13)
