@@ -16,7 +16,6 @@
 #'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
 #'  }
 #'  @export
-#'  
 shape <- function(a) 
   {
     if (is.vector(a)) return(length(a))
