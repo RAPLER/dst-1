@@ -25,7 +25,6 @@ shape(c("a", "b"))
   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
  }
- @export
 }
 \seealso{
 Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.

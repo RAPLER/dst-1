@@ -3,6 +3,7 @@
 #' \code{shape} returns sizes of each dimensions of given array or the length of a given vector.
 #'
 #' @aliases aplShape
+#' @export
 #' @param a An array or a vector.
 #' @return The dimensions of the array \code{a} or the length of the vector \code{a}.
 #' @examples
@@ -15,7 +16,6 @@
 #'   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
 #'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
 #'  }
-#'  @export
 shape <- function(a) 
   {
     if (is.vector(a)) return(length(a))

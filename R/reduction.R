@@ -1,5 +1,6 @@
 #' Obtain the summary of a vector for any operator.
 #' 
+#' @export
 #' @aliases aplRDV
 #' \code{reduction} returns...
 #' @param x The data...
@@ -11,8 +12,7 @@
 #'   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
 #'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
 #'  }
-#'  @examples 
-#'  @export
+#'  @examples
 #'  
 reduction<-function(x,f="+") {
   if (length(x) == 0) return(x)
