@@ -27,6 +27,7 @@ This utility function gather the bca representation of a belief function and the
  
 x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n=1)
 y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), n=1)
+xy <- dsrwon(x,y)
 tabresul(nzdsr(xy)) 
 print("Remove focal elements with 0 mass")
 tabresul(nzdsr(xy), removeZeroes = TRUE)
