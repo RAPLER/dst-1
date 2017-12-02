@@ -35,16 +35,17 @@
 #' frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' 
-bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovarnames = NULL, infovaluenames = NULL, inforel=NULL){
+bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovarnames = NULL, infovaluenames = NULL, inforel=NULL) {
+   if (!is.null(infovaluenames)) { cnames = infovaluenames}
    if (is.null(cnames)) { cnames = colnames (f)}
    if (is.null(cnames)) {    
     cnames <- paste(rep("v",ncol(f)),c(1:ncol(f)),sep="")
     }
-  colnames(f) <- cnames
   if((abs(sum(m)-1)>0.000001) | (length(f[,1])!=length(m)) | (length(f[1,])!=length(cnames))){ 
     stop("Error in input arguments: check your input data.") 
     }
   else {
+    colnames(f) <- cnames
     if (missing(con)) { con <- 0 }
     spec <- cbind((1:nrow(f)), m)
     colnames(spec) <- c("specnb", "mass")
@@ -53,6 +54,11 @@ bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovar
       infovar <- matrix(c(n, ncol(f)), ncol = 2)
     }
     colnames(infovar) <- c("varnb", "size")
+# check and use infovarnames
+    if (length(infovarnames) > 1) {
+      message("infovarnames: only the first element used")
+      infovarnames <- infovarnames[1] 
+    }
     if (nrow(infovar) < 2) {
       if (missing(infovarnames)) {
       infovaluenames <- split(cnames, rep(paste(rep("v", nrow(infovar)),c(1:nrow(infovar)),sep=""), infovar[,2]))
