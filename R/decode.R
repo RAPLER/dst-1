@@ -39,5 +39,4 @@ decode<-function(base, ind) {
     b1<-c(1,cumprod(base[-length(base)]))
  	  b<-b1[shape(b1):1]	
     return(sum(b*ind))
- 	# return(1 + sum(b1 * (ind - 1))) 
 }
