@@ -3,6 +3,5 @@ test_that("inters_error", {
   rownames(mx) <- nameRows(mx)
   my<-matrix(c(0,0,1,1,1,1,1,1),nrow=2, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c","d")))
   rownames(my) <- nameRows(my)
-  result <- inters(mx,my)
-  expect_equal(ncol(mx), ncol(my))  #  inputs must have same nb of columns
+  expect_error(inters(mx,my), "Error in input arguments: check your input data.")
 })

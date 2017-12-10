@@ -17,11 +17,11 @@
 #' td4<-matrix(as.logical(td1),nrow=5,byrow=TRUE)
 #' (doubles(td4))
 doubles<-function(x) {
+  if (is.matrix(x) == FALSE) {
+    stop("Input is not a matrix.")
+  }
   zi1<-array(x[1,],c(1,dim(x)[-1])) 
   zi2<-dotprod(zi1,t(x),g="&",f="==")  ## determining all positions of the tested line in x
   xr<-x[(c(1-zi2))*c(1:dim(x)[1]),,drop=FALSE] ## remove duplicates
-#  res<- if (dim(xr)[1] <1) x else rbind(x[1,1:dim(x)[2]],doubles(xr)) ##  cycle until no duplicates in xr
- # test 
   res<- if (dim(xr)[1] < 1) x[1,] else rbind(x[1,1:dim(x)[2]],doubles(xr)) ##  cycle until no duplicates in xr
-  # test
 }
