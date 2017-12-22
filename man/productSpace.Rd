@@ -2,22 +2,29 @@
 % Please edit documentation in R/productSpace.R
 \name{productSpace}
 \alias{productSpace}
-\title{Representation of belief functions in their product space}
+\title{Transformation of multiple side inputs to a product space representation}
 \usage{
-productSpace(zswr)
+productSpace(x)
 }
 \arguments{
-\item{zswr}{A list of the bcaspec class}
+\item{x}{The input variables in the following format: \itemize{
+ \item tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are side by side, as in a truth table.
+ \item spec A two column matrix. First column contains specification numbers. Second column (not used) contains the mass associated with each element of the relation.
+ \item infovar  A two column matrix containing identification numbers of the variables and the number of elements of each variable.
+}}
+}
+\value{
+The product space representation of the input variables
 }
 \description{
-When two or more belief functions are related, we need to form a product space representation.
+This utility function is used to obtain a product space representation of two or more variables initially represented in a truth table format.
 }
 \examples{
  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
  specfw = matrix(c(1,1,2,0.8,0.8,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
  infovarfw =matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
- xyz <- list(tt=ttfw, spec=specfw, infovar=infovarfw)
-(productSpace(xyz))
+ x <- list(tt=ttfw, spec=specfw, infovar=infovarfw)
+y <- productSpace(x)
 }
 \author{
 Claude Boivin, Stat.ASSQ

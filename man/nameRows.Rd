@@ -7,19 +7,23 @@
 nameRows(f)
 }
 \arguments{
-\item{f}{A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix must match the number of elements of the frame of discernment \eqn{\Theta}. See \code{\link{bca}} for details.}
+\item{f}{A boolean matrix or a matrix constructed in a boolean style (0,1). The names of the columns are the elements of a frame of discernment \eqn{\Theta}.}
 }
 \value{
-The result is a character vector of the names of the focal elements of the matrix \code{f}. The length of the result is \code{nrows(f)}. The last element of the vector is called "frame", to avoid to long a string. The empty set is named "u00f8". The "+" sign is used instead of the "|" to represent the logical "or" operation.
+The result is a character vector of the names of the focal elements of the matrix \code{f}. The length of the result is \code{nrows(f)}. The set of all elements is called "frame", to avoid to long a string. The empty set is named "u00f8". The "+" sign is used instead of the "|" to represent the logical "or" operation.
 }
 \description{
 This function uses the column names  of a matrix \code{f} of focal elements to construct the names of the rows.
 }
 \examples{
-f1 <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)
-colnames(f1) <- c("A","B","C")
-rownames(f1) <-nameRows(f1)
-f1
+f <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)
+colnames(f) <- c("A","B","C")
+rownames(f) <-nameRows(f)
+f
+f2 <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1),ncol=3, byrow = TRUE)
+colnames(f2) <- c("A2","B2","C2")
+rownames(f2) <-nameRows(f2) 
+f2
 }
 \author{
 Claude Boivin, Stat.ASSQ
