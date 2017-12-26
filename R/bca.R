@@ -36,8 +36,10 @@
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' 
 bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovarnames = NULL, infovaluenames = NULL, inforel=NULL) {
-   if (!is.null(infovaluenames)) { cnames = infovaluenames}
-   if (is.null(cnames)) { cnames = colnames (f)}
+  # test
+   if ((!is.null(infovaluenames)) & (typeof(infovaluenames) == "character")) { cnames = infovaluenames}
+  # fin test 
+  if (is.null(cnames)) { cnames = colnames (f)}
    if (is.null(cnames)) {    
     cnames <- paste(rep("v",ncol(f)),c(1:ncol(f)),sep="")
     }
@@ -55,7 +57,7 @@ bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovar
     }
     colnames(infovar) <- c("varnb", "size")
 # check and use infovarnames
-    if (length(infovarnames) > 1) {
+    if ((length(infovarnames) > 1) & (nrow(infovar) == 1)) {
       message("infovarnames: only the first element used")
       infovarnames <- infovarnames[1] 
     }

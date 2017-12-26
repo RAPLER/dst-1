@@ -44,14 +44,14 @@ bcaRel <- function(tt, spec, infovar, infovarnames = NULL, relnb = NULL) {
     return(zr)
     } # pas de transfo si 1 var seulement
     else {
-    xyz <- list(tt=tt, spec=spec, infovar=infovar)
-    z1 <- productSpace(xyz) # représentation dans l'espace produit
+ #   xyz <- list(tt=tt, spec=spec, infovar=infovar)
+    z1 <- productSpace(tt=tt, spec=spec[,1], infovar=infovar) # représentation dans l'espace produit
     # vecteur des masses des ss-ensembles, sans les doubles
     v <- (spec)[,2] 
  #   v <- v[!duplicated(v[,1]),2]
     v <- v[!duplicated(v)]
  #   zr <-rbind(0,z1)
-    colnz1 <-colnames(z1)
+    colnz1 <-as.vector(colnames(z1))
     if (missing(relnb)) { relnb <- 0 }
     inforel <- matrix(c(relnb, length(varnb)), ncol = 2)
     colnames(inforel) <- c("relnb", "depth")
