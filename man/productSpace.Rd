@@ -4,27 +4,26 @@
 \alias{productSpace}
 \title{Transformation of multiple side inputs to a product space representation}
 \usage{
-productSpace(x)
+productSpace(tt, specnb, infovar)
 }
 \arguments{
 \item{x}{The input variables in the following format: \itemize{
  \item tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are side by side, as in a truth table.
- \item spec A two column matrix. First column contains specification numbers. Second column (not used) contains the mass associated with each element of the relation.
+ \item spec A vector of specification numbers. specnb values start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix
  \item infovar  A two column matrix containing identification numbers of the variables and the number of elements of each variable.
 }}
 }
 \value{
-The product space representation of the input variables
+The product space representation of the thruth table matrix.
 }
 \description{
 This utility function is used to obtain a product space representation of two or more variables initially represented in a truth table format.
 }
 \examples{
  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
- specfw = matrix(c(1,1,2,0.8,0.8,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+ specfw = c(1,1,2) 
  infovarfw =matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
- x <- list(tt=ttfw, spec=specfw, infovar=infovarfw)
-y <- productSpace(x)
+productSpace(tt=ttfw, spec=specfw, infovar=infovarfw)
 }
 \author{
 Claude Boivin, Stat.ASSQ

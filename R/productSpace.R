@@ -3,33 +3,38 @@
 #' This utility function is used to obtain a product space representation of two or more variables initially represented in a truth table format.
 #' @param x The input variables in the following format: \itemize{
 #'  \item tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are side by side, as in a truth table.
-#'  \item spec A two column matrix. First column contains specification numbers. Second column (not used) contains the mass associated with each element of the relation.
+#'  \item spec A vector of specification numbers. specnb values start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix
 #'  \item infovar  A two column matrix containing identification numbers of the variables and the number of elements of each variable.
 #' }
-#' @return The product space representation of the input variables
+#' @return The product space representation of the thruth table matrix.
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples 
 #'  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
-#'  specfw = matrix(c(1,1,2,0.8,0.8,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+#'  specfw = c(1,1,2) 
 #'  infovarfw =matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-#'  x <- list(tt=ttfw, spec=specfw, infovar=infovarfw)
-#' y <- productSpace(x)
+#' productSpace(tt=ttfw, spec=specfw, infovar=infovarfw)
 #' @export
 #' 
-productSpace <- function(x) {
-  if (is.list(x) == FALSE) {
-    stop("Input is not a list.")
+productSpace <- function(tt, specnb, infovar) {
+  if (is.matrix(tt) ==FALSE) {
+    stop("tt parameter must be a matrix.")
   }
-  att <- (attributes(x))$names
-  if (("infovar" %in% att) == FALSE) {
-    stop("List member infovar missing.")
+  if ((is.matrix(infovar) ==FALSE) | (sum(infovar[,2]) != ncol(tt))) {
+    stop("infovar parameter must be a 2 column matrix with sum of 2nd column = ncol(tt).")
   } else {
-    varnb <- (x$infovar)[,1]
-    size <- (x$infovar)[,2]
+  varnb <- (infovar)[,1]
+  size <- (infovar)[,2]
   }
-  specnb <- (x$spec)[,1]
- #  mass <- (x$spec)[,2]  # not used
-  zz=cbind(specnb,x$tt)
+  if ((is.numeric(specnb) ==FALSE) |(length(specnb) != nrow(tt))) {
+    stop("specnb parameter must be a numeric vector of length nrow(tt)")
+  } 
+  z1=specnb[-1]
+  z0=specnb[-length(specnb)]
+  if (sum(z1 - z0) > 1) {
+    stop("specnb values must be a sequence of numbers increasing by increments of 1 at most.")
+    } else # ok to execute function
+    {
+  zz=cbind(specnb,tt)
   zz<-as.data.frame(zz)
   znelem <- table(specnb) # nb elements of each specification
   ndims <-length(size)
@@ -40,7 +45,7 @@ productSpace <- function(x) {
   #
   # Prepare elements's names as row and column names of the result 
   # on va en ordre décroissant
-  colsx <- colnames(x$tt)
+  colsx <- colnames(tt)
 #  colsx <- colsx[-c(1,2)] # pour conserver les noms dupliqués si on en a 
   indinf <- 1+zinds[length(zinds)-1]
   indsup <- zinds[length(zinds)]
@@ -96,4 +101,5 @@ productSpace <- function(x) {
     y <-matrix(y, ncol = prod(size), byrow = TRUE) # by rows to follow the order of the column names
     colnames(y) <- zNcolsLast
     y
+  }
 }
