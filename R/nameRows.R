@@ -36,7 +36,7 @@ nameRows<-function(f) {
   if (sum((idFocal=="")*1:length(idFocal)) > 0) {
     idFocal[(idFocal=="")*1:length(idFocal)] <- "\u00f8" # "ø" code
   }
-  if (sum(nnames_idFocal == ncol(pos)) > 0) {
+  if (sum(n_colnames == ncol(pos)) > 0) {
     idFocal[(n_colnames== ncol(pos))*(1:length(idFocal))] <- "frame"
   }
   return(idFocal)
