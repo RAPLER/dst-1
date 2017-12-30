@@ -1,18 +1,18 @@
 #' Representation of a belief function in a product space
 #'
-#' When a relation between two or more variables is established, a product space representation of this relation can be done. The relation is described with a matrix input table of (0,1), where the different spaces are side by side, as a truth table.
+#' When a relation between two or more variables is established, a product space representation of this relation can be obtained. The relation is described by a matrix input table of (0,1), where the different spaces are side by side, as a truth table representation.
 #' 
-#' @param tt The (0,1) matrix establishing the relation between two or more variables.
-#' @param spec A two column matrix. First column contains specification numbers. Second column contains the mass associated with each element of the relation.
+#' @param tt A (0,1) or logical matrix establishing the relation between two or more variables.
+#' @param spec A two column matrix. First column contains specification numbers. Second column contains the mass associated with each element of the relation. The same specification number with its associated mass can be repeated (e.g. in a logical implication).
 #' @param infovar  A two column matrix containing variable identification numbers and the number of elements of each variable.
 #' @param infovarnames The names of the variables. if omitted, variables are named v1, v2, etc.
-#' @param relnb A number given to the relation. 
+#' @param relnb A number given to the relation. Set at 0 if omitted.
 #' @return An object of class \code{bcaspec}. This is a list containing the following elements:  \itemize{
 #' \item combination A table of focal elements tt with the addition of the column of associated masses. Rownames of the matrix of focal elements are created from the column names of the elements of the product frame.
 #' \item $con The measure of conflict. Set at 0 by default.
 #' \item $tt The resulting table of focal elements alone. 
-#' \item $spec A two column matrix. First column contains specification numbers. Second column contains the mass vector. If the same specification number is repeated (e.g.  a logical implication) the mass value is also repeated.
-#' \item $infovar A two column matrix containing variable identification numbers and the size of the frame of discernment of each variable.
+#' \item $spec The resulting two column matrix of specification numbers with associated masses.
+#' \item $infovar The two column matrix given in the input data.
 #' \item infovaluenames A list of the names of the variables with the value name of each element.
 #' \item $inforel. A two column matrix containing variable numbers and the depth of the relation.
 #' } 
@@ -30,26 +30,29 @@
 #' bcaRel(tt = ttrwf, spec = specrw, infovar = inforw, infovarnames = c("RdWorks", "Rain"), relnb = 6)
 #'  
 bcaRel <- function(tt, spec, infovar, infovarnames = NULL, relnb = NULL) {
-  # pour transformer les relations originales
-  # xyz est une relation décrite selon le format initial
-  # zr est la relation représentée dans un espace produit
-  # appelle les fonctions PRODUIT et DOUBLES
-  # no des variables
- # zmat <- as.matrix(xyz) # le type "list" n'est pas traité
- # zdims<-matrix(zmat[1,-c(1,2)],ncol = 1)
- # varnb<-zdims[!duplicated(zdims)] # enlever les doubles
+  if ((is.matrix(spec) == FALSE) ) {
+    stop("spec parameter must be a 2 columns matrix.")
+  }
+  if ((is.matrix(tt) ==FALSE) ) {
+    stop("tt parameter must be a (0,1) or logical matrix.")
+  }
+  if ((is.matrix(infovar) ==FALSE) ) {
+    stop("infovar parameter must be a 2 column numerical matrix with variables numbers in fist column and with sum of 2nd column = ncol(tt).")
+  }
+  v <- (spec)[,2]    # vector of mass of subsets, without duplicates
+  v <- v[!duplicated(v)]
+  if( (abs(sum(v)-1)>0.000001) | (nrow(tt) != nrow(spec)) | (sum(infovar[,2]) != ncol(tt)) ){ 
+    stop("Error in input arguments: check your input data.") 
+  }
   varnb <- (infovar)[,1]
-  if (length(varnb) < 2) { 
+  if (length(varnb) < 2) # No transfo if only 1 variable.
+    { 
     zr <- bca(tt, (spec)[,2], cnames = colnames(tt), n = varnb)
     return(zr)
-    } # pas de transfo si 1 var seulement
-    else {
- #   xyz <- list(tt=tt, spec=spec, infovar=infovar)
-    z1 <- productSpace(tt=tt, spec=spec[,1], infovar=infovar) # représentation dans l'espace produit
-    # vecteur des masses des ss-ensembles, sans les doubles
-    v <- (spec)[,2] 
- #   v <- v[!duplicated(v[,1]),2]
-    v <- v[!duplicated(v)]
+    } 
+    else 
+      {
+    z1 <- productSpace(tt=tt, spec=spec[,1], infovar=infovar) # representation in a product space
  #   zr <-rbind(0,z1)
     colnz1 <-as.vector(colnames(z1))
     if (missing(relnb)) { relnb <- 0 }

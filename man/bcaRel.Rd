@@ -7,29 +7,29 @@
 bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
 }
 \arguments{
-\item{tt}{The (0,1) matrix establishing the relation between two or more variables.}
+\item{tt}{A (0,1) or logical matrix establishing the relation between two or more variables.}
 
-\item{spec}{A two column matrix. First column contains specification numbers. Second column contains the mass associated with each element of the relation.}
+\item{spec}{A two column matrix. First column contains specification numbers. Second column contains the mass associated with each element of the relation. The same specification number with its associated mass can be repeated (e.g. in a logical implication).}
 
 \item{infovar}{A two column matrix containing variable identification numbers and the number of elements of each variable.}
 
 \item{infovarnames}{The names of the variables. if omitted, variables are named v1, v2, etc.}
 
-\item{relnb}{A number given to the relation.}
+\item{relnb}{A number given to the relation. Set at 0 if omitted.}
 }
 \value{
 An object of class \code{bcaspec}. This is a list containing the following elements:  \itemize{
 \item combination A table of focal elements tt with the addition of the column of associated masses. Rownames of the matrix of focal elements are created from the column names of the elements of the product frame.
 \item $con The measure of conflict. Set at 0 by default.
 \item $tt The resulting table of focal elements alone. 
-\item $spec A two column matrix. First column contains specification numbers. Second column contains the mass vector. If the same specification number is repeated (e.g.  a logical implication) the mass value is also repeated.
-\item $infovar A two column matrix containing variable identification numbers and the size of the frame of discernment of each variable.
+\item $spec The resulting two column matrix of specification numbers with associated masses.
+\item $infovar The two column matrix given in the input data.
 \item infovaluenames A list of the names of the variables with the value name of each element.
 \item $inforel. A two column matrix containing variable numbers and the depth of the relation.
 }
 }
 \description{
-When a relation between two or more variables is established, a product space representation of this relation can be done. The relation is described with a matrix input table of (0,1), where the different spaces are side by side, as a truth table.
+When a relation between two or more variables is established, a product space representation of this relation can be obtained. The relation is described by a matrix input table of (0,1), where the different spaces are side by side, as a truth table representation.
 }
 \examples{
 ## A logical implication table.
