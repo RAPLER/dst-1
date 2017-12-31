@@ -15,10 +15,16 @@
 #' xy1
 #' addTobca(x, diag(1,  ncol(x$combination)-1)) # add all singletons
 addTobca <- function(x, f) {
+  if ( inherits(x, "bcaspec") == FALSE) {
+    stop("Input x not of class bcaspec.")
+  }
+  if ((is.matrix(f) ==FALSE) ) {
+    stop("f parameter must be a (0,1) or logical matrix.")
+  }
   f1 <- cbind(rep(0, nrow(f)), f)
   nc1 <- ncol(x$combination)
     if (nc1 != ncol(f1)) {
-    stop("Error in input arguments: number of columns does not match.") 
+    stop("Error in input arguments: number of columns of f not equal to ncol(x$tt") 
     }
   x$tt <- rbind(f,x$tt)
   rownames(x$tt) <- nameRows(x$tt)
