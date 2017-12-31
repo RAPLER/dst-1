@@ -4,16 +4,14 @@
 \alias{dsrwon}
 \title{Combination of two belief functions}
 \usage{
-dsrwon(x, y, infovar = NULL, relnb = NULL)
+dsrwon(x, y, infovarnames = NULL)
 }
 \arguments{
 \item{x}{A belief function in its bca form (see \code{\link{bca}}).}
 
 \item{y}{A belief function represented by its bca form.}
 
-\item{infovar}{A two column matrix containing the variable numbers and the size of the product frame of discernment of each variable.}
-
-\item{relnb}{Set at NULL.}
+\item{infovarname}{A name can be given to the resulting variable. Named "v1" if missing.}
 }
 \value{
 A list of five elements: \itemize{
@@ -24,17 +22,18 @@ A list of five elements: \itemize{
   \item $n: the node number.
  \item $inforel. A two column matrix containing variable numbers and the depth of the relation.
   }
+  @details The relation number of the x input is given to the result.
 }
 \description{
-The unnormalized Dempster's rule is used to combine two belief functions Bel1 and Bel2 defined on the same frame of discernment and represented by their respective basic chance assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results (See \code{\link{nzdsr}}) or not.
+The unnormalized Dempster's rule is used to combine two belief functions Bel1 and Bel2 defined on the same frame of discernment and represented by their respective basic chance assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (See \code{\link{nzdsr}}).
 }
 \details{
 A function (inters) does the intersection of the propositions. Another function (doubles) remove duplicate elements from the result of the intersection of the M propositions of the first bca with the N propositions of the second bca. The two bcas \code{a} and \code{b} must be defined on the same frame of discernment for the intersection of propositions to be meaningful.
 }
 \examples{
-x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n=1)
-y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), n=1)
-dsrwon(x,y)
+x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
+y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), infovarnames = "y", n=1)
+dsrwon(x,y, infovarnames = "xy")
 }
 \references{
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
