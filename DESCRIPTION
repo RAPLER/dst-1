@@ -20,7 +20,6 @@ Collate:
     'dsrwon.R'
     'elim.R'
     'encode.R'
-    'initsing.R'
     'inters.R'
     'nameRows.R'
     'nzdsr.R'
