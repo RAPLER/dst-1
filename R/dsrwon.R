@@ -32,7 +32,7 @@ dsrwon<-function(x,y, infovarnames = NULL) {
   if (nc1 != nc2) {
     stop("Nb of elements of frame x and frame y not equal.") 
   }
-  varnb <- x$infovar[,1]
+  n <- x$infovar[,1]
   N12<-inters(x1,y1)         # intersection of the subsets
   V12<-outer(x$combination[,1],y$combination[,1], "*")     # compute masses
   ## transform table: (M x N) rows by K 
@@ -60,7 +60,7 @@ dsrwon<-function(x,y, infovarnames = NULL) {
   spec <- cbind((1:nrow(tt)), mMAC)
   colnames(spec) <- c("specnb", "mass")
   # infovar parameter
-  infovar <- matrix(c(x$n, ncol(tt)), ncol = 2)
+  infovar <- matrix(c(n, ncol(tt)), ncol = 2)
   colnames(infovar) <- c("varnb", "size")
   # infovaluenames parameter
   cnames <- colnames(W1)
