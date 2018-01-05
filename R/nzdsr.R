@@ -1,18 +1,16 @@
 #' Normalization of results from Dempster's rule of combination
 #'
 #' The combination of two bca distributions may produce a distribution with a non zero mass allocated to the empty set. This function produces a normalized distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
-#' @param x A list, normally the result of the combination of two belief functions that we want to normalize. (see \code{\link{dsrwon}}). A belief function in its bca form (see \code{\link{bca}}) may also be submitted.
-#' @param infovar A two column matrix containing the variable numbers and the size of the product frame of discernment of each variable.
-#' @param relnb Set at NULL.
-#' @return A list in the bca form: \itemize{
+#' @param x A list of class bcaspec, normally the result of the combination of two belief functions that we want to normalize. (see \code{\link{dsrwon}}). A belief function in its bca form (see \code{\link{bca}}) may also be submitted.
+#' @param infovarname A name can be given to the resulting variable. Named "nv1" if missing.
+#' @return A list in the bca form, namely: \itemize{
 #'   \item $combination: The table of focal elements with their associated mass.
 #'   \item $con The measure of conflict.
-#'   \item $n The node number.
 #'   }
 #' @author Claude Boivin, Stat.ASSQ
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
 #' @examples 
-#' x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"), n=1)
+#' x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"),infovarnames = "x1", n=1)
 #' y1 <- bca(f=matrix(c(0,1,1,1),nrow=2, byrow = TRUE), m=c(0.5,0.5), cnames =c("yes", "no"), n=1)
 #' print("combination of x1 and y1")
 #' x1y1 <- dsrwon(x1,y1)
@@ -23,7 +21,7 @@
 #' nzdsr(y2)  
 #' @export
 #' 
-nzdsr<-function(x, infovar = NULL, relnb = NULL) {
+nzdsr<-function(x, infovarnames = NULL) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
@@ -36,7 +34,7 @@ nzdsr<-function(x, infovar = NULL, relnb = NULL) {
   w1<- x$tt
   mac<-x$spec[,2]
   i12<-x$I12
-  nc=ncol(w1)  # tenir compte du cas où w1 a 1 ligne seul
+  nc=ncol(w1) 
   tri<-x$sort_order
   con<-x$con
   ## remove empty set
@@ -59,22 +57,25 @@ nzdsr<-function(x, infovar = NULL, relnb = NULL) {
   rownames(tt) <- nameRows(tt)
   spec <- cbind((1:nrow(tt)), MACC)
   colnames(spec) <- c("specnb", "mass")
-  # test
-#  infovar <- matrix(c(x$n, ncol(tt)), ncol = 2)
-#  colnames(infovar) <- c("varnb", "size")
-  if (missing(infovar)) {
-    infovar <- matrix(c(x$n, ncol(tt)), ncol = 2)
-    colnames(infovar) <- c("varnb", "size")
+  # infovar parameter
+  infovar <- matrix(c(x$n, ncol(tt)), ncol = 2)
+  colnames(infovar) <- c("varnb", "size")
+  # infovaluenames parameter
+  cnames <-colnames(tt)
+  if (missing(infovarnames)) {
+    infovaluenames <- split(cnames, rep(paste(rep("nv", nrow(infovar)),c(1:nrow(infovar)),sep=""), infovar[,2]))
+  } else {
+    infovaluenames <- split(cnames,rep(infovarnames, infovar[,2]))
   }
-  infovaluenames <- colnames(x$tt) # On considère l'espace produit
-  if (missing(relnb)) { relnb <- 0 }
+  # inforel parameter
+  relnb <- (x$inforel)[,1]
   inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
-  colnames(inforel) <- c("relnb", "depth")
-  # fin test
+  colnames(inforel) <- c("relnb", "depth") 
+  # construction of the result
   W2<-cbind(matrix(MACC,ncol=1),W2)
   colnames(W2)<-colnames(w12)
-  rownames(W2) <- nameRows(W2)
-  z <- list(combination=W2,con=con, n= x$n, tt = tt, spec = spec, infovar = infovar, infovaluenames = x$infovaluenames, inforel = inforel)
+  rownames(W2) <- nameRows(W2[,-1])
+  z <- list(combination=W2,con=con, n= x$n, tt = tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
   class(z) <- append(class(z), "bcaspec")
   return(z)
     }

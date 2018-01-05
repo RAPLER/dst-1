@@ -4,27 +4,24 @@
 \alias{nzdsr}
 \title{Normalization of results from Dempster's rule of combination}
 \usage{
-nzdsr(x, infovar = NULL, relnb = NULL)
+nzdsr(x, infovarnames = NULL)
 }
 \arguments{
-\item{x}{A list, normally the result of the combination of two belief functions that we want to normalize. (see \code{\link{dsrwon}}). A belief function in its bca form (see \code{\link{bca}}) may also be submitted.}
+\item{x}{A list of class bcaspec, normally the result of the combination of two belief functions that we want to normalize. (see \code{\link{dsrwon}}). A belief function in its bca form (see \code{\link{bca}}) may also be submitted.}
 
-\item{infovar}{A two column matrix containing the variable numbers and the size of the product frame of discernment of each variable.}
-
-\item{relnb}{Set at NULL.}
+\item{infovarname}{A name can be given to the resulting variable. Named "nv1" if missing.}
 }
 \value{
-A list in the bca form: \itemize{
+A list in the bca form, namely: \itemize{
   \item $combination: The table of focal elements with their associated mass.
   \item $con The measure of conflict.
-  \item $n The node number.
   }
 }
 \description{
 The combination of two bca distributions may produce a distribution with a non zero mass allocated to the empty set. This function produces a normalized distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
 }
 \examples{
-x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"), n=1)
+x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"),infovarnames = "x1", n=1)
 y1 <- bca(f=matrix(c(0,1,1,1),nrow=2, byrow = TRUE), m=c(0.5,0.5), cnames =c("yes", "no"), n=1)
 print("combination of x1 and y1")
 x1y1 <- dsrwon(x1,y1)
