@@ -19,7 +19,9 @@ A matrix of M rows by 3 columns is returned, where M is the number of focal elem
    }
 }
 \description{
-Degrees of Belief (Bel) and Plausibility (Pl) of the focal elements of a belief function are obtained. Then the ratio of the plausibility of a focal element against the plausibility of its contrary is computed. Focal elements with zero mass can be excluded from the calculations.\cr
+Degrees of Belief (Bel) and Plausibility (Pl) of the focal elements of a belief function are computed Then the ratio of the plausibility of a focal element against the plausibility of its contrary is computed. Focal elements with zero mass can be excluded from the calculations.\cr
+}
+\details{
 The degree Belief Bel is defined by: \cr
 \eqn{bel(A) = Sum{(m(B); B <= A)}}, for every subset A of the frame of discernment.
 The plausibility function pl is defined by: \cr
@@ -27,12 +29,12 @@ The plausibility function pl is defined by: \cr
 The plausibility ratio of a focal element A versus its contrary ~A is defined by:  \eqn{Pl(A)/(1-Bel(A.))}.
 }
 \examples{
-x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n=1)
+x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
 belplau(x)
-y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), n=1)
-belplau(nzdsr(x,y))
+y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "y", n=1)
+belplau(nzdsr(dsrwon(x,y)))
 print("compare all elementary events")
-xy1 <- addTobca(nzdsr(x,y), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+xy1 <- addTobca(nzdsr(dsrwon(x,y)), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
 belplau(xy1) 
 }
 \references{
