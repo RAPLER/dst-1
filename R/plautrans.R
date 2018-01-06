@@ -7,11 +7,18 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @references Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.
 #' @examples  
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n=1)
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
 #' plautrans(x)
 #' @export
 #' 
 plautrans <- function(x) {
+  # checking input data 
+  if ( inherits(x, "bcaspec") == FALSE) {
+    stop("Input argument not of class bcaspec.")
+  }
+  if (sum((apply(x$combination[,-1], 1, sum)) == 0) > 0) {
+    stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
+  }
 # add all the singletons to the input bca
   nc <-ncol(x$combination) - 1
   x <- addTobca(x, diag(1, nc))
@@ -26,7 +33,6 @@ plautrans <- function(x) {
   zzs <- rbind(zs[,1:nsing, drop = FALSE])
   zord <- sapply(1:ncol(zzs),FUN = function(x) {decode(rep(2,ncol(zzs)), zzs[x,])})
   zs <- zs[order(zord,  decreasing = TRUE),]
-#  rownames(zs) <- colnames(zx)[1:(dim(zx)[2]-4)]
   # calculate distribution
   trplau<-zs[,nsing+3]/sum(zs[,nsing+3])
   y<-cbind(zs[,1:nsing],trplau)
