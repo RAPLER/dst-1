@@ -1,6 +1,6 @@
 #' Prepare a table of results
 #'
-#' This utility function gather the bca representation of a belief function and the measures of belief and plausibility in one table.
+#' This utility function gives a summary table of a belief function with its mass function and the associated measures of  belief and plausibility.
 #' @aliases tabresul
 #' @param x A belief function in its bca form, generally the normalized result of the combination of two or more belief functions (see \code{\link{nzdsr}}.
 #' @param removeZeroes = TRUE removes focal elements with 0 mass.
@@ -12,19 +12,27 @@
 #'   }
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples  
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n=1)
-#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), n=1)
-#' xy <- dsrwon(x,y)
-#' tabresul(nzdsr(xy)) 
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
+#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), infovarnames = "y", n=1)
+#' xy <- dsrwon(x,y, infovarnames = "xy")
+#' xyNorm <- nzdsr(xy, infovarnames = "xyNorm")
+#' tabresul(xyNorm) 
+#' print("Show all elementary events")
+#' xy1 <- addTobca(nzdsr(dsrwon(x,y)), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+#' tabresul(xy1)
 #' print("Remove focal elements with 0 mass")
-#' tabresul(nzdsr(xy), removeZeroes = TRUE)
-#' tabresul(nzdsr(xy), singletonsOnly = TRUE)
-#' print("Add the two missing singletons")
-#' xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+#' tabresul(xy1, removeZeroes = TRUE)
+#' Print("Retain singletons only")
 #' tabresul(xy1, singletonsOnly = TRUE)
 #' @export
 #' 
-tabresul<-function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  
+tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check input data 
+  if ( inherits(x, "bcaspec") == FALSE) {
+    stop("Input argument not of class bcaspec.")
+  }
+  if (sum((apply(x$combination[,-1], 1, sum)) == 0) > 0) {
+    stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
+  }
 # Compute Bel and Pl functions 
   BP<-belplau(x)
 # prepare final result
