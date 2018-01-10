@@ -10,7 +10,7 @@ doubles(x)
 \item{x}{A matrix of numeric, character or logical type.}
 }
 \value{
-The submitted table with duplicated rows removed from.
+The submitted matrix with duplicated rows removed from.
 }
 \description{
 The submitted tables can be matrices of numeric character or logical types.

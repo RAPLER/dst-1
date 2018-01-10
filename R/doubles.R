@@ -2,7 +2,7 @@
 #'
 #'  The submitted tables can be matrices of numeric character or logical types.
 #' @param x A matrix of numeric, character or logical type.
-#' @return The submitted table with duplicated rows removed from.
+#' @return The submitted matrix with duplicated rows removed from.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
@@ -24,4 +24,9 @@ doubles<-function(x) {
   zi2<-dotprod(zi1,t(x),g="&",f="==")  ## determining all positions of the tested line in x
   xr<-x[(c(1-zi2))*c(1:dim(x)[1]),,drop=FALSE] ## remove duplicates
   res<- if (dim(xr)[1] < 1) x[1,] else rbind(x[1,1:dim(x)[2]],doubles(xr)) ##  cycle until no duplicates in xr
+  # convert to matrix if result is vector
+  if (is.matrix(res) == FALSE) {
+    res <- t(as.matrix(res))
+  }
+  res
 }
