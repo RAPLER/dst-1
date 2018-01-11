@@ -1,18 +1,16 @@
 #' Transformation of multiple side inputs to a product space representation
 #'
 #' This utility function is used to obtain a product space representation of two or more variables initially represented in a truth table format.
-#' @param x The input variables in the following format: \itemize{
-#'  \item tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are side by side, as in a truth table.
-#'  \item spec A vector of specification numbers. specnb values start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix
-#'  \item infovar  A two column matrix containing identification numbers of the variables and the number of elements of each variable.
-#' }
+#' @param tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are side by side, as in a truth table.
+#'  @param spec A vector of specification numbers. specnb values start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix
+#'  @param infovar  A two column matrix containing identification numbers of the variables and the number of elements of each variable.
 #' @return The product space representation of the thruth table matrix.
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples 
 #'  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
 #'  specfw = c(1,1,2) 
 #'  infovarfw =matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-#' productSpace(tt=ttfw, spec=specfw, infovar=infovarfw)
+#' productSpace(tt=ttfw, specnb=specfw, infovar=infovarfw)
 #' @export
 #' 
 productSpace <- function(tt, specnb, infovar) {
@@ -30,7 +28,7 @@ productSpace <- function(tt, specnb, infovar) {
   } 
   z1=specnb[-1]
   z0=specnb[-length(specnb)]
-  if (sum(z1 - z0) > 1) {
+  if (sum((z1 - z0) > 1) >0) {
     stop("specnb values must be a sequence of numbers increasing by increments of 1 at most.")
     } else # ok to execute function
     {
@@ -44,50 +42,51 @@ productSpace <- function(tt, specnb, infovar) {
   y<-vector()
   #
   # Prepare elements's names as row and column names of the result 
-  # on va en ordre décroissant
-  colsx <- colnames(tt)
-#  colsx <- colsx[-c(1,2)] # pour conserver les noms dupliqués si on en a 
+  # in decreasing order
+  # use column names
+  if (is.null(colnames(tt))) {
+    cnames <- paste(rep("c",ncol(tt)),c(1:ncol(tt)),sep="")
+  } else {
+    cnames <- colnames(tt)
+    }
   indinf <- 1+zinds[length(zinds)-1]
   indsup <- zinds[length(zinds)]
-  zNcols <- list(colsx[indinf:indsup]) # pour dimnames de zt
-  zNcolsLast <-t(matrix(colsx[indinf:indsup])) # pour dotprod des noms
+  zNcols <- list(cnames[indinf:indsup]) # pour dimnames de zt
+  zNcolsLast <-t(matrix(cnames[indinf:indsup])) # pour dotprod des noms
   if (length(zinds) > 2) {
   for (i in (length(zinds)-1):2) {
-    ci <-colsx[(1+zinds[i-1]):(zinds[i])]
+    ci <-cnames[(1+zinds[i-1]):(zinds[i])]
     zNcols[[length(zNcols)+1]] <- ci # pour dimnames de zt
     zNcolsLast <- dotprod(matrix(ci), zNcolsLast, "paste", "paste")  # pour dotprod des noms
   zNcolsLast <-matrix(t(zNcolsLast), ncol = prod(dim(zNcolsLast)))
   }
   }
-  c1 <-colsx[1:zinds[1]]
+  c1 <-cnames[1:zinds[1]]
   zNcols[[length(zNcols)+1]] <- c1 # pour dimnames de zt
   zNcolsLast <- dotprod(matrix(c1), zNcolsLast, "paste", "paste")
   zNcolsLast <-matrix(t(zNcolsLast), ncol = prod(dim(zNcolsLast)))
   #
   # A: boucle sur le nombre de ss-ensembles
   for (j in 1:max(specnb)) {
-    # dimension des résultats dans l'espace produit
+    # dimension of result in the product space
     zt<-array(0,dim = size[order(varnb,decreasing = TRUE)], dimnames = zNcols) 
-    # tableau de travail pour réunir les éléments d'un ss-ensemble
+    # working table to gather all the elements of a subset
     zx <- subset(zz, zz$specnb == j)
     zx <-zx[,-1]
-    colnames(zx)= colsx # conserver les noms originaux si on a des noms dupliqués
-    # B:  Boucle sur le nombre d'éléments du ss-ensemble
+    colnames(zx) <- cnames # keep original names if there are duplicates names
+    # B:  Loop on the number of elements of the subset
     for (k in 1:znelem[j]) {
       zs <- zx[k,1:zinds[1]]
       zs1=as.vector(t(zs))
       names(zs1) = colnames(zs)
-      # C:  boucle sur le nombre de variables
- #     colnV1 <- colsx[1:zinds[1]]
+      # C:  Loop on the variables
       for (l in 2:length(varnb)) {
         zw <-zx[k, (1+zinds[l-1]):(zinds[l])]
         zw1=as.vector(t(zw))
         names(zw1) = colnames(zw)
-        # éléments dans l'espace produit
-        ## test
+        # elements in the product space
        zs1 <- outer(zw1, zs1, "*")  
 #        zs1 <- outer(zs1, zw1, "*")  marche pas avec 3 variables
-      ## fin test  
       }
       zt <-  zt | zs1 # zt ok, checked
     }
