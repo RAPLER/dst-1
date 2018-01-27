@@ -67,7 +67,7 @@ bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovar
       }
     }
    # inforel parameter
-    if (missing(inforel)) { 
+    if (missing(inforel) | is.null(inforel)) { 
       relnb <- 0
       depth <- 0 
       inforel <- matrix(c(relnb, depth), ncol = 2)
