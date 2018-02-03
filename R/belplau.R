@@ -33,7 +33,12 @@ belplau<-function (x, remove=FALSE)
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
-  if (sum((apply(x$combination[,-1], 1, sum)) == 0) > 0) {
+  # check if matrix of only one row
+  xtest <- x$combination[,-1]
+  if (is.matrix(xtest) == FALSE) { 
+    xtest <- t(as.matrix(xtest)) 
+    }
+  if (sum((apply(xtest, 1, sum)) == 0) > 0) {
     stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
   }
   MACC<-x$combination[,1] # vector of masses
