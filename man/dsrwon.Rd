@@ -31,9 +31,9 @@ The unnormalized Dempster's rule is used to combine two belief functions Bel1 an
 A function (inters) does the intersection of the propositions. Another function (doubles) remove duplicate elements from the result of the intersection of the M propositions of the first bca with the N propositions of the second bca. The two bcas \code{a} and \code{b} must be defined on the same frame of discernment for the intersection of propositions to be meaningful.
 }
 \examples{
-x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
-y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), infovarnames = "y", n=1)
-dsrwon(x,y, infovarnames = "xy")
+x1 <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"),  infovarnames = "x", n=1)
+x2 <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "x", n=1)
+dsrwon(x1,x2)
 }
 \references{
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.

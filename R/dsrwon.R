@@ -17,9 +17,9 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
-#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), infovarnames = "y", n=1)
-#' dsrwon(x,y, infovarnames = "xy")
+#' x1 <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"),  infovarnames = "x", n=1)
+#' x2 <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "x", n=1)
+#' dsrwon(x1,x2)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
 dsrwon<-function(x,y, infovarnames = NULL) {
   if ( (inherits(x, "bcaspec") == FALSE) | (inherits(y, "bcaspec") == FALSE)) {
@@ -32,15 +32,23 @@ dsrwon<-function(x,y, infovarnames = NULL) {
   if (nc1 != nc2) {
     stop("Nb of elements of frame x and frame y not equal.") 
   }
-  n <- x$infovar[,1]
+  n <- x$infovar[,1]  # numbers of the variables 
+  # extract the masses. Future version will work without $combination
+  vx <- x$combination[,1]
+  vy <- y$combination[,1]
+    if (is.null(vx) | is.null(vy)) {
+      vx <- x$spec[,2]
+      vy <- y$spec[,2]
+    }
+  V12<-outer(vx,vy, "*")     # compute masses
+  ## transform table of intersections: (M x N) rows by K 
   N12<-inters(x1,y1)         # intersection of the subsets
-  V12<-outer(x$combination[,1],y$combination[,1], "*")     # compute masses
-  ## transform table: (M x N) rows by K 
-  N12<-aperm(N12,c(2,1,3))
+  N12<-aperm(N12,c(2,1,3))   # transformation
   N12<-array(c(N12),c(dim(N12)[1],prod(dim(N12)[-1])), dimnames= list(colnames(x1), as.vector(outer(rownames(x1), rownames(y1) , FUN="paste"))))
   
   N12<-aperm(N12,c(2,1)) 
-  W1<- doubles(N12)      ## remove duplicates from the table
+  ## remove duplicates from the table
+  W1<- doubles(N12)      
   rownames(W1) <- nameRows(W1)
   I12<-dotprod(W1,aperm(N12,c(2,1)),g="&",f="==")    ## idendify  contributions to each subset
   MAC<-apply(I12*t(array(V12,dim(t(I12)))),1,sum)     ## calculate total mass of each subset 
@@ -60,18 +68,26 @@ dsrwon<-function(x,y, infovarnames = NULL) {
   spec <- cbind((1:nrow(tt)), mMAC)
   colnames(spec) <- c("specnb", "mass")
   # infovar parameter
-  infovar <- matrix(c(n, ncol(tt)), ncol = 2)
-  colnames(infovar) <- c("varnb", "size")
+  # test
+#  infovar <- matrix(c(n, ncol(tt)), ncol = 2) erreur ici?
+#   colnames(infovar) <- c("varnb", "size")
+  infovar <- x$infovar
   # infovaluenames parameter
-  cnames <- colnames(W1)
-  if (missing(infovarnames)) {
-    infovaluenames <- split(cnames, rep(paste(rep("v", nrow(infovar)),c(1:nrow(infovar)),sep=""), infovar[,2]))
-  } else {
-    infovaluenames <- split(cnames,rep(infovarnames, infovar[,2]))
-  }
+  # test
+ # cnames <- colnames(W1)
+  # if (missing(infovarnames)) {
+  #   infovaluenames <- split(cnames, rep(paste(rep("v", nrow(infovar)),c(1:nrow(infovar)),sep=""), infovar[,2]))
+  # } else {
+  #   infovaluenames <- split(cnames,rep(infovarnames, infovar[,2]))
+  # }
+  infovaluenames <- x$infovaluenames
   # inforel parameter
-  relnb <- (x$inforel)[,1]
-  inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
+  relnb <- (x$inforel)[,1]  # revoir
+  relnb2 <- (y$inforel)[,1]
+    if (relnb != relnb2) {
+      relnb <- c(relnb, relnb2)
+    }
+  inforel <- matrix(c(relnb, rep(nrow(infovar), length(relnb))), ncol = 2)
   colnames(inforel) <- c("relnb", "depth")
   # construction of the result
   W2<-cbind(mMAC,tt)
