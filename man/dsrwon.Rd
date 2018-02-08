@@ -4,14 +4,15 @@
 \alias{dsrwon}
 \title{Combination of two belief functions}
 \usage{
-dsrwon(x, y, infovarnames = NULL)
+dsrwon(x, y, infovarnames = NULL, relnb = NULL)
 }
 \arguments{
 \item{x}{A belief function in its bca form (see \code{\link{bca}}).}
 
 \item{y}{A belief function represented by its bca form.}
 
-\item{infovarname}{A name can be given to the resulting variable. Named "v1" if missing.}
+\item{infovarname}{A name can be given to the resulting variable. Named "v1" if missing.
+@param relnb A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.}
 }
 \value{
 A list of five elements: \itemize{

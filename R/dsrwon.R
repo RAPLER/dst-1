@@ -5,6 +5,7 @@
 #' @param x A belief function in its bca form (see \code{\link{bca}}).
 #' @param y A belief function represented by its bca form.
 #' @param infovarname A name can be given to the resulting variable. Named "v1" if missing.
+#'  @param relnb A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.
 #' @return A list of five elements: \itemize{
 #'   \item $combination: The matrix f of focal elements with a column of masses added.
 #'   \item $I12 A table of intersections between subsets.
@@ -21,7 +22,7 @@
 #' x2 <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "x", n=1)
 #' dsrwon(x1,x2)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
-dsrwon<-function(x,y, infovarnames = NULL) {
+dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
   if ( (inherits(x, "bcaspec") == FALSE) | (inherits(y, "bcaspec") == FALSE)) {
     stop("One or more inputs not of class bcaspec.")
   }
@@ -82,13 +83,15 @@ dsrwon<-function(x,y, infovarnames = NULL) {
   # }
   infovaluenames <- x$infovaluenames
   # inforel parameter
-  relnb <- (x$inforel)[,1]  # revoir
-  relnb2 <- (y$inforel)[,1]
-    if (relnb != relnb2) {
-      relnb <- c(relnb, relnb2)
-    }
-  inforel <- matrix(c(relnb, rep(nrow(infovar), length(relnb))), ncol = 2)
-  colnames(inforel) <- c("relnb", "depth")
+  if (is.null(relnb)) {
+    relnb <- (x$inforel)[,1]  # revoir
+    relnb2 <- (y$inforel)[,1]
+      if (relnb != relnb2) {
+        relnb <- c(relnb, relnb2)
+      }
+  }
+    inforel <- matrix(c(relnb, rep(nrow(infovar), length(relnb))), ncol = 2)
+    colnames(inforel) <- c("relnb", "depth")
   # construction of the result
   W2<-cbind(mMAC,tt)
   z <- list(combination=W2,con = con, n = x$n, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
