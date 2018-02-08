@@ -39,11 +39,26 @@ bcaRel <- function(tt, spec, infovar, infovarnames = NULL, relnb = NULL) {
   if ((is.matrix(infovar) ==FALSE) ) {
     stop("infovar parameter must be a 2 column numerical matrix with variables numbers in fist column and with sum of 2nd column = ncol(tt).")
   }
-  v <- (spec)[,2]    # vector of mass of subsets, without duplicates
-  v <- v[!duplicated(v)]
-  if( (abs(sum(v)-1)>0.000001) | (nrow(tt) != nrow(spec)) | (sum(infovar[,2]) != ncol(tt)) ){ 
+  if( (nrow(tt) != nrow(spec)) | (sum(infovar[,2]) != ncol(tt)) ){ 
     stop("Error in input arguments: check your input data.") 
   }
+  # transform vector of mases
+  #remove duplicates in each specification
+  ## tester
+  nbspec <- max(spec[,1])
+  v <- spec[spec[,1]== 1,2]
+  v <- v[!duplicated(v)]
+  for (i in 2:nbspec) {
+    mi <- spec[spec[,1]== i,2]
+    mi <- mi[!duplicated(mi)]
+    v <- c(v, mi)
+  }
+#  v <- (spec)[,2]    # vector of mass of subsets, without duplicates
+#  v <- v[!duplicated(v)]
+  if (abs(sum(v)-1)>0.000001)  { 
+    stop("Sum of masses not equal to 1 : check your data.") 
+  }
+  # fin tetst
   varnb <- (infovar)[,1]
   if (length(varnb) < 2) # No transfo if only 1 variable.
     { 
