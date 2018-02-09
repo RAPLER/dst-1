@@ -11,7 +11,7 @@ bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
 
 \item{spec}{A two column matrix. First column contains specification numbers. Second column contains the mass associated with each element of the relation. The same specification number with its associated mass can be repeated (e.g. in a logical implication).}
 
-\item{infovar}{A two column matrix containing variable identification numbers and the number of elements of each variable.}
+\item{infovar}{A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.}
 
 \item{infovarnames}{The names of the variables. if omitted, variables are named v1, v2, etc.}
 

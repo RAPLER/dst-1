@@ -4,7 +4,7 @@
 #' 
 #' @param tt A (0,1) or logical matrix establishing the relation between two or more variables.
 #' @param spec A two column matrix. First column contains specification numbers. Second column contains the mass associated with each element of the relation. The same specification number with its associated mass can be repeated (e.g. in a logical implication).
-#' @param infovar  A two column matrix containing variable identification numbers and the number of elements of each variable.
+#' @param infovar  A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.
 #' @param infovarnames The names of the variables. if omitted, variables are named v1, v2, etc.
 #' @param relnb A number given to the relation. Set at 0 if omitted.
 #' @return An object of class \code{bcaspec}. This is a list containing the following elements:  \itemize{
@@ -48,11 +48,13 @@ bcaRel <- function(tt, spec, infovar, infovarnames = NULL, relnb = NULL) {
   nbspec <- max(spec[,1])
   v <- spec[spec[,1]== 1,2]
   v <- v[!duplicated(v)]
-  for (i in 2:nbspec) {
-    mi <- spec[spec[,1]== i,2]
-    mi <- mi[!duplicated(mi)]
-    v <- c(v, mi)
-  }
+  if (nbspec > 1) {
+    for (i in 2:nbspec) {
+      mi <- spec[spec[,1]== i,2]
+      mi <- mi[!duplicated(mi)]
+      v <- c(v, mi)
+    }
+  }  
 #  v <- (spec)[,2]    # vector of mass of subsets, without duplicates
 #  v <- v[!duplicated(v)]
   if (abs(sum(v)-1)>0.000001)  { 
