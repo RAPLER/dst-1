@@ -75,14 +75,12 @@ bcaRel <- function(tt, spec, infovar, infovarnames = NULL, relnb = NULL) {
     if (missing(relnb)) { relnb <- 0 }
     inforel <- matrix(c(relnb, length(varnb)), ncol = 2)
     colnames(inforel) <- c("relnb", "depth")
-    if (missing(infovarnames)) {
-      valuenames <- split(colnames(tt), rep(paste(rep("v",length(varnb)),c(1:length(varnb)),sep=""), infovar[,2]))
-    } else {
- # test
-      valuenames <- split(colnames(tt),rep(infovarnames, infovar[,2]))
-      #     valuenames <- split(colnames(tt),rep(infovarnames, infovar[,2]))
-      ## fin test
+    # test
+    valuenames <- split(colnames(tt), rep(paste(rep("v",length(varnb)),c(1:length(varnb)),sep=""), infovar[,2]))
+    if (!missing(infovarnames)) {
+      names(valuenames) <- infovarnames
     }
+    ## fin test
    zr <-bca(f = z1, m = v, cnames = colnz1, infovar = infovar, infovarnames = infovarnames, infovaluenames = valuenames, inforel = inforel)
    return(zr)
   }
