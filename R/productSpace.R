@@ -48,9 +48,7 @@ productSpace <- function(tt, specnb, infovar) {
     cnames <- paste(rep("c",ncol(tt)),c(1:ncol(tt)),sep="")
   } else {
     cnames <- colnames(tt)
-    }
-  indinf <- 1+zinds[length(zinds)-1]
-  indsup <- zinds[length(zinds)]
+  }
   zNcols <- list(cnames[indinf:indsup]) # pour dimnames de zt
   zNcolsLast <-t(matrix(cnames[indinf:indsup])) # pour dotprod des noms
   if (length(zinds) > 2) {
@@ -59,22 +57,24 @@ productSpace <- function(tt, specnb, infovar) {
     zNcols[[length(zNcols)+1]] <- ci # pour dimnames de zt
     zNcolsLast <- dotprod(matrix(ci), zNcolsLast, "paste", "paste")  # pour dotprod des noms
   zNcolsLast <-matrix(t(zNcolsLast), ncol = prod(dim(zNcolsLast)))
-  }
+    }
   }
   c1 <-cnames[1:zinds[1]]
   zNcols[[length(zNcols)+1]] <- c1 # pour dimnames de zt
   zNcolsLast <- dotprod(matrix(c1), zNcolsLast, "paste", "paste")
   zNcolsLast <-matrix(t(zNcolsLast), ncol = prod(dim(zNcolsLast)))
+  # End columns names preparation
   #
   # A: boucle sur le nombre de ss-ensembles
   for (j in 1:max(specnb)) {
     # dimension of result in the product space
     zt<-array(0,dim = size[order(varnb,decreasing = TRUE)], dimnames = zNcols) 
+    # B: Loop on the number of elements of the subset
     # working table to gather all the elements of a subset
     zx <- subset(zz, zz$specnb == j)
     zx <-zx[,-1]
     colnames(zx) <- cnames # keep original names if there are duplicates names
-    # B:  Loop on the number of elements of the subset
+    #  Loop on elements of the subset (specification j)
     for (k in 1:znelem[j]) {
       zs <- zx[k,1:zinds[1]]
       zs1=as.vector(t(zs))
