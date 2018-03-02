@@ -1,7 +1,7 @@
 Package: dst
 Type: Package
 Title: Using Dempster-Shafer Theory
-Version: 1.0.0
+Version: 0.4
 Date: 2018-xx-xx
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
