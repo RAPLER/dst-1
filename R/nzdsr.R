@@ -58,15 +58,9 @@ nzdsr<-function(x, infovarnames = NULL) {
   spec <- cbind((1:nrow(tt)), MACC)
   colnames(spec) <- c("specnb", "mass")
   # infovar parameter
-  infovar <- matrix(c(x$n, ncol(tt)), ncol = 2)
-  colnames(infovar) <- c("varnb", "size")
+  infovar <- x$infovar
   # infovaluenames parameter
-  cnames <-colnames(tt)
-  if (missing(infovarnames)) {
-    infovaluenames <- split(cnames, rep(paste(rep("nv", nrow(infovar)),c(1:nrow(infovar)),sep=""), infovar[,2]))
-  } else {
-    infovaluenames <- split(cnames,rep(infovarnames, infovar[,2]))
-  }
+  infovaluenames <- x$infovaluenames
   # inforel parameter
   relnb <- (x$inforel)[,1]
   inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
