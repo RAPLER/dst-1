@@ -17,13 +17,13 @@ This utility function allows to expand a bca definition with focal elements of z
 }
 \examples{
  
-y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), n=1)
+y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), varnb=1)
 addTobca(y, matrix(c(0,1,0,0,0,1, 0,1,1), nrow=3, byrow = TRUE))
-x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n=1)
+x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), varnb=1)
 xy <- dsrwon(x,y)
 xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
 xy1
-addTobca(x, diag(1,  ncol(x$combination)-1)) # add all singletons
+addTobca(x, f = diag(1,  ncol(x$tt) ) ) # add all singletons
 }
 \author{
 Claude Boivin, Stat.ASSQ

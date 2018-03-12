@@ -13,7 +13,6 @@ nzdsr(x, infovarnames = NULL)
 }
 \value{
 A list in the bca form, namely: \itemize{
-  \item $combination: The table of focal elements with their associated mass.
   \item $con The measure of conflict.
   }
 }

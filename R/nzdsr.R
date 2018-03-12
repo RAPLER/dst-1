@@ -4,7 +4,6 @@
 #' @param x A list of class bcaspec, normally the result of the combination of two belief functions that we want to normalize. (see \code{\link{dsrwon}}). A belief function in its bca form (see \code{\link{bca}}) may also be submitted.
 #' @param infovarname A name can be given to the resulting variable. Named "nv1" if missing.
 #' @return A list in the bca form, namely: \itemize{
-#'   \item $combination: The table of focal elements with their associated mass.
 #'   \item $con The measure of conflict.
 #'   }
 #' @author Claude Boivin, Stat.ASSQ
@@ -30,7 +29,7 @@ nzdsr<-function(x, infovarnames = NULL) {
     frame <- bca(matrix(rep(1, nc), nrow=1), m=1)
     x <- dsrwon(x,frame)
   }
-  w12<-x$combination
+  w12<-cbind(x$spec[,2], x$tt)
   w1<- x$tt
   mac<-x$spec[,2]
   i12<-x$I12
@@ -66,10 +65,10 @@ nzdsr<-function(x, infovarnames = NULL) {
   inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
   colnames(inforel) <- c("relnb", "depth") 
   # construction of the result
-  W2<-cbind(matrix(MACC,ncol=1),W2)
-  colnames(W2)<-colnames(w12)
-  rownames(W2) <- nameRows(W2[,-1])
-  z <- list(combination=W2,con=con, n= x$n, tt = tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
+#  W2<-cbind(matrix(MACC,ncol=1),W2)
+#  colnames(W2)<-colnames(w12)
+#  rownames(W2) <- nameRows(W2[,-1])
+  z <- list(con=con, n= x$n, tt = tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
   class(z) <- append(class(z), "bcaspec")
   return(z)
     }

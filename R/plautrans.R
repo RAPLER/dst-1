@@ -16,11 +16,11 @@ plautrans <- function(x) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
-  if (sum((apply(x$combination[,-1], 1, sum)) == 0) > 0) {
+  if (sum((apply(x$tt, 1, sum)) == 0) > 0) {
     stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
   }
 # add all the singletons to the input bca
-  nc <-ncol(x$combination) - 1
+  nc <-ncol(x$tt)
   x <- addTobca(x, diag(1, nc))
 #  eliminate duplicates singletons if any  
   x <- nzdsr(x)

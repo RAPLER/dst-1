@@ -8,9 +8,8 @@
 #' @param infovarnames The names of the variables. if omitted, variables are named v1, v2, etc.
 #' @param relnb A number given to the relation. Set at 0 if omitted.
 #' @return An object of class \code{bcaspec}. This is a list containing the following elements:  \itemize{
-#' \item combination A table of focal elements tt with the addition of the column of associated masses. Rownames of the matrix of focal elements are created from the column names of the elements of the product frame.
 #' \item $con The measure of conflict. Set at 0 by default.
-#' \item $tt The resulting table of focal elements alone. 
+#' \item $tt The resulting table of focal elements alone. Rownames of the matrix of focal elements are created from the column names of the elements of the product frame.
 #' \item $spec The resulting two column matrix of specification numbers with associated masses.
 #' \item $infovar The two column matrix given in the input data.
 #' \item infovaluenames A list of the names of the variables with the value name of each element.

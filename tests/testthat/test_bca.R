@@ -36,7 +36,7 @@ test_that("bcaspec_1", {
   infovarnames = c("RdWorks", "Rain")
   valuenames <- list(Rain= c("Ry", "Rn"), RdWorks=c("rWdy", "rWdn") )
   result <- bca(f = tt1, m, infovar = infovar, infovarnames = infovarnames, infovaluenames = valuenames)
-  expect_equal(colnames(result$tt), c("v1", "v2", "v3", "v4"))
+  expect_equal(colnames(result$tt), c("col1", "col2", "col3", "col4"))
   # T7: take names from "infovaluenames" parameter only if it is a string. If the matrix f is defined on a product space, the names must be the column names of the matrix. 
   tt1=matrix(c(rep(TRUE,3),FALSE, rep(TRUE,4)), ncol=4, byrow=TRUE)
   m=c(0.75, 0.25)

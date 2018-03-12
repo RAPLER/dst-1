@@ -7,7 +7,6 @@
 #' @param infovarname A name can be given to the resulting variable. Named "v1" if missing.
 #'  @param relnb A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.
 #' @return A list of five elements: \itemize{
-#'   \item $combination: The matrix f of focal elements with a column of masses added.
 #'   \item $I12 A table of intersections between subsets.
 #'   \item $sort_order Indices for the sort of the propositions.
 #'   \item $con: the measure of conflict between beliefs.
@@ -34,9 +33,9 @@ dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
     stop("Nb of elements of frame x and frame y not equal.") 
   }
   n <- x$infovar[,1]  # numbers of the variables 
-  # extract the masses. Future version will work without $combination
-  vx <- x$combination[,1]
-  vy <- y$combination[,1]
+  # extract the masses. This new version works without $combination
+  vx <- x$spec[,2]
+  vy <- y$spec[,2]
     if (is.null(vx) | is.null(vy)) {
       vx <- x$spec[,2]
       vy <- y$spec[,2]
@@ -93,8 +92,8 @@ dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
     inforel <- matrix(c(relnb, rep(nrow(infovar), length(relnb))), ncol = 2)
     colnames(inforel) <- c("relnb", "depth")
   # construction of the result
-  W2<-cbind(mMAC,tt)
-  z <- list(combination=W2,con = con, n = x$n, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
+#  W2<-cbind(mMAC,tt)
+  z <- list(con = con, n = x$n, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
   class(z) <- append(class(z), "bcaspec")
   return(z)
   }

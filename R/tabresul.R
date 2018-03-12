@@ -30,14 +30,14 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
-  if (sum((apply(x$combination[,-1], 1, sum)) == 0) > 0) {
+  if (sum((apply(x$tt, 1, sum)) == 0) > 0) {
     stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
   }
 # Compute Bel and Pl functions 
   BP<-belplau(x)
 # prepare final result
-  macc<-t(rbind(x$combination[,1]))
-  W2<-rbind(x$combination[,-1])
+  macc<-t(rbind(x$spec[,2]))
+  W2<-rbind(x$tt)
 # remove elements with mass=0, but the frame
   INUL<-c(macc[-length(macc)]>0,TRUE)
   if (removeZeroes == TRUE) {
@@ -57,7 +57,8 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
     if (!is.null(dim(z2))) {
       r1<-r[apply(z2,1,sum)==1, , drop = FALSE]
     } else {
-      z2<-rbind(r[,c(1:(ncol(x$combination)-1))])
+      z2<-rbind(r[,c(1:(ncol(x$tt)))])
+  #    z2<-rbind(r[,c(1:(ncol(x$combination)-1))])
       r1<-r[apply(z2,1,sum)==1,]
       if (is.null(dim(r1))) {
         r1<-t(as.matrix(r1))

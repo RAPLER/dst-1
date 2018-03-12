@@ -12,7 +12,6 @@
 #' @param infovarnames A name given to the variable. named "v1" if omitted.
 #' @return The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
 #'   \item $tt The table of focal elements f. Rownames of the matrix of focal elements are created from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
-#'   \item $combination: The table of focal elements f with the addition of the column of associated masses.
 #'   \item $spec A two column matrix. First column contains specification numbers: 1 to  nrow(f). Second column contains the mass vector.
 #'   \item $infovar The variable number and the size of the frame of discernment.
 #'   \item $infovaluenames The names of the elements of the frame of the variable (the column names of the tt matrix).
@@ -33,11 +32,11 @@
 #' frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' 
-bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovarnames = NULL, infovaluenames = NULL, inforel=NULL) {
+bca<-function(f, m, cnames = NULL, con = NULL, varnb = NULL, infovar = NULL, infovarnames = NULL, infovaluenames = NULL, inforel=NULL) {
    if ((!is.null(infovaluenames)) & (typeof(infovaluenames) == "character")) { cnames = infovaluenames}
   if (is.null(cnames)) { cnames = colnames (f)}
   if (is.null(cnames)) {    
-    cnames <- paste(rep("v",ncol(f)),c(1:ncol(f)),sep="")
+    cnames <- paste(rep("col",ncol(f)),c(1:ncol(f)),sep="")
     }
   if((abs(sum(m)-1)>0.000001) | (length(f[,1])!=length(m)) | (length(f[1,])!=length(cnames))){ 
     stop("Error in input arguments: check your input data.") 
@@ -47,10 +46,10 @@ bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovar
     if (missing(con)) { con <- 0 }
     spec <- cbind((1:nrow(f)), m)
     colnames(spec) <- c("specnb", "mass")
-    if (missing(n)) { n <- 0 }
+    if (missing(varnb)) { varnb <- 0 }
     # infovar parameter
     if (missing(infovar)) {
-      infovar <- matrix(c(n, ncol(f)), ncol = 2)
+      infovar <- matrix(c(varnb, ncol(f)), ncol = 2)
     }
     colnames(infovar) <- c("varnb", "size")
    # check and use infovarnames
@@ -74,10 +73,11 @@ bca<-function(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL, infovar
     }
     colnames(inforel) <- c("relnb", "depth")
     # construction of the result
-    z<-cbind(m,f)
-    colnames(z) <- c("mass", cnames)
-    rownames(f) <- rownames(z) <- nameRows(rbind(z[,-1]))
-    y<-list(combination=z, con = con, tt = f, spec = spec , infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
+  #  z<-cbind(m,f)
+  #  colnames(z) <- c("mass", cnames)
+ #   rownames(f) <- rownames(z) <- nameRows(rbind(z[,-1]))
+    rownames(f) <- nameRows(f)
+    y<-list(con = con, tt = f, spec = spec , infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
     class(y) <- append(class(y), "bcaspec")
     return(y)
   }

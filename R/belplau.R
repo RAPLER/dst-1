@@ -34,15 +34,15 @@ belplau<-function (x, remove=FALSE)
     stop("Input argument not of class bcaspec.")
   }
   # check if matrix of only one row
-  xtest <- x$combination[,-1]
+  xtest <- x$tt
   if (is.matrix(xtest) == FALSE) { 
     xtest <- t(as.matrix(xtest)) 
     }
   if (sum((apply(xtest, 1, sum)) == 0) > 0) {
     stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
   }
-  MACC<-x$combination[,1] # vector of masses
-  W2 <- rbind(x$combination[,-1])
+  MACC<-x$spec[,2] # vector of masses
+  W2 <- rbind(x$tt)
   # to remove elements with mass=0, but the frame
   INUL<-c(MACC[-length(MACC)]>0,TRUE)
   if (remove == TRUE) {

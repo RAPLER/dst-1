@@ -5,7 +5,7 @@
 \alias{bpa}
 \title{Basic chance assignment distribution}
 \usage{
-bca(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL,
+bca(f, m, cnames = NULL, con = NULL, varnb = NULL, infovar = NULL,
   infovarnames = NULL, infovaluenames = NULL, inforel = NULL)
 }
 \arguments{
@@ -17,14 +17,13 @@ bca(f, m, cnames = NULL, con = NULL, n = NULL, infovar = NULL,
 
 \item{con}{The measure of conflict. Set at 0 by default.}
 
-\item{n}{The variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.}
-
 \item{infovarnames}{A name given to the variable. named "v1" if omitted.}
+
+\item{n}{The variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.}
 }
 \value{
 The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
   \item $tt The table of focal elements f. Rownames of the matrix of focal elements are created from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
-  \item $combination: The table of focal elements f with the addition of the column of associated masses.
   \item $spec A two column matrix. First column contains specification numbers: 1 to  nrow(f). Second column contains the mass vector.
   \item $infovar The variable number and the size of the frame of discernment.
   \item $infovaluenames The names of the elements of the frame of the variable (the column names of the tt matrix).

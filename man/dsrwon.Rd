@@ -16,7 +16,6 @@ dsrwon(x, y, infovarnames = NULL, relnb = NULL)
 }
 \value{
 A list of five elements: \itemize{
-  \item $combination: The matrix f of focal elements with a column of masses added.
   \item $I12 A table of intersections between subsets.
   \item $sort_order Indices for the sort of the propositions.
   \item $con: the measure of conflict between beliefs.
