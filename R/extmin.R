@@ -74,7 +74,7 @@ extmin <- function(rel1, relRef) {
   ## il faut des noms de colonnes et de ligne
   colnames(rtt) <- colnames(relRef$tt)
   rownames(rtt) <- nameRows(rtt)
-  zr <-list(tt = rtt, spec = rel1$spec, infovar = infovar, infovaluenames= relRef$infovaluenames, inforel = rel1$inforel)
+  zr <-list(con = rel1$con, tt = rtt, spec = rel1$spec, infovar = infovar, infovaluenames= relRef$infovaluenames, inforel = rel1$inforel)
   class(zr) <- append(class(zr), "bcaspec")
   return(zr)
 }
