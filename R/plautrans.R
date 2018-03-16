@@ -7,7 +7,7 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @references Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.
 #' @examples  
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", varnb = 1)
 #' plautrans(x)
 #' @export
 #' 
@@ -26,7 +26,7 @@ plautrans <- function(x) {
   x <- nzdsr(x)
 # compute measures of belief and plausibility  
   zx<-rbind(tabresul(x, singletonsOnly = TRUE)$mbp)
-  nsing<- -4+ncol(zx)
+  nsing <- -4+ncol(zx)
   z1<-apply(rbind(zx[,1:nsing, drop = FALSE]),1,sum)
   zs<-rbind(zx[z1==1,])
   # test ordonner les singletons pour que les rownames correspondent
