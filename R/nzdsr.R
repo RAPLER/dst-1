@@ -9,14 +9,14 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
 #' @examples 
-#' x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"),infovarnames = "x1", n=1)
-#' y1 <- bca(f=matrix(c(0,1,1,1),nrow=2, byrow = TRUE), m=c(0.5,0.5), cnames =c("yes", "no"), n=1)
+#' x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"),infovarnames = "x1", varnb = 1)
+#' y1 <- bca(f=matrix(c(0,1,1,1),nrow=2, byrow = TRUE), m=c(0.5,0.5), cnames =c("yes", "no"), varnb = 1)
 #' print("combination of x1 and y1")
 #' x1y1 <- dsrwon(x1,y1)
 #' nzdsr(x1y1) 
 #' 
 #' print("normalization of a bca definition.")
-#' y2 <- bca(f=matrix(c(0,0,0,1,0,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5,0.3), cnames =c("a", "b", "c"), n=1)
+#' y2 <- bca(f=matrix(c(0,0,0,1,0,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5,0.3), cnames =c("a", "b", "c"), varnb = 1)
 #' nzdsr(y2)  
 #' @export
 #' 
@@ -61,14 +61,11 @@ nzdsr<-function(x, infovarnames = NULL) {
   # infovaluenames parameter
   infovaluenames <- x$infovaluenames
   # inforel parameter
-  relnb <- (x$inforel)[,1]
+  relnb <- (x$inforel)[1,1]
   inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
   colnames(inforel) <- c("relnb", "depth") 
   # construction of the result
-#  W2<-cbind(matrix(MACC,ncol=1),W2)
-#  colnames(W2)<-colnames(w12)
-#  rownames(W2) <- nameRows(W2[,-1])
-  z <- list(con=con, n= x$n, tt = tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
+  z <- list(con=con, tt = tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
   class(z) <- append(class(z), "bcaspec")
   return(z)
     }
