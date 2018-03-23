@@ -7,9 +7,9 @@
 bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
 }
 \arguments{
-\item{tt}{A (0,1) or logical matrix establishing the relation between two or more variables.}
+\item{tt}{A (0,1) or logical matrix establishing the relation between two or more variables. The relation is described by a matrix input table of (0,1), where the different variables are side by side, as in a truth table representation.}
 
-\item{spec}{A two column matrix. First column contains specification numbers. Second column contains the mass associated with each element of the relation. The same specification number with its associated mass can be repeated (e.g. in a logical implication).}
+\item{spec}{A two column matrix. First column contains subsets numbers. Second column contains the mass value associated with each subset of the relation. A subset number and its associated mass value are repeated to match the number of elements of the subset.}
 
 \item{infovar}{A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.}
 
@@ -28,10 +28,10 @@ An object of class \code{bcaspec}. This is a list containing the following eleme
 }
 }
 \description{
-When a relation between two or more variables is established, a product space representation of this relation can be obtained. The relation is described by a matrix input table of (0,1), where the different spaces are side by side, as a truth table representation.
+A relation between two or more variables can be established in their product space and a mass function defined accordingly.
 }
 \examples{
-## A logical implication table.
+## A logical implication table
 ## A typical relation between two variables is the logical implication (a -> b) or its conditional probability equivalent (b | a). let us suppose a stands for Rain (yes, no) and b stands for Road Works (yes, no). From our experience, we are 75 \% sure that there will be Road Works if no rain.
 ## The truth table
  ttrwf= matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),nrow=4, byrow = TRUE, dimnames =list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
