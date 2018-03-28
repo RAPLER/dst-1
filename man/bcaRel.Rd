@@ -20,19 +20,19 @@ bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
 \value{
 An object of class \code{bcaspec}. This is a list containing the following elements:  \itemize{
 \item $con The measure of conflict. Set at 0 by default.
-\item $tt The resulting table of focal elements alone. Rownames of the matrix of focal elements are created from the column names of the elements of the product frame.
+\item $tt The resulting table of focal elements. Rownames of the matrix of focal elements are created from the column names of the elements of the product frame.
 \item $spec The resulting two column matrix of specification numbers with associated masses.
 \item $infovar The two column matrix given in the input data.
 \item infovaluenames A list of the names of the variables with the value name of each element.
-\item $inforel. A two column matrix containing variable numbers and the depth of the relation.
+\item $inforel A two column matrix containing variable numbers and the depth of the relation.
 }
 }
 \description{
 A relation between two or more variables can be established in their product space and a mass function defined accordingly.
 }
 \examples{
-## A logical implication table
-## A typical relation between two variables is the logical implication (a -> b) or its conditional probability equivalent (b | a). let us suppose a stands for Rain (yes, no) and b stands for Road Works (yes, no). From our experience, we are 75 \% sure that there will be Road Works if no rain.
+## A logical implication rule
+## A typical relation between two variables is the logical implication rule (a -> b). let us suppose that a stands for Rain: {yes, no} and b stands for RoadWorks: {yes, no}. From experience in my region, I am 75 \% sure that there will be RoadWorks if no Rain.
 ## The truth table
  ttrwf= matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),nrow=4, byrow = TRUE, dimnames =list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
  ## The mass distribution
