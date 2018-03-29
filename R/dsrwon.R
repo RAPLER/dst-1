@@ -1,24 +1,29 @@
 #' Combination of two belief functions
 #' 
 #' The unnormalized Dempster's rule is used to combine two belief functions Bel1 and Bel2 defined on the same frame of discernment and represented by their respective basic chance assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (See \code{\link{nzdsr}}).
-#' @details A function (inters) does the intersection of the propositions. Another function (doubles) remove duplicate elements from the result of the intersection of the M propositions of the first bca with the N propositions of the second bca. The two bcas \code{a} and \code{b} must be defined on the same frame of discernment for the intersection of propositions to be meaningful.   
+#' @details The two bca's \code{a} and \code{b} must be defined on the same frame of discernment for the combination to take place.   
 #' @param x A belief function in its bca form (see \code{\link{bca}}).
-#' @param y A belief function represented by its bca form.
+#' @param y A belief function in its bca form.
 #' @param infovarname A name can be given to the resulting variable. Named "v1" if missing.
 #'  @param relnb A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.
 #' @return A list of five elements: \itemize{
 #'   \item $I12 A table of intersections between subsets.
 #'   \item $sort_order Indices for the sort of the propositions.
 #'   \item $con: the measure of conflict between beliefs.
-#'   \item $n: the node number.
 #'  \item $inforel. A two column matrix containing variable numbers and the depth of the relation.
 #'   }
 #'   @details The relation number of the x input is given to the result.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
-#' x1 <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"),  infovarnames = "x", varnb=1)
-#' x2 <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "x", varnb = 1)
+#' x1 <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
+#' cnames =c("a", "b", "c"),  
+#' infovarnames = "x", varnb=1)
+#' x2 <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
+#' byrow = TRUE), m=c(0.6, 0.4),  
+#' cnames = c("a", "b", "c"),  
+#' infovarnames = "x", varnb = 1)
 #' dsrwon(x1,x2)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
 dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
@@ -93,7 +98,7 @@ dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
     colnames(inforel) <- c("relnb", "depth")
   # construction of the result
 #  W2<-cbind(mMAC,tt)
-  z <- list(con = con, n = x$n, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
+  z <- list(con = con, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
   class(z) <- append(class(z), "bcaspec")
   return(z)
   }

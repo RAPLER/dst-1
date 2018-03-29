@@ -1,15 +1,18 @@
 #' Add focal elements with 0 mass
 #'
 #' This utility function allows to expand a bca definition with focal elements of zero mass. This is useful when we want to compare the plausibility results of some focal elements which do not already appear because their belief mass is 0.
-#' @param x A belief function in its bca form (see \code{\link{bca}}). It can be a bca definition or the normalized result of a combination by Dempster'sRule.
+#' @param x A belief function in its bca form (see \code{\link{bca}}). It can be a bca definition or the normalized result of the combination of bca's by Dempster'sRule.
 #' @param f A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix must match the number of elements (values) of the frame of discernment \eqn{\Theta} of \code{x}.
 #'  @return The original bca \code{x} augmented with the added focal elements defined by \code{f}.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples  
-#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), varnb=1)
+#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), 
+#' m=c(0.6, 0.4),  cnames = c("a", "b", "c"), varnb=1)
 #' addTobca(y, matrix(c(0,1,0,0,0,1, 0,1,1), nrow=3, byrow = TRUE))
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), varnb=1)
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
+#' cnames =c("a", "b", "c"), varnb=1)
 #' xy <- dsrwon(x,y)
 #' xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
 #' xy1

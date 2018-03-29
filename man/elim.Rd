@@ -9,30 +9,40 @@ elim(rel, xnb)
 \arguments{
 \item{rel}{the relation to marginalize, an object of class bcaspec.}
 
-\item{xnb}{Identification of the variable to eliminate by its number.}
+\item{xnb}{Identification by its number of variable to eliminate.}
 }
 \value{
 The reduced relation
 }
 \description{
-This function starts with a relation defined on a product space. Having chosen a variable to eliminate, the reduced product space is determined and the corresponding bcaspec is claculated.
+This function starts with a relation defined on a product space. Having chosen a variable to eliminate, the reduced product space is determined and the remaining bca is calculated.
 }
 \examples{
  
-rel_tt <- matrix(c(0,1,rep(0,5),rep(c(1,0),2),1,1,0,1,0,rep(1,3),0,1,0,rep(1,6)), ncol=4, byrow = TRUE)
+rel_tt <- matrix(c(0,1,rep(0,5),rep(c(1,0),2),1,1,0,1,0,
+rep(1,3),0,1,0,rep(1,6)), ncol=4, byrow = TRUE)
 colnames(rel_tt) <- c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn")
- rel_spec = matrix(c(1:7, 0.0476, 0.7619, 0.1905, 0,0,0,0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
- rel_infovar = matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
- rel_rel <- list(tt=rel_tt, con=0.16, spec=rel_spec, infovar=rel_infovar, infovaluenames= list(Rain=c("Ry", "Rn"), RdWorks=c("rWdy", "rWdn") ))
+ rel_spec = matrix(c(1:7, 0.0476, 0.7619, 0.1905, 0,0,0,0), 
+ ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+ rel_infovar = matrix(c(4,5,2,2), ncol = 2, 
+ dimnames = list(NULL, c("varnb", "size")) )
+ rel_rel <- list(tt=rel_tt, con=0.16, spec=rel_spec,
+  infovar=rel_infovar, 
+  infovaluenames= list(Rain=c("Ry", "Rn"), RdWorks=c("rWdy", "rWdn") ))
  class(rel_rel)="bcaspec"
  elim(rel_rel, xnb = 5)
  elim(rel_rel, xnb = 4)
  
- mrt_tt <- matrix(c(1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,0,1,1,0,0,1,0,1,rep(1,4)), ncol=4, byrow = TRUE)
+ mrt_tt <- matrix(c(1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,0,1,1,0,0,1,0,1,rep(1,4)), 
+ ncol=4, byrow = TRUE)
 colnames(mrt_tt) <- c("t6", "f6", "t8", "f8")
- mrt_spec = matrix(c(1,1,1,2,2,2,3, 0.1, 0.1, 0.1, 0.7,0.7,0.7,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
- mrt_infovar =matrix(c(6,8,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
- mrt_rel <- bcaRel(tt=mrt_tt, spec=mrt_spec, infovar=mrt_infovar, infovarnames= c("Maintenance", "Repair") )
+ mrt_spec = matrix(c(1,1,1,2,2,2,3, 0.1, 0.1, 0.1, 0.7,0.7,0.7,0.2), 
+ ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+ mrt_infovar =matrix(c(6,8,2,2), ncol = 2, 
+ dimnames = list(NULL, c("varnb", "size")) )
+ mrt_rel <- bcaRel(tt=mrt_tt, spec=mrt_spec, 
+ infovar=mrt_infovar, 
+ infovarnames= c("Maintenance", "Repair") )
  elim(mrt_rel, xnb = 6)
  elim(mrt_rel, xnb = 8)
 }

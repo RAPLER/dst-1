@@ -2,25 +2,28 @@
 % Please edit documentation in R/productSpace.R
 \name{productSpace}
 \alias{productSpace}
-\title{Transformation of multiple side inputs to a product space representation}
+\title{Transformation of multiple side inputs to a product space definition}
 \usage{
 productSpace(tt, specnb, infovar)
 }
 \arguments{
-\item{tt}{The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are side by side, as in a truth table.
-@param spec A vector of specification numbers. specnb values start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix
-@param infovar  A two column matrix containing identification numbers of the variables and the number of elements of each variable.}
+\item{tt}{The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are put side by side, as in a truth table.
+@param spec A vector of specification numbers. Values of variable \code{specnb} start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix.
+@param infovar  A two-column matrix containing identification numbers of the variables and the number of elements of each variable.}
 }
 \value{
-The product space representation of the thruth table matrix.
+The thruth table matrix of the product space definition.
 }
 \description{
-This utility function is used to obtain a product space representation of two or more variables initially represented in a truth table format.
+This utility function is used to obtain a product space definition of two or more variables initially represented by a truth table format.
 }
 \examples{
- ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
+ ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3,
+  byrow = TRUE, 
+  dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
  specfw = c(1,1,2) 
- infovarfw =matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
+ infovarfw =matrix(c(5,7,2,2), ncol = 2, 
+ dimnames = list(NULL, c("varnb", "size")) )
 productSpace(tt=ttfw, specnb=specfw, infovar=infovarfw)
 }
 \author{

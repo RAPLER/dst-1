@@ -17,23 +17,23 @@ bca(f, m, cnames = NULL, con = NULL, varnb = NULL, infovar = NULL,
 
 \item{con}{The measure of conflict. Set at 0 by default.}
 
-\item{infovarnames}{A name given to the variable. named "v1" if omitted.}
+\item{varnb}{A variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.}
 
-\item{n}{The variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.}
+\item{infovarnames}{A name given to the variable. Named "v1" if omitted.}
 }
 \value{
 The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
   \item $tt The table of focal elements f. Rownames of the matrix of focal elements are created from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
-  \item $spec A two column matrix. First column contains specification numbers: 1 to  nrow(f). Second column contains the mass vector.
+  \item $spec A two column matrix. First column contains specification numbers: 1 to  \code{nrow(f)}. Second column contains the mass vector.
   \item $infovar The variable number and the size of the frame of discernment.
   \item $infovaluenames The names of the elements of the frame of the variable (the column names of the tt matrix).
-  \item $inforel A two column matrix containing relation numbers and the depth (number of variables) of each relation.
+  \item $inforel Set at 0. used in function \code{\link{bcaRel}}
   }
   @details The Basic chance assignment distribution of a variable can also be obtained using the more general function \code{\link{bcaRel}}.
 }
 \description{
 This function assigns their corresponding mass to some subsets of a finite set \eqn{\Theta} of possible values.\cr
-The set \eqn{\Theta} is called the frame of discernement. Each subset \eqn{A of \Theta} is called a focal element or a proposition. The associated mass is a number in the (0,1] interval, called "basic chance assignment" (the basic probability assignment of Shafer's book).
+The set \eqn{\Theta} is called the frame of discernement. Each subset \eqn{A of \Theta} is called a focal element or a proposition. The associated mass is a number in the (0,1] interval, called here "basic chance assignment" (the basic probability assignment of Shafer's book).
 }
 \examples{
 f<- t(matrix(c(1,0,1,1),ncol=2))
@@ -42,8 +42,12 @@ cnames <- c("yes","no")
 bca(f, m)
 bca(f, m, cnames)
 bca(f, m, cnames, n = 1)
-x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n = 1)
-y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6,0.4), cnames =c("a", "b", "c"),infovarnames = "y", n=1)
+x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+byrow = TRUE), m=c(0.2,0.5, 0.3), 
+cnames =c("a", "b", "c"), n = 1)
+y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
+byrow = TRUE), m=c(0.6,0.4), 
+cnames =c("a", "b", "c"),infovarnames = "y", n=1)
 frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
 }
 \references{

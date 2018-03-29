@@ -4,21 +4,27 @@
 #' @aliases tabresul
 #' @param x A belief function in its bca form, generally the normalized result of the combination of two or more belief functions (see \code{\link{nzdsr}}.
 #' @param removeZeroes = TRUE removes focal elements with 0 mass.
-#' @param singletonsOnly = TRUE reduces the table of results to elementary events.
+#' @param singletonsOnly = TRUE reduces the table of results to elementary events (singletons).
 #' @return A list of three elements: \itemize{
-#'   \item $mbp: The table of focal elements with the addition of the their associated mass, degree of belief, plausibility and the plausibility ratio
+#'   \item $mbp: The table of focal elements with the addition of the their associated mass, degree of belief, plausibility and the plausibility ratio.
 #'   \item $con The measure of conflict between focal elements.
-#'   \item $n The node number.
 #'   }
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples  
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
-#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), infovarnames = "y", n=1)
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
+#' cnames =c("a", "b", "c"), 
+#' infovarnames = "x", n=1)
+#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
+#' byrow = TRUE), m=c(0.6, 0.4),  
+#' cnames = c("a", "b", "c"), infovarnames = "y", n=1)
 #' xy <- dsrwon(x,y, infovarnames = "xy")
 #' xyNorm <- nzdsr(xy, infovarnames = "xyNorm")
 #' tabresul(xyNorm) 
 #' print("Show all elementary events")
-#' xy1 <- addTobca(nzdsr(dsrwon(x,y)), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+#' xy1 <- addTobca(nzdsr(dsrwon(x,y)), 
+#' matrix(c(0,1,0,0,0,1), 
+#' nrow=2, byrow = TRUE))
 #' tabresul(xy1)
 #' print("Remove focal elements with 0 mass")
 #' tabresul(xy1, removeZeroes = TRUE)
@@ -58,7 +64,6 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
       r1<-r[apply(z2,1,sum)==1, , drop = FALSE]
     } else {
       z2<-rbind(r[,c(1:(ncol(x$tt)))])
-  #    z2<-rbind(r[,c(1:(ncol(x$combination)-1))])
       r1<-r[apply(z2,1,sum)==1,]
       if (is.null(dim(r1))) {
         r1<-t(as.matrix(r1))
@@ -66,7 +71,7 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
     }
     mbp <- r1
   }
-  resul<-list(mbp=mbp, Conflict=x$con, n=x$n)
+  resul<-list(mbp=mbp, Conflict=x$con)
   return(resul)
 }
  

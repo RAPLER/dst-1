@@ -1,13 +1,16 @@
 #' Plausibility transformation applied on the distribution of singletons
 #'
-#' The plausibility transformation is used to obtain the probability distribution associated to a belief function. 
+#' The plausibility transformation is used to obtain the probability distribution associated with a belief function. 
 #' @param x A belief function in its bca form or the normalized result of the combination of two or more belief functions (see \code{\link{nzdsr}}.
 #' @details First, we compute the belief and plausibility measures on all the singletons of the frame of discernment. The probability distribution of the singletons is derived from the plausibility measures of the singletons.
-#' @return The matrix of singletons with the plausibility transformation added in last column.
+#' @return The matrix of singletons with the plausibility transformation added in the last column.
 #' @author Claude Boivin, Stat.ASSQ
 #' @references Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.
 #' @examples  
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", varnb = 1)
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
+#' cnames =c("a", "b", "c"), 
+#' infovarnames = "x", varnb = 1)
 #' plautrans(x)
 #' @export
 #' 
@@ -29,7 +32,7 @@ plautrans <- function(x) {
   nsing <- -4+ncol(zx)
   z1<-apply(rbind(zx[,1:nsing, drop = FALSE]),1,sum)
   zs<-rbind(zx[z1==1,])
-  # test ordonner les singletons pour que les rownames correspondent
+  # put singletons in same order as rownames
   zzs <- rbind(zs[,1:nsing, drop = FALSE])
   zord <- sapply(1:ncol(zzs),FUN = function(x) {decode(rep(2,ncol(zzs)), zzs[x,])})
   zs <- zs[order(zord,  decreasing = TRUE),]

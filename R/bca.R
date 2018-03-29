@@ -1,21 +1,21 @@
 #'  Basic chance assignment distribution
 #' 
 #' This function assigns their corresponding mass to some subsets of a finite set \eqn{\Theta} of possible values.\cr
-#' The set \eqn{\Theta} is called the frame of discernement. Each subset \eqn{A of \Theta} is called a focal element or a proposition. The associated mass is a number in the (0,1] interval, called "basic chance assignment" (the basic probability assignment of Shafer's book).
+#' The set \eqn{\Theta} is called the frame of discernement. Each subset \eqn{A of \Theta} is called a focal element or a proposition. The associated mass is a number in the (0,1] interval, called here "basic chance assignment" (the basic probability assignment of Shafer's book).
 #' @aliases bpa
 #' @param f A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row of the matrix is a focal element, i.e. a subset of the frame of discernment described by a vector of (0,1). The last line is the frame \eqn{\Theta}, represented by a vector of 1's.
 #' @param m A vector of masses of length equal to the number of rows of the matrix  \code{f}. The values of \code{m} must lie in the (0,1] interval. The sum of the elements of \code{m} must be 1. The mass \code{m[k]} represents the chances allowed to the proposition represented by the row \code{k} of the matrix \code{f}.
 #' 
 #' @param cnames A character vector of names of the elements of the frame of discernment, of length equal to the number of elements of the frame \eqn{\Theta}. If NULL, takes column names of the matrif f if present. Otherwise, names are generated.
-#' @param n The variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.
+#' @param varnb A variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.
 #' @param con The measure of conflict. Set at 0 by default.
-#' @param infovarnames A name given to the variable. named "v1" if omitted.
+#' @param infovarnames A name given to the variable. Named "v1" if omitted.
 #' @return The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
 #'   \item $tt The table of focal elements f. Rownames of the matrix of focal elements are created from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
-#'   \item $spec A two column matrix. First column contains specification numbers: 1 to  nrow(f). Second column contains the mass vector.
+#'   \item $spec A two column matrix. First column contains specification numbers: 1 to  \code{nrow(f)}. Second column contains the mass vector.
 #'   \item $infovar The variable number and the size of the frame of discernment.
 #'   \item $infovaluenames The names of the elements of the frame of the variable (the column names of the tt matrix).
-#'   \item $inforel A two column matrix containing relation numbers and the depth (number of variables) of each relation.
+#'   \item $inforel Set at 0. used in function \code{\link{bcaRel}}
 #'   }
 #'   @details The Basic chance assignment distribution of a variable can also be obtained using the more general function \code{\link{bcaRel}}.
 #' @author Claude Boivin, Stat.ASSQ
@@ -27,8 +27,12 @@
 #' bca(f, m)
 #' bca(f, m, cnames)
 #' bca(f, m, cnames, n = 1)
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), n = 1)
-#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6,0.4), cnames =c("a", "b", "c"),infovarnames = "y", n=1)
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
+#' cnames =c("a", "b", "c"), n = 1)
+#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
+#' byrow = TRUE), m=c(0.6,0.4), 
+#' cnames =c("a", "b", "c"),infovarnames = "y", n=1)
 #' frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' 

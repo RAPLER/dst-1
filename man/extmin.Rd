@@ -2,32 +2,45 @@
 % Please edit documentation in R/extmin.R
 \name{extmin}
 \alias{extmin}
-\title{Extension of a relationship}
+\title{Extension of a relation}
 \usage{
 extmin(rel1, relRef)
 }
 \arguments{
-\item{rel1}{A relationship, an object of class bcaspec.}
+\item{rel1}{A relation, an object of class bcaspec.}
 
-\item{relRef}{a relationship of reference to extract the varables names and columns names of the tt matrix.}
+\item{relRef}{The relation of reference used to extract the varables names and columns names of the tt matrix.}
 }
 \value{
-R the resulting extended relationship.
+R the resulting extended relation.
 }
 \description{
-This function works on a relationship rel1 defined on a group of one or more variables to extend it to the product space of another group of variables. This other group of variables must contain at least one of the variables of rel1 for the extension to be made possible.
+This function works on a relation rel1 defined onto a group of one or more variables to extend it to the product space of another group of variables. This other group of variables must contain at least one of the variables of rel1 for the extension to be made possible.
 }
 \details{
-The relationship of reference relRef may simply be an empty relationship defined on the set of variables of interest or a relationship already defined. The relRef parameter normally contains all the information on the variables, namely their identification numbers and the number of elements of each variable ($infovar parameter). The relRef relationship also contains the names of the variables and of the columns of the tt matrix.
+The relation of reference relRef may simply be an empty relation defined on the set of variables of interest or a relation already defined. The relRef parameter normally contains all the information on the variables, namely their identification numbers and the number of elements of each variable ($infovar parameter). The relRef relation also contains the names of the variables and of the columns of the tt matrix.
 }
 \examples{
-# making an empty reference relationship with m(frame) = 1
-init_tt= matrix(rep(1,10),nrow=1, dimnames =list(NULL, c("0", "1", "2", "3", "true", "false", "foul", "fair", "true", "false")) )
- init_spec <- matrix(c(1,1), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
- init_info <- matrix(c(2,4,5,6,4,2,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
- relRef <- bcaRel(tt = init_tt, spec = init_spec, infovar = init_info, infovarnames = c("Delay", "Loading", "Forecast", "Maintenance"), relnb = 0)
+# making an empty reference relation with mass(frame) = 1
+init_tt= matrix(rep(1,10),nrow=1, 
+dimnames =list(NULL, c("0", "1", "2", "3", 
+"true", "false", "foul", "fair", "true", "false")) )
+ init_spec <- matrix(c(1,1), ncol = 2, 
+ dimnames = list(NULL, c("specnb", "mass")))
+ init_info <- matrix(c(2,4,5,6,4,2,2,2), ncol = 2,
+  dimnames = list(NULL, c("varnb", "size")) )
+ relRef <- bcaRel(tt = init_tt, spec = init_spec,
+  infovar = init_info, 
+  infovarnames = c("Delay", "Loading", "Forecast", "Maintenance"), 
+  relnb = 0)
  # a bcaspec defined on one variable
- l_rel <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(4,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("Loading"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+ l_rel <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), 
+ m=c(0.3,0.5,0.2), cnames=c("true", "false"), 
+ infovar=matrix(c(4,2), ncol = 2, 
+ dimnames = list(NULL, c("varnb", "size"))), 
+ infovarnames= c("Loading"), 
+ inforel= matrix(c(7,1), ncol = 2, 
+ dimnames = list(NULL, c("relnb", "depth"))))
  extmin(l_rel, relRef)
  
 }

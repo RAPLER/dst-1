@@ -1,13 +1,13 @@
 #' Calculation of the degrees of Belief and Plausibility
 #'
-#'Degrees of Belief (Bel) and Plausibility (Pl) of the focal elements of a belief function are computed Then the ratio of the plausibility of a focal element against the plausibility of its contrary is computed. Focal elements with zero mass can be excluded from the calculations.\cr
+#'Degrees of Belief (Bel) and Plausibility (Pl) of the focal elements of a belief function are computed. Then the ratio of the plausibility of a focal element against the plausibility of its contrary is computed. Focal elements with zero mass can be excluded from the calculations.\cr
 #' @details The degree Belief Bel is defined by: \cr
 #' \eqn{bel(A) = Sum{(m(B); B <= A)}}, for every subset A of the frame of discernment.
 #' The plausibility function pl is defined by: \cr
 #' \eqn{pl(A) = Sum{(m(B); B & A not empty}}, for every subset A of the frame of discernment.
 #' The plausibility ratio of a focal element A versus its contrary ~A is defined by:  \eqn{Pl(A)/(1-Bel(A.))}.
 #' @param x A belief function in its bca form (see \code{\link{bca}}).
-#' @param remove = TRUE: Focal elements with 0 mass are excluded.
+#' @param remove = TRUE: Focal elements with 0 mass are excluded from the calculations.
 #' @return A matrix of M rows by 3 columns is returned, where M is the number of focal elements: \itemize{
 #'  \item Column 1: the degree of belief Bel;
 #'  \item Column 2: the degree of Plausibility Pl;
@@ -20,12 +20,17 @@
 #' \item Williams, P., (1990). An interpretation of Shenoy and Shafer's axioms for local computation. International Journal of Approximate Reasoning 4, pp. 225-232.
 #' }
 #' @examples 
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
+#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
+#' cnames =c("a", "b", "c"), infovarnames = "x", n=1)
 #' belplau(x)
-#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "y", n=1)
+#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
+#' byrow = TRUE), m=c(0.6, 0.4),  
+#' cnames = c("a", "b", "c"),  infovarnames = "y", n=1)
 #' belplau(nzdsr(dsrwon(x,y)))
 #' print("compare all elementary events")
-#' xy1 <- addTobca(nzdsr(dsrwon(x,y)), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+#' xy1 <- addTobca(nzdsr(dsrwon(x,y)), 
+#' matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
 #' belplau(xy1) 
 belplau<-function (x, remove=FALSE) 
 {

@@ -7,7 +7,7 @@
 bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
 }
 \arguments{
-\item{tt}{A (0,1) or logical matrix establishing the relation between two or more variables. The relation is described by a matrix input table of (0,1), where the different variables are side by side, as in a truth table representation.}
+\item{tt}{A (0,1) or logical matrix establishing the relation between two or more variables. The relation is described by a matrix input table of (0,1), where the  variables are put side by side, as in a truth table representation.}
 
 \item{spec}{A two column matrix. First column contains subsets numbers. Second column contains the mass value associated with each subset of the relation. A subset number and its associated mass value are repeated to match the number of elements of the subset.}
 
@@ -24,7 +24,7 @@ An object of class \code{bcaspec}. This is a list containing the following eleme
 \item $spec The resulting two column matrix of specification numbers with associated masses.
 \item $infovar The two column matrix given in the input data.
 \item infovaluenames A list of the names of the variables with the value name of each element.
-\item $inforel A two column matrix containing variable numbers and the depth of the relation.
+\item $inforel A two column matrix containing variable numbers and the depth  (number of variables) of the relation.
 }
 }
 \description{
@@ -34,12 +34,17 @@ A relation between two or more variables can be established in their product spa
 ## A logical implication rule
 ## A typical relation between two variables is the logical implication rule (a -> b). let us suppose that a stands for Rain: {yes, no} and b stands for RoadWorks: {yes, no}. From experience in my region, I am 75 \% sure that there will be RoadWorks if no Rain.
 ## The truth table
- ttrwf= matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),nrow=4, byrow = TRUE, dimnames =list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
+ ttrwf= matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
+ nrow=4, byrow = TRUE, 
+ dimnames =list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
  ## The mass distribution
- specrw = matrix(c(1,1,1,2,0.75,0.75,0.75,0.25), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+ specrw = matrix(c(1,1,1,2,0.75,0.75,0.75,0.25), ncol = 2, 
+ dimnames = list(NULL, c("specnb", "mass"))) 
  ## variables numbers and sizes
- inforw =matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-bcaRel(tt = ttrwf, spec = specrw, infovar = inforw, infovarnames = c("RdWorks", "Rain"), relnb = 6)
+ inforw =matrix(c(4,5,2,2), ncol = 2, 
+ dimnames = list(NULL, c("varnb", "size")) )
+bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
+ infovarnames = c("RdWorks", "Rain"), relnb = 6)
  
 }
 \author{

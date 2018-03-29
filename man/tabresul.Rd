@@ -9,15 +9,14 @@ tabresul(x, singletonsOnly = FALSE, removeZeroes = FALSE)
 \arguments{
 \item{x}{A belief function in its bca form, generally the normalized result of the combination of two or more belief functions (see \code{\link{nzdsr}}.}
 
-\item{singletonsOnly}{= TRUE reduces the table of results to elementary events.}
+\item{singletonsOnly}{= TRUE reduces the table of results to elementary events (singletons).}
 
 \item{removeZeroes}{= TRUE removes focal elements with 0 mass.}
 }
 \value{
 A list of three elements: \itemize{
-  \item $mbp: The table of focal elements with the addition of the their associated mass, degree of belief, plausibility and the plausibility ratio
+  \item $mbp: The table of focal elements with the addition of the their associated mass, degree of belief, plausibility and the plausibility ratio.
   \item $con The measure of conflict between focal elements.
-  \item $n The node number.
   }
 }
 \description{
@@ -25,13 +24,20 @@ This utility function gives a summary table of a belief function with its mass f
 }
 \examples{
  
-x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"), infovarnames = "x", n=1)
-y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), infovarnames = "y", n=1)
+x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+byrow = TRUE), m=c(0.2,0.5, 0.3), 
+cnames =c("a", "b", "c"), 
+infovarnames = "x", n=1)
+y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
+byrow = TRUE), m=c(0.6, 0.4),  
+cnames = c("a", "b", "c"), infovarnames = "y", n=1)
 xy <- dsrwon(x,y, infovarnames = "xy")
 xyNorm <- nzdsr(xy, infovarnames = "xyNorm")
 tabresul(xyNorm) 
 print("Show all elementary events")
-xy1 <- addTobca(nzdsr(dsrwon(x,y)), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+xy1 <- addTobca(nzdsr(dsrwon(x,y)), 
+matrix(c(0,1,0,0,0,1), 
+nrow=2, byrow = TRUE))
 tabresul(xy1)
 print("Remove focal elements with 0 mass")
 tabresul(xy1, removeZeroes = TRUE)

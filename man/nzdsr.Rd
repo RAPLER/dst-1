@@ -2,29 +2,33 @@
 % Please edit documentation in R/nzdsr.R
 \name{nzdsr}
 \alias{nzdsr}
-\title{Normalization of results from Dempster's rule of combination}
+\title{Normalization of a bca mass distribution}
 \usage{
 nzdsr(x, infovarnames = NULL)
 }
 \arguments{
-\item{x}{A list of class bcaspec, normally the result of the combination of two belief functions that we want to normalize. (see \code{\link{dsrwon}}). A belief function in its bca form (see \code{\link{bca}}) may also be submitted.}
+\item{x}{A list of class bcaspec, normally the result of the combination of two bca mass distributions that we want to normalize (see \code{\link{dsrwon}}), or simply a belief function in its bca form (see \code{\link{bca}}).}
 
 \item{infovarname}{A name can be given to the resulting variable. Named "nv1" if missing.}
 }
 \value{
-A list in the bca form, namely: \itemize{
+A list in the bca form (see  \code{\link{bca}}), namely: \itemize{
   \item $con The measure of conflict.
   }
 }
 \description{
-The combination of two bca distributions may produce a distribution with a non zero mass allocated to the empty set. This function produces a normalized distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
+It may occur that the resulting distribution of the combination of two bca distributions contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes this distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
 }
 \examples{
-x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), m=c(0.9,0.1), cnames =c("yes", "no"),infovarnames = "x1", varnb = 1)
-y1 <- bca(f=matrix(c(0,1,1,1),nrow=2, byrow = TRUE), m=c(0.5,0.5), cnames =c("yes", "no"), varnb = 1)
-print("combination of x1 and y1")
-x1y1 <- dsrwon(x1,y1)
-nzdsr(x1y1) 
+x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), 
+m=c(0.9,0.1), cnames =c("yes", "no"),
+infovarnames = "x", varnb = 1)
+x2 <- bca(f=matrix(c(0,1,1,1),nrow=2, byrow = TRUE), 
+m=c(0.5,0.5), cnames =c("yes", "no"), 
+infovarnames = "x", varnb = 1)
+print("combination of x1 and x2")
+x1x2 <- dsrwon(x1,x2)
+nzdsr(x1x2) 
 
 print("normalization of a bca definition.")
 y2 <- bca(f=matrix(c(0,0,0,1,0,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5,0.3), cnames =c("a", "b", "c"), varnb = 1)

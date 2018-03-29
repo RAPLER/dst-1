@@ -1,23 +1,36 @@
-#' Extension of a relationship
+#' Extension of a relation
 #'
-#' This function works on a relationship rel1 defined on a group of one or more variables to extend it to the product space of another group of variables. This other group of variables must contain at least one of the variables of rel1 for the extension to be made possible.
+#' This function works on a relation rel1 defined onto a group of one or more variables to extend it to the product space of another group of variables. This other group of variables must contain at least one of the variables of rel1 for the extension to be made possible.
 #' 
-#' @param rel1 A relationship, an object of class bcaspec.
-#' @param relRef a relationship of reference to extract the varables names and columns names of the tt matrix.
-#' @details The relationship of reference relRef may simply be an empty relationship defined on the set of variables of interest or a relationship already defined. The relRef parameter normally contains all the information on the variables, namely their identification numbers and the number of elements of each variable ($infovar parameter). The relRef relationship also contains the names of the variables and of the columns of the tt matrix.
+#' @param rel1 A relation, an object of class bcaspec.
+#' @param relRef The relation of reference used to extract the varables names and columns names of the tt matrix.
+#' @details The relation of reference relRef may simply be an empty relation defined on the set of variables of interest or a relation already defined. The relRef parameter normally contains all the information on the variables, namely their identification numbers and the number of elements of each variable ($infovar parameter). The relRef relation also contains the names of the variables and of the columns of the tt matrix.
 #' 
-#' @return R the resulting extended relationship.
+#' @return R the resulting extended relation.
 #' @author Claude Boivin, Stat.ASSQ
 #' @references G. Shafer and P. P. Shenoy. Local Computations in Hypertrees. School of Business, University of Kansas, Lawrence, KS, 1991. See p. 78, vacuus extension of a belief function.
 #' @export
 #' @examples
-#' # making an empty reference relationship with m(frame) = 1
-#' init_tt= matrix(rep(1,10),nrow=1, dimnames =list(NULL, c("0", "1", "2", "3", "true", "false", "foul", "fair", "true", "false")) )
-#'  init_spec <- matrix(c(1,1), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-#'  init_info <- matrix(c(2,4,5,6,4,2,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-#'  relRef <- bcaRel(tt = init_tt, spec = init_spec, infovar = init_info, infovarnames = c("Delay", "Loading", "Forecast", "Maintenance"), relnb = 0)
+#' # making an empty reference relation with mass(frame) = 1
+#' init_tt= matrix(rep(1,10),nrow=1, 
+#' dimnames =list(NULL, c("0", "1", "2", "3", 
+#' "true", "false", "foul", "fair", "true", "false")) )
+#'  init_spec <- matrix(c(1,1), ncol = 2, 
+#'  dimnames = list(NULL, c("specnb", "mass")))
+#'  init_info <- matrix(c(2,4,5,6,4,2,2,2), ncol = 2,
+#'   dimnames = list(NULL, c("varnb", "size")) )
+#'  relRef <- bcaRel(tt = init_tt, spec = init_spec,
+#'   infovar = init_info, 
+#'   infovarnames = c("Delay", "Loading", "Forecast", "Maintenance"), 
+#'   relnb = 0)
 #'  # a bcaspec defined on one variable
-#'  l_rel <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(4,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("Loading"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+#'  l_rel <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), 
+#'  m=c(0.3,0.5,0.2), cnames=c("true", "false"), 
+#'  infovar=matrix(c(4,2), ncol = 2, 
+#'  dimnames = list(NULL, c("varnb", "size"))), 
+#'  infovarnames= c("Loading"), 
+#'  inforel= matrix(c(7,1), ncol = 2, 
+#'  dimnames = list(NULL, c("relnb", "depth"))))
 #'  extmin(l_rel, relRef)
 #'  
 extmin <- function(rel1, relRef) {
@@ -48,29 +61,18 @@ extmin <- function(rel1, relRef) {
   # extent the relationship
   zinit=array(1,rev_sizeToAdd)
   # test
-  z <- 1*outer(zinit, t(rel1$tt), FUN = "&") ## OK
- # z <- 1*outer(aperm(zinit, perm = NULL), rel1$tt, FUN = "&") 
+  z <- 1*outer(zinit, t(rel1$tt), FUN = "&")
  ## reorder the variables
  actualOrder <- c(ind_lvars, ind_lvman)
  actualOrder <- actualOrder[actualOrder>0]
   v <- varnb_ps[actualOrder]
   v=v[length(v):1]
-  # test
    v=order(v)
-  #v=order(v, decreasing = TRUE)
-  # fin test
   indices <- v[length(v):1]  # indices to order the variables of the product space
   nbvar <- length(varnb_ps) 
-  # test
   z1 <-aperm(z, c(indices, 1+nbvar)) ## OK
- # z1 <- aperm(z, perm = NULL) # use row-major ordering
-   # fin test
-  # Test bug ici
-  
   rtt <- matrix(z1, ncol = nrow(rel1$tt), nrow = prod(dim(z1)[-length(dim(z1))]) )
   rtt <- t(rtt)
- # rtt <- array_reshape(z1, dim = c(nrow(rel1$tt), prod(dim(z1)[-length(dim(z1))])), order = "C" ) # use row-major ordering
-  # Fin test
   ## il faut des noms de colonnes et de ligne
   colnames(rtt) <- colnames(relRef$tt)
   rownames(rtt) <- nameRows(rtt)

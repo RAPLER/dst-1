@@ -1,15 +1,18 @@
-#' Transformation of multiple side inputs to a product space representation
+#' Transformation of multiple side inputs to a product space definition
 #'
-#' This utility function is used to obtain a product space representation of two or more variables initially represented in a truth table format.
-#' @param tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are side by side, as in a truth table.
-#'  @param spec A vector of specification numbers. specnb values start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix
-#'  @param infovar  A two column matrix containing identification numbers of the variables and the number of elements of each variable.
-#' @return The product space representation of the thruth table matrix.
+#' This utility function is used to obtain a product space definition of two or more variables initially represented by a truth table format.
+#' @param tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are put side by side, as in a truth table.
+#'  @param spec A vector of specification numbers. Values of variable \code{specnb} start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix.
+#'  @param infovar  A two-column matrix containing identification numbers of the variables and the number of elements of each variable.
+#' @return The thruth table matrix of the product space definition. 
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples 
-#'  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
+#'  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3,
+#'   byrow = TRUE, 
+#'   dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
 #'  specfw = c(1,1,2) 
-#'  infovarfw =matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
+#'  infovarfw =matrix(c(5,7,2,2), ncol = 2, 
+#'  dimnames = list(NULL, c("varnb", "size")) )
 #' productSpace(tt=ttfw, specnb=specfw, infovar=infovarfw)
 #' @export
 #' 
@@ -86,11 +89,9 @@ productSpace <- function(tt, specnb, infovar) {
         names(zw1) = colnames(zw)
         # elements in the product space
        zs1 <- outer(zw1, zs1, "*")  
-#        zs1 <- outer(zs1, zw1, "*")  marche pas avec 3 variables
       }
       zt <-  zt | zs1 # zt ok, checked
     }
-    # test
     if (ndims < 3) {
     y <-c(y, zt) # transpose not necessary
     } else {
