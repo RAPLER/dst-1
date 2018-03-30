@@ -2,7 +2,7 @@
 #'
 #' It may occur that the resulting distribution of the combination of two bca distributions contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes this distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
 #' @param x A list of class bcaspec, normally the result of the combination of two bca mass distributions that we want to normalize (see \code{\link{dsrwon}}), or simply a belief function in its bca form (see \code{\link{bca}}).
-#' @param infovarname A name can be given to the resulting variable. Named "nv1" if missing.
+#' @param infovarnames A name can be given to the resulting variable. Named "nv1" if missing.
 #' @return A list in the bca form (see  \code{\link{bca}}), namely: \itemize{
 #'   \item $con The measure of conflict.
 #'   }

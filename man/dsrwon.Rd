@@ -11,7 +11,7 @@ dsrwon(x, y, infovarnames = NULL, relnb = NULL)
 
 \item{y}{A belief function in its bca form.}
 
-\item{infovarname}{A name can be given to the resulting variable. Named "v1" if missing.
+\item{infovarnames}{A name can be given to the resulting variable. Named "v1" if missing.
 @param relnb A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.}
 }
 \value{

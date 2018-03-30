@@ -4,7 +4,7 @@
 #' @details The two bca's \code{a} and \code{b} must be defined on the same frame of discernment for the combination to take place.   
 #' @param x A belief function in its bca form (see \code{\link{bca}}).
 #' @param y A belief function in its bca form.
-#' @param infovarname A name can be given to the resulting variable. Named "v1" if missing.
+#' @param infovarnames A name can be given to the resulting variable. Named "v1" if missing.
 #'  @param relnb A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.
 #' @return A list of five elements: \itemize{
 #'   \item $I12 A table of intersections between subsets.

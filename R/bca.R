@@ -9,7 +9,10 @@
 #' @param cnames A character vector of names of the elements of the frame of discernment, of length equal to the number of elements of the frame \eqn{\Theta}. If NULL, takes column names of the matrif f if present. Otherwise, names are generated.
 #' @param varnb A variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.
 #' @param con The measure of conflict. Set at 0 by default.
+#' @param infovar  A two column matrix containing variable identification numbers and the number of elements of the variable.
 #' @param infovarnames A name given to the variable. Named "v1" if omitted.
+#' @param infovaluenames Not used. Defined within function \code{bcaRel}.
+#' @param $inforel Not used. Defined within function \code{bcaRel}.
 #' @return The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
 #'   \item $tt The table of focal elements f. Rownames of the matrix of focal elements are created from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
 #'   \item $spec A two column matrix. First column contains specification numbers: 1 to  \code{nrow(f)}. Second column contains the mass vector.
@@ -26,7 +29,7 @@
 #' cnames <- c("yes","no")
 #' bca(f, m)
 #' bca(f, m, cnames)
-#' bca(f, m, cnames, n = 1)
+#' bca(f, m, cnames, varnb = 1)
 #' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 #' byrow = TRUE), m=c(0.2,0.5, 0.3), 
 #' cnames =c("a", "b", "c"), n = 1)

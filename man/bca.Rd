@@ -19,7 +19,13 @@ bca(f, m, cnames = NULL, con = NULL, varnb = NULL, infovar = NULL,
 
 \item{varnb}{A variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.}
 
+\item{infovar}{A two column matrix containing variable identification numbers and the number of elements of the variable.}
+
 \item{infovarnames}{A name given to the variable. Named "v1" if omitted.}
+
+\item{infovaluenames}{Not used. Defined within function \code{bcaRel}.}
+
+\item{$inforel}{Not used. Defined within function \code{bcaRel}.}
 }
 \value{
 The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
@@ -41,7 +47,7 @@ m<- c(.9,.1)
 cnames <- c("yes","no")
 bca(f, m)
 bca(f, m, cnames)
-bca(f, m, cnames, n = 1)
+bca(f, m, cnames, varnb = 1)
 x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 byrow = TRUE), m=c(0.2,0.5, 0.3), 
 cnames =c("a", "b", "c"), n = 1)

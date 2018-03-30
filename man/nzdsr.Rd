@@ -9,7 +9,7 @@ nzdsr(x, infovarnames = NULL)
 \arguments{
 \item{x}{A list of class bcaspec, normally the result of the combination of two bca mass distributions that we want to normalize (see \code{\link{dsrwon}}), or simply a belief function in its bca form (see \code{\link{bca}}).}
 
-\item{infovarname}{A name can be given to the resulting variable. Named "nv1" if missing.}
+\item{infovarnames}{A name can be given to the resulting variable. Named "nv1" if missing.}
 }
 \value{
 A list in the bca form (see  \code{\link{bca}}), namely: \itemize{
