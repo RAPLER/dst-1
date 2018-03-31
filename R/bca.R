@@ -12,7 +12,7 @@
 #' @param infovar  A two column matrix containing variable identification numbers and the number of elements of the variable.
 #' @param infovarnames A name given to the variable. Named "v1" if omitted.
 #' @param infovaluenames Not used. Defined within function \code{bcaRel}.
-#' @param $inforel Not used. Defined within function \code{bcaRel}.
+#' @param inforel Not used. Defined within function \code{bcaRel}.
 #' @return The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
 #'   \item $tt The table of focal elements f. Rownames of the matrix of focal elements are created from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
 #'   \item $spec A two column matrix. First column contains specification numbers: 1 to  \code{nrow(f)}. Second column contains the mass vector.
@@ -32,7 +32,7 @@
 #' bca(f, m, cnames, varnb = 1)
 #' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 #' byrow = TRUE), m=c(0.2,0.5, 0.3), 
-#' cnames =c("a", "b", "c"), n = 1)
+#' cnames =c("a", "b", "c"), varnb = 1)
 #' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
 #' byrow = TRUE), m=c(0.6,0.4), 
 #' cnames =c("a", "b", "c"),infovarnames = "y", n=1)

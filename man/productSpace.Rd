@@ -7,9 +7,11 @@
 productSpace(tt, specnb, infovar)
 }
 \arguments{
-\item{tt}{The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are put side by side, as in a truth table.
-@param specnb A vector of specification numbers. Values of variable \code{specnb} start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix.
-@param infovar  A two-column matrix containing identification numbers of the variables and the number of elements of each variable.}
+\item{tt}{The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are put side by side, as in a truth table.}
+
+\item{specnb}{A vector of specification numbers. Values of variable \code{specnb} start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix.}
+
+\item{infovar}{A two-column matrix containing identification numbers of the variables and the number of elements of each variable.}
 }
 \value{
 The thruth table matrix of the product space definition.

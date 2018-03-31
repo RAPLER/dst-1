@@ -2,7 +2,7 @@
 test_that("dsrwon", {
   # T1 x and y must be of class bcaspec. 
   x1 <- list(a=1:3, b="foo")
-  y1 <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "y1", n=1)
+  y1 <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "y1", varnb = 1)
   expect_error(dsrwon(x = x1, y = y1) , "One or more inputs not of class bcaspec.")
   #
   # T2 ncol of x and y must be equal. 

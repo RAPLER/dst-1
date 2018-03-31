@@ -31,7 +31,9 @@ x1x2 <- dsrwon(x1,x2)
 nzdsr(x1x2) 
 
 print("normalization of a bca definition.")
-y2 <- bca(f=matrix(c(0,0,0,1,0,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5,0.3), cnames =c("a", "b", "c"), varnb = 1)
+y2 <- bca(f=matrix(c(0,0,0,1,0,0,1,1,1),nrow=3, 
+byrow = TRUE), m=c(0.2,0.5,0.3), 
+cnames =c("a", "b", "c"), varnb = 1)
 nzdsr(y2)  
 }
 \references{
