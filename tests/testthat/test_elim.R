@@ -1,7 +1,7 @@
 # Tests "elim" function
 test_that("elim", {
   # T1 rel must be of class bcaspec. 
-  x1 <- list(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "y1", n=1)
+  x1 <- list(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "y1", varnb = 1)
   expect_error(elim(x1, 4) , "Rel input not of class bcaspec.")
   #
   # T2 The number xnb must be in the list of numbers of the relation (variable varnb of the infovar table). 
