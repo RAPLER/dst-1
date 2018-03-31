@@ -35,7 +35,7 @@
 #' cnames =c("a", "b", "c"), varnb = 1)
 #' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
 #' byrow = TRUE), m=c(0.6,0.4), 
-#' cnames =c("a", "b", "c"),infovarnames = "y", n=1)
+#' cnames =c("a", "b", "c"),infovarnames = "y", varnb = 1)
 #' frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' 

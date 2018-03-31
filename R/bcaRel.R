@@ -18,12 +18,12 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
-#' ## A logical implication rule
-#' ## A typical relation between two variables is the
-#'  logical implication rule (a -> b). let us suppose
-#'   that a stands for Rain: {yes, no} and b stands for
-#'    RoadWorks: {yes, no}. From experience in my region,
-#'     I am 75 % sure that there will be RoadWorks if no Rain.
+#' # A logical implication rule
+#' # A typical relation between two variables is the
+#' # logical implication rule (a -> b). let us suppose
+#' # that a stands for Rain: {yes, no} and b stands for
+#' # oadWorks: {yes, no}. From experience in my region,
+#' # I am 75 % sure that there will be RoadWorks if no Rain.
 #' ## The truth table
 #'  ttrwf= matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
 #'  nrow=4, byrow = TRUE, 
