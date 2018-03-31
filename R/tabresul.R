@@ -21,14 +21,14 @@
 #' xy <- dsrwon(x,y, infovarnames = "xy")
 #' xyNorm <- nzdsr(xy, infovarnames = "xyNorm")
 #' tabresul(xyNorm) 
-#' print("Show all elementary events")
+#' ## print("Show all elementary events")
 #' xy1 <- addTobca(nzdsr(dsrwon(x,y)), 
 #' matrix(c(0,1,0,0,0,1), 
 #' nrow=2, byrow = TRUE))
 #' tabresul(xy1)
-#' print("Remove focal elements with 0 mass")
+#' ## print("Remove focal elements with 0 mass")
 #' tabresul(xy1, removeZeroes = TRUE)
-#' Print("Retain singletons only")
+#' print("Retain singletons only")
 #' tabresul(xy1, singletonsOnly = TRUE)
 #' @export
 #' 
