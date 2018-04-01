@@ -2,7 +2,7 @@
 % Please edit documentation in R/bcaRel.R
 \name{bcaRel}
 \alias{bcaRel}
-\title{Representation of a belief function in a product space by its mass function}
+\title{Representation of a belief function in a product space by its basic chance assignment distribution}
 \usage{
 bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
 }

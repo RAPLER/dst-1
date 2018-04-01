@@ -1,4 +1,4 @@
-#' Representation of a belief function in a product space by its mass function
+#' Representation of a belief function in a product space by its basic chance assignment distribution
 #'
 #' A relation between two or more variables can be established in their product space and a mass function defined accordingly.
 #' 
