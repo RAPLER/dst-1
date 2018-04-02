@@ -18,6 +18,7 @@ Collate:
     'dotprod.R'
     'doubles.R'
     'dsrwon.R'
+    'dst.R'
     'elim.R'
     'encode.R'
     'extmin.R'
