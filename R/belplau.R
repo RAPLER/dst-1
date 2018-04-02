@@ -4,7 +4,7 @@
 #' @details The degree Belief Bel is defined by: \cr
 #' \eqn{bel(A) = Sum{(m(B); B <= A)}}, for every subset A of the frame of discernment.
 #' The plausibility function pl is defined by: \cr
-#' \eqn{pl(A) = Sum{(m(B); B & A not empty}}, for every subset A of the frame of discernment.
+#' \eqn{pl(A) = Sum{(m(B); B and A not empty}}, for every subset A of the frame of discernment.
 #' The plausibility ratio of a focal element A versus its contrary ~A is defined by:  \eqn{Pl(A)/(1-Bel(A.))}.
 #' @param x A belief function in its bca form (see \code{\link{bca}}).
 #' @param remove = TRUE: Focal elements with 0 mass are excluded from the calculations.
