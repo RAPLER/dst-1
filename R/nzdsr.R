@@ -30,6 +30,9 @@ nzdsr<-function(x, infovarnames = NULL) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
+  con<-x$con
+  if (con == 1) { 
+    stop('Completely conflicting evidence (con = 1). Data is inconsistent.')}
   if (is.null(x$I12)) {
     nc <- ncol(x$tt)
     frame <- bca(matrix(rep(1, nc), nrow=1), m=1)
@@ -41,7 +44,6 @@ nzdsr<-function(x, infovarnames = NULL) {
   i12<-x$I12
   nc=ncol(w1) 
   tri<-x$sort_order
-  con<-x$con
   ## remove empty set
   ind<-w12[tri[1],]
   if ((ind[1]!=0) & (sum(ind[-1])==0)) {

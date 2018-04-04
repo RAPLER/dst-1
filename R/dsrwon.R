@@ -67,24 +67,14 @@ dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
   if (z==0) m_empty<-MAC[empty] else m_empty<-0
   ## Measure of conflict. Code to be revised
   con12<-1-(1-x$con)*(1-y$con)
+  if ((con12 == 1) | (m_empty == 1)) { 
+    warning('Completely conflicting evidence (con = 1). Data is inconsistent.')}
   con<-1-(1-con12)*(1-m_empty)
   ## result
   mMAC <-matrix(MAC,ncol=1, dimnames =list(NULL, "mass"))
   spec <- cbind((1:nrow(tt)), mMAC)
   colnames(spec) <- c("specnb", "mass")
-  # infovar parameter
-  # test
-#  infovar <- matrix(c(n, ncol(tt)), ncol = 2) erreur ici?
-#   colnames(infovar) <- c("varnb", "size")
   infovar <- x$infovar
-  # infovaluenames parameter
-  # test
- # cnames <- colnames(W1)
-  # if (missing(infovarnames)) {
-  #   infovaluenames <- split(cnames, rep(paste(rep("v", nrow(infovar)),c(1:nrow(infovar)),sep=""), infovar[,2]))
-  # } else {
-  #   infovaluenames <- split(cnames,rep(infovarnames, infovar[,2]))
-  # }
   infovaluenames <- x$infovaluenames
   # inforel parameter
   if (is.null(relnb)) {
@@ -97,7 +87,6 @@ dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
     inforel <- matrix(c(relnb, rep(nrow(infovar), length(relnb))), ncol = 2)
     colnames(inforel) <- c("relnb", "depth")
   # construction of the result
-#  W2<-cbind(mMAC,tt)
   z <- list(con = con, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
   class(z) <- append(class(z), "bcaspec")
   return(z)
