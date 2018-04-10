@@ -1,13 +1,10 @@
-#' Normalization of a bca mass distribution
+#' Normalization of a bca mass function
 #'
-#' It may occur that the resulting distribution of the combination of two bca distributions contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes this distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
-#' @param x A list of class bcaspec, normally the result of the combination of two bca mass distributions that we want to normalize (see \code{\link{dsrwon}}), or simply a belief function in its bca form (see \code{\link{bca}}).
-#' @param infovarnames A name can be given to the resulting variable. Named "nv1" if missing.
-#' @return A list in the bca form (see  \code{\link{bca}}), namely: \itemize{
-#'   \item $con The measure of conflict.
-#'   }
+#' It may occur that the result of the combination of two mass functions contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes this result by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
+#' @param x A mass function, i.e. a list of class bcaspec..
+#' @return The normalized bca mass function inputted.
 #' @author Claude Boivin, Stat.ASSQ
-#' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
+#' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 #' @examples 
 #' x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), 
 #' m=c(0.9,0.1), cnames =c("yes", "no"),

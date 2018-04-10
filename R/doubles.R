@@ -1,6 +1,5 @@
-#' Remove duplicates rows in a two dimensional table
+#' Remove duplicate rows in a two-dimensional table
 #'
-#'  The submitted tables can be matrices of numeric character or logical types.
 #' @param x A matrix of numeric, character or logical type.
 #' @return The submitted matrix with duplicated rows removed from.
 #' @author Claude Boivin, Stat.ASSQ

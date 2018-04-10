@@ -1,13 +1,12 @@
 Package: dst
 Type: Package
-Title: Using Dempster-Shafer Theory
+Title: Using Dempster-Shafer Theory for Evidence calculus
 Version: 0.4
-Date: 2018-xx-xx
+Date: 2018-04-09
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
-Description: This package allows you to make basic probability assignments on subsets of a set of
-    possibilities (events) and combine these events with Dempster's rule of combination.
-License: GPL-2
+Description: This package provides functionalities to make basic chance assignments (bca), namely a mass function, on the subsets (events) of a set of values. The set of values is called a frame a discernment. Two bca's can be combined using Dempster's rule of combination. A bca can be extended to a larger frame. Marginalization, or reduction to a smaller frame can also be done.
+License: GPL (>= 2)
 BugReports: https://github.com/RAPLER/dst-1/issues
 Collate:
     'addTobca.R'

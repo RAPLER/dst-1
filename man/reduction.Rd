@@ -8,15 +8,15 @@
 reduction(x, f = "+")
 }
 \arguments{
-\item{x}{A vector of numbers or strings.}
+\item{x}{A vector of numbers or character strings.}
 
-\item{f}{The operator. Must be compatible with the type of vector (numeric or character)}
+\item{f}{The operator. Must be compatible with the type of input vector (numeric or character)}
 }
 \value{
 The result of applying the chosen operator to all the elements of the vector is an object of length 1.
 }
 \description{
-This utility function is used to obtain a summary of a vector of data for many operators. This code has been adapted from the \code{aplRDV} R function of Jan de Leeuw.
+This utility function is used to obtain a summary of a vector of data for many operators. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}).
 }
 \references{
 \itemize{
@@ -33,9 +33,5 @@ This utility function is used to obtain a summary of a vector of data for many o
 Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
 }
 \author{
-\itemize{
- \item Claude Boivin, Stat.ASSQ. 
- \item Original author of the aptRDV function: Jan de Leeuw 
-      \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
-      }
+Jan de Leeuw \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 }

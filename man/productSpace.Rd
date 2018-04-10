@@ -2,22 +2,22 @@
 % Please edit documentation in R/productSpace.R
 \name{productSpace}
 \alias{productSpace}
-\title{Transformation of multiple side inputs to a product space definition}
+\title{Product space representation of a relation}
 \usage{
 productSpace(tt, specnb, infovar)
 }
 \arguments{
-\item{tt}{The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are put side by side, as in a truth table.}
+\item{tt}{A (0,1) or boolean matrix, where the values of the variables put in relation are set side by side, as in a truth table.}
 
-\item{specnb}{A vector of specification numbers. Values of variable \code{specnb} start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix.}
+\item{specnb}{A vector of integers ranging from 1 to \code{k}, where \code{k} is the number of subsets of the \code{tt} matrix. Values must start at one and can be increased only by 0 or 1. They determine the partitioning of the rows of the \code{tt} matrix between the \code{k} subsets.}
 
-\item{infovar}{A two-column matrix containing identification numbers of the variables and the number of elements of each variable.}
+\item{infovar}{A two-column matrix containing identification numbers of the variables and the number of elements of each variable (size of the frame).}
 }
 \value{
-The thruth table matrix of the product space definition.
+The matrix of the product space representation of the relation.
 }
 \description{
-This utility function is used to obtain a product space definition of two or more variables initially represented by a truth table format.
+This utility function takes the input matrix of a relation between two or more variables and yields its product space representation.
 }
 \examples{
  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3,

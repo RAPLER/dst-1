@@ -1,15 +1,11 @@
 #' Summary of a vector for any operator.
 #' 
-#' This utility function is used to obtain a summary of a vector of data for many operators. This code has been adapted from the \code{aplRDV} R function of Jan de Leeuw.
+#' This utility function is used to obtain a summary of a vector of data for many operators. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}). 
 #' @aliases aplRDV
-#' @param x A vector of numbers or strings.
-#' @param f The operator. Must be compatible with the type of vector (numeric or character)
+#' @param x A vector of numbers or character strings.
+#' @param f The operator. Must be compatible with the type of input vector (numeric or character)
 #' @return The result of applying the chosen operator to all the elements of the vector is an object of length 1.
-#' @author \itemize{
-#'  \item Claude Boivin, Stat.ASSQ. 
-#'  \item Original author of the aptRDV function: Jan de Leeuw 
-#'       \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
-#'       }
+#' @author Jan de Leeuw \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 #' @seealso Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
 #' @references \itemize{
 #'   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.

@@ -1,26 +1,26 @@
-#'  Basic chance assignment distribution
+#'  Basic chance assignment mass function
 #' 
-#' This function assigns their corresponding mass to some subsets of a finite set \eqn{\Theta} of possible values.\cr
-#' The set \eqn{\Theta} is called the frame of discernement. Each subset \eqn{A of \Theta} is called a focal element or a proposition. The associated mass is a number in the (0,1] interval, called here "basic chance assignment" (the basic probability assignment of Shafer's book).
+#' Function \code{bca} assigns their corresponding mass value to some subsets of a finite set \eqn{\Theta} of possible values.\cr
+#' The set \eqn{\Theta} is called the frame of discernment. Each subset \eqn{A of \Theta} with a positive mass value is called a focal element or a proposition. The associated mass value is a number of the \code{(0,1]} interval, called "basic chance assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass of zero value.
 #' @aliases bpa
-#' @param f A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row of the matrix is a focal element, i.e. a subset of the frame of discernment described by a vector of (0,1). The last line is the frame \eqn{\Theta}, represented by a vector of 1's.
-#' @param m A vector of masses of length equal to the number of rows of the matrix  \code{f}. The values of \code{m} must lie in the (0,1] interval. The sum of the elements of \code{m} must be 1. The mass \code{m[k]} represents the chances allowed to the proposition represented by the row \code{k} of the matrix \code{f}.
+#' @param f A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
+#' @param m A vector of masses of length equal to the number of rows of the matrix  \code{f}. The values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{f}.
 #' 
-#' @param cnames A character vector of names of the elements of the frame of discernment, of length equal to the number of elements of the frame \eqn{\Theta}. If NULL, takes column names of the matrif f if present. Otherwise, names are generated.
-#' @param varnb A variable number. The variable number will be used when combining bca's defined on two or more frames of discernment. See \code{\link{productSpace}}. Set at value 0 if not given.
-#' @param con The measure of conflict. Set at 0 by default.
-#' @param infovar  A two column matrix containing variable identification numbers and the number of elements of the variable.
-#' @param infovarnames A name given to the variable. Named "v1" if omitted.
-#' @param infovaluenames Not used. Defined within function \code{bcaRel}.
-#' @param inforel Not used. Defined within function \code{bcaRel}.
-#' @return The result is the representation of a belief function by its basic chance assignment of propositions. It is an object of class \code{bcaspec}, a list of six elements: \itemize{
-#'   \item $tt The table of focal elements f. Rownames of the matrix of focal elements are created from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
-#'   \item $spec A two column matrix. First column contains specification numbers: 1 to  \code{nrow(f)}. Second column contains the mass vector.
-#'   \item $infovar The variable number and the size of the frame of discernment.
-#'   \item $infovaluenames The names of the elements of the frame of the variable (the column names of the tt matrix).
-#'   \item $inforel Set at 0. used in function \code{\link{bcaRel}}
+#' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are searched in the \code{infovaluenames} parameter first. If NULL, column names of the matrix \code{f} are taken if present. Otherwise, names are generated.
+#' @param infovaluenames Name and value names of the variable. See \code{\link{bcaRel}}.
+#' @param con The measure of conflict. 0 by default.
+#' @param varnb The number given to the variable.  0 if omitted. 
+#' @param infovar  A two-column matrix containing variable identification numbers and the number of elements of the variable. Generated if omitted.
+#' @param infovarnames The name of the variable. Generated if omitted.
+#' @param inforel Not used. Defined within function \code{\link{bcaRel}}.
+#' @return An object of class \code{bcaspec}: \itemize{
+#'   \item tt The table of focal elements f. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
+#'   \item spec A two column matrix. First column: numbers given to the subsets, 1 to  \code{nrow(f)}. Second column: the mass values of the subsets. 
+#'   \item con The measure of conflict.
+#'   \item infovar The number of the variable and the size of the frame of discernment.
+#'   \item infovaluenames The names of the elements of the frame of discernment of the variable (the column names of the \code{tt} matrix).
+#'   \item inforel Set at 0. used in function \code{\link{bcaRel}}.
 #'   }
-#'   @details The Basic chance assignment distribution of a variable can also be obtained using the more general function \code{\link{bcaRel}}.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
@@ -37,9 +37,11 @@
 #' byrow = TRUE), m=c(0.6,0.4), 
 #' cnames =c("a", "b", "c"),infovarnames = "y", varnb = 1)
 #' frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
-#' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
-#' 
-bca<-function(f, m, cnames = NULL, con = NULL, varnb = NULL, infovar = NULL, infovarnames = NULL, infovaluenames = NULL, inforel=NULL) {
+#' @references \itemize{
+#' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
+#' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
+#' }
+bca<-function(f, m, cnames = NULL, infovaluenames = NULL, con = NULL, varnb = NULL, infovar = NULL, infovarnames = NULL, inforel=NULL) {
    if ((!is.null(infovaluenames)) & (typeof(infovaluenames) == "character")) { cnames = infovaluenames}
   if (is.null(cnames)) { cnames = colnames (f)}
   if (is.null(cnames)) {    
@@ -80,9 +82,6 @@ bca<-function(f, m, cnames = NULL, con = NULL, varnb = NULL, infovar = NULL, inf
     }
     colnames(inforel) <- c("relnb", "depth")
     # construction of the result
-  #  z<-cbind(m,f)
-  #  colnames(z) <- c("mass", cnames)
- #   rownames(f) <- rownames(z) <- nameRows(rbind(z[,-1]))
     rownames(f) <- nameRows(f)
     y<-list(con = con, tt = f, spec = spec , infovar = infovar, infovaluenames = infovaluenames, inforel = inforel)
     class(y) <- append(class(y), "bcaspec")

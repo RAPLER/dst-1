@@ -1,10 +1,10 @@
 #'Intersection of two tables of propositions
 #' 
-#' Function \code{inters} returns a table of the intersection between two (0,1) or boolean matrices or two vectors. The two matrices must have the same number of columns. The two vector must have the same length. This function generalizes the intersection of two subsets represented by boolean vectors to two matrices of subsets.
+#' Function \code{inters} returns a table of the intersection between two (0,1) or boolean matrices or two vectors. The two matrices must have the same number of columns. The two vectors must be of the same length. This function generalizes the intersection of two subsets represented by boolean vectors to the intersection of two matrices of subsets. 
 #' 
-#' @param x A matrix of (0,1) or a boolean matrix of M rows by K columns, or a vector of length K.
-#' @param y A matrix of (0,1) or a boolean matrix of N rows by K columns or a vector of length K.
-#' @return The result is a (0,1) table of dimensions (M x K) x N). In the case of vectors, the result is a (0,1) table of dimensions (1 x K) x 1)
+#' @param x A (0,1)-matrix or a boolean matrix of M rows by K columns, or a vector of length K.
+#' @param y A (0,1)-matrix or a boolean matrix of N rows by K columns or a vector of length K.
+#' @return The result is a (0,1)-table of dimensions (M x K) x N). In the case of vectors, the result is a (0,1)-table of dimensions (1 x K) x 1)
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples 
 #' mx<-matrix(c(0,1,0,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c")))

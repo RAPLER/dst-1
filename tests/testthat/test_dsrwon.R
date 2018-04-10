@@ -17,5 +17,5 @@ test_that("dsrwon", {
   f2<- t(matrix(c(0,1,1,1),ncol=2))
   m2<- c(1,0)
   x2 <- bca(f2, m2, cnames)
-  expect_warning(dsrwon(x = x1, y = x2) , 'Completely conflicting evidence \\(con = 1\\). Data is inconsistent.')
+  expect_warning(dsrwon(x = x1, y = x2) , 'Totally conflicting evidence \\(con = 1\\). Data is inconsistent.')
 })

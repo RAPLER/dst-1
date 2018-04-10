@@ -24,7 +24,7 @@ The generalized inner product of two matrices combines two operators in the same
 \examples{
 print("Standard matrix product")
 x <- y <- matrix(c(1:6), nrow = 2, byrow = TRUE)
-dotprod(x, t(y), g = "+", f = "*") ## same as x \%*\% t(y)
+dotprod(x, t(y), g = "+", f = "*")  ## same as x \%*\% t(y)
 print("Find some data x2 in the rows of a larger matrix y2")
 x2 <- matrix(c(1,0,0,1,1,1), nrow = 2, byrow = TRUE)
 y2 <- matrix(c(1,0,0,0,1,0,1,1,0,0,1,1,1,1,1), 

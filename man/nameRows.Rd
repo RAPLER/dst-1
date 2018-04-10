@@ -2,18 +2,21 @@
 % Please edit documentation in R/nameRows.R
 \name{nameRows}
 \alias{nameRows}
-\title{Naming the rows of a matrix of focal elements}
+\title{Using the column names of a matrix to construct names for the rows}
 \usage{
 nameRows(f)
 }
 \arguments{
-\item{f}{A boolean matrix or a matrix constructed in a boolean style (0,1). The names of the columns are the elements of a frame of discernment \eqn{\Theta}.}
+\item{f}{A (0,1)-matrix or a boolean matrix.}
 }
 \value{
-The result is a character vector of the names of the focal elements of the matrix \code{f}. The length of the result is \code{nrows(f)}. The set of all elements is called "frame", to avoid to long a string. The empty set is named "u00f8". The "+" sign is used instead of the "|" to represent the logical "or" operation.
+The result is a character vector of the labels proposed for the rows of the matrix \code{f}. The length of the result is \code{nrow(f)}.
 }
 \description{
-This function uses the column names  of a matrix \code{f} of focal elements to construct the names of the rows.
+This function uses the column names of a (0,1) or boolean matrix of subsets to determine appropriate names for the rows.
+}
+\details{
+The row containing only one's is called "frame", to avoid too long a character string. The empty set is named "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a matrix representing a product space definition on many variables, row labels can be pretty long.
 }
 \examples{
 f <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)

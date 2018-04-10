@@ -14,7 +14,7 @@ shape(a)
 The dimensions of the array \code{a} or the length of the vector \code{a}.
 }
 \description{
-\code{shape} returns sizes of each dimensions of given array or the length of a given vector.
+\code{shape} returns sizes of each dimension of given array or the length of a given vector. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}).
 }
 \examples{
 shape(array(c(1:6), c(2,3)))
@@ -30,6 +30,5 @@ shape(c("a", "b"))
 Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
 }
 \author{
-Original author of the aplShape function: Jan de Leeuw 
-      \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
+Jan de Leeuw \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 }

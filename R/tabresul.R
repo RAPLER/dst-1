@@ -1,13 +1,13 @@
 #' Prepare a table of results
 #'
-#' This utility function gives a summary table of a belief function with its mass function and the associated measures of  belief and plausibility.
+#' This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only.
 #' @aliases tabresul
-#' @param x A belief function in its bca form, generally the normalized result of the combination of two or more belief functions (see \code{\link{nzdsr}}.
-#' @param removeZeroes = TRUE removes focal elements with 0 mass.
+#' @param x A bca mass function
+#' @param removeZeroes = TRUE removes subsets with 0 mass.
 #' @param singletonsOnly = TRUE reduces the table of results to elementary events (singletons).
-#' @return A list of three elements: \itemize{
-#'   \item $mbp: The table of focal elements with the addition of the their associated mass, degree of belief, plausibility and the plausibility ratio.
-#'   \item $con The measure of conflict between focal elements.
+#' @return A list of two elements: \itemize{
+#'   \item mbp: The table of focal elements with the addition of their associated mass, degree of belief, plausibility and the plausibility ratio.
+#'   \item con The measure of conflict between subsets.
 #'   }
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples  
@@ -18,8 +18,8 @@
 #' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
 #' byrow = TRUE), m=c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"), infovarnames = "y", varnb = 1)
-#' xy <- dsrwon(x,y, infovarnames = "xy")
-#' xyNorm <- nzdsr(xy, infovarnames = "xyNorm")
+#' xy <- dsrwon(x,y)
+#' xyNorm <- nzdsr(xy)
 #' tabresul(xyNorm) 
 #' ## print("Show all elementary events")
 #' xy1 <- addTobca(nzdsr(dsrwon(x,y)), 

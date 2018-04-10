@@ -1,9 +1,9 @@
-#' Add focal elements with 0 mass
+#' Add some elements of 0 mass to an existing mass function 
 #'
-#' This utility function allows to expand a bca definition with focal elements of zero mass. This is useful when we want to compare the plausibility results of some focal elements which do not already appear because their belief mass is 0.
-#' @param x A belief function in its bca form (see \code{\link{bca}}). It can be a bca definition or the normalized result of the combination of bca's by Dempster'sRule.
-#' @param f A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix must match the number of elements (values) of the frame of discernment \eqn{\Theta} of \code{x}.
-#'  @return The original bca \code{x} augmented with the added focal elements defined by \code{f}.
+#' Given a previously defined bca, the user may want to add some elements of the set of possible values or some subsets, even if they have zero mass value. This feature is useful, for example, to examine the plausibility results of these elements or subsets of zero mass value.
+#' @param x A basic chance assignment mass function (see \code{\link{bca}}). It can also be the normalized result of the combination of bca’s by Dempster’s Rule.
+#' @param f A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{f} must match the number of columns of the tt matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.
+#' @return The original bca  mass function \code{x} augmented with the added subsets defined by \code{f}.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples  
@@ -24,19 +24,14 @@ addTobca <- function(x, f) {
   if ((is.matrix(f) ==FALSE) ) {
     stop("f parameter must be a (0,1) or logical matrix.")
   }
-#  f1 <- cbind(rep(0, nrow(f)), f)
-  f1 <- f
   nc1 <- ncol(x$tt)
-    if (nc1 != ncol(f1)) {
+    if (nc1 != ncol(f)) {
     stop("Error in input arguments: number of columns of f not equal to ncol(x$tt)") 
     }
   x$tt <- rbind(f,x$tt)
   rownames(x$tt) <- nameRows(x$tt)
   specnb <- 1:nrow(x$tt)
-#  mass <- c(f1[,1], x$spec[,2])
   mass <- c(rep(0,nrow(f)), x$spec[,2])
   x$spec <- cbind(specnb, mass)
-#  x$combination <- rbind(f1,x$combination)
-#  rownames(x$combination) <- rownames(x$tt)
   return(x)
 } 

@@ -2,22 +2,18 @@
 % Please edit documentation in R/nzdsr.R
 \name{nzdsr}
 \alias{nzdsr}
-\title{Normalization of a bca mass distribution}
+\title{Normalization of a bca mass function}
 \usage{
 nzdsr(x, infovarnames = NULL)
 }
 \arguments{
-\item{x}{A list of class bcaspec, normally the result of the combination of two bca mass distributions that we want to normalize (see \code{\link{dsrwon}}), or simply a belief function in its bca form (see \code{\link{bca}}).}
-
-\item{infovarnames}{A name can be given to the resulting variable. Named "nv1" if missing.}
+\item{x}{A mass function, i.e. a list of class bcaspec..}
 }
 \value{
-A list in the bca form (see  \code{\link{bca}}), namely: \itemize{
-  \item $con The measure of conflict.
-  }
+The normalized bca mass function inputted.
 }
 \description{
-It may occur that the resulting distribution of the combination of two bca distributions contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes this distribution by dividing the focal elements (other than the empty set) by 1 minus the mass of the empty set.
+It may occur that the result of the combination of two mass functions contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes this result by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set.
 }
 \examples{
 x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), 
@@ -37,7 +33,7 @@ cnames =c("a", "b", "c"), varnb = 1)
 nzdsr(y2)  
 }
 \references{
-Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
+Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 }
 \author{
 Claude Boivin, Stat.ASSQ

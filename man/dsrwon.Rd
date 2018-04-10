@@ -2,33 +2,26 @@
 % Please edit documentation in R/dsrwon.R
 \name{dsrwon}
 \alias{dsrwon}
-\title{Combination of two belief functions}
+\title{Combination of two mass functions}
 \usage{
-dsrwon(x, y, infovarnames = NULL, relnb = NULL)
+dsrwon(x, y)
 }
 \arguments{
-\item{x}{A belief function in its bca form (see \code{\link{bca}}).}
+\item{x}{A  bca mass function (see bca). (see \code{\link{bca}}).}
 
-\item{y}{A belief function in its bca form.}
-
-\item{infovarnames}{A name can be given to the resulting variable. Named "v1" if missing.}
-
-\item{relnb}{A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.}
+\item{y}{A  bca mass function (see bca).}
 }
 \value{
-A list of five elements: \itemize{
-  \item $I12 A table of intersections between subsets.
-  \item $sort_order Indices for the sort of the propositions.
-  \item $con: the measure of conflict between beliefs.
- \item $inforel. A two column matrix containing variable numbers and the depth of the relation.
+A list of class bcaspec with these two components added: \itemize{
+  \item I12 Intersection table of subsets.
+  \item Sort_order Sort order of subsets.
   }
-  @details The relation number of the x input is given to the result.
 }
 \description{
-The unnormalized Dempster's rule is used to combine two belief functions Bel1 and Bel2 defined on the same frame of discernment and represented by their respective basic chance assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (See \code{\link{nzdsr}}).
+The unnormalized Dempster’s rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and represented by their respective basic chance assignments \code{x}  and \code{y}. Dempster’s rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see \code{\link{nzdsr}}).
 }
 \details{
-The two bca's \code{a} and \code{b} must be defined on the same frame of discernment for the combination to take place.
+The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.
 }
 \examples{
 x1 <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
@@ -42,7 +35,7 @@ infovarnames = "x", varnb = 1)
 dsrwon(x1,x2)
 }
 \references{
-Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
+Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 }
 \author{
 Claude Boivin, Stat.ASSQ

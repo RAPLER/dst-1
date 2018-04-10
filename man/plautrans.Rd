@@ -2,21 +2,21 @@
 % Please edit documentation in R/plautrans.R
 \name{plautrans}
 \alias{plautrans}
-\title{Plausibility transformation applied on the distribution of singletons}
+\title{Plausibility transformation of the singletons of a frame}
 \usage{
 plautrans(x)
 }
 \arguments{
-\item{x}{A belief function in its bca form or the normalized result of the combination of two or more belief functions (see \code{\link{nzdsr}}.}
+\item{x}{A bca mass function.}
 }
 \value{
-The matrix of singletons with the plausibility transformation added in the last column.
+The matrix of singletons with their plausibility transformation added in the last column.
 }
 \description{
-The plausibility transformation is used to obtain the probability distribution associated with a belief function.
+The application of the plausibility transformation to the singletons of a frame yields the probability distribution associated with a mass function.
 }
 \details{
-First, we compute the belief and plausibility measures on all the singletons of the frame of discernment. The probability distribution of the singletons is derived from the plausibility measures of the singletons.
+We compute the plausibility measure of all the singletons of the frame of discernment. The probability distribution of the singletons is obtained from their plausibility measures.
 }
 \examples{
  

@@ -1,7 +1,6 @@
 #' Obtain dimensions of an array or length of a vector with a single command
 #' 
-#' \code{shape} returns sizes of each dimensions of given array or the length of a given vector.
-#'
+#' \code{shape} returns sizes of each dimension of given array or the length of a given vector. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}). 
 #' @aliases aplShape
 #' @export
 #' @param a An array or a vector.
@@ -9,8 +8,7 @@
 #' @examples
 #' shape(array(c(1:6), c(2,3)))
 #' shape(c("a", "b"))
-#' @author Original author of the aplShape function: Jan de Leeuw 
-#'       \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
+#' @author Jan de Leeuw \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 #' @seealso Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
 #' @references \itemize{
 #'   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.

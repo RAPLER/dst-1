@@ -1,18 +1,13 @@
-#' Combination of two belief functions
+#' Combination of two mass functions
 #' 
-#' The unnormalized Dempster's rule is used to combine two belief functions Bel1 and Bel2 defined on the same frame of discernment and represented by their respective basic chance assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (See \code{\link{nzdsr}}).
-#' @details The two bca's \code{a} and \code{b} must be defined on the same frame of discernment for the combination to take place.   
-#' @param x A belief function in its bca form (see \code{\link{bca}}).
-#' @param y A belief function in its bca form.
-#' @param infovarnames A name can be given to the resulting variable. Named "v1" if missing.
-#' @param relnb A number can be given to the resulting relation. if omitted, the numbers of the input relations will be kept.
-#' @return A list of five elements: \itemize{
-#'   \item $I12 A table of intersections between subsets.
-#'   \item $sort_order Indices for the sort of the propositions.
-#'   \item $con: the measure of conflict between beliefs.
-#'  \item $inforel. A two column matrix containing variable numbers and the depth of the relation.
+#'The unnormalized Dempster’s rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and represented by their respective basic chance assignments \code{x}  and \code{y}. Dempster’s rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see \code{\link{nzdsr}}).
+#' @details The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.  
+#' @param x A  bca mass function (see bca). (see \code{\link{bca}}).
+#' @param y A  bca mass function (see bca).
+#' @return A list of class bcaspec with these two components added: \itemize{
+#'   \item I12 Intersection table of subsets.
+#'   \item Sort_order Sort order of subsets.
 #'   }
-#'   @details The relation number of the x input is given to the result.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
@@ -25,8 +20,8 @@
 #' cnames = c("a", "b", "c"),  
 #' infovarnames = "x", varnb = 1)
 #' dsrwon(x1,x2)
-#' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 57-61: Dempster's rule of combination.
-dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
+#' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
+dsrwon<-function(x,y) {
   if ( (inherits(x, "bcaspec") == FALSE) | (inherits(y, "bcaspec") == FALSE)) {
     stop("One or more inputs not of class bcaspec.")
   }
@@ -68,7 +63,7 @@ dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
   ## Measure of conflict. Code to be revised
   con12<-1-(1-x$con)*(1-y$con)
   if ((con12 == 1) | (m_empty == 1)) { 
-    warning('Completely conflicting evidence (con = 1). Data is inconsistent.')}
+    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')}
   con<-1-(1-con12)*(1-m_empty)
   ## result
   mMAC <-matrix(MAC,ncol=1, dimnames =list(NULL, "mass"))
@@ -77,15 +72,8 @@ dsrwon<-function(x,y, infovarnames = NULL, relnb = NULL) {
   infovar <- x$infovar
   infovaluenames <- x$infovaluenames
   # inforel parameter
-  if (is.null(relnb)) {
-    relnb <- (x$inforel)[,1]  # revoir
-    relnb2 <- (y$inforel)[,1]
-      if (relnb != relnb2) {
-        relnb <- c(relnb, relnb2)
-      }
-  }
-    inforel <- matrix(c(relnb, rep(nrow(infovar), length(relnb))), ncol = 2)
-    colnames(inforel) <- c("relnb", "depth")
+  inforel <- x$inforel
+  ## fin test
   # construction of the result
   z <- list(con = con, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
   class(z) <- append(class(z), "bcaspec")

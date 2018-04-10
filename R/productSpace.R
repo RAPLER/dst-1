@@ -1,10 +1,10 @@
-#' Transformation of multiple side inputs to a product space definition
+#' Product space representation of a relation
 #'
-#' This utility function is used to obtain a product space definition of two or more variables initially represented by a truth table format.
-#' @param tt The table of the variables being put in relation. This relation is described by a matrix input table of (0,1), where the (0,1) values of all variables are put side by side, as in a truth table.
-#' @param specnb A vector of specification numbers. Values of variable \code{specnb} start at one and are increased by 0 or 1 only. They determine the partitioning of the rows of the tt matrix.
-#' @param infovar  A two-column matrix containing identification numbers of the variables and the number of elements of each variable.
-#' @return The thruth table matrix of the product space definition. 
+#' This utility function takes the input matrix of a relation between two or more variables and yields its product space representation. 
+#' @param tt A (0,1) or boolean matrix, where the values of the variables put in relation are set side by side, as in a truth table.
+#' @param specnb A vector of integers ranging from 1 to \code{k}, where \code{k} is the number of subsets of the \code{tt} matrix. Values must start at one and can be increased only by 0 or 1. They determine the partitioning of the rows of the \code{tt} matrix between the \code{k} subsets.
+#' @param infovar  A two-column matrix containing identification numbers of the variables and the number of elements of each variable (size of the frame).
+#' @return The matrix of the product space representation of the relation. 
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples 
 #'  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3,
@@ -68,16 +68,16 @@ productSpace <- function(tt, specnb, infovar) {
   zNcolsLast <-matrix(t(zNcolsLast), ncol = prod(dim(zNcolsLast)))
   # End columns names preparation
   #
-  # A: boucle sur le nombre de ss-ensembles
+  # A: loop on the number of subsets
   for (j in 1:max(specnb)) {
     # dimension of result in the product space
     zt<-array(0,dim = size[order(varnb,decreasing = TRUE)], dimnames = zNcols) 
     # B: Loop on the number of elements of the subset
-    # working table to gather all the elements of a subset
+    # B1: working table to gather all the elements of a subset
     zx <- subset(zz, zz$specnb == j)
     zx <-zx[,-1]
     colnames(zx) <- cnames # keep original names if there are duplicates names
-    #  Loop on elements of the subset (specification j)
+    #  B2: Loop on elements of the subset (specification j)
     for (k in 1:znelem[j]) {
       zs <- zx[k,1:zinds[1]]
       zs1=as.vector(t(zs))

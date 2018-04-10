@@ -1,17 +1,18 @@
 #' Extension of a relation
 #'
-#' This function works on a relation rel1 defined onto a group of one or more variables to extend it to the product space of another group of variables. This other group of variables must contain at least one of the variables of rel1 for the extension to be made possible.
+#'This function works on a mass function defined on a single variable or a relation defined onto a group of two variables or more. An extension of their space is made to the product space of a relation of reference. The mass function or relation to extend and the relation of reference must have at least one variable in common for the extension to be made possible. 
 #' 
-#' @param rel1 A relation, an object of class bcaspec.
-#' @param relRef The relation of reference used to extract the varables names and columns names of the tt matrix.
-#' @details The relation of reference relRef may simply be an empty relation defined on the set of variables of interest or a relation already defined. The relRef parameter normally contains all the information on the variables, namely their identification numbers and the number of elements of each variable ($infovar parameter). The relRef relation also contains the names of the variables and of the columns of the tt matrix.
+#' @param rel1 An object of class bcaspec, i.e. a mass function of one variable or a relation.
+#' @param relRef The relation of reference 
+#' @details The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the tt matrix. The relation of reference \code{relRef}  may simply be an empty relation defined on the set of variables of interest or a relation already defined.
 #' 
 #' @return R the resulting extended relation.
 #' @author Claude Boivin, Stat.ASSQ
-#' @references G. Shafer and P. P. Shenoy. Local Computations in Hypertrees. School of Business, University of Kansas, Lawrence, KS, 1991. See p. 78, vacuus extension of a belief function.
+#' @references G. Shafer and P. P. Shenoy. Local Computations in Hypertrees. School of Business, University of Kansas, Lawrence, KS, 1991. See p. 78, vacuous extension of a belief function.
 #' @export
 #' @examples
-#' # making an empty reference relation with mass(frame) = 1
+#' # making an empty reference relation with mass(frame) = 1 and
+#' # extending a bca to it.
 #' init_tt= matrix(rep(1,10),nrow=1, 
 #' dimnames =list(NULL, c("0", "1", "2", "3", 
 #' "true", "false", "foul", "fair", "true", "false")) )
@@ -21,7 +22,7 @@
 #'   dimnames = list(NULL, c("varnb", "size")) )
 #'  relRef <- bcaRel(tt = init_tt, spec = init_spec,
 #'   infovar = init_info, 
-#'   infovarnames = c("Delay", "Loading", "Forecast", "Maintenance"), 
+#'   infovarnames = c("Delay", "Loading", "Forecast", "Maintenance"),
 #'   relnb = 0)
 #'  # a bcaspec defined on one variable
 #'  l_rel <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), 
@@ -31,7 +32,8 @@
 #'  infovarnames= c("Loading"), 
 #'  inforel= matrix(c(7,1), ncol = 2, 
 #'  dimnames = list(NULL, c("relnb", "depth"))))
-#'  extmin(l_rel, relRef)
+#'  z <- extmin(l_rel, relRef)
+#'  prmatrix(t(z$tt), collab = rep("", nrow(z$tt)))
 #'  
 extmin <- function(rel1, relRef) {
   # inputs validation
@@ -60,7 +62,6 @@ extmin <- function(rel1, relRef) {
   rev_sizeToAdd <- sizeToAdd[length(sizeToAdd):1]
   # extent the relationship
   zinit=array(1,rev_sizeToAdd)
-  # test
   z <- 1*outer(zinit, t(rel1$tt), FUN = "&")
  ## reorder the variables
  actualOrder <- c(ind_lvars, ind_lvman)
@@ -73,7 +74,7 @@ extmin <- function(rel1, relRef) {
   z1 <-aperm(z, c(indices, 1+nbvar)) ## OK
   rtt <- matrix(z1, ncol = nrow(rel1$tt), nrow = prod(dim(z1)[-length(dim(z1))]) )
   rtt <- t(rtt)
-  ## il faut des noms de colonnes et de ligne
+  ## we need row and column names
   colnames(rtt) <- colnames(relRef$tt)
   rownames(rtt) <- nameRows(rtt)
   zr <-list(con = rel1$con, tt = rtt, spec = rel1$spec, infovar = infovar, infovaluenames= relRef$infovaluenames, inforel = rel1$inforel)

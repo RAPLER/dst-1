@@ -1,23 +1,21 @@
-#' Find the value in base 10 of a number coded in another number system
+#' Find the value in base 10 of a number coded in another base
 #' 
-#' This utility function is used to find the value in base 10 of a number represented in another number system. This code has been adapted from the \code{aplDecode} R function of Jan de Leeuw. It follows the standard decode implementation of the APL language.
+#' The \code{aplDecode} function of the project APL in R (\url{https://rpubs.com/deleeuw/158476}) has been adapted to follow the standard implementation of the APL \code{decode} function. 
 #' @aliases aplDecode
-#' @param base A scalar or a numeric vector which describe the number system in which the data is coded.
+#' @param base A scalar or a numeric vector which describes the number system in which the data is coded.
 #' @param ind The value to decode represented by a numeric vector in the \code{base} system.
 #' @return A scalar representing the conversion of the coded number \code{ind} to its decimal representation.
 #' @details If the base value is a number system, namely base 2, we need only to enter a scalar, which is treated to match the length of the expression to decode. 
-#' if \code{length(ind)} is less than \code{length(base)}, \code{0} values are added to the left of the vector \code{ind} to match the length of the two vectors. And vice-versa. 
-#' @author \itemize{
-#'  \item Claude Boivin, Stat.ASSQ. 
-#'  \item Author of the aplDecode function: Jan de Leeuw 
-#'       \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
-#'  }
-#' @seealso Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
+#' If the base value is a number system, e.g. base 2, we need only to enter it as a scalar, which is then processed to match the length of the expression to decode. If \code{length(ind)}  is less than \code{length(base)}, zeroes are added to the left of the vector \code{ind}  to match the length of the two vectors. And vice-versa. 
+
+#' @author Claude Boivin, Stat.ASSQ. 
 #' @export
 #' @references \itemize{
-#'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
+#' \item Jan de Leeuw and Masanao Yajima. APL in R: \url{https://rpubs.com/deleeuw/158476}
+#'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New York.
 #'  \item  APL 68000 Level II language manual. MicroAPL Ltd. 1990.
 #'  }
+#'  @seealso    \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 #' @examples 
 #' decode(c(2,2,2,2), c(1,0,1,1)) #   Find the base 10 value of the base 2 number 1011.
 #' decode(2, c(1,0,1,1))  # left argument is extended to vector c(2,2,2,2)

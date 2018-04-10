@@ -7,26 +7,26 @@
 belplau(x, remove = FALSE)
 }
 \arguments{
-\item{x}{A belief function in its bca form (see \code{\link{bca}}).}
+\item{x}{A basic chance assignment mass function (see \code{\link{bca}}).}
 
-\item{remove}{= TRUE: Focal elements with 0 mass are excluded from the calculations.}
+\item{remove}{= TRUE: Exclude subsets with zero mass.}
 }
 \value{
-A matrix of M rows by 3 columns is returned, where M is the number of focal elements: \itemize{
- \item Column 1: the degree of belief Bel;
- \item Column 2: the degree of Plausibility Pl;
+A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
+ \item Column 1: the degree of belief \code{Bel};
+ \item Column 2: the degree of Plausibility \code{Pl};
  \item Column 3: the Plausibility ratio
    }
 }
 \description{
-Degrees of Belief (Bel) and Plausibility (Pl) of the focal elements of a belief function are computed. Then the ratio of the plausibility of a focal element against the plausibility of its contrary is computed. Focal elements with zero mass can be excluded from the calculations.\cr
+Degrees of Belief \code{Bel} and Plausibility \code{Pl} of the focal elements of a mass function are computed. The ratio of the plausibility of a focal element against the plausibility of its contrary is also computed. Subsets with zero mass can be excluded from the calculations.\cr
 }
 \details{
-The degree Belief Bel is defined by: \cr
-\eqn{bel(A) = Sum{(m(B); B <= A)}}, for every subset A of the frame of discernment.
-The plausibility function pl is defined by: \cr
-\eqn{pl(A) = Sum{(m(B); B and A not empty}}, for every subset A of the frame of discernment.
-The plausibility ratio of a focal element A versus its contrary ~A is defined by:  \eqn{Pl(A)/(1-Bel(A.))}.
+The degree Belief \code{Bel} is defined by: \cr
+\deqn{bel(A) = Sum((m(B); B \subseteq A))}{bel(A) = Sum((m(B); B <= A))}, for every subset B of A.\cr
+The degree of plausibility \code{pl} is defined by: \cr
+\deqn{pl(A) = Sum[(m(B); B \cap A \neg \o]}{pl(A) = Sum[(m(B); B and A not empty]}, for every subset \code{B} of the frame of discernment. \cr
+The plausibility ratio of a focal element \code{A} versus its contrary \code{¬A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
 }
 \examples{
 x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
