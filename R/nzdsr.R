@@ -23,7 +23,7 @@
 #' nzdsr(y2)  
 #' @export
 #' 
-nzdsr<-function(x, infovarnames = NULL) {
+nzdsr<-function(x) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }

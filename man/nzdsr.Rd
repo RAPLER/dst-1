@@ -4,7 +4,7 @@
 \alias{nzdsr}
 \title{Normalization of a bca mass function}
 \usage{
-nzdsr(x, infovarnames = NULL)
+nzdsr(x)
 }
 \arguments{
 \item{x}{A mass function, i.e. a list of class bcaspec..}
