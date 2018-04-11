@@ -21,7 +21,7 @@ This function works on a relation defined on a product of two variables or more.
  
 wr_tt <- matrix(c(0,1,rep(0,5),rep(c(1,0),2),1,1,0,1,0,
 rep(1,3),0,1,0,rep(1,6)), ncol=4, byrow = TRUE)
-colnames(rel_tt) <- c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn")
+colnames(wr_tt) <- c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn")
  wr_spec = matrix(c(1:7, 0.0476, 0.7619, 0.1905, 0,0,0,0), 
  ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
  wr_infovar = matrix(c(4,5,2,2), ncol = 2, 
