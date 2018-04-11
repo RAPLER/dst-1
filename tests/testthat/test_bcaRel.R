@@ -29,4 +29,8 @@ test_that("bcaRel", {
   # T7: if infovarnames omitted, vars are named v1, v2, etc.
   result <- bcaRel(tt = tt2, spec = spec1, infovar = info1, relnb = 6)
   expect_equal(names(result$infovaluenames), c("v1", "v2"))
+  #
+  # T7: check for column names
+  tt3 <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),nrow=4, byrow = TRUE )
+  expect_error(bcaRel(tt = tt3, spec = spec1, infovar = info1), "Column names of tt matrix are missing.")
 })
