@@ -151,7 +151,7 @@ To do that, we extend Evidence on A to ABC, combine the extended evidence with t
 # Extend MHA to the product space AxBxC
 MHA_ext <- extmin(MHA_E, MHABC_rel )
 # Combine MHA_ext and MHABC_rel
-MHA_ABC_comb <- dsrwon(MHA_ext,MHABC_rel, relnb = 2)
+MHA_ABC_comb <- dsrwon(MHA_ext,MHABC_rel)
 MHA_ABC_comb$con
 # Eliminate variable A ( since  the measure of contradiction is 0, no need to normalize)
 MHBC <- elim(MHA_ABC_comb, xnb = 1)
@@ -175,7 +175,7 @@ Similarly, we extend Evidence on B to BC, combine the extended evidence with the
 ```{r}
 # Extend MHB_E to the space BxC
 MHB_ext <- extmin(MHB_E, MHBC )
-MHB_BC_comb <- dsrwon(MHB_ext, MHBC, relnb = 3)
+MHB_BC_comb <- dsrwon(MHB_ext, MHBC)
 MHB_BC_comb$con
 # Eliminate variable B (since  MHA_BC_comb$con = 0, no need to normalize)
 MHC <- elim(MHB_BC_comb, xnb = 2)
