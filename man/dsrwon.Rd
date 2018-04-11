@@ -18,7 +18,7 @@ A list of class bcaspec with these two components added: \itemize{
   }
 }
 \description{
-The unnormalized Dempster’s rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and represented by their respective basic chance assignments \code{x}  and \code{y}. Dempster’s rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see \code{\link{nzdsr}}).
+The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and represented by their respective basic chance assignments \code{x}  and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see \code{\link{nzdsr}}).
 }
 \details{
 The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.

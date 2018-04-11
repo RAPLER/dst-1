@@ -7,7 +7,7 @@
 addTobca(x, f)
 }
 \arguments{
-\item{x}{A basic chance assignment mass function (see \code{\link{bca}}). It can also be the normalized result of the combination of bca’s by Dempster’s Rule.}
+\item{x}{A basic chance assignment mass function (see \code{\link{bca}}). It can also be the normalized result of the combination of two mass functions by Dempster's Rule.}
 
 \item{f}{A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{f} must match the number of columns of the tt matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.}
 }
