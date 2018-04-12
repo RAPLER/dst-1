@@ -23,7 +23,6 @@ This utility function is used to obtain a summary of a vector of data for many o
   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
  }
- @export
  @examples
  reduction(c(1,2,3,4), f="-")
  reduction(c(1,0,1,1,0), f="|")

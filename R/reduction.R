@@ -5,13 +5,13 @@
 #' @param x A vector of numbers or character strings.
 #' @param f The operator. Must be compatible with the type of input vector (numeric or character)
 #' @return The result of applying the chosen operator to all the elements of the vector is an object of length 1.
+#' @export
 #' @author Jan de Leeuw \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 #' @seealso Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
 #' @references \itemize{
 #'   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
 #'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
 #'  }
-#'  @export
 #'  @examples
 #'  reduction(c(1,2,3,4), f="-")
 #'  reduction(c(1,0,1,1,0), f="|")
