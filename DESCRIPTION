@@ -1,7 +1,7 @@
 Package: dst
 Type: Package
 Title: Using Dempster-Shafer Theory for Evidence Calculus
-Version: 0.4
+Version: 1.0.0
 Date: 2018-04-15
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
