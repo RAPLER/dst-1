@@ -4,9 +4,9 @@
 \name{dst}
 \alias{dst}
 \alias{dst-package}
-\title{dst: A package for the computation of belief functions}
+\title{dst: Manipulation and computation of belief functions}
 \description{
-The dst package allows you to make basic probability assignments on subsets of a set of possibilities (events) and combine these events with Dempster's rule of combination.
+dst allows you to make basic probability assignments on subsets of a set of possibilities (events) and combine these events with Dempster's rule of combination.
 }
 \details{
 The main operations that can be done are: \itemize{
