@@ -1,6 +1,6 @@
 Package: dst
 Type: Package
-Title: Using Dempster-Shafer Theory for Evidence calculus
+Title: Using Dempster-Shafer Theory for Evidence Calculus
 Version: 0.4
 Date: 2018-04-15
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>

@@ -157,6 +157,7 @@ We now look at The Monty Hall game as a belief network. Variables A, B and C are
 
 ```{r, fig.show='hold', fig_caption: yes}
 # The network
+if (requireNamespace("igraph", quietly = TRUE) ) {
 library(igraph)
 # Encode pieces of evidence and relations with an incidence matrix
 Monty_hgm <- matrix(c(1,1,1,1,0,0,0,1,0), ncol=3, dimnames = list(c("A", "B", "C"), c("r_ABC", "ev_A", "ev_B")))
@@ -169,6 +170,7 @@ V(Monty_hg)$label.cex <- 0.6
 V(Monty_hg)$label.font <- 2
 # render graph
 plot(Monty_hg, vertex.label = V(Monty_hg)$name, vertex.size=(4+4*V(Monty_hg)$type)*8)
+}
 ```
 
 ## Now, the solution with the calculus of belief functions
