@@ -95,7 +95,7 @@ productSpace <- function(tt, specnb, infovar) {
     if (ndims < 3) {
     y <-c(y, zt) # transpose not necessary
     } else {
-    y <-c(y, aperm(zt, c(2,1, (3:ndims))))  # à revoir
+    y <-c(y, aperm(zt, c(2,1, (3:ndims))))  # to check
     }
   } 
     y <-matrix(y, ncol = prod(size), byrow = TRUE) # by rows to follow the order of the column names

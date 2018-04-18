@@ -35,7 +35,7 @@ nameRows<-function(f) {
   fun2 <- function(pos, names) {paste(names[pos],collapse=" + ")}
   idFocal <- apply(pos, 1, FUN = fun2, names=names)
   if (sum((idFocal=="")*1:length(idFocal)) > 0) {
-    idFocal[(idFocal=="")*1:length(idFocal)] <- "\u00f8" # "ø" code
+    idFocal[(idFocal=="")*1:length(idFocal)] <- "\u00f8" # UTF-8 code for empty set
   }
   if (sum(n_colnames == ncol(pos)) > 0) {
     idFocal[(n_colnames== ncol(pos))*(1:length(idFocal))] <- "frame"
