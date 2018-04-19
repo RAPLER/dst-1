@@ -2,7 +2,7 @@ Package: dst
 Type: Package
 Title: Using Dempster-Shafer Theory
 Version: 1.0.0
-Date: 2018-04-15
+Date: 2018-04-20
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
 Description: Basic probability assignments, or mass functions, can be defined on the subsets of a set of possible values. Two mass functions can be combined using Dempster's rule of combination. A mass function can be extended to a larger frame. Marginalization, i.e. reduction to a smaller frame can also be done. These features can be combined to analyze small belief networks and take into account situations where information cannot be satisfactorily described by probability distributions.
