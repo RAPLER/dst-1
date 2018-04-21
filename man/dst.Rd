@@ -4,7 +4,7 @@
 \name{dst}
 \alias{dst}
 \alias{dst-package}
-\title{dst: Manipulation and computation of belief functions}
+\title{Manipulation and combination of belief functions}
 \description{
 dst allows you to make basic probability assignments on subsets of a set of possibilities (events) and combine these events with Dempster's rule of combination.
 }
@@ -14,10 +14,8 @@ The main operations that can be done are: \itemize{
  \item combination of two bca's defined on the same variable
  \item definition of a bca which establish a relation between two or more variables
  \item extension of a bca
- \item marginalization of a bca
- }
- 
- @author Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
- 
- @maintainer Maintainer: Claude Boivin <webapp.cb@gmail.com>
+ \item marginalization of a bca }
+}
+\author{
+Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 }
