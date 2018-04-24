@@ -11,5 +11,4 @@ output: github_document
 ## R CMD check results
 Results are:  0 errors | 0 warnings | 0 notes
 
-## Downstream dependencies 
-I have found no reverse dependencies.
+there are no reverse dependencies.
