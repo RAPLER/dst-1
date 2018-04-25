@@ -36,7 +36,6 @@ decode(1.5, c(1,2,3)) # polynomial 1*x^2 +2*x +3 evaluated at x=1.5
  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New York.
  \item  APL 68000 Level II language manual. MicroAPL Ltd. 1990.
  }
- @seealso    \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 }
 \author{
 Claude Boivin, Stat.ASSQ.

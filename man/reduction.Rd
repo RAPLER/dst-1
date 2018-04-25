@@ -18,19 +18,18 @@ The result of applying the chosen operator to all the elements of the vector is 
 \description{
 This utility function is used to obtain a summary of a vector of data for many operators. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}).
 }
+\examples{
+ reduction(c(1,2,3,4), f="-")
+ reduction(c(1,0,1,1,0), f="|")
+ reduction(c("a", "b", "c"), f="paste")
+ 
+}
 \references{
 \itemize{
   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
  }
- @examples
- reduction(c(1,2,3,4), f="-")
- reduction(c(1,0,1,1,0), f="|")
- reduction(c("a", "b", "c"), f="paste")
-}
-\seealso{
-Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
 }
 \author{
-Jan de Leeuw \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
+Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
 }

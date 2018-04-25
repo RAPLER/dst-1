@@ -15,7 +15,7 @@
 #'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New York.
 #'  \item  APL 68000 Level II language manual. MicroAPL Ltd. 1990.
 #'  }
-#'  @seealso    \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
+#'  
 #' @examples 
 #' decode(c(2,2,2,2), c(1,0,1,1)) #   Find the base 10 value of the base 2 number 1011.
 #' decode(2, c(1,0,1,1))  # left argument is extended to vector c(2,2,2,2)

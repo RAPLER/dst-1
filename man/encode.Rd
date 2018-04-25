@@ -28,7 +28,6 @@ encode(c(365,24,60), 2997) # convert 2997 minutes to days-hrs-min.
  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New York.
  \item  APL 68000 Level II language manual. MicroAPL Ltd. 1990.
  }
- @seealso    \url{http://www.codecollector.net/view/8A8D9395-0F66-4706-A23E-C588151E8423-95744-0000429BCF33A153}.
 }
 \author{
 Claude Boivin, Stat.ASSQ.
