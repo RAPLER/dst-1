@@ -1,7 +1,8 @@
-dst v1.0.0 (Estimated release date: 2018-04-26)
+dst v1.0.0.9000
 
-Many changes and new functions added.
-=================
+================
+dst v1.0.0 (Release date on CRAN: 2018-04-25)
+
 Changes from version 0.3:
 - Added a vignette: The Monty hall Game, an introduction to belief functions.
 
@@ -43,6 +44,6 @@ Changes from version 0.3:
 - Removal of obsolete functions:
 butLast, combmasses, dempster, initsing, rplau, transfo
 
-*******
+================
 dst v0.3: Initial release of package on CRAN (2015-01-13)
 ================
