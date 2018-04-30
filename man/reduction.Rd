@@ -26,10 +26,11 @@ This utility function is used to obtain a summary of a vector of data for many o
 }
 \references{
 \itemize{
-  \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
- \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
+\item Jan de Leeuw and Masanao Yajima (March 07, 2016) \emph{APL in R (Version 009)}, Source code. \url{https://rpubs.com/deleeuw/158476}
+\item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
+\item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
  }
 }
 \author{
-Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
+Claude Boivin, Stat.ASSQ.
 }

@@ -32,7 +32,7 @@ decode(1.5, c(1,2,3)) # polynomial 1*x^2 +2*x +3 evaluated at x=1.5
 }
 \references{
 \itemize{
-\item Jan de Leeuw and Masanao Yajima. APL in R: \url{https://rpubs.com/deleeuw/158476}
+\item Jan de Leeuw and Masanao Yajima (March 07, 2016) \emph{APL in R (Version 009)}, Source code. \url{https://rpubs.com/deleeuw/158476}
  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New York.
  \item  APL 68000 Level II language manual. MicroAPL Ltd. 1990.
  }

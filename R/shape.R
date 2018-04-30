@@ -8,9 +8,10 @@
 #' @examples
 #' shape(array(c(1:6), c(2,3)))
 #' shape(c("a", "b"))
-#' @author Jan de Leeuw and Masanao Yajima: \url{https://rpubs.com/deleeuw/158476}.
+#' @author Claude Boivin, Stat.ASSQ.
 #' 
 #' @references \itemize{
+#' \item Jan de Leeuw and Masanao Yajima (March 07, 2016) \emph{APL in R (Version 009)}, Source code. \url{https://rpubs.com/deleeuw/158476}
 #'   \item G. Helzer. (1989): \emph{An Encyclopedia of APL}, second edition, I-APL LTD, St. Albans, G.B.
 #'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
 #'  }
