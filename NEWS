@@ -1,4 +1,8 @@
-dst v1.1.0.9000
+dst v1.2.0.9000
+2018-05-01. 
+- Correction to fn tabresul: added a check for the case of the empty set present with m_empty = 0
+================
+
 2018-05-01. 
 - Correction to fn belplau: added a check for the case of the empty set present with m_empty = 0
 - Re-writed the referencing of source code taken on Rpubs
