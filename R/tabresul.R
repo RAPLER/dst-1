@@ -36,8 +36,15 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
+  # check if m_empty present and if not 0
   if (sum((apply(x$tt, 1, sum)) == 0) > 0) {
-    stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
+    row_m_empty <- match(1:nrow(x$tt), rownames(x$tt) == "\u00f8")
+    row_m_empty <- row_m_empty[1]
+    if (!is.na(row_m_empty)) {
+      if (x$spec[row_m_empty,2] > 0) {
+        stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
+      }
+    }
   }
 # Compute Bel and Pl functions 
   BP<-belplau(x)
