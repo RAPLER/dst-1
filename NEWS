@@ -1,4 +1,7 @@
-dst v1.0.0.9000
+dst v1.1.0.9000
+2018-05-01. 
+- Correction to fn belplau: added a check for the case of the empty set present with m_empty = 0
+- Re-writed the referencing of source code taken on Rpubs
 
 ================
 dst v1.0.0 (Release date on CRAN: 2018-04-25)
