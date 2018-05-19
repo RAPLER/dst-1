@@ -7,7 +7,7 @@
 dsrwon(x, y)
 }
 \arguments{
-\item{x}{A  bca mass function (see bca). (see \code{\link{bca}}).}
+\item{x}{A  bca mass function (see \code{\link{bca}}).}
 
 \item{y}{A  bca mass function (see bca).}
 }
