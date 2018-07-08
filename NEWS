@@ -1,3 +1,8 @@
+dst v1.2.0.9001
+2018-07-07. 
+- Correction to fn dsrwon: added the parameter relnb in the call of the function, to allow for specification the result with a new relation number.
+
+================
 dst v1.2.0.9000
 2018-05-01. 
 - Correction to fn tabresul: added a check for the case of the empty set present with m_empty = 0

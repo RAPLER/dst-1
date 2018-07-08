@@ -21,7 +21,7 @@
 #' infovarnames = "x", varnb = 1)
 #' dsrwon(x1,x2)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x,y) {
+dsrwon<-function(x,y, relnb = NULL) {
   if ( (inherits(x, "bcaspec") == FALSE) | (inherits(y, "bcaspec") == FALSE)) {
     stop("One or more inputs not of class bcaspec.")
   }
@@ -72,7 +72,13 @@ dsrwon<-function(x,y) {
   infovar <- x$infovar
   infovaluenames <- x$infovaluenames
   # inforel parameter
-  inforel <- x$inforel
+  if (missing(relnb) | is.null(relnb)) { 
+    inforel <- x$inforel
+    } else {
+    depth <- x$inforel[,2]
+    inforel <- matrix(c(relnb, depth), ncol = 2)
+    colnames(inforel) <- c("relnb", "depth")
+    }
   ## fin test
   # construction of the result
   z <- list(con = con, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)

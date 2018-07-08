@@ -4,7 +4,7 @@
 \alias{dsrwon}
 \title{Combination of two mass functions}
 \usage{
-dsrwon(x, y)
+dsrwon(x, y, relnb = NULL)
 }
 \arguments{
 \item{x}{A  bca mass function (see \code{\link{bca}}).}
