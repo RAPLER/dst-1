@@ -9,30 +9,30 @@ extmin(rel1, relRef)
 \arguments{
 \item{rel1}{An object of class bcaspec, i.e. a mass function of one variable or a relation.}
 
-\item{relRef}{The relation of reference}
+\item{relRef}{The relation of reference. It can be an existing relation, or it can be constructed as a vacuous function.}
 }
 \value{
 R the resulting extended relation.
 }
 \description{
-This function works on a mass function defined on a single variable or a relation defined onto a group of two variables or more. An extension of their space is made to the product space of a relation of reference. The mass function or relation to extend and the relation of reference must have at least one variable in common for the extension to be made possible.
+This function works on a mass function defined on a single variable or a relation defined onto a group of two variables or more. An extension of their space is made to a larger product space of a relation of reference. The mass function or relation to extend and the relation of reference must have at least one common variable for the extension to be made possible.
 }
 \details{
 The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the tt matrix. The relation of reference \code{relRef}  may simply be an empty relation defined on the set of variables of interest or a relation already defined.
 }
 \examples{
-# making an empty reference relation with mass(frame) = 1 and
-# extending a bca to it.
+# Naking an empty reference relation with mass(frame) = 1 and
+# extending a bca to its space.
 init_tt= matrix(rep(1,10),nrow=1, 
-dimnames =list(NULL, c("0", "1", "2", "3", 
-"true", "false", "foul", "fair", "true", "false")) )
+dimnames =list(NULL, c("3", "2", "1", "0", 
+ "true", "false",  "foul", "fair",  "true", "false")) )
  init_spec <- matrix(c(1,1), ncol = 2, 
  dimnames = list(NULL, c("specnb", "mass")))
- init_info <- matrix(c(2,4,5,6,4,2,2,2), ncol = 2,
+ init_info <- matrix(c(3,6,7,8,4,2,2,2), ncol = 2,
   dimnames = list(NULL, c("varnb", "size")) )
  relRef <- bcaRel(tt = init_tt, spec = init_spec,
   infovar = init_info, 
-  infovarnames = c("Delay", "Loading", "Forecast", "Maintenance"),
+  infovarnames = c("Sail", "Maintenance", "Weather", "Repairs"),
   relnb = 0)
  # a bcaspec defined on one variable
  l_rel <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), 
