@@ -22,6 +22,8 @@ Collate:
     'encode.R'
     'extmin.R'
     'inters.R'
+    'marrayToMatrix.R'
+    'matrixToMarray.R'
     'nameRows.R'
     'nzdsr.R'
     'plautrans.R'
