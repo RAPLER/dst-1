@@ -9,10 +9,10 @@ elim(rel, xnb)
 \arguments{
 \item{rel}{The relation to reduce, an object of class bcaspec.}
 
-\item{xnb}{Number of variable to eliminate.}
+\item{xnb}{Identification number of the variable to eliminate.}
 }
 \value{
-The reduced relation
+r The reduced relation
 }
 \description{
 This function works on a relation defined on a product of two variables or more.  Having fixed a variable to eliminate from the relation,  the reduced product space is determined and the corresponding reduced bca is computed.This operation is also called "marginalization".

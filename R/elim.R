@@ -2,8 +2,8 @@
 #' 
 #' This function works on a relation defined on a product of two variables or more.  Having fixed a variable to eliminate from the relation,  the reduced product space is determined and the corresponding reduced bca is computed.This operation is also called "marginalization".
 #' @param rel The relation to reduce, an object of class bcaspec.
-#' @param xnb Number of variable to eliminate.
-#' @return The reduced relation
+#' @param xnb Identification number of the variable to eliminate.
+#' @return r The reduced relation
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples  
@@ -42,30 +42,34 @@ elim <- function(rel, xnb) {
   if (nbvar < 2)  {
     stop("Input is not a relation. No variable to eliminate.")
   }
-  size_vars_inv <- size_vars[nbvar:1]          # same order as APL prog
+  # Some working vars
+  size_vars_inv <- size_vars[nbvar:1]   # same order as APL prog
   varnb <- rel$infovar[,1]         # numbers of the variables 
-  varnb_inv <- varnb[nbvar:1]          # same order as APL prog
+  varnb_inv <- varnb[nbvar:1]   
   varRank <- match(xnb, varnb_inv)       # rank of the variable
   if(is.na(varRank)) {
     stop("Invalid variable number.")
   }
-   dim_to_keep <- (1:length(varnb_inv))*!varnb_inv %in% (xnb) # axes to keep
+  dim_to_keep <- (1:length(varnb))*!varnb %in% (xnb)
   n <- nrow(rel$tt)
   m <- as.vector(unlist(rel$spec[,2]) )   # extract mass vector
-  itab <-array(t(rel$tt), c(size_vars_inv,n)) # restructure data
-  fun3 <- function(xnb, oper) {reduction(xnb, f=oper)}
+  itab <- matrixToMarray(rel)
+  fun3 <- function(x, oper) {reduction(x, f=oper)}
   proj <- apply(itab, c(dim_to_keep,(1+nbvar)), FUN= fun3, oper= "|")
-  # transformer proj en matrice
-  z2<- t(matrix(as.vector(proj), ncol=n, nrow =prod(dim(proj)[-length(dim(proj))])))
-  w1 <- doubles(z2*1) # mult by 1 transforms from logical to numeric
+  # transform proj as a matrix
+  # 1. infovar parameter
+  var_to_keep <- varnb*!varnb %in% (xnb)
+  var_to_keep <- var_to_keep[var_to_keep>0]
+  varRank_to_keep <- match(var_to_keep, varnb)
+  infovar <- matrix(rel$infovar[varRank_to_keep,], ncol=2)
+  # 2. convert array as a matrix
+  z2 <- marrayToMatrix(proj, infovar = infovar)
+  w1 <- doubles(z2*1) # mult by 1 to transform from logical to numeric
   I12 <- dotprod(w1, t(z2), g = "&", f = "==")
   m1<- t(array(m,c(ncol(I12), nrow(I12))))
   m1 <- apply(I12*m1, 1, sum)
   tt=w1
 # naming the columns of tt matrix
-  var_to_keep <- varnb*!varnb %in% (xnb)
-  var_to_keep <- var_to_keep[var_to_keep>0]
-  varRank_to_keep <- match(var_to_keep, varnb)
   idnames <- names(rel$infovaluenames)[varRank_to_keep]
   znamesCols <- matrix(rel$infovaluenames[[varRank_to_keep[1]]], ncol = 1)
 if (length(idnames) > 1) {
@@ -76,8 +80,6 @@ if (length(idnames) > 1) {
   } }
   colnames(tt) <- as.vector(znamesCols)
 # End naming cols
-# infovar parameter
- infovar <- matrix(rel$infovar[varRank_to_keep,], ncol=2)
 # infovaluenames parameter
   infovaluenames <- rel$infovaluenames[varRank_to_keep]
 # inforel parameter
