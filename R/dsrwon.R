@@ -4,6 +4,7 @@
 #' @details The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.  
 #' @param x A  bca mass function (see \code{\link{bca}}).
 #' @param y A  bca mass function (see bca).
+#' @param relnb Identification number of the relation. Can be omitted.
 #' @return A list of class bcaspec with these two components added: \itemize{
 #'   \item I12 Intersection table of subsets.
 #'   \item Sort_order Sort order of subsets.

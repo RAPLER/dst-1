@@ -10,6 +10,8 @@ dsrwon(x, y, relnb = NULL)
 \item{x}{A  bca mass function (see \code{\link{bca}}).}
 
 \item{y}{A  bca mass function (see bca).}
+
+\item{relnb}{Identification number of the relation. Can be omitted.}
 }
 \value{
 A list of class bcaspec with these two components added: \itemize{
