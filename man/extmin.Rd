@@ -28,11 +28,11 @@ dimnames =list(NULL, c("3", "2", "1", "0",
  "true", "false",  "foul", "fair",  "true", "false")) )
  init_spec <- matrix(c(1,1), ncol = 2, 
  dimnames = list(NULL, c("specnb", "mass")))
- init_info <- matrix(c(3,6,7,8,4,2,2,2), ncol = 2,
+ init_info <- matrix(c(3,4,7,8,4,2,2,2), ncol = 2,
   dimnames = list(NULL, c("varnb", "size")) )
  relRef <- bcaRel(tt = init_tt, spec = init_spec,
   infovar = init_info, 
-  infovarnames = c("Sail", "Maintenance", "Weather", "Repairs"),
+  infovarnames = c("Sail", "Loading", "Weather", "Repairs"),
   relnb = 0)
  # a bcaspec defined on one variable
  l_rel <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), 
