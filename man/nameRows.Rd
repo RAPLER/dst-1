@@ -13,10 +13,10 @@ nameRows(f)
 The result is a character vector of the labels proposed for the rows of the matrix \code{f}. The length of the result is \code{nrow(f)}.
 }
 \description{
-This function uses the column names of a (0,1) or boolean matrix of subsets to determine appropriate names for the rows.
+This function determines the name of a row from all the columns that have a 1 for that row.
 }
 \details{
-The row containing only one's is called "frame", to avoid too long a character string. The empty set is named "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a matrix representing a product space definition on many variables, row labels can be pretty long.
+The row containing all one's is called "frame", to avoid too long a character string. The empty set is named "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a matrix representing a product space definition on many variables, row labels can be pretty long.
 }
 \examples{
 f <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)
