@@ -1,6 +1,6 @@
 #' Normalization of a bca mass function
 #'
-#' It may occur that the result of the combination of two mass functions contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes this result by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
+#' It may occur that the result of the combination of two mass functions with Dempater'Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
 #' @param x A mass function, i.e. a list of class bcaspec..
 #' @return The normalized bca mass function inputted.
 #' @author Claude Boivin, Stat.ASSQ
