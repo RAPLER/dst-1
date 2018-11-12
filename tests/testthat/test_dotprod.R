@@ -1,3 +1,5 @@
+context("Dot product calculation")
+library(dst)
 test_that("dotprod", {
   # Standard matrix product
   x <- y <- matrix(c(1:6), nrow = 2, byrow = TRUE)

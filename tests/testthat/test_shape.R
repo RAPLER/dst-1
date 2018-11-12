@@ -1,3 +1,5 @@
+context("dim function simplified")
+library(dst)
 test_that("shape", {
 # test vector lengtx
 z1 <- c("a", "b", "c")

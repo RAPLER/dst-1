@@ -1,4 +1,6 @@
 # Tests "elim" function
+context("Reduce a product space by eliminating one dimension")
+library(dst)
 test_that("elim", {
   # T1 rel must be of class bcaspec. 
   x1 <- list(f=matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  infovarnames = "y1", varnb = 1)

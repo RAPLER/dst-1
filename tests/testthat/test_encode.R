@@ -1,3 +1,5 @@
+context("Conversion of data")
+library(dst)
 test_that("encode", {
   # convert decimal number to base
   result <- encode(c(2,2,2,2), 11) 

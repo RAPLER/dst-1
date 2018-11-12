@@ -1,3 +1,5 @@
+context("Remove duplicate lines from a matrix")
+library(dst)
 test_that("doubles", {
   # T1: input must be a matrix
   x <- c(1,1,3)

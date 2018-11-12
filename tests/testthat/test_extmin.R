@@ -1,4 +1,6 @@
 # Tests "extmin" function
+context("Product space extension")
+library(dst)
 test_that("extmin", {
   # T1 x and y must be of class bcaspec. 
   x1 <- list(a=1:3, b="foo")

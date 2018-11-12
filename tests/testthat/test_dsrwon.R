@@ -1,4 +1,6 @@
 # Tests "dsrwon" function
+context("Compute unnormalized Dempster's Rule")
+library(dst)
 test_that("dsrwon", {
   # T1 x and y must be of class bcaspec. 
   x1 <- list(a=1:3, b="foo")

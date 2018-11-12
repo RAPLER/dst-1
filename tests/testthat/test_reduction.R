@@ -1,3 +1,5 @@
+context("Vector reduction")
+library(dst)
 test_that("reduction", {
   # T1 Apply reduction to a numeric vector
   result <- reduction(c(1,2,3,4), f="-")

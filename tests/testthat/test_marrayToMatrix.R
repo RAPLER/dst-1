@@ -1,4 +1,6 @@
 # Tests "marrayToMatrix" function
+context("Array transformation")
+library(dst)
 test_that("marrayToMatrix", {
   # T1 Nb of vars of x and infovar must match. 
   x <- array(c(0,1,0,0,0,0,0,1,0,1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,1), c(2,2,7), dimnames = list( RdWorks=c("rWdy", "rWdn") , Rain=c("Ry", "Rn"), ev=1:7))

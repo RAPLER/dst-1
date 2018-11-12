@@ -1,3 +1,5 @@
+context("Naming the rows of a matrix")
+library(dst)
 test_that("nameRows", {
   # T1: input must be a matrix
   expect_error(nameRows(c(1,1,3)), "Input is not a matrix.")

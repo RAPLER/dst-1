@@ -1,3 +1,5 @@
+context("Product space construction")
+library(dst)
 test_that("productSpace", {
    # T1 check inputs: tt, spec, infovar
    # T1a check if tt is a matrix
