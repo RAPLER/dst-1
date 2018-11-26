@@ -17,6 +17,8 @@
 #'   infovar=wr_infovar, 
 #'   infovaluenames= list( RdWorks=c("rWdy", "rWdn") , Rain=c("Ry", "Rn")))
 #'  class(wr_rel)="bcaspec"
+#' z <- matrixToMarray(wr_rel)
+#'  
 matrixToMarray <- function(rel) {
   # Check input data
   if ( inherits(rel, "bcaspec") == FALSE) {
