@@ -1,6 +1,6 @@
 # Tests "addTobca" function
 context("add a specification")
-Library(dst)
+library(dst)
 test_that("addTobca", {
   # T1 x must be a bcaspec 
   x1 <- list(a=1:3, b="foo")

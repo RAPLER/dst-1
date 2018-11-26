@@ -1,6 +1,6 @@
 # Tests "bca" function
 context("define a bca")
-Library(dst)
+library(dst)
 test_that("bcaspec_1", {
   # T1: length(f[1,])!=length(cnames)
   f<- t(matrix(c(1,0,1,1),ncol=2))

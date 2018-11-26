@@ -1,5 +1,5 @@
 context("Convert data in another number system")
-Library(dst)
+library(dst)
 test_that("decode", {
   # test from base to decimal
   result <- decode(c(2,2,2,2), c(1,0,1,1))
