@@ -15,7 +15,7 @@ addTobca(x, f)
 The original bca  mass function \code{x} augmented with the added subsets defined by \code{f}.
 }
 \description{
-Given a previously defined bca, the user may want to add some elements of the set of possible values or some subsets, even if they have zero mass value. This feature is useful, for example, to examine the plausibility results of these elements or subsets of zero mass value.
+Given a previously defined mass function (bca), the user may want to add some elements of the set of possible values or some subsets, even if they have zero mass value. This feature is useful, for example, to examine the plausibility results of these elements or subsets of zero mass value.
 }
 \examples{
  

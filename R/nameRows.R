@@ -4,7 +4,7 @@
 #'  
 #' @param f A (0,1)-matrix or a boolean matrix.
 #' @return The result is a character vector of the labels proposed for the rows of the matrix \code{f}. The length of the result is \code{nrow(f)}. 
-#' @details The row containing all one's is called "frame", to avoid too long a character string. The empty set is named "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a matrix representing a product space definition on many variables, row labels can be pretty long.
+#' @details The row containing all one's is called "frame", to avoid too long a character string. The empty set is named by its code "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a product space defined on many variables, row labels will be very long.
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples 
 #' f <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)

@@ -10,7 +10,7 @@ nzdsr(x)
 \item{x}{A mass function, i.e. a list of class bcaspec..}
 }
 \value{
-The normalized bca mass function inputted.
+The normalized bca mass function.
 }
 \description{
 It may occur that the result of the combination of two mass functions with Dempater'Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set.

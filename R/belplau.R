@@ -1,10 +1,10 @@
 #' Calculation of the degrees of Belief and Plausibility
 #'
 #'Degrees of Belief \code{Bel} and Plausibility \code{Pl} of the focal elements of a mass function are computed. The ratio of the plausibility of a focal element against the plausibility of its contrary is also computed. Subsets with zero mass can be excluded from the calculations.\cr
-#' @details The degree Belief \code{Bel} is defined by: \cr
-#' \deqn{bel(A) = Sum((m(B); B \subseteq A))}{bel(A) = Sum((m(B); B <= A))}, for every subset B of A.\cr
+#' @details The degree of belief \code{Bel} is defined by: \cr
+#' \deqn{bel(A) = Sum((m(B); B \subseteq A))}{bel(A) = Sum((m(B); B <= A))} for every subset B of A.\cr
 #' The degree of plausibility \code{pl} is defined by: \cr
-#' \deqn{pl(A) = Sum[(m(B); B \cap A \neg \o]}{pl(A) = Sum[(m(B); B and A not empty]}, for every subset \code{B} of the frame of discernment. \cr
+#' \deqn{pl(A) = Sum[(m(B); B \cap A \neg \o]}{pl(A) = Sum[(m(B); B and A not empty]} for every subset \code{B} of the frame of discernment. \cr
 #' The plausibility ratio of a focal element \code{A} versus its contrary \code{not A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.

@@ -2,7 +2,7 @@
 #'
 #' It may occur that the result of the combination of two mass functions with Dempater'Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
 #' @param x A mass function, i.e. a list of class bcaspec..
-#' @return The normalized bca mass function inputted.
+#' @return The normalized bca mass function.
 #' @author Claude Boivin, Stat.ASSQ
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 #' @examples 

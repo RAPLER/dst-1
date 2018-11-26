@@ -13,7 +13,7 @@ plautrans(x)
 The matrix of singletons with their plausibility transformation added in the last column.
 }
 \description{
-The application of the plausibility transformation to the singletons of a frame yields the probability distribution associated with a mass function.
+Given a mass function defined on some subsets of a frame \eqn{\Theta}, the application of the plausibility transformation to the singletons of \eqn{\Theta} yields the probability distribution associated with the this mass function.
 }
 \details{
 We compute the plausibility measure of all the singletons of the frame of discernment. The probability distribution of the singletons is obtained from their plausibility measures.
