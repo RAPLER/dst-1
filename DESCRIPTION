@@ -2,7 +2,7 @@ Package: dst
 Type: Package
 Title: Using the Theory of Belief Functions 
 Encoding: UTF-8
-Version: 1.3.0
+Version: 1.3.0.9000
 Date: 2018-11-30
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
