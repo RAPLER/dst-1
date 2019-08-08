@@ -58,6 +58,10 @@ extmin <- function(rel1, relRef) {
   if (sum(lvman) == 0) {
     stop("No missing variable. Check your inputs.")
   }
+  # 4 Stop if names of variables are missing,
+  if (is.null(names(rel1$infovaluenames)) | (is.null(names(relRef$infovaluenames)))  ){
+    stop("Names of variables missing. Check your inputs.")
+  }
   # B. Calculations
   ind_lvman <- (lvman >0) * 1:length(lvman)
   cardrelRef <- as.vector(infovar[,2])
