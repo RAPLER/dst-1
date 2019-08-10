@@ -1,4 +1,6 @@
-dst 1.3.0.9000
+dst 1.3.1 (on CRAN)
+- Correction to fn extmin: Added a test for variable names missing.
+
 - Correction to productSpace function. Transpose of array removed at the end of the function.
 ================
 dst v 1.3.0 (on CRAN 2018-12-05)

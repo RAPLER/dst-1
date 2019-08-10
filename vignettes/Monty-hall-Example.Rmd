@@ -41,8 +41,7 @@ I have just defined a belief function by using a known probability distribution 
 library(dst)
 # Evidence for sun
 Weather <-  bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0, 0.45, 0.55), cnames =c("Sun", "NoSun"), infovarnames = "Weather", varnb = 1)
-Weather
-# and now the belief function
+# The belief function of Weather
 tabresul(Weather)
 ```
 We don't have a probability distribution here; only one of the two elementary events has received a mass value; The elementary  event "no sun" has a degree of support (belief) of 0.45 and the elementary  event "sun" has a degree of support of 0. The remaining mass of 0.55 has been allotted to the frame ${'Sun', 'NoSun'}$. This is the expression of the part of ignorance that remains.
@@ -136,7 +135,6 @@ Let's encode this evidence with function *bca*.
 ```{r}
 # Evidence for door A
 MHA_E <-  bca(f= diag(1,3,3), m= rep(1/3, 3), cnames =c("car", "goat1", "goat2"), infovarnames = "MHA", varnb = 1)
-MHA_E
 # At this point, no big deal...
 tabresul(MHA_E)
 ```
@@ -149,7 +147,7 @@ Let's translate this in R with function *bca*:
 ```{r}
 # Evidence for door B
 MHB_E <- bca(f= matrix(c(0,1,1), ncol=3, byrow = TRUE), m=1, cnames =c("car", "goat1", "goat2"), infovarnames = "MHB" , varnb=2)
-MHB_E
+tabresul(MHB_E)
 ```
 ## The hypergraph of the Monty Hall game
 
