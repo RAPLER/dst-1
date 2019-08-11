@@ -81,7 +81,6 @@ bcaRel <- function(tt, spec, infovar, infovarnames = NULL, relnb = NULL) {
     if (missing(relnb)) { relnb <- 0 }
     inforel <- matrix(c(relnb, length(varnb)), ncol = 2)
     colnames(inforel) <- c("relnb", "depth")
-    # test
     valuenames <- split(colnames(tt), rep(paste(rep("v",length(varnb)),c(1:length(varnb)),sep=""), infovar[,2]))
     if (!missing(infovarnames)) {
       names(valuenames) <- infovarnames

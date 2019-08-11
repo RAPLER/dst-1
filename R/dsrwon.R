@@ -80,7 +80,6 @@ dsrwon<-function(x,y, relnb = NULL) {
     inforel <- matrix(c(relnb, depth), ncol = 2)
     colnames(inforel) <- c("relnb", "depth")
     }
-  ## fin test
   # construction of the result
   z <- list(con = con, tt=tt, spec = spec, infovar = infovar, infovaluenames = infovaluenames, inforel = inforel, I12=I12, sort_order=sort_order)
   class(z) <- append(class(z), "bcaspec")

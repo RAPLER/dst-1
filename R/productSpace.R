@@ -93,13 +93,6 @@ productSpace <- function(tt, specnb, infovar) {
       zt <-  zt | zs1 # zt ok, checked
     } # End of loop B   
     y <-c(y, zt) # transpose not necessary
-    ## code removed
-      # if (ndims < 3) {
-      # y <-c(y, zt) # transpose not necessary
-      # } else {
-      # y <-c(y, aperm(zt, c(2,1, (3:ndims))))  # to check
-      # }
-      ## End of code removed
   } # End of loop A
     y <-matrix(y, ncol = prod(size), byrow = TRUE) # by rows to follow the order of the column names
     colnames(y) <- zNcolsLast
