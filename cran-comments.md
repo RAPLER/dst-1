@@ -7,11 +7,6 @@ output: github_document
 * local OS X install: R-devel (2019-08-10 r76951)
 * win-builder: R-devel (2019-08-10 r76951)
 * Ubuntu 16.04.6 LTS: R for Travis-CI (2019-08-09)
-* R-hub builder 
-  Platform:	Windows Server 2008 R2 SP1, R-devel, 32/64 bit
-  Platform:	Ubuntu Linux 16.04 LTS, R-release, GCC
-  Platform:	Fedora Linux, R-devel, clang, gfortran
-  Status: OK
 
 ## R CMD check results
 0 errors | 0 warnings | 0 notes 
