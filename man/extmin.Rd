@@ -21,7 +21,7 @@ This function works on a mass function defined on a single variable or a relatio
 The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the tt matrix. The relation of reference \code{relRef}  may simply be an empty relation defined on the set of variables of interest or a relation already defined.
 }
 \examples{
-# Naking an empty reference relation with mass(frame) = 1 and
+# Making an empty reference relation with mass(frame) = 1 and
 # extending a bca to its space.
 init_tt= matrix(rep(1,10),nrow=1, 
 dimnames =list(NULL, c("3", "2", "1", "0", 
