@@ -1,7 +1,8 @@
 ---
 title: "Introduction to Belief Functions: The Monty Hall Game"
 author: "Claude Boivin, Stat.ASSQ"
-date: "`r Sys.Date()`"
+date: "2020-01-26"
+# date: "`r Sys.Date()`"
 # output: word_document
 output: rmarkdown::html_vignette
 vignette: >
