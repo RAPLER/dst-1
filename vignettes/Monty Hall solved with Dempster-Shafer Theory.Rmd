@@ -1,0 +1,233 @@
+---
+title: "Introduction to Belief Functions: The Monty Hall Game"
+author: "Claude Boivin, Stat.ASSQ"
+date: "`r Sys.Date()`"
+# output: word_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{An example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+#
+devtools::load_all(".") # used while testing with R-devel
+# attach package dst
+# library(dst) When using the package in place of devtools
+#
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# The Monty Hall Game
+
+Let us recall the Monty Hall Game from its statement in the Wikipedia article ^[https://en.wikipedia.org/w/index.php?title=Monty_Hall_problem&oldid=829292640] on the subject:
+
+    "Suppose you're on a game show. Three doors *A*, *B* and *C* are in front of you. Behind one door is a brand new car, and behind the two others, a goat. You are asked to pick one of the three doors. Then the host of the game, who knows what's behind the doors, opens one of the two remaining doors and shows a goat. He then asks you: "Do you want to switch doors or keep your initial choice?" 
+
+Say you have chosen the door *A* and the host has opened door *B*.
+The question now is: Is it to your advantage to switch your choice from door *A* to door *C*?"
+
+**Some notation to begin with**
+
+For each door *A, B, C*, consider the same frame of discernment (Fod) *F* with three possible values: 
+  $$F = \{car, goat 1, goat 2\}.$$ 
+I use (0,1)-vectors to identify each element of the frame. Hence, the element "car" is identified by the vector $(1, 0, 0)$, goat 1 by the vector $(0, 1, 0)$ and goat 2 by the vector $(0, 0, 1)$.
+
+With this notation, any subset of *F* has a unique (0,1) representation. For example, the subset $\{goat 1, goat 2\}$ is represented by the vector $(0, 1, 1)$.
+
+## Analysis of the problem
+
+We have three things to consider: 
+
+1. How the three doors are linked;
+2. Evidence pertaining to door *A* (choice of the  contestant);
+3. Evidence pertaining to door *B* (the action of the host).
+
+### 1. How the three doors are linked
+
+There are six possible combinations of the car and the two goats behind the three doors *A, B, C*:
+
+$\{car, goat 1, goat 2\}$
+$\{car, goat 2, goat 1\}$
+$\{goat 1, car, goat 2\}$
+$\{goat 1, goat 2, car\}$
+$\{goat 2, car, goat 1\}$
+$\{goat 2, goat 1, car\}$.
+
+These combinations are elements of the product space $F_{ABC} = \prod(A, B, C)$. The number of elements of $F_{ABC}$ is $3^3 = 27$.  The six possible dispositions of the car and goats determine a subset *S* of the Fod $F_{ABC}$. A mass of 1 is allotted to this subset *S*.
+
+I use the function *bcaRel* to code the desired relation between the doors.
+
+```{r}
+# 1. define the tt matrix MHABC_tt, which encodes the subset S
+# 
+MHABC_tt <- matrix(c(1,0,0,0,1,0,0,0,1,
+                     1,0,0,0,0,1,0,1,0,
+                     0,1,0,1,0,0,0,0,1,
+                     0,1,0,0,0,1,1,0,0,
+                     0,0,1,1,0,0,0,1,0,
+                     0,0,1,0,1,0,1,0,0), ncol=9, byrow=TRUE)
+colnames(MHABC_tt) <- rep(c("car", "g1", "g2"), 3)
+#
+# 2. define the spec matrix. 
+# Here we have one subset of six elements
+# 
+MHABC_spec = matrix(rep(1,12), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+# 
+# 3. define the info matrix. 
+# for each variable, we attribute a number and give the size of the frame
+# 
+MHABC_info =matrix(c(1:3, rep(3,3)), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
+# 
+# 4. call of the function with the name of the variables and the numbering of the relation
+# 
+MHABC_rel <-  bcaRel(tt = MHABC_tt, spec = MHABC_spec, infovar = MHABC_info, infovarnames = c("MHA", "MHB", "MHC"), relnb = 1)
+# 
+# Relation vetween the three doors A, B and C
+bcaPrint(MHABC_rel)
+# Note that row labels can become pretty long. If it is the case, the prmatrix function can be used to view results, for example:
+#
+# prmatrix(t(MHABC_rel$tt), collab = "")
+#
+# Another way to check the tt matrix is:
+#
+# which(MHABC_rel$tt[1,] == TRUE)
+```
+
+### 2. Evidence pertaining to the choice of the contestant (door *A*)
+
+You have chosen door *A*. At this point, the problem is quite simple. Your belief is equally divided between 3 possible outcomes: car, goat 1 or goat 2:
+$m({car}) = m({g1}) = m({g2}) = 1/3$.
+Let's encode this evidence with function *bca*.
+
+```{r}
+# Evidence related to choice of door A
+MHA_E <-  bca(f= diag(1,3,3), m= rep(1/3, 3), cnames =c("car", "goat1", "goat2"), infovarnames = "MHA", varnb = 1)
+# Evidence of the contestant (function MHA_E attached to variable A)
+bcaPrint(MHA_E)
+```
+
+### 3. Evidence pertaining to door B
+
+But the host wanted to add some thrill to the game. He has opened door B and revealed a goat. The host has given us a small piece of evidence: Goat 1 or goat 2 was behind door B. Since the host knows what is behind each door, the mass value of this piece of evidence is:
+$m({g1, g2}) = 1$.
+
+Let's translate this in R with function *bca*:
+```{r}
+# Evidence for door B
+MHB_E <- bca(f= matrix(c(0,1,1), ncol=3, byrow = TRUE), m=1, cnames =c("car", "goat1", "goat2"), infovarnames = "MHB" , varnb=2)
+# Evidence added by the Host (function MHB_E attached to variable B)
+bcaPrint(MHB_E)
+```
+
+## The hypergraph of the Monty Hall game
+
+We now have all the elements of a small belief network made of one relation (MHABC_rel) between three variables: Door *A*, Door *B*, Door *C*, and two pieces of evidence coming from the Contestant (MHA_E) and the Host two (MHB_E). Variables A, B and C (doors) are the nodes of the graph. The edges (hyperedges) are the evidences MHA_E AND MHB_E and the relation MHABC_rel. We use the package igraph ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. http://igraph.org] to produce a bipartite graph corresponding to the desired hypergraph.
+
+
+```{r, fig.show='hold', fig_caption: yes, echo=FALSE, message=FALSE}
+# The network
+if (requireNamespace("igraph", quietly = TRUE) ) {
+library(igraph)
+# Encode pieces of evidence and relations with an incidence matrix
+Monty_hgm <- matrix(c(1,1,1,1,0,0,0,1,0), ncol=3, dimnames = list(c("A", "B", "C"), c("r_ABC", "ev_A", "ev_B")))
+# The graph structure
+Monty_hg <- graph_from_incidence_matrix(incidence = Monty_hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
+V(Monty_hg)
+# Show variables as circles, relations and evidence as rectangles
+V(Monty_hg)$shape <- c("circle", "crectangle")[V(Monty_hg)$type+1]
+V(Monty_hg)$label.cex <- 0.6
+V(Monty_hg)$label.font <- 2
+# render graph
+plot(Monty_hg, vertex.label = V(Monty_hg)$name, vertex.size=(4+4*V(Monty_hg)$type)*8)
+}
+```
+
+## Now, the solution with the calculus of belief functions
+
+Since we want to know if there is advantage to switch doors, our goal is the calculation of a belief function *MHC* attached to the variable of interest *C* (Door C). To obtain this belief function, we need to combine evidence for doors A (Contestant) and B (Host) with the relation linking the three doors in the product space $F_{ABC}$. We will use a process of successive elimination of variables until only variable *C* remains.
+
+The calculations involved follow the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. lnternational Journal of Approxtmate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
+
+Three kinds of operations are involved in the calculations:
+a) the minimal (vacuous) extension of a mass function to a larger Fod;
+b) the combination of two mass functions by Dempster's rule;
+c) the marginalization of a mass function, i.e. eliminating a variable to reduce the function to a smaller Fod.
+
+### First step: Eliminate variable *A* (Door A)
+Using function *extmin*, we extend the mass function MHA_E to the space $\prod(A, B, C)$; then we combine MHA_E extended with MHABC_rel, using functions *dsrwon* and *nzdsr* (normalization); finally, we use function *elim* to eliminate *A* by marginalizing to $\prod(B, C)$. The mass function obtained is named MHBC. This gives a reduced network with *B* and *C*.
+
+```{r}
+# 1. Extend MHA to the product space A x B x C
+MHA_ext <- extmin(MHA_E, MHABC_rel )
+"Evidence of Contestant extended to the product space A x B x C"
+bcaPrint(MHA_ext)
+#
+# 2. Combine MHA_ext and MHABC_rel
+MHA_ABC_comb <- dsrwon(MHA_ext,MHABC_rel)
+# since  the measure of contradiction is 0, no need to normalize
+MHA_ABC_comb$con
+# "Subsets resulting from the combination of Expert 1 extended and r1"
+bcaPrint(MHA_ABC_comb)
+#
+# 3. Eliminate variable A
+MHBC <- elim(MHA_ABC_comb, xnb = 1)
+bcaPrint(MHBC)
+```
+
+After this first step, the graph is updated.
+
+#### The reduced belief network
+
+```{r echo=FALSE}
+# {r, fig.show='hold', fig_caption: yes, echo=FALSE, message=FALSE}
+Monty2_hgm <- matrix(c(1,1,1,0), ncol=2, dimnames = list(c("B", "C"), c("r_BC", "ev_B")))
+Monty2_hg <- graph_from_incidence_matrix(incidence = Monty2_hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
+V(Monty2_hg)
+# Variables as circles, relations and evidence as rectangles
+V(Monty2_hg)$shape <- c("circle","crectangle")[V(Monty2_hg)$type+1]
+V(Monty2_hg)$label.cex <- 0.6
+V(Monty2_hg)$label.font <- 2
+# render graph
+# plot(Monty_hg, vertex.size=40)
+plot(Monty2_hg, vertex.label = V(Monty2_hg)$name, vertex.size=(4+4*V(Monty2_hg)$type)*8)
+```
+
+### 2. Second step: Eliminate variable *B* (door B)
+Similarly, we extend evidence on B in the product spave $\prod(B, C)$, combine the extended evidence with the relation MHBC, then marginalize to C. This will give the final result.
+
+```{r}
+# 1. Extend MHB_E to the space B x C
+MHB_ext <- extmin(MHB_E, MHBC )
+# Evidence of Host extended to the product space B x C"
+bcaPrint(MHB_ext)
+#
+# 2. combination of MHB_ext and MHBC
+MHB_BC_comb <- dsrwon(MHB_ext, MHBC)
+# "Subsets of the space B x C resulting from the combination of Host extended and MHBC"
+bcaPrint(MHB_BC_comb)
+# MHA_BC_comb$con = 0, no need to normalize)
+MHB_BC_comb$con
+#
+# 3. Eliminate variable B
+MHC <- elim(MHB_BC_comb, xnb = 2)
+# Final result: the belief function MHC attached to variable C
+belplau(MHC)
+```
+
+## Conclusion:
+As we can see, we double our chances of winning the car if we switch from door A to door C. 
+
+Note that there is no loss of generality by fixing the choices in the analysis (door A for the contestant, door B for the host).
+
+To be more specific and make a bridge with probability theory, we can add to our result all the elementary events that have 0 mass, so that we can see their measure of plausibility.
+
+The function *addTobca* serves this purpose.
+```{r}
+MHC_plus_singl <- addTobca(MHC, f=matrix(c(0,1,0,0,0,1), ncol = 3, byrow = TRUE))
+tabresul(MHC_plus_singl)
+```
