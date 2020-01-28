@@ -13,6 +13,7 @@ Collate:
     'addTobca.R'
     'bca.R'
     'bcaRel.R'
+    'bcaPrint.R'
     'belplau.R'
     'decode.R'
     'dotprod.R'

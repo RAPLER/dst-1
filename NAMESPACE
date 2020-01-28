@@ -2,6 +2,7 @@
 
 export(addTobca)
 export(bca)
+export(bcaPrint)
 export(bcaRel)
 export(belplau)
 export(decode)
