@@ -127,7 +127,7 @@ bcaPrint(MHB_E)
 
 ## The hypergraph of the Monty Hall game
 
-We now have all the elements of a small belief network made of one relation (MHABC_rel) between three variables: Door *A*, Door *B*, Door *C*, and two pieces of evidence coming from the Contestant (MHA_E) and the Host two (MHB_E). Variables A, B and C (doors) are the nodes of the graph. The edges (hyperedges) are the evidences MHA_E AND MHB_E and the relation MHABC_rel. We use the package igraph ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. http://igraph.org] to produce a bipartite graph corresponding to the desired hypergraph.
+We now have all the elements of a small belief network made of one relation (MHABC_rel) between three variables: Door *A*, Door *B*, Door *C*, and two pieces of evidence coming from the Contestant (MHA_E) and the Host two (MHB_E). Variables A, B and C (doors) are the nodes of the graph. The edges (hyperedges) are the evidences MHA_E (named ev_A on the graph) and MHB_E (ev_B on the graph) and the relation MHABC_rel (r_ABC on the graph). We use the package igraph ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. http://igraph.org] to produce a bipartite graph corresponding to the desired hypergraph.
 
 
 ```{r, fig.show='hold', fig_caption: yes, echo=FALSE, message=FALSE}
