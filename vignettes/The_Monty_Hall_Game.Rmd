@@ -1,12 +1,12 @@
 ---
-title: "Introduction to Belief Functions: The Monty Hall Game"
+title: "The Monty Hall Game"
 author: "Claude Boivin, Stat.ASSQ"
 date: "2020-01-26"
 # date: "`r Sys.Date()`"
 # output: word_document
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An example}
+  %\VignetteIndexEntry{The Monty Hall Game}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
