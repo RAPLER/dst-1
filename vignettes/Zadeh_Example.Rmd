@@ -4,7 +4,7 @@ author: "Claude Boivin, Stat.ASSQ"
 date: "2020-01-19"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Solving Zadeh's Example}
+  %\VignetteIndexEntry{Using dst Package on Zadeh's Example}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
