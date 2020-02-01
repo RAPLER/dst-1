@@ -1,0 +1,607 @@
+---
+title: "Captain's Example"
+author: Claude Boivin
+date: 2018-06-20
+output: rmarkdown::html_vignette
+# output: word_document
+vignette: >
+  %\VignetteIndexEntry{Captain_Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+#
+devtools::load_all(".") # used while testing with R-devel
+# attach package dst
+# library(dst) When using the package in place of devtools
+#
+knitr::opts_knit$set(echo = TRUE, root.dir = rprojroot::find_rstudio_root_file())
+# XX knitr::opts_knit$set(echo = TRUE, root.dir = 'relative_path_to_root_from_Rmd')
+```
+
+
+## Summary
+
+The Captain’s Problem has been introduced by R. G. Almond ^[Almond, R. G. (1989). Fusion and Propagation in Graphical Belief Models: An Implementation and an Example. Ph.D. dissertation and Harvard University, Department of Statistics Technical Report S-130, pp 210-214.] as an example to illustrate how to specify a graphical belief model and how to combine the belief functions with an algorithm called Fusion and Propagation. Lately, P. P. Shenoy has revisited this example in great detail in a presentation on Valuation-Based Systems ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015.].
+
+## The Captain’s Problem
+The goal is to find the Arrival delay of the ship, a number of days varying from 0 to 6. This delay is the sum of two categories of delays, the Departure delay and the Sailing delay. The Departure delay is the sum of three kind of delays, Loading, Maintenance and Forecast of bad weather. In this example, each delay is supposed to be of only one day for a maximum of three days. The Sailing delay can occur from bad Weather (one day) or Repairs at sea (one day each).
+
+There are 8 variables involved: (Arrival delay, Departure delay, Sailing delay, Loading delay, Forecast of the weather, Maintenance delay, Weather at sea, Repairs at sea). 
+
+Six relations (R1 to R6) are defined between these variables. 
+
+Finally three inputs of evidence (L, F, M) are given.
+
+## Relations between the variables:
+# R1: ADS 
+A = D + S. 
+ΩA = {0,1,2,3,4,5,6}; ΩD = {0,1,2,3}; ΩS = {0,1,2,3}
+
+```{r}
+# library(dst)
+#setwd("~/data")
+load("data/ads.rda")
+ads_tt<- ads[-1,-c(1,2)]
+ads_tt  <- as.matrix(ads_tt)
+ads_info = matrix(c(1,2,3,7,4,4), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
+ads_spec = matrix(c(rep(1,16), 2,rep(1,16),0), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+ads_rel <- bcaRel(tt = ads_tt, spec = ads_spec, infovar = ads_info, infovarnames = c("Arrival", "Departure", "Sail"), relnb = 1)
+# print without labels if too wide
+# prmatrix(t(ads_rel$tt), collab = rep("", nrow(ads_rel$tt)), rowlab = rep("",(1+ ncol(ads_rel$tt)))) 
+```
+
+# R2: DLFM 
+D =sum of delays of 1 day for each of L, F, M). ΩL = {true, false}; ΩF = {foul, fair}; ΩM = {true, false}
+
+```{r}
+load("data/dlfm.rda")
+dlfm_tt<- dlfm[-1,-c(1,2)]
+dlfm_tt  <- as.matrix(dlfm_tt)
+colnames(dlfm_tt) <- colnames(dlfm)[-c(1,2)]
+dlfm_info = matrix(c(2,4,5,6,4,2,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
+dlfm_spec = matrix(c(rep(1,8), 2,rep(1,8),0), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+dlfm_rel <- bcaRel(tt = dlfm_tt, spec = dlfm_spec, infovar = dlfm_info, infovarnames = c("Departure", "Loading", "Forecast", "Maintenance"), relnb = 2)
+# print without labels if too wide
+# prmatrix(t(dlfm_rel$tt), collab = rep("", nrow(dlfm_rel$tt)), rowlab = rep("",(1+ ncol(dlfm_rel$tt)))) # OK avec APL
+```
+
+# R3: SWR
+R3 : S = sum of delays of 1 day for each condition, W or R or both, true 90 % of the time. ΩW= {foul, fair}; ΩR = {true, false}
+
+m({0 fair false}, {1 foul false}, {1 fair true}, {2 foul true}) = 0.9; 
+m(ΩS x ΩW x ΩR) = 0.1.
+
+```{r}
+load("data/swr.rda")
+swr_tt<- swr[-1,-c(1,2)]
+swr_tt  <- as.matrix(swr_tt)
+swr_info = matrix(c(3,7,8,4,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
+swr_spec = matrix(c(rep(1,4), 2,rep(0.9,4), 0.1), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+swr_rel <- bcaRel(tt = swr_tt, spec = swr_spec, infovar = swr_info, infovarnames = c("Sail", "Weather", "Repairs"), relnb = 3)
+# print without labels if too wide
+# prmatrix(t(swr_rel$tt), collab = rep("", nrow(swr_rel$tt)), rowlab = rep("",(1+ ncol(swr_rel$tt)))) # OK
+```
+
+# R4: FW
+W <-> F in (W x F): 
+m({foul, foul), (fair, fair)} = 0.8 ; 
+m(ΩW x ΩF) = 0.2
+
+```{r}
+load("data/fw.rda")
+fw_tt<- fw[-1,-c(1,2)]
+fw_tt  <- as.matrix(fw_tt)
+fw_info = matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
+fw_spec = matrix(c(rep(1,2), 2,rep(0.8,2), 0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+fw_rel <- bcaRel(tt = fw_tt, spec = fw_spec, infovar = fw_info, infovarnames = c("Forecast", "Weather"), relnb = 4)
+```
+# R5: MR 
+We specify R if M = true in (M x R):
+m({(true, true), (false, true), (false, false)}) = 0.1,
+m({(false, true), (true, false), (false, false)}) = 0.7
+m(ΩR x ΩM) = 0.2
+
+```{r}
+load("data/mrt.rda")
+mrt_tt<- mrt[-1,-c(1,2)]
+mrt_tt  <- as.matrix(mrt_tt)
+mrt_info = matrix(c(6,8,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
+mrt_spec = matrix(c(rep(1,3), rep(2,3), 3, rep(0.1,3), rep(0.7,3), 0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+mrt_rel <- bcaRel(tt = mrt_tt, spec = mrt_spec, infovar = mrt_info, infovarnames = c("Maintenance", "Repairs"), relnb = 5) # OK
+# print without labels if too wide
+# prmatrix(t(mrt_rel$tt), collab = rep("", nrow(mrt_rel$tt)), rowlab = rep("",(1+ ncol(mrt_rel$tt)))) 
+```
+
+# R6: MR
+We specify R if M = false: in (M x R): 
+m({(true, false), (true, true), (false, true)}) = 0.2, 
+m({(false, false), (true, true), (true, false)}) = 0.2
+m(ΩR x ΩM) = 0.6
+
+```{r}
+load("data/mrf.rda")
+mrf_tt<- mrf[-1,-c(1,2)]
+mrf_tt  <- as.matrix(mrf_tt)
+mrf_info = matrix(c(6,8,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
+mrf_spec = matrix(c(rep(1,3), rep(2,3), 3, rep(0.2,3), rep(0.2,3), 0.6), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+mrf_rel <- bcaRel(tt = mrf_tt, spec = mrf_spec, infovar = mrf_info, infovarnames = c("Maintenance", "Repairs"), relnb = 6) # OK
+# print without labels if too wide
+# prmatrix(t(mrf_rel$tt), collab = rep("", nrow(mrf_rel$tt)), rowlab = rep("",(1+ ncol(mrf_rel$tt)))) 
+```
+
+# Combination of R5 and R6: new R5
+Since R5 and R6 are defined on the same space MxR, we can immediately combine them in a single relation, using Dempster Rule of combination.
+
+```{r}
+mr_rel <- nzdsr(dsrwon(mrt_rel, mrf_rel))
+mr_rel$spec
+# prmatrix(t(mr_rel$tt), collab = rep("", nrow(mr_rel$tt)), rowlab = rep("",(1+ ncol(mr_rel$tt)))) # OK
+```
+## Input of evidence
+
+# 1: Loading delay
+m({true}) = 0.5 ; m({false})= 0.3 ; m({true}, {false}) = 0.2
+
+```{r}
+l_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.3, 0.5, 0.2), cnames = c("true", "false"), varnb = 4, infovarnames = "Loading")
+```
+
+# Evidence 2: Forecast of Weather
+m({foul}) = 0.2 ; m({fair})= 0.6 ; m({foul}, {fair}) = 0.2
+
+```{r}
+f_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.2, 0.6, 0.2), cnames = c("foul", "fair"), varnb = 5, infovarnames = "Forecast")
+```
+
+# Evidence 3: Maintenance before sailing
+m({true}) = 0 ; m({false})= 1 .
+
+```{r}
+m_rel <- bca(f = matrix(c(1,0,0,1), ncol = 2, byrow = TRUE), m = c(0, 1), cnames = c("true", "false"), varnb = 6, infovarnames = "Maintenance")
+```
+
+## The hypergraph of the Captain’s Problem
+We now look at the Captain’s Problem as a belief network.
+The eight variables involved are the nodes of the graph: Arrival, Departure, Sailing, Loading, Forecast, Maintenance, Weather, Repairs. The edges (hyperedges) are given by the five relations R1 to R5 and the three inputs of evidence (L, F, M).
+
+We use the package igraph ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. http://igraph.org] to produce a bipartite graph corresponding to the desired hypergraph.
+
+```{r, fig.show='hold', fig_caption: yes}
+# The network
+if (requireNamespace("igraph", quietly = TRUE) ) {
+library(igraph)
+# Encode pieces of evidence and relations with an incidence matrix
+R1 <- 1*1:8 %in% ads_rel$infovar[,1]
+R2 <- 1*1:8 %in% dlfm_rel$infovar[,1]
+R3 <- 1*1:8 %in% swr_rel$infovar[,1]
+R4 <- 1*1:8 %in% fw_rel$infovar[,1]
+R5 <- 1*1:8 %in% mr_rel$infovar[,1]
+E1 <- 1*1:8 %in% l_rel$infovar[,1]
+E2 <- 1*1:8 %in% f_rel$infovar[,1]
+E3 <- 1*1:8 %in% m_rel$infovar[,1]
+
+# information on variables
+captain_vars1 <- c( ads_rel$infovaluenames,  dlfm_rel$infovaluenames[2:4],  swr_rel$infovaluenames[2:3])
+captain_vars <- rbind( ads_rel$infovar,  dlfm_rel$infovar[2:4,],  swr_rel$infovar[2:3,])
+captain_var_names <-names(captain_vars1)
+rownames(captain_vars) <- captain_var_names
+## mod
+# captain_var_names[,1] <- as.character(captain_var_names[,1])
+# colnames(captain_var_names) <- c("varname", "varnb")
+#
+# infos on relations
+captain_data_names <- c("ads_rel", "dlfm_rel", "swr_rel", "fw_rel", "mr_rel", "l_rel", "f_rel", "m_rel")
+# the incidence matrix
+captain_hgm <- matrix(c(R1,R2,R3,R4,R5,E1,E2,E3), ncol=8, dimnames = list(c("Arrival", "Departure", "Sailing", "Loading", "Forecast", "Maintenance", "Weather", "Repairs"), c("R1", "R2", "R3", "R4","R5","E1","E2","E3")))
+captain <- list(captain_hgm, captain_var_names, captain_data_names)
+#
+## The graph structure of the problem
+#
+captain_hg <- graph_from_incidence_matrix(incidence = captain_hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
+V(captain_hg)
+# Show variables as circles, relations and evidence as rectangles
+V(captain_hg)$shape <- c("circle", "crectangle")[V(captain_hg)$type+1]
+V(captain_hg)$label.cex <- 0.6
+V(captain_hg)$label.font <- 2
+# render graph
+plot(captain_hg, vertex.label = V(captain_hg)$name, vertex.size=(3+6*V(captain_hg)$type)*6)
+}
+```
+#
+## Calculations to obtain the belief function of the Arrival delay
+#
+```{r}
+# variables numbers
+N <- 1:8
+# Elimination order of the variables. The goal: Arrival
+elim_order <- c(8,7,6,1,5,4,3,2)
+var_to_elim <- rownames(captain_hgm)[order(elim_order)]
+#
+# 1: first step
+# first var to eliminate
+var_to_elim[1] # Loading (4)
+irel_to_elim<- captain_hgm["Loading",]*1:ncol(captain_hgm)
+rels_nb <- irel_to_elim[irel_to_elim>0]
+#
+## to do: find which rel to extend (ici c'est E1)
+# extend R6 (Z7_T EN APL)
+l_ext <- extmin(get(captain_data_names[6]), get(captain_data_names[2])) 
+z7_ext=l_ext # pour comparer avec APL. OK, identique à APL
+# prmatrix(t(l_ext$tt), collab = rep("", nrow(l_ext$tt)), rowlab = rep("",(1+ ncol(l_ext$tt)))) # semble OK
+# combine E1, R2
+# use length(captain_data_names) to assign the next relation nb
+rel_2_6 <- nzdsr(dsrwon(l_ext, get(captain_data_names[2]), relnb = 1+length(captain_data_names)))
+Z27_COMB=rel_2_6 # pour comparer avec APL. OK pour les sommes de lignes
+# prmatrix(t(rel_2_6$tt), collab = rep("", nrow(rel_2_6$tt)), rowlab = rep("",(1+ ncol(rel_2_6$tt)))) # OK, identique à APL, sauf 3 cols supp de masse 0
+# eliminate the variable "Loading" (4)
+rel_9 <- elim(rel_2_6, xnb = order(elim_order)[1])
+# prmatrix(t(rel_9$tt), collab = rep("", nrow(rel_9$tt)), rowlab = rep("",(1+ ncol(rel_9$tt)))) 
+zz10_T=rel_9 # OK tableaux de 0,1 identiques, m(frame)=0
+#
+# update hg and relations names
+# remove R2 and E7, add R9
+R9 <- 1*1:8 %in% rel_9$infovar[,1]
+captain_hgm1 <- cbind(captain_hgm[,-c(2,6)], R9)
+captain_data_names1 <- c(captain_data_names[-c(2,6)], "rel_9")
+captain_var_names1 <- captain_var_names[-order(elim_order)[1]]
+#
+## second step eliminate var "Repairs" (8)
+var_to_elim[2] 
+order(elim_order)[2] # Repairs (8)
+irel_to_elim<- captain_hgm1[var_to_elim[2],]*1:ncol(captain_hgm1)
+rels_nb <- irel_to_elim[irel_to_elim>0]
+# find variables numbers of each relation to obtain the space to construct
+rels_names = captain_data_names1[rels_nb]
+yv1 = get(rels_names[1])$infovar
+yv2 = get(rels_names[2])$infovar
+yv=rbind(yv1,yv2)
+yinfov = doubles(yv)
+infovar <- yinfov[order(yinfov[,1]),]
+#
+# extract infovaluenames
+infovalues <- captain_vars1[infovar[,1]]
+
+# extend the two relations before combining them
+# 1. making an empty reference relation with mass(frame) = 1 and
+# extending a bca to it.
+# 1: construct the tt matrix
+init_tt= matrix(rep(1,10),nrow=1, 
+dimnames =list(NULL, c("3", "2", "1", "0", 
+"false", "true",  "fair","foul",  "false", "true")) )
+# 2: mass values
+init_spec <- matrix(c(1,1), ncol = 2, 
+dimnames = list(NULL, c("specnb", "mass")))
+# 3: info on variables
+init_info <- matrix(c(3,6,7,8,4,2,2,2), ncol = 2,
+dimnames = list(NULL, c("varnb", "size")) )
+# 4: the relation
+relRef <- bcaRel(tt = init_tt, spec = init_spec,
+infovar = init_info, 
+infovarnames = c("Sail", "Maintenance", "Weather", "Repairs"),
+ relnb = 10)
+# extend the relations
+mr_ext <- extmin(get(captain_data_names1[4]), relRef)
+swr_ext <- extmin(get(captain_data_names1[2]), relRef)
+# 3: combine the two relations
+# combine extended relations
+rel_3_5 <- nzdsr(dsrwon(mr_ext,swr_ext, relnb = 10) )
+#4 eliminate the variable "Maintenance" (8)
+rel_10 <- elim(rel_3_5, xnb = order(elim_order)[2])
+# check the result
+# prmatrix(t(swr_ext$tt), collab = rep("", 32)) # OK
+# prmatrix(t(mr_rel$tt), collab = rep("", 9)) # OK
+# prmatrix(t(mr_ext$tt), collab = rep("", 32)) # OK pour les sommes de 1 (colSums); les suites de 0,1 pas dans le même ordre qu'en APL après avoir remis les vars dans l'ordre original (comparé avec Z56_EXT)
+# prmatrix(t(rel_3_5$tt), collab = rep("", 18)) # OK pour les masses; pas les mêmes sommes sur les 18 lignes *******
+# prmatrix(t(rel_10$tt), collab = rep("", 16)) # comparé avec ZZ11_T de APL, semble OK
+#
+# update hg and relations names
+# remove R3 and R5, add R10
+R10 <- 1*1:8 %in% rel_10$infovar[,1]
+captain_hgm2 <- cbind(captain_hgm1[,-rels_nb], R10)
+captain_data_names2 <- c(captain_data_names1[-rels_nb], "rel_10")
+#
+## Third step eliminate var "Weather" (7)
+var_to_elim[3] 
+order(elim_order)[3] # Weather (7)
+irel_to_elim<- captain_hgm2[var_to_elim[3],]*1:ncol(captain_hgm2)
+rels_nb <- irel_to_elim[irel_to_elim>0]
+# find variables numbers of each relation to obtain the space to construct
+rels_names = captain_data_names2[rels_nb]
+yv1 = get(rels_names[1])$infovar
+yv2 = get(rels_names[2])$infovar
+yv=rbind(yv1,yv2)
+yinfov = doubles(yv)
+infovar <- yinfov[order(yinfov[,1]),]
+#
+# extract infovaluenames
+infovalues <- captain_vars1[infovar[,1]]
+#
+# extend the two relations before combining them
+# 1. making an empty reference relation with mass(frame) = 1 and
+# extending a bca to it.
+# 1: construct the tt matrix
+init_tt= matrix(rep(1,10),nrow=1, 
+dimnames =list(NULL, c("3", "2", "1", "0","foul", "fair",
+"true", "false",  "foul", "fair")) )
+# 2: mass values
+init_spec <- matrix(c(1,1), ncol = 2, 
+dimnames = list(NULL, c("specnb", "mass")))
+# 3: info on variables
+init_info <- matrix(as.vector(infovar), ncol = 2,
+dimnames = list(NULL, c("varnb", "size")) )
+# 4: the relation
+#
+relRef <- bcaRel(tt = init_tt, spec = init_spec,
+infovar = init_info, infovarnames = names(infovalues), relnb = 11)
+#
+# extend the relations
+fw_ext <- extmin(get(captain_data_names2[rels_nb[1]]), relRef)
+rel_10_ext <- extmin(get(captain_data_names2[rels_nb[2]]), relRef)
+# 3: combine the two relations
+# combine extended relations
+rel_4_10 <- nzdsr(dsrwon(fw_ext,rel_10_ext, relnb = 11) )
+#
+# 4 eliminate the variable "Weather" (7)
+rel_11 <- elim(rel_4_10, xnb = order(elim_order)[3])
+# check the result
+# prmatrix(t(fw_ext$tt), collab = rep("", 2)) # OK
+# prmatrix(t(rel_10_ext$tt), collab = rep("", 10)) # OK 
+# prmatrix(t(rel_4_10$tt), collab = rep("", 20)) # OK 
+# prmatrix(t(rel_11$tt), collab = rep("", 19)) # semble OK, compare avec ZZ12_T de APL
+##
+##
+## Fourth step 
+var_to_elim[4] 
+order(elim_order)[4] # Maintenance (6)
+#eliminate var "Maintenance" (6)
+# update hg and relations names
+# --->
+# remove rels_nb R4 and R10, add R11
+R11 <- 1*1:8 %in% rel_11$infovar[,1]
+captain_hgm3 <- cbind(captain_hgm2[,-rels_nb], R11)
+captain_data_names3 <- c(captain_data_names2[-rels_nb], "rel_11")
+#
+irel_to_elim<- captain_hgm3[var_to_elim[4],]*1:ncol(captain_hgm3)
+rels_nb <- irel_to_elim[irel_to_elim>0]
+# find variables numbers of each relation to obtain the space to construct
+rels_names = captain_data_names3[rels_nb]
+yv1 = get(rels_names[1])$infovar
+yv2 = get(rels_names[2])$infovar
+yv3 = get(rels_names[3])$infovar
+yv=rbind(yv1,yv2, yv3)
+yinfov = doubles(yv)
+infovar <- yinfov[order(yinfov[,1]),]
+#
+# extract infovaluenames
+## test
+infovalues = captain_vars1[infovar[,1]]
+#
+# extend the relations before combining them
+# 1. making an empty reference relation with mass(frame) = 1 and
+# extending a bca to it.
+# 1: construct the tt matrix
+##
+# zznames=unlist(infovalues)
+# names(zznames) = NULL
+# 
+init_tt <- matrix(rep(1,sum(infovar[,2])),nrow=1, dimnames = list(NULL, unlist(infovalues) ) )
+## fin test
+# 2: mass values
+init_spec <- matrix(c(1,1), ncol = 2, 
+dimnames = list(NULL, c("specnb", "mass")))
+# 3: info on variables
+init_info <- matrix(as.vector(infovar), ncol = 2,
+dimnames = list(NULL, c("varnb", "size")) )
+# 4: the relation
+relRef <- bcaRel(tt = init_tt, spec = init_spec,
+infovar = init_info, infovarnames = names(infovalues), relnb = 12)
+# extend the relations (3 relations)
+m_ext <- extmin(get(captain_data_names3[rels_nb[1]]), relRef)
+rel_9_ext <- extmin(get(captain_data_names3[rels_nb[2]]), relRef)
+rel_11_ext <- extmin(get(captain_data_names3[rels_nb[3]]), relRef)
+
+# 3: combine the relations
+# combine extended relations
+rel_3_9 <- nzdsr(dsrwon(m_ext,rel_9_ext, relnb = 12) )
+rel_3_9_11 <- nzdsr(dsrwon(rel_3_9,rel_11_ext, relnb = 12) )
+
+# 4 eliminate the variable "Maintenance" (6)
+rel_12 <- elim(rel_3_9_11, xnb = order(elim_order)[4])
+## --> rendu là
+# check the result
+# prmatrix(t(m_ext$tt), collab = rep("", 2)) # OK
+# prmatrix(t(rel_9_ext$tt), collab = rep("", 4)) # OK
+# prmatrix(t(rel_11_ext$tt), collab = rep("", 19)) # OK 
+# prmatrix(t(rel_3_9_11$tt), collab = rep("", 56)) #  
+# prmatrix(t(rel_12$tt), collab = rep("", 42)) # compare avec ZZ13_T de APL
+#
+## Fifth step 
+var_to_elim[5] 
+order(elim_order)[5] # Forecast (5)
+#eliminate var "Forecast" (5)
+# update hg and relations names
+# rels_nb to remove
+print(rels_nb) # 3, 4, 5
+# add R12
+R12 <- 1*1:8 %in% rel_12$infovar[,1]
+# remove rels_nb E3 and R9, add R11, add R12
+captain_hgm4 <- cbind(captain_hgm3[,-rels_nb], R12)
+captain_data_names4 <- c(captain_data_names3[-rels_nb], "rel_12")
+#
+irel_to_elim<- captain_hgm4[var_to_elim[5],]*1:ncol(captain_hgm4)
+rels_nb <- irel_to_elim[irel_to_elim>0]
+# find variables numbers of each relation to obtain the space to construct
+rels_names = captain_data_names4[rels_nb]
+yv1 = get(rels_names[1])$infovar
+yv2 = get(rels_names[2])$infovar
+yv=rbind(yv1,yv2)
+yinfov = doubles(yv)
+infovar <- yinfov[order(yinfov[,1]),]
+#
+# extract infovaluenames
+infovalues <- captain_vars1[infovar[,1]]
+#
+# extend the relations before combining them
+# 1. making an empty reference relation with mass(frame) = 1 and
+# extending a bca to it.
+# 1: construct the tt matrix
+##
+init_tt <- matrix(rep(1,sum(infovar[,2])),nrow=1, dimnames = list(NULL, unlist(infovalues) ) )
+# 2: mass values
+init_spec <- matrix(c(1,1), ncol = 2, 
+dimnames = list(NULL, c("specnb", "mass")))
+# 3: info on variables
+init_info <- matrix(as.vector(infovar), ncol = 2,
+dimnames = list(NULL, c("varnb", "size")) )
+# 4: the relation
+relRef <- bcaRel(tt = init_tt, spec = init_spec,
+infovar = init_info, infovarnames = names(infovalues), relnb = 13)
+# extend the relations 
+f_ext <- extmin(get(captain_data_names4[rels_nb[1]]), relRef)
+## test here
+# rel_12_ext <- extmin(get(captain_data_names4[rels_nb[2]]), relRef)  # no extension necessary here. make a check on this case in an algorith.
+##
+#
+# 3: combine the relations
+# combine extended relations
+rel_E2_12 <- nzdsr(dsrwon(f_ext,rel_12, relnb = 13) )
+# 4 eliminate the variable "Forecast" (5)
+rel_13 <- elim(rel_E2_12, xnb = order(elim_order)[5])
+# check the result
+# prmatrix(t(f_ext$tt), collab = rep("", 3)) # OK
+# prmatrix(t(rel_12$tt), collab = rep("", 42)) # OK
+# prmatrix(t(rel_E2_12$tt), collab = rep("", 114)) #  
+# prmatrix(t(rel_13$tt), collab = rep("", 75)) # compare avec ZZ14_T de APL
+#
+## sixth step 
+var_to_elim[6] 
+order(elim_order)[6] # Sailing (3)
+#eliminate var "Sailing" (3)
+#
+# update hg and relations names
+# rels_nb to remove
+print(rels_nb) # 2,3
+# add R13
+R13 <- 1*1:8 %in% rel_13$infovar[,1]
+# remove rels_nb E3 and R9, add R11, add R12
+captain_hgm5 <- cbind(captain_hgm4[,-rels_nb], R13)
+captain_data_names5 <- c(captain_data_names4[-rels_nb], "rel_13")
+#
+irel_to_elim<- captain_hgm5[var_to_elim[6],]*1:ncol(captain_hgm5)
+rels_nb <- irel_to_elim[irel_to_elim>0]
+# find variables numbers of each relation to obtain the space to construct
+rels_names = captain_data_names5[rels_nb]
+yv1 = get(rels_names[1])$infovar
+yv2 = get(rels_names[2])$infovar
+yv=rbind(yv1,yv2)
+yinfov = doubles(yv)
+infovar <- yinfov[order(yinfov[,1]),]
+#
+# extract infovaluenames
+infovalues <- captain_vars1[infovar[,1]]
+#
+# extend the relations before combining them
+# 1. making an empty reference relation with mass(frame) = 1 and
+# extending a bca to it.
+# 1: construct the tt matrix
+##
+init_tt <- matrix(rep(1,sum(infovar[,2])),nrow=1, dimnames = list(NULL, unlist(infovalues) ) )
+# 2: mass values
+init_spec <- matrix(c(1,1), ncol = 2, 
+dimnames = list(NULL, c("specnb", "mass")))
+# 3: info on variables
+init_info <- matrix(as.vector(infovar), ncol = 2,
+dimnames = list(NULL, c("varnb", "size")) )
+# 4: the relation
+relRef <- bcaRel(tt = init_tt, spec = init_spec,
+infovar = init_info, infovarnames = names(infovalues), relnb = 14)
+# extend the relations 
+captain_data_names5[rels_nb[1]] # " ads_rel"
+# ads_ext <- extmin(get(captain_data_names5[rels_nb[1]]), relRef) ## no need to extend. make a check on this case in an algorith.
+captain_data_names5[rels_nb[2]] # rel_13
+rel_13_ext <- extmin(get(captain_data_names5[rels_nb[2]]), relRef)   
+#
+# 3: combine the relations
+# combine extended relations
+rel_1_13 <- nzdsr(dsrwon(ads_rel,rel_13_ext, relnb = 14) )
+# 4 eliminate the variable "SAiling" (3)
+rel_14 <- elim(rel_1_13, xnb = order(elim_order)[6])
+# check the result
+# prmatrix(t(rel_13$tt), collab = rep("", 75)) # 
+# prmatrix(t(rel_1_13$tt), collab = rep("", 150)) #  
+## test here: trop peu d'étiquettes de colonnes
+# prmatrix(t(rel_14$tt), collab = rep("", 75)) # compare avec ZZ15_T de APL
+##
+#
+## sixth step 
+var_to_elim[7] 
+order(elim_order)[7] # Departure (2)
+#eliminate var "Departure" (2)
+#
+# update hg and relations names
+# rels_nb to remove
+print(rels_nb) # 1,2
+# add R14
+R14 <- 1*1:8 %in% rel_14$infovar[,1]
+# remove rels_nb E3 and R9, add R11, add R12
+captain_hgm6 <- cbind(captain_hgm5[,-rels_nb], R14)
+captain_data_names6 <- c(captain_data_names5[-rels_nb], "rel_14")
+#
+irel_to_elim<- captain_hgm6[var_to_elim[7],]*1:ncol(captain_hgm6)
+rels_nb <- irel_to_elim[irel_to_elim>0]
+# find variables numbers of each relation to obtain the space to construct
+rels_names = captain_data_names6[rels_nb]
+yv1 = get(rels_names[1])$infovar
+yv = yv1
+if (length(rels_names) > 1 ) {
+  yv2 = get(rels_names[2])$infovar
+  yv=rbind(yv1,yv2)
+} 
+yinfov = doubles(yv)
+infovar <- yinfov[order(yinfov[,1]),]
+#
+# extract infovaluenames
+infovalues <- captain_vars1[infovar[,1]]
+#
+if (length(rels_names) > 1 ) {
+# extend the relations before combining them
+# 1. making an empty reference relation with mass(frame) = 1 and
+# extending a bca to it.
+# 1: construct the tt matrix
+##
+  init_tt <- matrix(rep(1,sum(infovar[,2])),nrow=1, dimnames = list(NULL, unlist(infovalues) ) )
+# 2: mass values
+  init_spec <- matrix(c(1,1), ncol = 2, 
+dimnames = list(NULL, c("specnb", "mass")))
+# 3: info on variables
+  init_info <- matrix(as.vector(infovar), ncol = 2,
+dimnames = list(NULL, c("varnb", "size")) )
+# 4: the relation
+  relRef <- bcaRel(tt = init_tt, spec = init_spec,
+infovar = init_info, infovarnames = names(infovalues), relnb = 15)
+# extend the relations 
+  captain_data_names6[rels_nb[1]] # " rel"
+  rel_ext <- extmin(get(captain_data_names6[rels_nb[1]]), relRef) ## no need to extend. make a check on this case in an algorith.
+  captain_data_names6[rels_nb[2]] # rel_14
+  rel_14_ext <- extmin(get(captain_data_names6[rels_nb[2]]), relRef)   
+#
+# 3: combine the relations
+# combine extended relations
+  rel_comb <- nzdsr(dsrwon(rel_ext,rel_14_ext, relnb = 15) )
+}
+# 4 eliminate the variable "Sailing" (3)
+rel_15 <- elim(rel_14, xnb = order(elim_order)[7])
+rel_15
+belplau(rel_15)
+# check the result
+# prmatrix(t(rel_15$tt), collab = rep("", 29)) # compare avec ZZ16_T de APL
+# check with MacEvidence results: OK
+
+```
+
+
+
+
+
