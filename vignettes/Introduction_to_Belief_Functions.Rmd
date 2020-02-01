@@ -1,15 +1,20 @@
 ---
-title: "Introduction to Belief Functions: The Monty Hall Game"
+title: "Introduction to Belief Functions"
 author: "Claude Boivin, Stat.ASSQ"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{An example}
+  %\VignetteIndexEntry{Introduction to Belief Functions}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include = FALSE}
+#
+devtools::load_all(".") # used while testing with R-devel
+# attach package dst
+# library(dst) When using the package in place of devtools
+#
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
@@ -38,7 +43,6 @@ What can I find out about the sun? I will use the statistics on rain to establis
 
 I have just defined a belief function by using a known probability distribution on some situation to extend it to another situation where probabilities are unknown. I can now use function *bca* to encode the events of interest and their mass value. Next, I look at the measures of belief and plausibility with function *tabresul*.
 ```{r}
-library(dst)
 # Evidence for sun
 Weather <-  bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0, 0.45, 0.55), cnames =c("Sun", "NoSun"), infovarnames = "Weather", varnb = 1)
 # The belief function of Weather
