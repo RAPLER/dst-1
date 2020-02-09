@@ -1,6 +1,6 @@
 #' The Captain's Problem. ads: Relation between variables Arrival (A), Departure delay (D) and Sailing delay (S)
 #' 
-#' This dataset is the tt matrix establishing the relation A = D + S, where A = {0:6}, D = {0:3} and S = {0:3}. All the elements (a,d,s) of $\prod(A, D, S)$ where a = d + s is true form a subset with a mass value of 1. To construct the tt matrix, we put the variables A, D, S side by side, as in a truth table representation.
+#' This dataset is the tt matrix establishing the relation A = D + S, where A = {0:6}, D = {0:3} and S = {0:3}. All the elements (a,d,s) of (A x D x S) where a = d + s is true form a subset with a mass value of 1. To construct the tt matrix, we put the variables A, D, S side by side, as in a truth table representation.
 #' @author Claude Boivin, Stat.ASSQ
 #' @format An integer matrix with 18 rows and 17 columns.
 #' \describe{
@@ -21,7 +21,7 @@
 #' 
 #' The Captain's Problem. dlfm: Relation between variables Departure delay (D), Loading delay (L), Forecast of the weather (F), Maintenance delay (M)
 #' 
-#' This dataset is the tt matrix establishing the relation between the four variables. Each event (loading = true, forecast = foul, Maintenance = true) adds one day of Departure Delay. The elements (d,l, f, m) of $\prod(D,L,F,M)$ satisfying the relation form a subset with a mass value of 1. To construct the tt matrix, we put the variables D,L,F,M side by side, as in a truth table representation.
+#' This dataset is the tt matrix establishing the relation between the four variables. Each event (loading = true, forecast = foul, Maintenance = true) adds one day of Departure Delay. The elements (d,l, f, m) of (D x L x F x M) satisfying the relation form a subset with a mass value of 1. To construct the tt matrix, we put the variables D,L,F,M side by side, as in a truth table representation.
 #' @author Claude Boivin, Stat.ASSQ
 #' @format An integer matrix with 10 rows and 12 columns.
 #' \describe{
@@ -96,7 +96,7 @@
 #' 
 #' The Captain's Problem. swr: Relation between variables Sailing delay (S), Weather at sea (W), and Repairs at sea (R)
 #' 
-#' This dataset is the tt matrix establishing a relation between S, W and R, where S = {0:3}, W = {foul, fair} and R = {true, false}. The goal of this relation is to account for other causes of sailing delay. All the elements (s,w,r) of $\prod(S, W, R)$ where W or R is true add one day of sailing delay. We put a mass value of 0.9 to this subset. The remaining mass of 0.1 is allotted to the frame.
+#' This dataset is the tt matrix establishing a relation between S, W and R, where S = {0:3}, W = {foul, fair} and R = {true, false}. The goal of this relation is to account for other causes of sailing delay. All the elements (s,w,r) of (S x W x R) where W or R is true add one day of sailing delay. We put a mass value of 0.9 to this subset. The remaining mass of 0.1 is allotted to the frame.
 #' 
 #' To construct the tt matrix, we put the variables S, W, R side by side, as in a truth table representation.
 #' 

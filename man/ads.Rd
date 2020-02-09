@@ -25,7 +25,7 @@
 ads
 }
 \description{
-This dataset is the tt matrix establishing the relation A = D + S, where A = {0:6}, D = {0:3} and S = {0:3}. All the elements (a,d,s) of $\prod(A, D, S)$ where a = d + s is true form a subset with a mass value of 1. To construct the tt matrix, we put the variables A, D, S side by side, as in a truth table representation.
+This dataset is the tt matrix establishing the relation A = D + S, where A = {0:6}, D = {0:3} and S = {0:3}. All the elements (a,d,s) of (A x D x S) where a = d + s is true form a subset with a mass value of 1. To construct the tt matrix, we put the variables A, D, S side by side, as in a truth table representation.
 }
 \author{
 Claude Boivin, Stat.ASSQ

@@ -26,7 +26,7 @@
 dlfm
 }
 \description{
-This dataset is the tt matrix establishing the relation between the four variables. Each event (loading = true, forecast = foul, Maintenance = true) adds one day of Departure Delay. The elements (d,l, f, m) of $\prod(D,L,F,M)$ satisfying the relation form a subset with a mass value of 1. To construct the tt matrix, we put the variables D,L,F,M side by side, as in a truth table representation.
+This dataset is the tt matrix establishing the relation between the four variables. Each event (loading = true, forecast = foul, Maintenance = true) adds one day of Departure Delay. The elements (d,l, f, m) of (D x L x F x M) satisfying the relation form a subset with a mass value of 1. To construct the tt matrix, we put the variables D,L,F,M side by side, as in a truth table representation.
 }
 \author{
 Claude Boivin, Stat.ASSQ

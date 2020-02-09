@@ -26,7 +26,7 @@
 swr
 }
 \description{
-This dataset is the tt matrix establishing a relation between S, W and R, where S = {0:3}, W = {foul, fair} and R = {true, false}. The goal of this relation is to account for other causes of sailing delay. All the elements (s,w,r) of $\prod(S, W, R)$ where W or R is true add one day of sailing delay. We put a mass value of 0.9 to this subset. The remaining mass of 0.1 is allotted to the frame.
+This dataset is the tt matrix establishing a relation between S, W and R, where S = {0:3}, W = {foul, fair} and R = {true, false}. The goal of this relation is to account for other causes of sailing delay. All the elements (s,w,r) of (S x W x R) where W or R is true add one day of sailing delay. We put a mass value of 0.9 to this subset. The remaining mass of 0.1 is allotted to the frame.
 }
 \details{
 To construct the tt matrix, we put the variables S, W, R side by side, as in a truth table representation.
