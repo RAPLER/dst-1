@@ -8,32 +8,11 @@ Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
 Description: Using the Theory of Belief Functions for evidence calculus. Basic probability assignments, or mass functions, can be defined on the subsets of a set of possible values and combined. A mass function can be extended to a larger frame. Marginalization, i.e. reduction to a smaller frame can also be done. These features can be combined to analyze small belief networks and take into account situations where information cannot be satisfactorily described by probability distributions.
 License: GPL (>= 2)
+LazyData: true
 BugReports: https://github.com/RAPLER/dst-1/issues
-Collate:
-    'addTobca.R'
-    'bca.R'
-    'bcaRel.R'
-    'bcaPrint.R'
-    'belplau.R'
-    'decode.R'
-    'dotprod.R'
-    'doubles.R'
-    'dsrwon.R'
-    'dst.R'
-    'elim.R'
-    'encode.R'
-    'extmin.R'
-    'inters.R'
-    'marrayToMatrix.R'
-    'matrixToMarray.R'
-    'nameRows.R'
-    'nzdsr.R'
-    'plautrans.R'
-    'productSpace.R'
-    'reduction.R'
-    'shape.R'
-    'tabresul.R'
 RoxygenNote: 6.1.1
+Depends:
+    R (>= 2.10)
 Suggests: testthat,
     knitr,
     rmarkdown,

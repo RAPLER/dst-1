@@ -12,12 +12,12 @@ vignette: >
 
 ```{r setup, include=FALSE}
 #
-devtools::load_all(".") # used while testing with R-devel
+# devtools::load_all(".") # only used in place of dst when testing with R-devel
 # attach package dst
-# library(dst) When using the package in place of devtools
+library(dst) 
 #
-knitr::opts_knit$set(echo = TRUE, root.dir = rprojroot::find_rstudio_root_file())
-# XX knitr::opts_knit$set(echo = TRUE, root.dir = 'relative_path_to_root_from_Rmd')
+# knitr::opts_knit$set(echo = TRUE, root.dir = rprojroot::find_rstudio_root_file())
+knitr::opts_knit$set(echo = TRUE, root.dir = "..")
 ```
 
 
@@ -26,7 +26,7 @@ knitr::opts_knit$set(echo = TRUE, root.dir = rprojroot::find_rstudio_root_file()
 The Captain’s Problem has been introduced by R. G. Almond ^[Almond, R. G. (1989). Fusion and Propagation in Graphical Belief Models: An Implementation and an Example. Ph.D. dissertation and Harvard University, Department of Statistics Technical Report S-130, pp 210-214.] as an example to illustrate how to specify a graphical belief model and how to combine the belief functions with an algorithm called Fusion and Propagation. Lately, P. P. Shenoy has revisited this example in great detail in a presentation on Valuation-Based Systems ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015.].
 
 ## The Captain’s Problem
-The goal is to find the Arrival delay of the ship, a number of days varying from 0 to 6. This delay is the sum of two categories of delays, the Departure delay and the Sailing delay. The Departure delay is the sum of three kind of delays, Loading, Maintenance and Forecast of bad weather. In this example, each delay is supposed to be of only one day for a maximum of three days. The Sailing delay can occur from bad Weather (one day) or Repairs at sea (one day each).
+The goal is to find the Arrival delay of the ship, a number of days varying from 0 to 6. This delay is the sum of two kinds of delay, the Departure delay and the Sailing delay. The Departure delay is the sum of three kind of delays, Loading, Maintenance and Forecast of bad weather. In this example, each delay is supposed to be of only one day for a maximum of three days. The Sailing delay can occur from bad Weather (one day) or Repairs at sea (one day each).
 
 There are 8 variables involved: (Arrival delay, Departure delay, Sailing delay, Loading delay, Forecast of the weather, Maintenance delay, Weather at sea, Repairs at sea). 
 
