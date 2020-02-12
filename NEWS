@@ -1,14 +1,15 @@
 dst v1.4.0.9000
 version 1.4.0 published on CRAN 2019-08-20
+------------
 Bugs to fix:
 2019-12-04
-Bug 1 : dsrwon : Combinaison de deux bca
-Check that que names of values of variables are the same for the two bcas
+Issue 1 : dsrwon : Combinaison de deux bca
+Add a check that que names of the values of variables are the same for the two bcas
 (Voir exemple Zadeh : Expert1 : {M, T} et Expert2 : {C, T} ne doivent pas se combiner tels quels, car pas la même variable
 ----
 
 2019-12-04
-Bug 2 : extmin : Extension minimale
+Issue 2 : extmin : Extension minimale
 Si les noms de variables ne concordent pas, on a l'erreur suivante
 Error in aperm.default(zb, c(zzb2, 1 + nbvar)) : 
   valeur de 'perm' hors intervalle
@@ -19,10 +20,12 @@ Voir test "Zadeh's example
 Tip:
 2019-12-13
 la matrice tt d'une relation est plus facile à comprendre en transposée et avec des noms courts
-----
+-----------
 dst v1.4.0.9000
 - added utility function bcaPrint for printing of the subsets of non-zero  mass of a belief function.
-
+- added examples vignettes: 
+Zadeh's example, 
+Captain's problem
 
 ============================
 dst 1.4.0 (2019-08-11)
