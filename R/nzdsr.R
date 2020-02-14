@@ -33,6 +33,7 @@ nzdsr<-function(x) {
   if (is.null(x$I12)) {
     nc <- ncol(x$tt)
     frame <- bca(matrix(rep(1, nc), nrow=1), m=1)
+    frame$infovaluenames <- x$infovaluenames
     x <- dsrwon(x,frame)
   }
   w12<-cbind(x$spec[,2], x$tt)
