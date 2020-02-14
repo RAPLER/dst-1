@@ -33,6 +33,14 @@ dsrwon<-function(x,y, relnb = NULL) {
   if (nc1 != nc2) {
     stop("Nb of elements of frame x and frame y not equal.") 
   }
+  # Check that the value names of the two variables are the same and in the same order
+  values1 <- unlist(x$infovaluenames)
+  values2 <- unlist(y$infovaluenames)
+  nbval <- sum(values1 == values2)
+  if (nbval != nc1) {
+    stop("Value names of the two frames differ. Check value names of variables as well as their position.") 
+  }
+  #
   n <- x$infovar[,1]  # numbers of the variables 
   # extract the masses. This new version works without $combination
   vx <- x$spec[,2]
