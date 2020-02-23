@@ -15,12 +15,28 @@ test_that("extmin", {
   #
   # T3 There must be at least one variable to add to the relation rel1
   y3 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(4,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
-})
+#
+  expect_error(extmin(y3, y3), "No missing variable. Check your inputs.")
 #
 # T4 relRef must have names of variables in "infovarnames" parameter
 #
-x2 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(5,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
-
-y2 <- bca(f=matrix(c(1,0,1,0,1,1,1,0,1,0,1,1), ncol=4), m=c(0.3,0.5,0.2), cnames=c("true", "false","true", "false"), infovar=matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= NULL, inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+x4 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(5,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
 #
-expect_error(extmin(x2, y2), "Names of variables missing.")
+y4 <- bca(f=matrix(c(1,0,1,0,1,1,1,0,1,0,1,1), ncol=4), m=c(0.3,0.5,0.2), cnames=c("true", "false","true", "false"), infovar=matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= NULL, inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+#
+expect_error(extmin(x4, y4), "Names of variables missing.")
+#
+# T5, Check that names of rel1 are in relRef
+x5 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(5,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+
+y5 <- bcaRel(tt=matrix(c(1,0,1,0,1,1,1,0,1,0,1,1), ncol=4, dimnames = list(NULL, c("true", "false","true", "false"))), spec =   matrix(c(1,2,3,0.3,0.5,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))), infovar=matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames = c("C", "D"), relnb=7)
+#
+expect_error(extmin(x5, y5), "Names of rel not in relRef. Check variables names.")
+#
+# T6, Check that variable names and numbers are equal
+x6 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(5,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+
+y6 <- bcaRel(tt=matrix(c(1,0,1,0,1,1,1,0,1,0,1,1), ncol=4, dimnames = list(NULL, c("true", "false","true", "false"))), spec =   matrix(c(1,2,3,0.3,0.5,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))), infovar=matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames = c("B", "C"), relnb=7)
+#
+expect_error(extmin(x6, y6), "Variables names and numbers not equal. Check variables names, numbers and ther order.")
+})

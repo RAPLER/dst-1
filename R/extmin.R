@@ -62,6 +62,19 @@ extmin <- function(rel1, relRef) {
   if (is.null(names(rel1$infovaluenames)) | (is.null(names(relRef$infovaluenames)))  ){
     stop("Names of variables missing. Check your inputs.")
   }
+  # 5 Check that names of rel1 are in relRef
+  values1 <- names(rel1$infovaluenames)
+  values2 <- names(relRef$infovaluenames)
+  values_ck <- outer(values1, values2, FUN="==")
+  nbval=sum(rowSums(values_ck, dims = 1))
+  if (nbval < length(values1)) {
+    stop("Names of rel not in relRef. Check variables names.")
+  }
+  # 6. Check that var names and var numbers are OK
+  if (values1 != values2[(1:nbvar)*(lvars>0)]) {
+    stop("Variables names and numbers not equal. Check variables names, numbers and ther order.")
+  }
+  #
   # B. Calculations
   ind_lvman <- (lvman >0) * 1:length(lvman)
   cardrelRef <- as.vector(infovar[,2])
