@@ -124,10 +124,8 @@ MHABC_info =matrix(c(1:3, rep(3,3)), ncol = 2, dimnames = list(NULL, c("varnb", 
 MHABC_rel <-  bcaRel(tt = MHABC_tt, spec = MHABC_spec, infovar = MHABC_info, infovarnames = c("MHA", "MHB", "MHC"), relnb = 1)
 # 
 # let's see some results:
-# Note that row labels of the resulting tt matrix can become pretty long. If the case, we can use the prmatrix function, for example:
-prmatrix(t(MHABC_rel$tt), collab = "")
-# Another way to check the tt matrix is:
-which(MHABC_rel$tt[1,] == TRUE)
+# Note that row labels of the resulting tt matrix can become pretty long. 
+bcaPrint(MHABC_rel)
 ```
 
 ### 2. Evidence pertaining to door A
@@ -137,9 +135,9 @@ $m({car}) = m({g1}) = m({g2}) = 1/3$.
 Let's encode this evidence with function *bca*.
 ```{r}
 # Evidence for door A
-MHA_E <-  bca(f= diag(1,3,3), m= rep(1/3, 3), cnames =c("car", "goat1", "goat2"), infovarnames = "MHA", varnb = 1)
+MHA_E <-  bca(f= diag(1,3,3), m= rep(1/3, 3), cnames =c("car", "g1", "g2"), infovarnames = "MHA", varnb = 1)
 # At this point, no big deal...
-tabresul(MHA_E)
+bcaPrint(MHA_E)
 ```
 ### 3. Evidence pertaining to door B
 
@@ -149,8 +147,8 @@ $m({g1, g2}) = 1$.
 Let's translate this in R with function *bca*:
 ```{r}
 # Evidence for door B
-MHB_E <- bca(f= matrix(c(0,1,1), ncol=3, byrow = TRUE), m=1, cnames =c("car", "goat1", "goat2"), infovarnames = "MHB" , varnb=2)
-tabresul(MHB_E)
+MHB_E <- bca(f= matrix(c(0,1,1), ncol=3, byrow = TRUE), m=1, cnames =c("car", "g1", "g2"), infovarnames = "MHB" , varnb=2)
+bcaPrint(MHB_E)
 ```
 ## The hypergraph of the Monty Hall game
 

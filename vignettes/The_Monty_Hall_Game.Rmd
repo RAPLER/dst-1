@@ -72,7 +72,7 @@ MHABC_tt <- matrix(c(1,0,0,0,1,0,0,0,1,
                      0,1,0,0,0,1,1,0,0,
                      0,0,1,1,0,0,0,1,0,
                      0,0,1,0,1,0,1,0,0), ncol=9, byrow=TRUE)
-colnames(MHABC_tt) <- rep(c("car", "g1", "g2"), 3)
+colnames(MHABC_tt) <- rep(c("car", "goat1", "goat2"), 3)
 #
 # 2. define the spec matrix. 
 # Here we have one subset of six elements
@@ -102,7 +102,7 @@ bcaPrint(MHABC_rel)
 ### 2. Evidence pertaining to the choice of the contestant (door *A*)
 
 You have chosen door *A*. At this point, the problem is quite simple. Your belief is equally divided between 3 possible outcomes: car, goat 1 or goat 2:
-$m({car}) = m({g1}) = m({g2}) = 1/3$.
+$m({car}) = m({goat1}) = m({goat2}) = 1/3$.
 Let's encode this evidence with function *bca*.
 
 ```{r}
@@ -115,7 +115,7 @@ bcaPrint(MHA_E)
 ### 3. Evidence pertaining to door B
 
 But the host wanted to add some thrill to the game. He has opened door B and revealed a goat. The host has given us a small piece of evidence: Goat 1 or goat 2 was behind door B. Since the host knows what is behind each door, the mass value of this piece of evidence is:
-$m({g1, g2}) = 1$.
+$m({goat1, goat2}) = 1$.
 
 Let's translate this in R with function *bca*:
 ```{r}
