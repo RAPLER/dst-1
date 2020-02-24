@@ -7,9 +7,9 @@
 \format{An integer matrix with 10 rows and 12 columns.
 \describe{
   \item{[1,c(1,2)]}{value = 0, not used}
-  \item{[1,3:12]}{Identification numbers of the four variables. Column 3 to 6: variable 2; colunns 7,8: variable 4; colunns 9, 10: variable 5: colunns 11,12: variable 6.}
+  \item{[1,3:12]}{Identification numbers of the four variables. Column 3 to 6: variable 2; columns 7,8: variable 4; columns 9, 10: variable 5: columns 11,12: variable 6.}
   \item{nospec}{identification number of the specification}
-  \item{m}{the value of the spécification, a number between 0 and 1}
+  \item{m}{the value of the specification, a number between 0 and 1}
   \item{d3}{1 if d3 is part of the specification, 0 otherwise}
   \item{d2}{1 if d2 is part of the specification, 0 otherwise}
   \item{d1}{1 if d1 is part of the specification, 0 otherwise}

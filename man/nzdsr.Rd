@@ -13,7 +13,7 @@ nzdsr(x)
 The normalized bca mass function.
 }
 \description{
-It may occur that the result of the combination of two mass functions with Dempater'Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set.
+It may occur that the result of the combination of two mass functions with Dempster's Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set.
 }
 \examples{
 x1 <- bca(f=matrix(c(1,0,1,1),nrow=2, byrow = TRUE), 

@@ -3,13 +3,13 @@
 \docType{data}
 \name{mrf}
 \alias{mrf}
-\title{The Captain's Problem. mrf: Relation between variables No Maintenance (Mf) and  Repairs at sea (R)}
+\title{The Captain's Problem. mrf: Relation between variables No Maintenance (M = false) and  Repairs at sea (R)}
 \format{An integer matrix with 4 rows and 6 columns.
 \describe{
   \item{[1,c(1,2)]}{value = 0, not used}
-  \item{[1,3:6]}{Identification numbers of the two variables. Column 3,4: variable 6; colunns 5,6: variable 8}
+  \item{[1,3:6]}{Identification numbers of the two variables. Column 3,4: variable 6; columns 5,6: variable 8}
   \item{nospec}{identification number of the specification}
-  \item{m}{the value of the spécification, a number between 0 and 1}
+  \item{m}{the value of the specification, a number between 0 and 1}
   \item{true}{1 if true is part of the specification, 0 otherwise}
   \item{false}{1 if false is part of the specification, 0 otherwise}
   }}
@@ -20,7 +20,7 @@
 mrf
 }
 \description{
-This dataset is the tt matrix establishing a set of two relations between the two variables. First, Repairs = true if Maintenance = false in (M x R). We are 20\% sure that there wil be Repairs if no maintenance. Second, Repairs = false if Maintenance = false in (M x R). We are 20\% sure that there will be no repairs if no maintenance.
+This dataset is the tt matrix establishing a set of two relations between the two variables. First, Repairs = true if Maintenance = false in (M x R). We are 20\% sure that there will be Repairs if no maintenance. Second, Repairs = false if Maintenance = false in (M x R). We are 20\% sure that there will be no repairs if no maintenance.
 }
 \details{
 These two relations are implication rules. The remaining mass of 0.6 is allotted to the frame. To construct the tt matrix, we put the variables M and R side by side, as in a truth table representation.

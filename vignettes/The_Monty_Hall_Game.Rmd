@@ -152,7 +152,7 @@ plot(Monty_hg, vertex.label = V(Monty_hg)$name, vertex.size=(4+4*V(Monty_hg)$typ
 
 Since we want to know if there is advantage to switch doors, our goal is the calculation of a belief function *MHC* attached to the variable of interest *C* (Door C). To obtain this belief function, we need to combine evidence for doors A (Contestant) and B (Host) with the relation linking the three doors in the product space $F_{ABC}$. We will use a process of successive elimination of variables until only variable *C* remains.
 
-The calculations involved follow the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. lnternational Journal of Approxtmate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
+The calculations involved follow the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. lnternational Journal of Approximate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
 
 Three kinds of operations are involved in the calculations:
 a) the minimal (vacuous) extension of a mass function to a larger Fod;
@@ -199,7 +199,7 @@ plot(Monty2_hg, vertex.label = V(Monty2_hg)$name, vertex.size=(4+4*V(Monty2_hg)$
 ```
 
 ### 2. Second step: Eliminate variable *B* (door B)
-Similarly, we extend evidence on B in the product spave $\prod(B, C)$, combine the extended evidence with the relation MHBC, then marginalize to C. This will give the final result.
+Similarly, we extend evidence on B in the product space $\prod(B, C)$, combine the extended evidence with the relation MHBC, then marginalize to C. This will give the final result.
 
 ```{r}
 # 1. Extend MHB_E to the space B x C
