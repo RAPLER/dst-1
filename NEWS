@@ -1,4 +1,5 @@
-dst v1.4.0.9000
+dst v1.4.1
+As of 2020-02-23
 - added utility function bcaPrint for printing of the subsets of non-zero  mass of a belief function.
 - added examples vignettes: 
 Zadeh's example, 
