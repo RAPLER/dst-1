@@ -3,7 +3,6 @@
 \docType{package}
 \name{dst}
 \alias{dst}
-\alias{dst-package}
 \title{Manipulation and combination of belief functions}
 \description{
 dst allows you to make basic probability assignments on subsets of a set of possibilities (events) and combine these events with Dempster's rule of combination.

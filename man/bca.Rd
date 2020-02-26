@@ -5,9 +5,17 @@
 \alias{bpa}
 \title{Basic chance assignment mass function}
 \usage{
-bca(f, m, cnames = NULL, infovaluenames = NULL, con = NULL,
-  varnb = NULL, infovar = NULL, infovarnames = NULL,
-  inforel = NULL)
+bca(
+  f,
+  m,
+  cnames = NULL,
+  infovaluenames = NULL,
+  con = NULL,
+  varnb = NULL,
+  infovar = NULL,
+  infovarnames = NULL,
+  inforel = NULL
+)
 }
 \arguments{
 \item{f}{A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}

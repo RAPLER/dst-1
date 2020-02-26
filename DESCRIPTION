@@ -10,7 +10,7 @@ Description: Using the Theory of Belief Functions for evidence calculus. Basic p
 License: GPL (>= 2)
 LazyData: true
 BugReports: https://github.com/RAPLER/dst-1/issues
-RoxygenNote: 6.1.1
+RoxygenNote: 7.0.2
 Depends:
     R (>= 2.10)
 Suggests: testthat,

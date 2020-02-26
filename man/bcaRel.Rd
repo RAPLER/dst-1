@@ -33,9 +33,9 @@ This function is used to represent a mass function which establish a relation be
 \examples{
 # A logical implication rule
 # A typical relation between two variables in the context of expert systems is the
-# logical implication \\code{(a -> b)}. Let us suppose
-# that \\code{a} stands for \\code{Rain: {yes, no}} and \\code{b} stands for
-# \\code{RoadWorks: {yes, no}}. From experience,
+# logical implication \code{(a -> b)}. Let us suppose
+# that \code{a} stands for \code{Rain: {yes, no}} and \code{b} stands for
+# \code{RoadWorks: {yes, no}}. From experience,
 # I am 75 \% sure that there will be RoadWorks if there is no rain.
 ## 1. The tt table of the logical implication
  ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
