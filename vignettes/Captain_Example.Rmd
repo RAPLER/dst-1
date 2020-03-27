@@ -40,7 +40,6 @@ $Ω_A$ = {0,1,2,3,4,5,6}; $Ω_D$ = {0,1,2,3}; $Ω_S$ = {0,1,2,3}
 
 ```{r}
 # library(dst)
-#setwd("~/data")
 load("data/ads.rda")
 ads_tt<- ads[-1,-c(1,2)]
 ads_tt  <- as.matrix(ads_tt)
