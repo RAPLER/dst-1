@@ -1,3 +1,7 @@
+dst 1.4.1.9001
+Correction yo function plautrans
+The check for the presence of the empty set did not work properly. It has been updated.
+======================
 dst v1.4.1
 As of 2020-02-23
 - added utility function bcaPrint for printing of the subsets of non-zero  mass of a belief function.
