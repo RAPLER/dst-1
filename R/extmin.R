@@ -56,7 +56,9 @@ extmin <- function(rel1, relRef) {
   ind_lvars <- (lvars >0) * 1:length(lvars)
   lvman <- (!is.element(varnb_ps, varnb_rel1))*varnb_ps
   if (sum(lvman) == 0) {
-    stop("No missing variable. Check your inputs.")
+    zr <- rel1
+    return(zr)
+    stop("There is no missing variable in this relation.")
   }
   # 4 Stop if names of variables are missing,
   if (is.null(names(rel1$infovaluenames)) | (is.null(names(relRef$infovaluenames)))  ){

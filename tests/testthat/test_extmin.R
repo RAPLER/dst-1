@@ -12,11 +12,12 @@ test_that("extmin", {
   #
   y2 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(5,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
   expect_error(extmin(x2, y2), "no common variable to the two relations.")
-  #
-  # T3 There must be at least one variable to add to the relation rel1
-  y3 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(4,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
-#
-  expect_error(extmin(y3, y3), "No missing variable. Check your inputs.")
+#   #
+#   # T3 Test removed
+#   # There must be at least one variable to add to the relation rel1
+#   y3 <- bca(f=matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(4,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+# #
+#   expect_error(extmin(y3, y3), "No missing variable. Check your inputs.")
 #
 # T4 relRef must have names of variables in "infovarnames" parameter
 #
