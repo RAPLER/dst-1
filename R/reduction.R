@@ -21,6 +21,10 @@
 #'  }
 #'  
 reduction<-function(x,f="+") {
+  #
+  # Local variables: None
+  # Functions calls: None
+  #
   if (length(x) == 0) return(x)
   s<-x[1]
   if (length(x) == 1) return(s)

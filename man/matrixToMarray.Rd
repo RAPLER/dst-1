@@ -4,10 +4,12 @@
 \alias{matrixToMarray}
 \title{Transformation of the tt matrix of a relation}
 \usage{
-matrixToMarray(rel)
+matrixToMarray(tt, valuenames)
 }
 \arguments{
-\item{rel}{An object of class bcaspec, i.e. a mass function of one variable or a relation.}
+\item{tt}{A (0,1)-matrix or a boolean matrix establishing the relation between two or more variables. The matrix is constructed by placing the variables side by side, as in a truth table representation.}
+
+\item{valuenames}{A list of the names of the variables with the name of each value of their frame of discernment.}
 }
 \value{
 mtt The array (product space) representation of the tt matrix.
@@ -16,18 +18,13 @@ mtt The array (product space) representation of the tt matrix.
 The matrix representation of a relation is converted to the array representation or product space representation.
 }
 \examples{
-wr_tt <- matrix(c(0,1,rep(0,5),rep(c(1,0),2),1,1,0,1,0,
-rep(1,3),0,1,0,rep(1,6)), ncol=4, byrow = TRUE)
-colnames(wr_tt) <- c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn")
- wr_spec = matrix(c(1:7, 0.0476, 0.7619, 0.1905, 0,0,0,0), 
- ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
- wr_infovar = matrix(c(4,5,2,2), ncol = 2, 
- dimnames = list(NULL, c("varnb", "size")) )
- wr_rel <- list(tt=wr_tt, con=0.16, spec=wr_spec,
-  infovar=wr_infovar, 
-  infovaluenames= list( RdWorks=c("rWdy", "rWdn") , Rain=c("Ry", "Rn")))
- class(wr_rel)="bcaspec"
-z <- matrixToMarray(wr_rel)
+# Define  wr_tt, a matrix describing the relation between two variables
+wr_tt <- matrix(c(1,rep(0,3),rep(c(1,0),3),0,1,1,1,0,0,
+1,0,rep(1,5),0,1,1,0,rep(1,5)), ncol=4, byrow = TRUE)
+colnames(wr_tt) <- c("Wy Ry", "Wy Rn", "Wn Ry", "Wn Rn")
+rownames(wr_tt) <- nameRows(wr_tt)
+vars= list( RdWorks = c("Wy", "Wn") , Rain = c("Ry", "Rn"))
+print(zmToa <- matrixToMarray(tt = wr_tt, valuenames = vars ) )
  
 }
 \author{

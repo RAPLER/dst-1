@@ -20,7 +20,7 @@ We compute the plausibility measure of all the singletons of the frame of discer
 }
 \examples{
  
-x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 byrow = TRUE), m=c(0.2,0.5, 0.3), 
 cnames =c("a", "b", "c"), 
 infovarnames = "x", varnb = 1)

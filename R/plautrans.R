@@ -7,7 +7,7 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @references Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.
 #' @examples  
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 #' byrow = TRUE), m=c(0.2,0.5, 0.3), 
 #' cnames =c("a", "b", "c"), 
 #' infovarnames = "x", varnb = 1)
@@ -15,12 +15,18 @@
 #' @export
 #' 
 plautrans <- function(x) {
-  # checking input data 
-  # 1. Input must be of class bcaspec
+  #
+  # Local variables: nc, row_m_empty, zx, nsing, z1, zs, zzs, zord, trplau
+  # Functions calls: tabresul
+  #
+  # 1. checking input data 
+  #
+  # 1.1. Input must be of class bcaspec
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
-  # 2. check if m_empty present and if not 0
+  #
+  # 1.2. check if m_empty present and if not 0
   if (sum((apply(x$tt, 1, sum)) == 0) > 0) {
     row_m_empty <- match(1:nrow(x$tt), rownames(x$tt) == "\u00f8")
     row_m_empty <- row_m_empty[1]
@@ -30,22 +36,28 @@ plautrans <- function(x) {
       }
     }
   }
-# Calculations  
-# add all the singletons to the input bca
+  #
+  # 2. processing  
+  #
+  # 2.1 add all the singletons to the input bca
   nc <-ncol(x$tt)
   x <- addTobca(x, diag(1, nc))
-#  eliminate duplicates singletons if any  
+  #
+  # 2.2 eliminate duplicates singletons if any  
   x <- nzdsr(x)
-# compute measures of belief and plausibility  
+  #
+  # 2.3. compute measures of belief and plausibility with fn tabresul
   zx<-rbind(tabresul(x, singletonsOnly = TRUE)$mbp)
   nsing <- -4+ncol(zx)
   z1<-apply(rbind(zx[,1:nsing, drop = FALSE]),1,sum)
   zs<-rbind(zx[z1==1,])
-  # put singletons in same order as rownames
+  #
+  # 2.4. put singletons in same order as rownames
   zzs <- rbind(zs[,1:nsing, drop = FALSE])
   zord <- sapply(1:ncol(zzs),FUN = function(x) {decode(rep(2,ncol(zzs)), zzs[x,])})
   zs <- zs[order(zord,  decreasing = TRUE),]
-  # calculate probability distribution of singletons
+  #
+  # 2.5. calculate probability distribution of singletons
   trplau<-zs[,nsing+3]/sum(zs[,nsing+3])
   y<-cbind(zs[,1:nsing],trplau)
   return(y)

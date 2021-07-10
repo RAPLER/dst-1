@@ -196,10 +196,10 @@ captain_vars <- rbind( ads_rel$infovar,  dlfm_rel$infovar[2:4,],  swr_rel$infova
 captain_var_names <-names(captain_vars1)
 rownames(captain_vars) <- captain_var_names
 # infos on relations
-captain_data_names <- c("ads_rel", "dlfm_rel", "swr_rel", "fw_rel", "mr_rel", "l_rel", "f_rel", "m_rel")
+captain_rel_names <- c("ads_rel", "dlfm_rel", "swr_rel", "fw_rel", "mr_rel", "l_rel", "f_rel", "m_rel")
 # the incidence matrix
 captain_hgm <- matrix(c(R1,R2,R3,R4,R5,E1,E2,E3), ncol=8, dimnames = list(c("Arrival", "Departure", "Sailing", "Loading", "Forecast", "Maintenance", "Weather", "Repairs"), c("R1", "R2", "R3", "R4","R5","E1","E2","E3")))
-captain <- list(captain_hgm, captain_var_names, captain_data_names)
+captain <- list(captain_hgm, captain_var_names, captain_rel_names)
 #
 ## The graph structure of the problem
 #
@@ -213,9 +213,9 @@ V(captain_hg)$label.font <- 2
 plot(captain_hg, vertex.label = V(captain_hg)$name, vertex.size=(3+6*V(captain_hg)$type)*6)
 }
 ```
-#
+
 ## Calculations to obtain the belief function of the Arrival delay
-#
+
 ```{r}
 # variables numbers
 N <- 1:8
@@ -231,10 +231,10 @@ rels_nb <- irel_to_elim[irel_to_elim>0]
 #
 ## To do: find which rel to extend (here, it is E1)
 # extend R6 (Z7_T EN APL)
-l_ext <- extmin(get(captain_data_names[6]), get(captain_data_names[2])) 
+l_ext <- extmin(get(captain_rel_names[6]), get(captain_rel_names[2])) 
 # combine E1, R2
-# use length(captain_data_names) to assign the next relation nb
-rel_2_6 <- nzdsr(dsrwon(l_ext, get(captain_data_names[2]), relnb = 1+length(captain_data_names)))
+# use length(captain_rel_names) to assign the next relation nb
+rel_2_6 <- nzdsr(dsrwon(l_ext, get(captain_rel_names[2]), relnb = 1+length(captain_rel_names)))
 # eliminate the variable "Loading" (4)
 rel_9 <- elim(rel_2_6, xnb = order(elim_order)[1])
 #
@@ -242,7 +242,7 @@ rel_9 <- elim(rel_2_6, xnb = order(elim_order)[1])
 # remove R2 and E7, add R9
 R9 <- 1*1:8 %in% rel_9$infovar[,1]
 captain_hgm1 <- cbind(captain_hgm[,-c(2,6)], R9)
-captain_data_names1 <- c(captain_data_names[-c(2,6)], "rel_9")
+captain_rel_names1 <- c(captain_rel_names[-c(2,6)], "rel_9")
 captain_var_names1 <- captain_var_names[-order(elim_order)[1]]
 #
 ## second step eliminate var "Repairs" (8)
@@ -251,7 +251,7 @@ order(elim_order)[2] # Repairs (8)
 irel_to_elim<- captain_hgm1[var_to_elim[2],]*1:ncol(captain_hgm1)
 rels_nb <- irel_to_elim[irel_to_elim>0]
 # find variables numbers of each relation to obtain the space to construct
-rels_names = captain_data_names1[rels_nb]
+rels_names = captain_rel_names1[rels_nb]
 yv1 = get(rels_names[1])$infovar
 yv2 = get(rels_names[2])$infovar
 yv=rbind(yv1,yv2)
@@ -280,8 +280,8 @@ infovar = init_info,
 infovarnames = c("Sail", "Maintenance", "Weather", "Repairs"),
  relnb = 10)
 # extend the relations
-mr_ext <- extmin(get(captain_data_names1[4]), relRef)
-swr_ext <- extmin(get(captain_data_names1[2]), relRef)
+mr_ext <- extmin(get(captain_rel_names1[4]), relRef)
+swr_ext <- extmin(get(captain_rel_names1[2]), relRef)
 # 3: combine the two relations
 # combine extended relations
 rel_3_5 <- nzdsr(dsrwon(mr_ext,swr_ext, relnb = 10) )
@@ -292,7 +292,7 @@ rel_10 <- elim(rel_3_5, xnb = order(elim_order)[2])
 # remove R3 and R5, add R10
 R10 <- 1*1:8 %in% rel_10$infovar[,1]
 captain_hgm2 <- cbind(captain_hgm1[,-rels_nb], R10)
-captain_data_names2 <- c(captain_data_names1[-rels_nb], "rel_10")
+captain_rel_names2 <- c(captain_rel_names1[-rels_nb], "rel_10")
 #
 ## Third step eliminate var "Weather" (7)
 var_to_elim[3] 
@@ -300,7 +300,7 @@ order(elim_order)[3] # Weather (7)
 irel_to_elim<- captain_hgm2[var_to_elim[3],]*1:ncol(captain_hgm2)
 rels_nb <- irel_to_elim[irel_to_elim>0]
 # find variables numbers of each relation to obtain the space to construct
-rels_names = captain_data_names2[rels_nb]
+rels_names = captain_rel_names2[rels_nb]
 yv1 = get(rels_names[1])$infovar
 yv2 = get(rels_names[2])$infovar
 yv=rbind(yv1,yv2)
@@ -329,8 +329,8 @@ relRef <- bcaRel(tt = init_tt, spec = init_spec,
 infovar = init_info, infovarnames = names(infovalues), relnb = 11)
 #
 # extend the relations
-fw_ext <- extmin(get(captain_data_names2[rels_nb[1]]), relRef)
-rel_10_ext <- extmin(get(captain_data_names2[rels_nb[2]]), relRef)
+fw_ext <- extmin(get(captain_rel_names2[rels_nb[1]]), relRef)
+rel_10_ext <- extmin(get(captain_rel_names2[rels_nb[2]]), relRef)
 # 3: combine the two relations
 # combine extended relations
 rel_4_10 <- nzdsr(dsrwon(fw_ext,rel_10_ext, relnb = 11) )
@@ -347,12 +347,12 @@ order(elim_order)[4] # Maintenance (6)
 # remove rels_nb R4 and R10, add R11
 R11 <- 1*1:8 %in% rel_11$infovar[,1]
 captain_hgm3 <- cbind(captain_hgm2[,-rels_nb], R11)
-captain_data_names3 <- c(captain_data_names2[-rels_nb], "rel_11")
+captain_rel_names3 <- c(captain_rel_names2[-rels_nb], "rel_11")
 #
 irel_to_elim<- captain_hgm3[var_to_elim[4],]*1:ncol(captain_hgm3)
 rels_nb <- irel_to_elim[irel_to_elim>0]
 # find variables numbers of each relation to obtain the space to construct
-rels_names = captain_data_names3[rels_nb]
+rels_names = captain_rel_names3[rels_nb]
 yv1 = get(rels_names[1])$infovar
 yv2 = get(rels_names[2])$infovar
 yv3 = get(rels_names[3])$infovar
@@ -380,9 +380,9 @@ dimnames = list(NULL, c("varnb", "size")) )
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
 infovar = init_info, infovarnames = names(infovalues), relnb = 12)
 # extend the relations (3 relations)
-m_ext <- extmin(get(captain_data_names3[rels_nb[1]]), relRef)
-rel_9_ext <- extmin(get(captain_data_names3[rels_nb[2]]), relRef)
-rel_11_ext <- extmin(get(captain_data_names3[rels_nb[3]]), relRef)
+m_ext <- extmin(get(captain_rel_names3[rels_nb[1]]), relRef)
+rel_9_ext <- extmin(get(captain_rel_names3[rels_nb[2]]), relRef)
+rel_11_ext <- extmin(get(captain_rel_names3[rels_nb[3]]), relRef)
 #
 # 3: combine the relations
 # combine extended relations
@@ -403,12 +403,12 @@ print(rels_nb) # 3, 4, 5
 R12 <- 1*1:8 %in% rel_12$infovar[,1]
 # remove rels_nb E3 and R9, add R11, add R12
 captain_hgm4 <- cbind(captain_hgm3[,-rels_nb], R12)
-captain_data_names4 <- c(captain_data_names3[-rels_nb], "rel_12")
+captain_rel_names4 <- c(captain_rel_names3[-rels_nb], "rel_12")
 #
 irel_to_elim<- captain_hgm4[var_to_elim[5],]*1:ncol(captain_hgm4)
 rels_nb <- irel_to_elim[irel_to_elim>0]
 # find variables numbers of each relation to obtain the space to construct
-rels_names = captain_data_names4[rels_nb]
+rels_names = captain_rel_names4[rels_nb]
 yv1 = get(rels_names[1])$infovar
 yv2 = get(rels_names[2])$infovar
 yv=rbind(yv1,yv2)
@@ -434,7 +434,7 @@ dimnames = list(NULL, c("varnb", "size")) )
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
 infovar = init_info, infovarnames = names(infovalues), relnb = 13)
 # extend the relations 
-f_ext <- extmin(get(captain_data_names4[rels_nb[1]]), relRef)
+f_ext <- extmin(get(captain_rel_names4[rels_nb[1]]), relRef)
 #
 # 3: combine the relations
 # combine extended relations
@@ -454,12 +454,12 @@ print(rels_nb) # 2,3
 R13 <- 1*1:8 %in% rel_13$infovar[,1]
 # remove rels_nb E3 and R9, add R11, add R12
 captain_hgm5 <- cbind(captain_hgm4[,-rels_nb], R13)
-captain_data_names5 <- c(captain_data_names4[-rels_nb], "rel_13")
+captain_rel_names5 <- c(captain_rel_names4[-rels_nb], "rel_13")
 #
 irel_to_elim<- captain_hgm5[var_to_elim[6],]*1:ncol(captain_hgm5)
 rels_nb <- irel_to_elim[irel_to_elim>0]
 # find variables numbers of each relation to obtain the space to construct
-rels_names = captain_data_names5[rels_nb]
+rels_names = captain_rel_names5[rels_nb]
 yv1 = get(rels_names[1])$infovar
 yv2 = get(rels_names[2])$infovar
 yv=rbind(yv1,yv2)
@@ -485,9 +485,9 @@ dimnames = list(NULL, c("varnb", "size")) )
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
 infovar = init_info, infovarnames = names(infovalues), relnb = 14)
 # extend the relations 
-captain_data_names5[rels_nb[1]] # " ads_rel"
-captain_data_names5[rels_nb[2]] # rel_13
-rel_13_ext <- extmin(get(captain_data_names5[rels_nb[2]]), relRef)   
+captain_rel_names5[rels_nb[1]] # " ads_rel"
+captain_rel_names5[rels_nb[2]] # rel_13
+rel_13_ext <- extmin(get(captain_rel_names5[rels_nb[2]]), relRef)   
 #
 # 3: combine the relations
 # combine extended relations
@@ -507,12 +507,12 @@ print(rels_nb) # 1,2
 R14 <- 1*1:8 %in% rel_14$infovar[,1]
 # remove rels_nb E3 and R9, add R11, add R12
 captain_hgm6 <- cbind(captain_hgm5[,-rels_nb], R14)
-captain_data_names6 <- c(captain_data_names5[-rels_nb], "rel_14")
+captain_rel_names6 <- c(captain_rel_names5[-rels_nb], "rel_14")
 #
 irel_to_elim<- captain_hgm6[var_to_elim[7],]*1:ncol(captain_hgm6)
 rels_nb <- irel_to_elim[irel_to_elim>0]
 # find variables numbers of each relation to obtain the space to construct
-rels_names = captain_data_names6[rels_nb]
+rels_names = captain_rel_names6[rels_nb]
 yv1 = get(rels_names[1])$infovar
 yv = yv1
 if (length(rels_names) > 1 ) {
@@ -542,10 +542,10 @@ dimnames = list(NULL, c("varnb", "size")) )
   relRef <- bcaRel(tt = init_tt, spec = init_spec,
 infovar = init_info, infovarnames = names(infovalues), relnb = 15)
 # extend the relations 
-  captain_data_names6[rels_nb[1]] # " rel"
-  rel_ext <- extmin(get(captain_data_names6[rels_nb[1]]), relRef) ## no need to extend. make a check on this case in an algorith.
-  captain_data_names6[rels_nb[2]] # rel_14
-  rel_14_ext <- extmin(get(captain_data_names6[rels_nb[2]]), relRef)   
+  captain_rel_names6[rels_nb[1]] # " rel"
+  rel_ext <- extmin(get(captain_rel_names6[rels_nb[1]]), relRef) ## no need to extend. make a check on this case in an algorith.
+  captain_rel_names6[rels_nb[2]] # rel_14
+  rel_14_ext <- extmin(get(captain_rel_names6[rels_nb[2]]), relRef)   
 #
 # 3: combine the relations
 # combine extended relations

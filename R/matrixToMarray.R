@@ -1,32 +1,34 @@
 #' Transformation of the tt matrix of a relation
 #'
 #' The matrix representation of a relation is converted to the array representation or product space representation.
-#' @param rel An object of class bcaspec, i.e. a mass function of one variable or a relation.
+#' @param tt A (0,1)-matrix or a boolean matrix establishing the relation between two or more variables. The matrix is constructed by placing the variables side by side, as in a truth table representation.
+#' @param valuenames A list of the names of the variables with the name of each value of their frame of discernment.
 #' @return mtt The array (product space) representation of the tt matrix.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples
-#' wr_tt <- matrix(c(0,1,rep(0,5),rep(c(1,0),2),1,1,0,1,0,
-#' rep(1,3),0,1,0,rep(1,6)), ncol=4, byrow = TRUE)
-#' colnames(wr_tt) <- c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn")
-#'  wr_spec = matrix(c(1:7, 0.0476, 0.7619, 0.1905, 0,0,0,0), 
-#'  ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
-#'  wr_infovar = matrix(c(4,5,2,2), ncol = 2, 
-#'  dimnames = list(NULL, c("varnb", "size")) )
-#'  wr_rel <- list(tt=wr_tt, con=0.16, spec=wr_spec,
-#'   infovar=wr_infovar, 
-#'   infovaluenames= list( RdWorks=c("rWdy", "rWdn") , Rain=c("Ry", "Rn")))
-#'  class(wr_rel)="bcaspec"
-#' z <- matrixToMarray(wr_rel)
+#' # Define  wr_tt, a matrix describing the relation between two variables
+#' wr_tt <- matrix(c(1,rep(0,3),rep(c(1,0),3),0,1,1,1,0,0,
+#' 1,0,rep(1,5),0,1,1,0,rep(1,5)), ncol=4, byrow = TRUE)
+#' colnames(wr_tt) <- c("Wy Ry", "Wy Rn", "Wn Ry", "Wn Rn")
+#' rownames(wr_tt) <- nameRows(wr_tt)
+#' vars= list( RdWorks = c("Wy", "Wn") , Rain = c("Ry", "Rn"))
+#' print(zmToa <- matrixToMarray(tt = wr_tt, valuenames = vars ) )
 #'  
-matrixToMarray <- function(rel) {
-  # Check input data
-  if ( inherits(rel, "bcaspec") == FALSE) {
-    stop("Input argument not of class bcaspec.")
+matrixToMarray <- function(tt, valuenames) {
+  #
+  # 0. Local variables: size, nbvar, mtt0
+  #
+  # 1. Define working variables and Check input data
+  #
+  size <- lengths(valuenames)
+  nbvar <- length(size)
+  if ( ncol(tt) != prod(size) ) {
+    stop("Product of size of variables not equal to number of columns of tt matrix.")
   }
-  # Calculations
-  nbvar <- dim(rel$infovar)[1]
-  mtt0 <- array(as.vector(t(rel$tt)), c((rel$infovar[,2])[nbvar:1],nrow(rel$tt)), dimnames = c((rel$infovaluenames)[nbvar:1], list(ev=1:nrow(rel$tt)))) # OK. Variables must be in reverse order
+  # 2. Calculations
+  #
+  mtt0 <- array(as.vector(t(tt)), c(size[nbvar:1],nrow(tt)), dimnames = c((valuenames)[nbvar:1], list(ev=1:nrow(tt))))  # OK. Variables must be put in reverse order
   mtt <- aperm(mtt0, perm = c(nbvar:1, nbvar+1))
   return(mtt)
 }

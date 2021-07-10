@@ -25,11 +25,18 @@
 #' @export
 #' 
 inters<-function(x, y) { 
-   I1<-rbind(x) # transforms vectors in matrices
-   I2<-rbind(y)
+  #
+  # Local variables : I1, I2, N1, N2
+  #
+  # 2. checks
+  #
+  I1<-rbind(x) # transforms vectors in matrices
+  I2<-rbind(y)
   if (ncol(I1) != ncol(I2)) {
     stop("Error in input arguments: check your input data.") 
   }
+  # End checks
+  #
   N1 <- outer(I1, I2, "*")
   N2 <- apply(N1, c(1,3), diag) # keep dim 1,3 and apply diag on the rest
   N12<-aperm(N2,c(2,1,3))

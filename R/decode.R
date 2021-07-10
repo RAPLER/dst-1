@@ -24,6 +24,10 @@
 #' decode(c(24,60), c(2,1,57))     # left vector extended
 #' decode(1.5, c(1,2,3)) # polynomial 1*x^2 +2*x +3 evaluated at x=1.5
 decode<-function(base, ind) { 
+  #
+  # Local variables: b, b1 
+  # Functions calls: shape
+  #
 	if (length(base) == 1) {
 	   base<-array(base,shape(ind)) 
 	}

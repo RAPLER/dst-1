@@ -30,6 +30,10 @@
 #'  ncol = 2, byrow = TRUE)
 #' dotprod(team_names, t(BobandDoles),g="|",f="==") * (1:nrow(team_names))
 dotprod<-function(x,y,g,f){
+  #
+  # Local variables: ff, gg, i, j, temp, k,  
+  # Functions calls: None
+  #
   if (ncol(x) !=nrow(y)) {
     stop("nb of columns of first matrix not equal to nb rows second matrix.")
   }

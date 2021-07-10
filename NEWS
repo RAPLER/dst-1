@@ -1,8 +1,45 @@
+dst 1.5.0
+
+Functions revised. All functions : code simplification and documentation
+- bca: 2021-01-16
+- bcaRel: 2021-01-14
+- addTobca: 2021-01-16
+- dsrwon: 2021-04-23. Calculation of the measure of conflict revised to take into account the case of the combination with the vacupus belief function. This case is used at the beginning of nzdsr (normalization) to update the I12 matrix.
+- nzdsr: 2021-04-26
+- bcaPrint: 2021-04-26
+- belplau: 2021-04-28
+- decode: 2021-04-28
+- dotprod: 2021-04-30
+- doubles: 2021-04-30
+- elim: 2021-05-30: example revised; 2021-07-06: call to fn matrixToMarray changed.
+  Call to new fn "nameCols_prod"
+- encode: 2021-06-03
+- extmin: 2021-06-18: call to fn matrixToMarray changed.
+- inters: 2021-06-04
+- marrayToMatrix: 2021-06-29. Function call changed. Call to new fn "nameCols_prod".
+- matrixToMarray: 2021-06-18. Function call changed
+- nameCols: 2021-06-28. Function call changed
+- nameCols_prod: 2021-06-28. New function. Used in functions extmin and elim.
+- nameRows: 2021-06-29
+- plautrans: 2021-06-30
+- productSpace: 2021-07-08
+- reduction: 2021-07-08
+- shape: 2021-07-09
+- tabresul: 2021-07-09
+===============================
 dst 1.4.1.9002
-Correction yo function plautrans
-The check for the presence of the empty set did not work properly. It has been updated.
+Correction to function plautrans
+The check for the presence of the empty set did not work properly.
+=============
+
+dst v1.2.1.9000
+
+1) function extmin
+If there is no missing variable, simply take the input as the result.
+
 ======================
 dst v1.4.1
+version 1.4.1 published on CRAN 2020-03-28
 As of 2020-02-23
 - added utility function bcaPrint for printing of the subsets of non-zero  mass of a belief function.
 - added examples vignettes: 

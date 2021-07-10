@@ -2,9 +2,9 @@
 % Please edit documentation in R/marrayToMatrix.R
 \name{marrayToMatrix}
 \alias{marrayToMatrix}
-\title{Transformation of an array data to a matrix-represented relation}
+\title{Transformation of an array data to its matrix representation}
 \usage{
-marrayToMatrix(mtt, infovar)
+marrayToMatrix(mtt)
 }
 \arguments{
 \item{mtt}{The matrix tt of the relation in  multiarray format}
@@ -18,11 +18,9 @@ tt The matrix representation of the data.
 The array representation or product space representation is converted to the matrix representation of the corresponding relation.
 }
 \examples{
- wr_infovar = matrix(c(4,5,2,2), ncol = 2, 
- dimnames = list(NULL, c("varnb", "size")) )
- mtt <- array(c(0,1,0,0,0,0,0,1,0,1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,1,1,1,1), c(2,2,7), 
- dimnames = list( RdWorks=c("rWdy", "rWdn") , Rain=c("Ry", "Rn"), ev=1:7))
-z <- marrayToMatrix(mtt, wr_infovar)
+ mtt <- array(c(1,0,0,0,1,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,0,1,0,1,1,1,1,1,1), c(2,2,8), 
+ dimnames = list( RdWorks=c("Wy", "Wn") , Rain=c("Ry", "Rn"), ev=1:8) )
+ print(z <- marrayToMatrix(mtt))
 
 }
 \author{

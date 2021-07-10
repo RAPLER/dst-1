@@ -18,6 +18,9 @@
 #' @export
 #' 
 encode<-function(base, ind) { 
+  #
+  # Local variables: s, j
+  #
 r<-rep(0,length(base))
 		s<-ind[1] 
 		for (j in length(base):1) {

@@ -2,8 +2,9 @@
 context("Matrix transformation")
 library(dst)
 test_that("matrixToMarray", {
-  # T1 x must be of class bcaspec. 
-  x <- list(a=1:3, b="foo")
-  expect_error(matrixToMarray(x), "Input argument not of class bcaspec." )
+  # T1 Product of the size of variables  obtained within the valuenames parameter must be equal to the number of columns of tt matrix
+  x <- matrix(1:12, ncol=4)
+  vars <- list(a=c("A1", "A2", "A3"), b=c("B1", "b2") )
+  expect_error(matrixToMarray(tt=x, valuenames = vars), "Product of size of variables not equal to number of columns of tt matrix." )
 } )
   

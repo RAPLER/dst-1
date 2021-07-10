@@ -4,7 +4,16 @@
 \alias{bcaRel}
 \title{Representation of a mass function in a product space}
 \usage{
-bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
+bcaRel(
+  tt,
+  spec,
+  infovar,
+  varnames = NULL,
+  valuenames = NULL,
+  relnb = NULL,
+  infovarnames,
+  infovaluenames
+)
 }
 \arguments{
 \item{tt}{A (0,1)-matrix or a boolean matrix establishing the relation between two or more variables. The matrix is constructed by placing the variables side by side, as in a truth table representation.}
@@ -13,18 +22,18 @@ bcaRel(tt, spec, infovar, infovarnames = NULL, relnb = NULL)
 
 \item{infovar}{A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.}
 
-\item{infovarnames}{The names of the variables. If omitted, variables are named \code{v1, v2, etc}.}
+\item{varnames}{The names of the variables. If omitted, variables are named \code{v1, v2, etc}.}
 
 \item{relnb}{A number given to the relation. Set at 0 if omitted.}
 }
 \value{
-An object of class \code{bcaspec}. This is a list containing the following components:  \itemize{
+zr An object of class \code{bcaspec} called a bca for "basic chance assignment". This is a list containing the following components:  \itemize{
 \item con The measure of conflict.
 \item tt The resulting table of subsets. Rownames of the matrix of subsets are generated from the column names of the elements of the product frame. See \code{\link{nameRows}} for details.
 \item spec The resulting two-column matrix of specification numbers with associated mass values.
 \item infovar The two-column matrix of variables number and size given in the input data.
-\item infovaluenames A list of the names of the variables with the name of the elements of their frame of discernment.
-\item inforel A two-column matrix containing the relation number and the depth  (number of variables) of the relation.
+\item valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
+\item inforel A two-column matrix containing the relation number and the depth (number of variables) of the relation.
 }
 }
 \description{
@@ -48,7 +57,7 @@ This function is used to represent a mass function which establish a relation be
  inforw <- matrix(c(4,5,2,2), ncol = 2, 
  dimnames = list(NULL, c("varnb", "size")) )
 bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
- infovarnames = c("RdWorks", "Rain"), relnb = 6)
+ varnames = c("RdWorks", "Rain"), relnb = 6)
  
 }
 \author{

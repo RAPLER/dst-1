@@ -2,7 +2,7 @@
 % Please edit documentation in R/bcaPrint.R
 \name{bcaPrint}
 \alias{bcaPrint}
-\title{Simple printing of a bca (0,1)-matrix and mass function}
+\title{Simple printing of the tt matrix and mass values of a basic chance assignment (bca)}
 \usage{
 bcaPrint(x)
 }
@@ -10,13 +10,13 @@ bcaPrint(x)
 \item{x}{A list of class bcaspec.}
 }
 \value{
-A table of subsets with their mass. Subsets are identified by rowname.
+A table of subsets with their associated mass. Subsets are identified by rowname.
 }
 \description{
 This utility function does a simple printing of a bca
 }
 \examples{
-z <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+z <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 byrow = TRUE), m=c(0.2,0.5, 0.3), 
 cnames =c("a", "b", "c"), varnb = 1)
 bcaPrint(z)

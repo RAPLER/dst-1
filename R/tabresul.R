@@ -2,7 +2,7 @@
 #'
 #' This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only.
 #' @aliases tabresul
-#' @param x A bca mass function
+#' @param x A basic chance assignment (bca)
 #' @param removeZeroes = TRUE removes subsets with 0 mass.
 #' @param singletonsOnly = TRUE reduces the table of results to elementary events (singletons).
 #' @return A list of two elements: \itemize{
@@ -11,13 +11,13 @@
 #'   }
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples  
-#' x <- bca(f=matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3,
 #' byrow = TRUE), m=c(0.2,0.5, 0.3), 
 #' cnames =c("a", "b", "c"), 
-#' infovarnames = "x", varnb = 1)
-#' y <- bca(f=matrix(c(1,0,0,1,1,1),nrow=2, 
+#' varnames = "x", varnb = 1)
+#' y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, 
 #' byrow = TRUE), m=c(0.6, 0.4),  
-#' cnames = c("a", "b", "c"), infovarnames = "y", varnb = 1)
+#' cnames = c("a", "b", "c"), varnames = "y", varnb = 1)
 #' xy <- dsrwon(x,y)
 #' xyNorm <- nzdsr(xy)
 #' tabresul(xyNorm) 
@@ -32,10 +32,17 @@
 #' tabresul(xy1, singletonsOnly = TRUE)
 #' @export
 #' 
-tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check input data 
+tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  
+  #
+  # Local variables: row_m_empty, macc, W2, INUL, macc1, W2a, BP, mbp, 
+  # Functions calls: belplau
+  #
+  # 1. check input data 
+  #
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
+  #
   # check if m_empty present and if not 0
   if (sum((apply(x$tt, 1, sum)) == 0) > 0) {
     row_m_empty <- match(1:nrow(x$tt), rownames(x$tt) == "\u00f8")
@@ -46,12 +53,15 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
       }
     }
   }
-# Compute Bel and Pl functions 
+  #
+  # Processing
+  # 3.1. Compute Bel and Pl functions and prepare final result
+  #
   BP<-belplau(x)
-# prepare final result
   macc<-t(rbind(x$spec[,2]))
   W2<-rbind(x$tt)
-# remove elements with mass=0, but the frame
+  #
+  # 3.2. remove elements with mass=0, but the frame
   INUL<-c(macc[-length(macc)]>0,TRUE)
   if (removeZeroes == TRUE) {
     macc1<-t(rbind(macc[INUL]))
@@ -63,7 +73,8 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
   }
   colnames(macc1)<-"mass"
   mbp<-cbind(W2a,macc1,BP)
-# Prepare a table of results reduced to the singletons
+  #
+  # 3.3. Prepare a table of results reduced to the singletons
   if (singletonsOnly == TRUE) {
     r <- mbp
     z2<-r[,c(1:(ncol(r)-4))]
@@ -78,6 +89,8 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  # check
     }
     mbp <- r1
   }
+  #
+  # 4. Final result
   resul<-list(mbp=mbp, Conflict=x$con)
   return(resul)
 }

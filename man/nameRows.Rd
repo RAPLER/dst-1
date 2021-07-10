@@ -2,31 +2,27 @@
 % Please edit documentation in R/nameRows.R
 \name{nameRows}
 \alias{nameRows}
-\title{Using the column names of a matrix to construct names for the rows}
+\title{Combining the column names of a matrix to construct names for the rows}
 \usage{
-nameRows(f)
+nameRows(tt, f)
 }
 \arguments{
-\item{f}{A (0,1)-matrix or a boolean matrix.}
+\item{tt}{A (0,1)-matrix or a boolean matrix.}
 }
 \value{
-The result is a character vector of the labels proposed for the rows of the matrix \code{f}. The length of the result is \code{nrow(f)}.
+A character vector of labels obtained for the rows of the matrix \code{tt}. The length of the result is \code{nrow(tt)}.
 }
 \description{
 This function determines the name of a row from all the columns that have a 1 for that row.
 }
 \details{
-The row containing all one's is called "frame", to avoid too long a character string. The empty set is named by its code "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a product space defined on many variables, row labels will be very long.
+The row consisting all 1's is called "frame", to avoid too long a character string. The empty set is identified by its code "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a product space defined on many variables, row labels can become very long.
 }
 \examples{
-f <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)
-colnames(f) <- c("A","B","C")
-rownames(f) <-nameRows(f)
-f
-f2 <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1),ncol=3, byrow = TRUE)
-colnames(f2) <- c("A2","B2","C2")
-rownames(f2) <-nameRows(f2) 
-f2
+tt <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)
+colnames(tt) <- c("A","B","C")
+rownames(tt) <-nameRows(tt)
+tt
 }
 \author{
 Claude Boivin, Stat.ASSQ

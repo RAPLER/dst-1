@@ -19,32 +19,22 @@ This function works on a relation defined on a product of two variables or more.
 }
 \examples{
  
-wr_tt <- matrix(c(0,1,rep(0,5),rep(c(1,0),2),1,1,0,1,0,
-rep(1,3),0,1,0,rep(1,6)), ncol=4, byrow = TRUE)
-colnames(wr_tt) <- c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn")
- wr_spec = matrix(c(1:7, 0.0476, 0.7619, 0.1905, 0,0,0,0), 
+We construct a relation between two variables to show marginalization.
+wr_tt <- matrix(c(1,rep(0,3),rep(c(1,0),3),0,1,1,1,0,0,
+1,0,rep(1,5),0,1,1,0,rep(1,5)), ncol=4, byrow = TRUE)
+colnames(wr_tt) <- c("Wy Ry", "Wy Rn", "Wn Ry", "Wn Rn")
+rownames(wr_tt) <- nameRows(wr_tt)
+ wr_spec = matrix(c(1:8, 0.017344, 0.046656, 0.004336, 0.199456,0.011664,0.536544,0.049864, 0.134136), 
  ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
  wr_infovar = matrix(c(4,5,2,2), ncol = 2, 
  dimnames = list(NULL, c("varnb", "size")) )
  wr_rel <- list(tt=wr_tt, con=0.16, spec=wr_spec,
-  infovar=wr_infovar, 
-  infovaluenames= list(Rain=c("Ry", "Rn"), RdWorks=c("rWdy", "rWdn") ))
+  infovar=wr_infovar, varnames = c("Roadworks","Rain"),
+  valuenames= list( RdWorks=c("Wy", "Wn"), Rain=c("Ry", "Rn") ))
  class(wr_rel)="bcaspec"
- elim(wr_rel, xnb = 5)
- elim(wr_rel, xnb = 4)
+bcaPrint(elim(wr_rel, xnb = 5))
+  bcaPrint(elim(wr_rel, xnb = 4))
  
- mrt_tt <- matrix(c(1,0,1,0,0,1,1,0,0,1,0,1,1,0,0,1,0,1,1,0,0,1,0,1,rep(1,4)), 
- ncol=4, byrow = TRUE)
-colnames(mrt_tt) <- c("t6", "f6", "t8", "f8")
- mrt_spec = matrix(c(1,1,1,2,2,2,3, 0.1, 0.1, 0.1, 0.7,0.7,0.7,0.2), 
- ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
- mrt_infovar =matrix(c(6,8,2,2), ncol = 2, 
- dimnames = list(NULL, c("varnb", "size")) )
- mrt_rel <- bcaRel(tt=mrt_tt, spec=mrt_spec, 
- infovar=mrt_infovar, 
- infovarnames= c("Maintenance", "Repair") )
- elim(mrt_rel, xnb = 6)
- elim(mrt_rel, xnb = 8)
 }
 \author{
 Claude Boivin, Stat.ASSQ

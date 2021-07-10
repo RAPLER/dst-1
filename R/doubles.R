@@ -16,13 +16,26 @@
 #' td4<-matrix(as.logical(td1),nrow=5,byrow=TRUE)
 #' (doubles(td4))
 doubles<-function(x) {
+  #
+  # Recursive
+  # Local variables: zi1, zi2,  xr
+  # Functions calls: dotprod
+  #
+  # 1. checks
+  #
   if (is.matrix(x) == FALSE) {
     stop("Input is not a matrix.")
   }
+  #
+  # 2. Treatment
+  #
   zi1<-array(x[1,],c(1,dim(x)[-1])) 
   zi2<-dotprod(zi1,t(x),g="&",f="==")  ## determining all positions of the tested line in x
   xr<-x[(c(1-zi2))*c(1:dim(x)[1]),,drop=FALSE] ## remove duplicates
   res<- if (dim(xr)[1] < 1) x[1,] else rbind(x[1,1:dim(x)[2]],doubles(xr)) ##  cycle until no duplicates in xr
+  #
+  # 3. Result
+  #
   # convert to matrix if result is vector
   if (is.matrix(res) == FALSE) {
     res <- t(as.matrix(res))
