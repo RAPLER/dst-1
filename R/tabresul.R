@@ -60,8 +60,22 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   BP<-belplau(x)
   macc<-t(rbind(x$spec[,2]))
   W2<-rbind(x$tt)
+  # 
+  # 3.2 Order the subsets so the frame is in the last position of tt matrix
+  # we don't want it removed if 0
   #
-  # 3.2. remove elements with mass=0, but the frame
+  sort_order<-order(apply(W2,1,sum))
+  W2 <- W2[sort_order,]
+  if (is.matrix(W2) == FALSE) {
+     W2 <- matrix(W2,ncol = length(W2), dimnames = list(NULL, names(W2)))
+  }
+  #
+  # 3.3 Put masses in the same order as the W2 matrix
+  #
+  macc <- macc[sort_order]
+  macc <- matrix(macc,ncol=1, dimnames =list(NULL, "mass"))
+  #
+  # 3.4. remove elements with mass=0, but the frame
   INUL<-c(macc[-length(macc)]>0,TRUE)
   if (removeZeroes == TRUE) {
     macc1<-t(rbind(macc[INUL]))
@@ -74,7 +88,7 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   colnames(macc1)<-"mass"
   mbp<-cbind(W2a,macc1,BP)
   #
-  # 3.3. Prepare a table of results reduced to the singletons
+  # 3.5. Prepare a table of results reduced to the singletons
   if (singletonsOnly == TRUE) {
     r <- mbp
     z2<-r[,c(1:(ncol(r)-4))]
