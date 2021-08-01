@@ -1,5 +1,5 @@
 #' Prepare a table of results
-#'
+#' 
 #' This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only.
 #' @aliases tabresul
 #' @param x A basic chance assignment (bca)
