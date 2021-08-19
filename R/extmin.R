@@ -86,7 +86,7 @@ extmin <- function(rel1, relRef) {
   values_ck <- outer(values1, values2, FUN="==")
   nbval=as.integer(sum(rowSums(values_ck, dims = 1)))
   if (nbval < length(values1)) {
-    stop("Names of rel not in relRef. Check variables names.")
+    stop("Variables names of rel not in relRef. Check variables names.")
   }
   #
   # 6. Check that names of variables and their numbers are correct.
