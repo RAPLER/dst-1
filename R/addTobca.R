@@ -18,10 +18,18 @@
 #' xy1
 #' addTobca(x, f = diag(1,  ncol(x$tt) ) ) # add all singletons
 #' 
-addTobca <- function(x, f) {
+addTobca <- function(x, tt, f) {
   #
   # Local variables: specnb 
   # Functions calls: None 
+  #
+  # 0. Catch old parameters names, if any and replace by the new ones
+  #
+  # catch old parameter f and replace by tt if used instead of tt
+  calls <- names(sapply(match.call(), deparse))[-1]
+  if(any("f" %in% calls) & missing(tt)) {
+    tt <- f
+  }
   #
   # 1. Parameter checks
   #
