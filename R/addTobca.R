@@ -36,19 +36,19 @@ addTobca <- function(x, tt, f) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input x not of class bcaspec.")
   }
-  if ((is.matrix(f) ==FALSE) ) {
-    stop("f parameter must be a (0,1) or logical matrix.")
+  if ((is.matrix(tt) ==FALSE) ) {
+    stop("tt parameter must be a (0,1) or logical matrix.")
   }
-    if (ncol(x$tt) != ncol(f)) {
-    stop("Error in input arguments: number of columns of f not equal to ncol(x$tt)") 
+    if (ncol(x$tt) != ncol(tt)) {
+    stop("Error in input arguments: number of columns of tt not equal to ncol(x$tt)") 
     }
   #
   # 2. Calculations
   #
-  x$tt <- rbind(f,x$tt)
+  x$tt <- rbind(tt,x$tt)
   rownames(x$tt) <- nameRows(x$tt)
   specnb <- 1:nrow(x$tt)
-  mass <- c(rep(0,nrow(f)), x$spec[,2])
+  mass <- c(rep(0,nrow(tt)), x$spec[,2])
   x$spec <- cbind(specnb, mass)
   return(x)
 } 
