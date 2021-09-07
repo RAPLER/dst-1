@@ -30,7 +30,7 @@
 #' xy <- nzdsr(dsrwon(x,y))
 #' belplau(xy)
 #' print("compare all elementary events")
-#' xy1 <- addTobca(xy, matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+#' xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
 #' belplau(xy1) 
 #' 
 belplau<-function (x, remove=FALSE) {

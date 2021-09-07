@@ -41,7 +41,7 @@ plautrans <- function(x) {
   #
   # 2.1 add all the singletons to the input bca
   nc <-ncol(x$tt)
-  x <- addTobca(x, diag(1, nc))
+  x <- addTobca(x = x,f= diag(1, nc))
   #
   # 2.2 eliminate duplicates singletons if any  
   x <- nzdsr(x)
