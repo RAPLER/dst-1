@@ -37,7 +37,7 @@
 #' bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
 #'  varnames = c("RdWorks", "Rain"), relnb = 6)
 #'  
-bcaRel <- function(tt, spec, infovar, varnames = NULL, valuenames = NULL, relnb = NULL, infovarnames, infovaluenames) {
+  bcaRel <- function(tt, spec, infovar, varnames, valuenames, relnb = NULL, infovarnames, infovaluenames) {
   #
   # Local variables: v, z1, colnz1, 
   # Functions calls: doubles, productSpace, bca
