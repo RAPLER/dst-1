@@ -59,7 +59,7 @@ extmin <- function(rel1, relRef) {
   # find position of the variables of the relation
   lvars <- (is.element(varnb_ps, varnb_rel1))*varnb_ps
   if (sum(lvars) == 0) {
-    stop("no common variable to the two relations.") 
+    stop("No common variable to the two relations. Check variable names and numbers.") 
   }
   #
   # 3. check that the space of the extension is greater than the space of rell1

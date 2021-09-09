@@ -11,7 +11,7 @@ test_that("extmin", {
   x2 <- bca(tt = matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(4,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("A"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
   #
   y2 <- bca(tt = matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(5,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), infovarnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
-  expect_error(extmin(x2, y2), "no common variable to the two relations.")
+  expect_error(extmin(x2, y2), "No common variable to the two relations. Check variable names and numbers.")
 #   #
 #   # T3 Test removed
 #   # There must be at least one variable to add to the relation rel1
