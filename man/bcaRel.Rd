@@ -8,8 +8,8 @@ bcaRel(
   tt,
   spec,
   infovar,
-  varnames = NULL,
-  valuenames = NULL,
+  varnames,
+  valuenames,
   relnb = NULL,
   infovarnames,
   infovaluenames
@@ -41,24 +41,27 @@ This function is used to represent a mass function which establish a relation be
 }
 \examples{
 # A logical implication rule
-# A typical relation between two variables in the context of expert systems is the
-# logical implication \code{(a -> b)}. Let us suppose
-# that \code{a} stands for \code{Rain: {yes, no}} and \code{b} stands for
-# \code{RoadWorks: {yes, no}}. From experience,
+# A typical relation between two variables is the
+# logical implication a -> b. Let us suppose
+# that a stands for Rain: {yes, no} and b stands for
+# Roadworks: {yes, no}. From experience,
 # I am 75 \% sure that there will be RoadWorks if there is no rain.
-## 1. The tt table of the logical implication
+
+#' # 1. The tt table of the logical implication
  ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
  nrow=4, byrow = TRUE, 
  dimnames = list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
- ## The mass distribution
+ 
+ # 2. The mass distribution
  specrw <-  matrix(c(1,1,1,2,0.75,0.75,0.75,0.25), ncol = 2, 
- dimnames = list(NULL, c("specnb", "mass"))) 
- ## Variables numbers and sizes
+ dimnames = list(NULL, c("specnb", "mass")))
+  
+ # 3. Variables numbers and sizes
  inforw <- matrix(c(4,5,2,2), ncol = 2, 
  dimnames = list(NULL, c("varnb", "size")) )
 bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
  varnames = c("RdWorks", "Rain"), relnb = 6)
- 
+
 }
 \author{
 Claude Boivin, Stat.ASSQ

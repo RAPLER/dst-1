@@ -13,6 +13,8 @@
 #'  specfw = c(1,1,2) 
 #'  infovarfw =matrix(c(5,7,2,2), ncol = 2, 
 #'  dimnames = list(NULL, c("varnb", "size")) )
+#'  rownames(ttfw) <- nameRows(ttfw)
+#'  ttfw
 #' productSpace(tt=ttfw, specnb=specfw, infovar=infovarfw)
 #' @export
 #' 

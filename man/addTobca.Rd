@@ -4,12 +4,12 @@
 \alias{addTobca}
 \title{Add some elements of 0 mass to an existing basic chance assignment.}
 \usage{
-addTobca(x, f)
+addTobca(x, tt, f)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
 
-\item{f}{A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{f} must match the number of columns of the f matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.}
+\item{tt}{A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the tt matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.}
 }
 \value{
 x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{f}.

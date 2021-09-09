@@ -2,7 +2,7 @@
 #'
 #' Given a previously defined basic chance assignment (bca), the user may want to add some elements of the set of possible values or some subsets, even if they have zero mass value. This feature is useful, for example, to examine the measure of plausibility of these elements or subsets of zero mass value.
 #' @param x A basic chance assignment (see \code{\link{bca}}).
-#' @param f A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{f} must match the number of columns of the f matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.
+#' @param tt A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the tt matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.
 #' @return x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{f}.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
