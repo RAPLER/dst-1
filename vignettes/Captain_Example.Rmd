@@ -13,7 +13,6 @@ vignette: >
 ```{r setup, include=FALSE}
 #
 # devtools::load_all(".") # only used in place of dst when testing with R-devel
-# attach package dst
 library(dst) 
 #
 knitr::opts_knit$set(echo = TRUE, root.dir = "..")
@@ -38,14 +37,14 @@ Finally three inputs of evidence (L, F, M) are given.
 A = D + S. 
 $Ω_A$ = {0,1,2,3,4,5,6}; $Ω_D$ = {0,1,2,3}; $Ω_S$ = {0,1,2,3}
 
-```{r}
+```{r Relation ADS}
 # library(dst)
 load("data/ads.rda")
 ads_tt<- ads[-1,-c(1,2)]
 ads_tt  <- as.matrix(ads_tt)
 ads_info = matrix(c(1,2,3,7,4,4), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
 ads_spec = matrix(c(rep(1,16), 2,rep(1,16),0), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-ads_rel <- bcaRel(tt = ads_tt, spec = ads_spec, infovar = ads_info, infovarnames = c("Arrival", "Departure", "Sail"), relnb = 1)
+ads_rel <- bcaRel(tt = ads_tt, spec = ads_spec, infovar = ads_info, varnames = c("Arrival", "Departure", "Sail"), relnb = 1)
 bcaPrint(ads_rel)
 ```
 
@@ -53,14 +52,14 @@ bcaPrint(ads_rel)
 D =sum of delays of 1 day for each delay of L (L = true), F (F = foul) or M (M = true). 
 $Ω_D$ = {0,1,2,3}; $Ω_L$ = {true, false}; $Ω_F$ = {foul, fair}; $Ω_M$ = {true, false}.
 
-```{r}
+```{r Relation DLFM}
 load("data/dlfm.rda")
 dlfm_tt<- dlfm[-1,-c(1,2)]
 dlfm_tt  <- as.matrix(dlfm_tt)
 colnames(dlfm_tt) <- colnames(dlfm)[-c(1,2)]
 dlfm_info = matrix(c(2,4,5,6,4,2,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
 dlfm_spec = matrix(c(rep(1,8), 2,rep(1,8),0), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-dlfm_rel <- bcaRel(tt = dlfm_tt, spec = dlfm_spec, infovar = dlfm_info, infovarnames = c("Departure", "Loading", "Forecast", "Maintenance"), relnb = 2)
+dlfm_rel <- bcaRel(tt = dlfm_tt, spec = dlfm_spec, infovar = dlfm_info, varnames = c("Departure", "Loading", "Forecast", "Maintenance"), relnb = 2)
 bcaPrint(dlfm_rel)
 ```
 
@@ -70,13 +69,13 @@ R3 : S = sum of delays of 1 day for each condition in W (W = foul)  or R (R = tr
 m({0 fair false}, {1 foul false}, {1 fair true}, {2 foul true}) = 0.9; 
 m($Ω_S$ x $Ω_W$ x $Ω_R$) = 0.1.
 
-```{r}
+```{r Relation SWR}
 load("data/swr.rda")
 swr_tt<- swr[-1,-c(1,2)]
 swr_tt  <- as.matrix(swr_tt)
 swr_info = matrix(c(3,7,8,4,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
 swr_spec = matrix(c(rep(1,4), 2,rep(0.9,4), 0.1), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-swr_rel <- bcaRel(tt = swr_tt, spec = swr_spec, infovar = swr_info, infovarnames = c("Sail", "Weather", "Repairs"), relnb = 3)
+swr_rel <- bcaRel(tt = swr_tt, spec = swr_spec, infovar = swr_info, varnames = c("Sail", "Weather", "Repairs"), relnb = 3)
 bcaPrint(swr_rel)
 ```
 
@@ -86,13 +85,13 @@ W $\leftrightarrow$ F in (W x F):
 m({foul, foul), (fair, fair)} = 0.8 ; 
 m($Ω_W$ x $Ω_F$) = 0.2
 
-```{r}
+```{r Relation FW}
 load("data/fw.rda")
 fw_tt<- fw[-1,-c(1,2)]
 fw_tt  <- as.matrix(fw_tt)
 fw_info = matrix(c(5,7,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
 fw_spec = matrix(c(rep(1,2), 2,rep(0.8,2), 0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-fw_rel <- bcaRel(tt = fw_tt, spec = fw_spec, infovar = fw_info, infovarnames = c("Forecast", "Weather"), relnb = 4)
+fw_rel <- bcaRel(tt = fw_tt, spec = fw_spec, infovar = fw_info, varnames = c("Forecast", "Weather"), relnb = 4)
 bcaPrint(fw_rel)
 ```
 ###  R5: MR 
@@ -105,13 +104,14 @@ Specification 2. (M = true) $\rightarrow$ (R = false) with mass =  0.7
 m({(false, true), (true, false), (false, false)}) = 0.7
 m($Ω_M$ x $Ω_R$) = 0.2
 
-```{r}
+```{r Relation MR1}
 load("data/mrt.rda")
 mrt_tt<- mrt[-1,-c(1,2)]
 mrt_tt  <- as.matrix(mrt_tt)
+colnames(mrt_tt) <- c("true", "false", "true", "false")
 mrt_info = matrix(c(6,8,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
 mrt_spec = matrix(c(rep(1,3), rep(2,3), 3, rep(0.1,3), rep(0.7,3), 0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-mrt_rel <- bcaRel(tt = mrt_tt, spec = mrt_spec, infovar = mrt_info, infovarnames = c("Maintenance", "Repairs"), relnb = 5) 
+mrt_rel <- bcaRel(tt = mrt_tt, spec = mrt_spec, infovar = mrt_info, varnames = c("Maintenance", "Repairs"), relnb = 5) 
 bcaPrint(mrt_rel)
 ```
 
@@ -124,20 +124,20 @@ Specification 2. (M = false) $\rightarrow$ (R = false) with mass =  0.2
 m({(false, false), (true, true), (true, false)}) = 0.2
 m($Ω_M$ x $Ω_R$) = 0.6
 
-```{r}
+```{r Relation MR2}
 load("data/mrf.rda")
 mrf_tt<- mrf[-1,-c(1,2)]
 mrf_tt  <- as.matrix(mrf_tt)
 mrf_info = matrix(c(6,8,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )      
 mrf_spec = matrix(c(rep(1,3), rep(2,3), 3, rep(0.2,3), rep(0.2,3), 0.6), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-mrf_rel <- bcaRel(tt = mrf_tt, spec = mrf_spec, infovar = mrf_info, infovarnames = c("Maintenance", "Repairs"), relnb = 6) 
+mrf_rel <- bcaRel(tt = mrf_tt, spec = mrf_spec, infovar = mrf_info, varnames = c("Maintenance", "Repairs"), relnb = 6) 
 bcaPrint(mrf_rel)
 ```
 
 ###  Combination of R5 and R6: new R5
 Since R5 and R6 are defined on the same space MxR, we can immediately combine them in a single relation, using Dempster Rule of combination.
 
-```{r}
+```{r Relation MR12}
 mr_rel <- nzdsr(dsrwon(mrt_rel, mrf_rel))
 bcaPrint(mr_rel)
 ```
@@ -147,8 +147,8 @@ bcaPrint(mr_rel)
 $Ω_L$ = {true, false}.
 m({true}) = 0.5 ; m({false})= 0.3 ; m({true}, {false}) = 0.2
 
-```{r}
-l_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.3, 0.5, 0.2), cnames = c("true", "false"), varnb = 4, infovarnames = "Loading")
+```{r evidence Loading}
+l_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.3, 0.5, 0.2), cnames = c("true", "false"), varnb = 4, varnames = "Loading")
 bcaPrint(l_rel)
 ```
 
@@ -156,8 +156,8 @@ bcaPrint(l_rel)
 $Ω_W$= {foul, fair}.
 m({foul}) = 0.2 ; m({fair})= 0.6 ; m({foul}, {fair}) = 0.2
 
-```{r}
-f_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.2, 0.6, 0.2), cnames = c("foul", "fair"), varnb = 5, infovarnames = "Forecast")
+```{r evidence Forecast}
+f_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.2, 0.6, 0.2), cnames = c("foul", "fair"), varnb = 5, varnames = "Forecast")
 bcaPrint(f_rel)
 ```
 
@@ -165,8 +165,8 @@ bcaPrint(f_rel)
 $Ω_M$ = {true, false},
 m({true}) = 0 ; m({false})= 1 .
 
-```{r}
-m_rel <- bca(f = matrix(c(1,0,0,1), ncol = 2, byrow = TRUE), m = c(0, 1), cnames = c("true", "false"), varnb = 6, infovarnames = "Maintenance")
+```{r evidence Maintenance}
+m_rel <- bca(f = matrix(c(1,0,0,1), ncol = 2, byrow = TRUE), m = c(0, 1), cnames = c("true", "false"), varnb = 6, varnames = "Maintenance")
 bcaPrint(m_rel)
 ```
 
@@ -191,7 +191,7 @@ E2 <- 1*1:8 %in% f_rel$infovar[,1]
 E3 <- 1*1:8 %in% m_rel$infovar[,1]
 
 # information on variables
-captain_vars1 <- c( ads_rel$infovaluenames,  dlfm_rel$infovaluenames[2:4],  swr_rel$infovaluenames[2:3])
+captain_vars1 <- c( ads_rel$valuenames,  dlfm_rel$valuenames[2:4],  swr_rel$valuenames[2:3])
 captain_vars <- rbind( ads_rel$infovar,  dlfm_rel$infovar[2:4,],  swr_rel$infovar[2:3,])
 captain_var_names <-names(captain_vars1)
 rownames(captain_vars) <- captain_var_names
@@ -216,7 +216,7 @@ plot(captain_hg, vertex.label = V(captain_hg)$name, vertex.size=(3+6*V(captain_h
 
 ## Calculations to obtain the belief function of the Arrival delay
 
-```{r}
+```{r Calculation}
 # variables numbers
 N <- 1:8
 # Elimination order of variables. The goal: Arrival
@@ -258,7 +258,7 @@ yv=rbind(yv1,yv2)
 yinfov = doubles(yv)
 infovar <- yinfov[order(yinfov[,1]),]
 #
-# extract infovaluenames
+# extract valuenames
 infovalues <- captain_vars1[infovar[,1]]
 
 # extend the two relations before combining them
@@ -277,7 +277,7 @@ dimnames = list(NULL, c("varnb", "size")) )
 # 4: the relation
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
 infovar = init_info, 
-infovarnames = c("Sail", "Maintenance", "Weather", "Repairs"),
+varnames = c("Sail", "Maintenance", "Weather", "Repairs"),
  relnb = 10)
 # extend the relations
 mr_ext <- extmin(get(captain_rel_names1[4]), relRef)
@@ -307,7 +307,7 @@ yv=rbind(yv1,yv2)
 yinfov = doubles(yv)
 infovar <- yinfov[order(yinfov[,1]),]
 #
-# extract infovaluenames
+# extract valuenames
 infovalues <- captain_vars1[infovar[,1]]
 #
 # extend the two relations before combining them
@@ -326,7 +326,7 @@ dimnames = list(NULL, c("varnb", "size")) )
 # 4: the relation
 #
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
-infovar = init_info, infovarnames = names(infovalues), relnb = 11)
+infovar = init_info, varnames = names(infovalues), relnb = 11)
 #
 # extend the relations
 fw_ext <- extmin(get(captain_rel_names2[rels_nb[1]]), relRef)
@@ -360,7 +360,7 @@ yv=rbind(yv1,yv2, yv3)
 yinfov = doubles(yv)
 infovar <- yinfov[order(yinfov[,1]),]
 #
-# extract infovaluenames
+# extract valuenames
 ## test
 infovalues = captain_vars1[infovar[,1]]
 #
@@ -378,7 +378,7 @@ init_info <- matrix(as.vector(infovar), ncol = 2,
 dimnames = list(NULL, c("varnb", "size")) )
 # 4: the relation
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
-infovar = init_info, infovarnames = names(infovalues), relnb = 12)
+infovar = init_info, varnames = names(infovalues), relnb = 12)
 # extend the relations (3 relations)
 m_ext <- extmin(get(captain_rel_names3[rels_nb[1]]), relRef)
 rel_9_ext <- extmin(get(captain_rel_names3[rels_nb[2]]), relRef)
@@ -415,7 +415,7 @@ yv=rbind(yv1,yv2)
 yinfov = doubles(yv)
 infovar <- yinfov[order(yinfov[,1]),]
 #
-# extract infovaluenames
+# extract valuenames
 infovalues <- captain_vars1[infovar[,1]]
 #
 # extend the relations before combining them
@@ -432,7 +432,7 @@ init_info <- matrix(as.vector(infovar), ncol = 2,
 dimnames = list(NULL, c("varnb", "size")) )
 # 4: the relation
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
-infovar = init_info, infovarnames = names(infovalues), relnb = 13)
+infovar = init_info, varnames = names(infovalues), relnb = 13)
 # extend the relations 
 f_ext <- extmin(get(captain_rel_names4[rels_nb[1]]), relRef)
 #
@@ -466,7 +466,7 @@ yv=rbind(yv1,yv2)
 yinfov = doubles(yv)
 infovar <- yinfov[order(yinfov[,1]),]
 #
-# extract infovaluenames
+# extract valuenames
 infovalues <- captain_vars1[infovar[,1]]
 #
 # extend the relations before combining them
@@ -483,7 +483,7 @@ init_info <- matrix(as.vector(infovar), ncol = 2,
 dimnames = list(NULL, c("varnb", "size")) )
 # 4: the relation
 relRef <- bcaRel(tt = init_tt, spec = init_spec,
-infovar = init_info, infovarnames = names(infovalues), relnb = 14)
+infovar = init_info, varnames = names(infovalues), relnb = 14)
 # extend the relations 
 captain_rel_names5[rels_nb[1]] # " ads_rel"
 captain_rel_names5[rels_nb[2]] # rel_13
@@ -522,7 +522,7 @@ if (length(rels_names) > 1 ) {
 yinfov = doubles(yv)
 infovar <- yinfov[order(yinfov[,1]),]
 #
-# extract infovaluenames
+# extract valuenames
 infovalues <- captain_vars1[infovar[,1]]
 #
 if (length(rels_names) > 1 ) {
@@ -540,7 +540,7 @@ dimnames = list(NULL, c("specnb", "mass")))
 dimnames = list(NULL, c("varnb", "size")) )
 # 4: the relation
   relRef <- bcaRel(tt = init_tt, spec = init_spec,
-infovar = init_info, infovarnames = names(infovalues), relnb = 15)
+infovar = init_info, varnames = names(infovalues), relnb = 15)
 # extend the relations 
   captain_rel_names6[rels_nb[1]] # " rel"
   rel_ext <- extmin(get(captain_rel_names6[rels_nb[1]]), relRef) ## no need to extend. make a check on this case in an algorith.

@@ -31,13 +31,13 @@ Zadeh considers the same space of diseases {M, T, C} for the two experts. Hence,
 
 ```{r, echo = FALSE, warning=FALSE}
 # Diagnosis from Expert 1. Coding the evidence with the bca function
-ZExpert1 <- bca(f= matrix(c(1,0,0,0,1,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T", "C"), infovarnames = "Diagnosis1", varnb = 1)
+ZExpert1 <- bca(f= matrix(c(1,0,0,0,1,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis1", varnb = 1)
 # show the definition of ZExpert1
 cat("Diagnosis of Expert 1")
 bcaPrint(ZExpert1)
 #
 # Diagnosis from Expert 2. Coding the evidence with the bca function
-ZExpert2 <- bca(f= matrix(c(0,1,0,0,0,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.01, 0.99, 0), cnames =c("M", "T", "C"), infovarnames = "Diagnosis2", varnb = 2)
+ZExpert2 <- bca(f= matrix(c(0,1,0,0,0,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.01, 0.99, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis2", varnb = 2)
 # show the definition of ZExpert2
 cat("Diagnosis of Expert 2")
 bcaPrint(ZExpert2)
@@ -66,14 +66,14 @@ I show the coding of these two pieces of evidence with the function *bca* of the
 library(dst)
 #
 # Diagnosis from first expert (function e1 attached to variable D1)
-e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T"), infovarnames = "D1", varnb = 1)
+e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T"), varnames = "D1", varnb = 1)
 #
 # show the definition of e1
 # "Diagnosis of Expert 1 (function e1 attached to variable D1)"
 bcaPrint(e1)
 #
 # Diagnosis from second expert (function e2 attached to variable D2)
-e2 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("C", "T"), infovarnames = "D2", varnb = 2)
+e2 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("C", "T"), varnames = "D2", varnb = 2)
 #
 # show the definition of e2
 # "Diagnosis of Expert 2 (function e2 attached to variable D2)"
@@ -105,7 +105,7 @@ spec_r1 = matrix(c(rep(1,7),2, rep(1,7), 0), ncol = 2, dimnames = list(NULL, c("
 info_r1 =matrix(c(1:3, 2,2,3), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
 #
 #  The relation between e1, e2 and a patient p
-r1 <-bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1, infovarnames = c("D1", "D2", "D"), relnb = 1)
+r1 <-bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1, varnames = c("D1", "D2", "D"), relnb = 1)
 # show the relation
 # "Relation between Experts and patient defined in the product space D1 x D2 x D"
 bcaPrint(r1)
@@ -126,7 +126,7 @@ ev1 <- 1*1:3 %in% e1$infovar[,1]
 ev2 <- 1*1:3 %in% e2$infovar[,1]
 
 # information on variables
-meddiag_vars1 <- c(r1$infovaluenames)
+meddiag_vars1 <- c(r1$valuenames)
 meddiag_vars <- rbind(r1$infovar)
 meddiag_var_names <-names(meddiag_vars1)
 rownames(meddiag_vars) <- meddiag_var_names
@@ -242,7 +242,7 @@ print(temp1)
 p <- elim(r3, xnb = order(elim_order)[2])
 #
 # add singletons with 0 mass to show all singletons in the results
-p_sing <- addTobca(p,  f = matrix(c(1,0,0,0,0,1), ncol=3))
+p_sing <- addTobca(x = p,  f = matrix(c(1,0,0,0,0,1), ncol=3))
 # "The final result after elimination of variable D2"
 tabresul(p_sing)
 ```

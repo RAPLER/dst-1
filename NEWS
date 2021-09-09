@@ -1,31 +1,16 @@
 dst 1.5.0
 
 Functions revised. All functions : code simplification and documentation
-- bca: 2021-01-16
-- bcaRel: 2021-01-14
-- addTobca: 2021-01-16
 - dsrwon: 2021-04-23. Calculation of the measure of conflict revised to take into account the case of the combination with the vacupus belief function. This case is used at the beginning of nzdsr (normalization) to update the I12 matrix.
-- nzdsr: 2021-04-26
-- bcaPrint: 2021-04-26
-- belplau: 2021-04-28
-- decode: 2021-04-28
-- dotprod: 2021-04-30
-- doubles: 2021-04-30
-- elim: 2021-05-30: example revised; 2021-07-06: call to fn matrixToMarray changed.
-  Call to new fn "nameCols_prod"
-- encode: 2021-06-03
-- extmin: 2021-06-18: call to fn matrixToMarray changed.
-- inters: 2021-06-04
+- elim: 2021-05-30: example revised; 2021-07-06: call to fn matrixToMarray changed.  Call to new fn "nameCols_prod"
+- extmin: 2021-08-19: call to fn matrixToMarray changed.
 - marrayToMatrix: 2021-06-29. Function call changed. Call to new fn "nameCols_prod".
 - matrixToMarray: 2021-06-18. Function call changed
 - nameCols: 2021-06-28. Function call changed
 - nameCols_prod: 2021-06-28. New function. Used in functions extmin and elim.
-- nameRows: 2021-06-29
-- plautrans: 2021-06-30
-- productSpace: 2021-07-08
-- reduction: 2021-07-08
-- shape: 2021-07-09
-- tabresul: 2021-07-09
+- tabresul: 2021-07-30. Sort the results in order to always show the frame at the last line of the table
+- peeling: New. 2021-09-06.
+
 ===============================
 dst 1.4.1.9002
 Correction to function plautrans
