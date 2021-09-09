@@ -4,7 +4,8 @@
 \name{dlfm}
 \alias{dlfm}
 \title{The Captain's Problem. dlfm: Relation between variables Departure delay (D), Loading delay (L), Forecast of the weather (F), Maintenance delay (M)}
-\format{An integer matrix with 10 rows and 12 columns.
+\format{
+An integer matrix with 10 rows and 12 columns.
 \describe{
   \item{[1,c(1,2)]}{value = 0, not used}
   \item{[1,3:12]}{Identification numbers of the four variables. Column 3 to 6: variable 2; columns 7,8: variable 4; columns 9, 10: variable 5: columns 11,12: variable 6.}
@@ -18,7 +19,8 @@
   \item{false}{1 if false is part of the specification, 0 otherwise}
   \item{foul}{1 if foul is part of the specification, 0 otherwise}
   \item{fair}{1 if fair is part of the specification, 0 otherwise}
-  }}
+  }
+}
 \source{
 \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
 }
