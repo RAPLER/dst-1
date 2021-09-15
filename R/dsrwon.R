@@ -134,8 +134,6 @@ dsrwon<-function(x,y, varnames = NULL, relnb = NULL, infovarnames) {
   ## 3.1 Name the resulting variables and fix parameters
   #
   # varnames and valuenames
-  # test
- #  valuenames <- values1
  valuenames <- x$valuenames
   if (!is.null(varnames)) {
     names(valuenames) <- varnames
