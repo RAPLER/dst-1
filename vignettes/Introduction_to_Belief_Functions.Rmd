@@ -26,7 +26,7 @@ What is a belief function? In this vignette, an example is given to show the dif
 * how to use function *bca* to assign a mass function *m* to some subsets of the set of possible values of a variable *A*; the result is called a basic chance assignment or *bca*;
 * how to compute the measures of belief and plausibility of a *bca* (functions *belplau* and *tabresul*);
 * how to derive a probability distribution from a *bca* (function *plautrans*);
-* how to specify a relation *r* between two variables *A* and *B* by way of a mass function *m* on some subsets of the set of possible values of the product space *AxB* (function *bcaRel*);
+* how to specify a relation *r* between two variables *A* and *B* by way of a mass function *m* on some subsets of the set of possible values of the product space *A x B* (function *bcaRel*);
 * how to extend a mass function to a larger space in order to combine it with another mass function already defined on this larger space (function *extmin*);
 * how to combine two mass functions (function *dsrwon* for combination and function *nzdsr* for the normalization);
 * how obtain a reduced space by eliminating a variable from a relation (marginalization, with function *elim*);

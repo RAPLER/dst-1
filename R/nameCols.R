@@ -4,7 +4,7 @@
 #'  
 #' @param valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
 #' @param size A vector of the size of the variables.
-#' @return A charactor vector of length equal to the sum of the sizes of the variables
+#' @return A character vector of length equal to the sum of the sizes of the variables
 #' @author Claude Boivin, Stat.ASSQ
 # @examples 
 #' infoval <- list(A = c("a1", "a2"), B = c("b1", "b2", "b3"))

@@ -12,7 +12,7 @@ nameCols(valuenames, size)
 \item{size}{A vector of the size of the variables.}
 }
 \value{
-A charactor vector of length equal to the sum of the sizes of the variables
+A character vector of length equal to the sum of the sizes of the variables
 }
 \description{
 This utility function makes use of the valuenames  and size parameters  of a set of variables to assign values names to the columns of a tt matrix.

@@ -1,7 +1,7 @@
 dst 1.5.0
 
 Functions revised. All functions : code simplification and documentation
-- dsrwon: 2021-04-23. Calculation of the measure of conflict revised to take into account the case of the combination with the vacupus belief function. This case is used at the beginning of nzdsr (normalization) to update the I12 matrix.
+- dsrwon: 2021-04-23. Calculation of the measure of conflict revised to take into account the case of the combination with the vacuous belief function. This case is used at the beginning of nzdsr (normalization) to update the I12 matrix.
 - elim: 2021-05-30: example revised; 2021-07-06: call to fn matrixToMarray changed.  Call to new fn "nameCols_prod"
 - extmin: 2021-08-19: call to fn matrixToMarray changed.
 - marrayToMatrix: 2021-06-29. Function call changed. Call to new fn "nameCols_prod".
@@ -9,7 +9,7 @@ Functions revised. All functions : code simplification and documentation
 - nameCols: 2021-06-28. Function call changed
 - nameCols_prod: 2021-06-28. New function. Used in functions extmin and elim.
 - tabresul: 2021-07-30. Sort the results in order to always show the frame at the last line of the table
-- peeling: New. 2021-09-06.
+- peeling: New. 2021-09-06. Compute the belief function of a variable of interest by successive elimination of all the other variables of an hypergraph.
 
 ===============================
 dst 1.4.1.9002

@@ -14,9 +14,9 @@ peeling(
 )
 }
 \arguments{
-\item{vars_def}{A list of the variables and their possible values. Can be obtained by concatening the valuenames parameter of all the variables of the hypergraph.}
+\item{vars_def}{A list of the variables and their possible values. Simply concatenate the valuenames parameter of all the variables of the hypergraph to obtain this list.}
 
-\item{hgm}{The incidence matrix of the hypergraph (bipartite graph), which is thw  description of the relations between the variables. The variables are the nodes of the hypergraph, and the relations are the edges. Each column describes a relation between the variables by a (0,1) vector. A "1" indicates that a variable belongs to the relation and a "0" not. This matrix must have row and column names. These names are used to show the graph. They need not be the same as variables and relations names oof the set of bca's to be analysed. Use shorter names to obtain a clearer graph.}
+\item{hgm}{The incidence matrix of the hypergraph (bipartite graph), which is thw  description of the relations between the variables. The variables are the nodes of the hypergraph, and the relations are the edges. Each column describes a relation between the variables by a (0,1) vector. A "1" indicates that a variable belongs to the relation and a "0" not. This matrix must have row and column names. These names are used to show the graph. They need not be the same as variables and relations names oof the set of bca's to be analyzed. Use shorter names to obtain a clearer graph.}
 
 \item{hg_rel_names}{The names of the relations, which are objects of class "bcaspec".}
 
