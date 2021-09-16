@@ -16,11 +16,11 @@ peeling(
 \arguments{
 \item{vars_def}{A list of the variables and their possible values. Simply concatenate the valuenames parameter of all the variables of the hypergraph to obtain this list.}
 
-\item{hgm}{The incidence matrix of the hypergraph (bipartite graph), which is thw  description of the relations between the variables. The variables are the nodes of the hypergraph, and the relations are the edges. Each column describes a relation between the variables by a (0,1) vector. A "1" indicates that a variable belongs to the relation and a "0" not. This matrix must have row and column names. These names are used to show the graph. They need not be the same as variables and relations names oof the set of bca's to be analyzed. Use shorter names to obtain a clearer graph.}
+\item{hgm}{The incidence matrix of the hypergraph (bipartite graph), which is the  description of the relations between the variables. The variables are the nodes of the hypergraph, and the relations are the edges. Each column describes a relation between the variables by a (0,1) vector. A "1" indicates that a variable belongs to the relation and a "0" not. This matrix must have row and column names. These names are used to show the graph. They need not be the same as variables and relations names of the set of bca's to be analyzed. Use shorter names to obtain a clearer graph.}
 
 \item{hg_rel_names}{The names of the relations, which are objects of class "bcaspec".}
 
-\item{elim_order}{The order of elimination of the variables. A vector of length nrows(hgm). variables are identified by numbers. The first number gives the first variable to eliminate. The variable of interest comes last.}
+\item{elim_order}{The order of elimination of the variables. A vector of length nrow(hgm). variables are identified by numbers. The first number gives the first variable to eliminate. The variable of interest comes last.}
 
 \item{verbose}{= TRUE: print steps on the console. Default = FALSE.}
 
@@ -33,7 +33,7 @@ A bca class object.
 An implementation of the peeling algorithm based on the description of the algorithm in terms of hypergraphs by R. Almond [1989].\cr
 }
 \details{
-The peeling algorithm works on an undirected graph. Nodes (variables) of the graph are eliminated (removed of the graph) one by one until only the variable of interest remains. An order of elimination (peeling) of the variables must be chosen, since no algorithm has yet been provided for that. At each step, a procedure of extension is applied to the bca's to merge, and marginalization is applied. The mmarginalization has the effect to integrate in the remaining nodes the information of the eliminated variable.
+The peeling algorithm works on an undirected graph. Nodes (variables) of the graph are eliminated (removed of the graph) one by one until only the variable of interest remains. An order of elimination (peeling) of the variables must be chosen, since no algorithm has yet been provided for that. At each step, a procedure of extension is applied to the bca's to merge, and marginalization is applied. The marginalization has the effect to integrate in the remaining nodes the information of the eliminated variable.
 }
 \examples{
 Zadeh's Example

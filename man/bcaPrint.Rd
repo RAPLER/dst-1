@@ -10,7 +10,7 @@ bcaPrint(x)
 \item{x}{A list of class bcaspec.}
 }
 \value{
-A table of subsets with their associated mass. Subsets are identified by rowname.
+A table of subsets with their associated mass. Subsets are identified by row names.
 }
 \description{
 This utility function does a simple printing of a bca
