@@ -3,7 +3,7 @@
 #' This utility function does a simple printing of a bca
 #' 
 #' @param x A list of class bcaspec.
-#' @return A table of subsets with their associated mass. Subsets are identified by rowname.
+#' @return A table of subsets with their associated mass. Subsets are identified by row names.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples

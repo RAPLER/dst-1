@@ -57,7 +57,7 @@ Weather$tt
 belplau(Weather)
 tabresul(Weather)
 ```
-We don't have a probability distribution here; only one of the two elementary events has received a mass value; The elementary  event "no sun" has a degree of support (belief) of 0.45 and the elementary  event "sun" has a degree of support of 0. The remaining mass of 0.55 has been allotted to the frame ${'Sun', 'NoSun'}$. This is the expression of the part of ignorance that remains. The chances of "sun" are not very good at 0.55. The odds Sun/NoSun are at 0.55. This is the plausibility ratio  given by function *tabresul*. Maybe look at July for my vacation instead of August? Another story. 
+We don't have a probability distribution here; only one of the two elementary events has received a mass value; The elementary  event "no sun" has a degree of support (belief) of 0.45 and the elementary  event "sun" has a degree of support of 0. The remaining mass of 0.55 has been allotted to the frame ${'Sun', 'NoSun'}$. This is the expression of the part of ignorance that remains. The chances of "sun" are not very good at 0.55. The odds "Sun/No Sun"" are at 0.55. This is the plausibility ratio  given by function *tabresul*. Maybe look at July for my vacation instead of August? Another story. 
 
 If we want to express the result within probability theory, we can apply a transformation to the plausibility distribution of the elementary events to obtain a probability distribution. This is called the plausibility transformation ^[Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.].
 
@@ -66,7 +66,7 @@ plautrans(Weather)
 ```
 The plausibility transformation gives a probability of sun 0f 0.35. 
 
-On my trip to Forillon National Park, there will be roadworks eventually. If so I could be arriving too late to set my tent in daylight. Froom experience, I know that there are generally no roadworks when the weather is bad. However, there could some emergencies. Hence I consider that there still remain 10% chance oh roadworks although it's raining. Let's encode the relation between Weather and Roadworks, using the function *bcaRel*. This encoding is a simple implication rule *a -> b* where a stands for *rain = yes* and b stands for *rdworks = no*.
+On my trip to Forillon National Park, there will be roadworks eventually. If so I could be arriving too late to set my tent in daylight. From experience, I know that there are generally no roadworks when the weather is bad. However, there could some emergencies. Hence I consider that there still remain 10% chance oh roadworks although it's raining. Let's encode the relation between Weather and Roadworks, using the function *bcaRel*. This encoding is a simple implication rule *a -> b* where a stands for *rain = yes* and b stands for *rdworks = no*.
 
 ```{r}
 # Relation between Rain and Roadworks
@@ -98,7 +98,7 @@ bcaPrint(rain)
 Finally, I would like to combine this piece of evidence with the relation between Rain and roadworks in order to evaluate the chances of roadworks on the day of my trip. I proceed in three steps to achieve that:
 Firstly extend the Evidence (variable Rain) to the product space Rain x Roadworks.
 Secondly, combine the two relations.
-Thirdly, narginalize to the variable Roadworks.
+Thirdly, marginalize to the variable Roadworks.
 
 First step is done using the function *extmin*.
 ```{r}

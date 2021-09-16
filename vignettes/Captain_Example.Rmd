@@ -174,7 +174,7 @@ bcaPrint(m_rel)
 We now look at the Captain’s Problem as a belief network.
 The eight variables involved are the nodes of the graph: Arrival, Departure, Sailing, Loading, Forecast, Maintenance, Weather, Repairs. The edges (hyperedges) are given by the five relations R1 to R5 and the three inputs of evidence (L, F, M).
 
-We use the package igraph ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. http://igraph.org] to produce a bipartite graph corresponding to the desired hypergraph.
+We use the package igraph ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. https://igraph.org] to produce a bipartite graph corresponding to the desired hypergraph.
 
 ```{r, fig.show='hold', fig_caption: yes}
 # The network

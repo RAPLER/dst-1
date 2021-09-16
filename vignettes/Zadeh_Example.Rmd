@@ -157,7 +157,7 @@ $p(\{M, T, C\}) = 1$.
 
 We proceed by successive elimination of variables until only  the variable *D* remains, and the result of the function *p* is obtained.
 
-The calculations involved are following the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. lnternational Journal of Approximate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
+The calculations involved are following the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. International Journal of Approximate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
 
 Three kinds of operations are involved in the calculations:
 a) the minimal (vacuous) extension of a mass function to a larger Fod;
