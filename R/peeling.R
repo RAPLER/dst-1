@@ -90,27 +90,24 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE ,
   varmarge <- rownames(hgm)[elim_order[length(elim_order)]]
   ordelim <- elim_order[1:(length(elim_order)-1)]
   if ( verbose == TRUE ) {
-    cat("Ordre d'élimination : ", ordelim ,"\n")
+    cat("Elimination order : ", ordelim ,"\n")
     }
   var_to_elim <- rownames(hgm)[ordelim] 
   #
   # 3. The graph
   if (showgraph == TRUE) {
-  if (requireNamespace("igraph", quietly = TRUE) ) {
-    library(igraph)
     hg_data <- list(hgm, names(vars_def), hg_rel_names) #OK
     #
     # Graph structure 
-    hg <- graph_from_incidence_matrix(incidence = hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
-    V(hg)
+    hg <- igraph::graph_from_incidence_matrix(incidence = hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
+    igraph::V(hg)
     # Show variables as circles, relations and evidence as rectangles
-    V(hg)$shape <- c("circle", "crectangle")[V(hg)$type+1]
-    V(hg)$label.cex <- 0.6
-    V(hg)$label.font <- 2
+    igraph::V(hg)$shape <- c("circle", "crectangle")[igraph::V(hg)$type+1]
+    igraph::V(hg)$label.cex <- 0.6
+    igraph::V(hg)$label.font <- 2
     #
     # render graph
-    plot(hg, vertex.label = V(hg)$name, vertex.size=(3+6*V(hg)$type)*6, sub="Hypergraph (Belief network)")
-  } 
+    plot(hg, vertex.label = igraph::V(hg)$name, vertex.size=(3+6*igraph::V(hg)$type)*6, sub="Hypergraph (Belief network)")
   }
   #
   # 4. LOOP 1: Variable Elimination
