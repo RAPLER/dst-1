@@ -10,9 +10,9 @@ test_that("addTobca", {
   # T2 f must be a (0,1) or logical matrix
   x2 <- bca(f = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), varnb=1)
   f2 <- c(1,0,1)
-  expect_error(addTobca(x = x2, f = f2) , "f parameter must be a \\(0,1\\) or logical matrix.")
+  expect_error(addTobca(x = x2, f = f2) , "tt parameter must be a \\(0,1\\) or logical matrix.")
   #
   # T3 Nb of columns of f must equal nb of columns of tt matrix of x
   f3 <- matrix(1:12, ncol=4)
-  expect_error(addTobca(x = x2, f = f3) , "Error in input arguments: number of columns of f not equal to ncol\\(x\\$tt\\)")
+  expect_error(addTobca(x = x2, f = f3) , "Error in input arguments: number of columns of tt not equal to ncol\\(x\\$tt\\)")
 })

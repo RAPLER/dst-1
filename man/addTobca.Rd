@@ -2,6 +2,7 @@
 % Please edit documentation in R/addTobca.R
 \name{addTobca}
 \alias{addTobca}
+\alias{f}
 \title{Add some elements of 0 mass to an existing basic chance assignment.}
 \usage{
 addTobca(x, tt, f)
