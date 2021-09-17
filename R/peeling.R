@@ -18,12 +18,19 @@
 #' Zadeh's Example
 #' 
 #' # 1. Defining variables and relations (for details, see vignette: Using dst Package on Zadeh's Example)
-#' e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T"), varnames = "D1", varnb = 1)
-#' e2 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("C", "T"), varnames = "D2", varnb = 2)
-#' p_diag <- bca(f= matrix(c(1,1,1), ncol=3, byrow=TRUE), m= c(1), cnames =c("M", "T", "C"), varnames = "D", varnb = 3)
+#' e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE),
+#'  m= c(0.99, 0.01, 0), cnames =c("M", "T"), 
+#'  varnames = "D1", varnb = 1)
+#' e2 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), 
+#' m= c(0.99, 0.01, 0), cnames =c("C", "T"), 
+#' varnames = "D2", varnb = 2)
+#' p_diag <- bca(f= matrix(c(1,1,1), ncol=3, byrow=TRUE), 
+#' m= c(1), cnames =c("M", "T", "C"), 
+#' varnames = "D", varnb = 3)
 #' # Defining the relation between the variables
 #' # tt matrix
-#' tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), ncol = 7,byrow = TRUE)
+#' tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), 
+#' ncol = 7,byrow = TRUE)
 #' colnames(tt_r1) = c("M", "T", "C", "T", "M", "T", "C")
 #' # The mass function
 #' spec_r1 = matrix(c(rep(1,7),2, rep(1,7), 0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
@@ -36,7 +43,8 @@
 #' rel1 <- 1*1:3 %in% r1$infovar[,1]
 #' ev1 <- 1*1:3 %in% e1$infovar[,1]
 #' ev2 <- 1*1:3 %in% e2$infovar[,1]
-#' meddiag_hgm <- matrix(c(ev1,ev2, rel1), ncol=3, dimnames = list(c("D1", "D2", "D"), c("e1","e2", "r1")))
+#' meddiag_hgm <- matrix(c(ev1,ev2, rel1), ncol=3, 
+#' dimnames = list(c("D1", "D2", "D"), c("e1","e2", "r1")))
 #' 
 #' # 3. Setting the names of the variables and their frame of discernment
 #' meddiag_vars1 <- c(e1$valuenames, e2$valuenames, p_diag$valuenames)
@@ -47,7 +55,8 @@
 #' # 5. Order of elimination of variables
 #' elim_order <- c(1,2,3)
 #' 
-#' tabresul(peeling(vars_def = meddiag_vars1, hgm = meddiag_hgm,   hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3), showgraph = TRUE) )
+#' tabresul(peeling(vars_def = meddiag_vars1, hgm = meddiag_hgm,
+#' hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3), showgraph = TRUE) )
 #' 
 peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE , showgraph = FALSE) {
   #
