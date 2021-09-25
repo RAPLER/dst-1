@@ -8,8 +8,6 @@ marrayToMatrix(mtt)
 }
 \arguments{
 \item{mtt}{The matrix tt of the relation in  multiarray format}
-
-\item{infovar}{specification of the number and size of each variable}
 }
 \value{
 tt The matrix representation of the data.

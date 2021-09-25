@@ -33,15 +33,15 @@ test_that("bcaspec_1", {
  f<- t(matrix(c(1,0,1,1),ncol=2))
  m = c(0.3, 0.7)
  cnames <- c("yes","no")
- expect_error(bca(f, m, cnames, varnames = c("burglary", "boom") ), "number of variable names  not equal to nimber of variables" )
+ expect_error(bca(f, m, cnames, varnames = c("burglary", "boom") ), "number of variable names  not equal to number of variables" )
  #
   # T6: take names from "valuenames" parameter only if it is a string. If the matrix f is defined on a product space, the names must be the column names of the matrix. 
   tt1=matrix(c(rep(TRUE,3),FALSE, rep(TRUE,4)), ncol=4, byrow=TRUE)
   m=c(0.75, 0.25)
   infovar=matrix(c(4,5,2,2), ncol=2, dimnames =list(NULL, c("varnb", "size")))
-  infovarnames = c("RdWorks", "Rain")
+  varnames = c("RdWorks", "Rain")
   valuenames <- list(Rain= c("Ry", "Rn"), RdWorks=c("rWdy", "rWdn") )
-  result <- bca(tt = tt1, m, infovar = infovar, infovarnames = infovarnames, infovaluenames = valuenames)
+  result <- bca(tt = tt1, m, infovar = infovar, varnames = varnames, valuenames = valuenames)
   expect_equal(colnames(result$tt), c("col1", "col2", "col3", "col4"))
   #
   # T7: take names from "valuenames" parameter only if it is a string. If the matrix f is defined on a product space, the names must be the column names of the matrix. 
@@ -49,8 +49,8 @@ test_that("bcaspec_1", {
   m=c(0.75, 0.25)
   cnames <- c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn")
   infovar=matrix(c(4,5,2,2), ncol=2, dimnames =list(NULL, c("varnb", "size")))
-  infovarnames = c("RdWorks", "Rain")
+  varnames = c("RdWorks", "Rain")
   valuenames <- list(Rain= c("Ry", "Rn"), RdWorks=c("rWdy", "rWdn") )
-  result <- bca(tt = tt1, m, cnames, infovar = infovar, infovarnames = infovarnames, infovaluenames = valuenames)
+  result <- bca(tt = tt1, m, cnames, infovar = infovar, varnames = varnames, valuenames = valuenames)
   expect_equal(colnames(result$tt), c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn"))
 })

@@ -5,7 +5,10 @@
 #' @param tt A (0,1)-matrix or a boolean matrix establishing the relation between two or more variables. The matrix is constructed by placing the variables side by side, as in a truth table representation.
 #' @param spec A two-column matrix. First column: numbers given to the subsets. Second column: the mass values of the subsets. A subset number and its associated mass value are repeated to match the number of elements of the subset.
 #' @param infovar  A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.
-#' @param varnames The names of the variables. If omitted, variables are named \code{v1, v2, etc}.
+#' @param varnames The names of the variables.
+#' @param infovarnames Deprecated. Old name for \code{varnames}.
+#' @param valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
+#' @param infovaluenames Deprecated. Old name for \code{valuenames}. 
 #' @param relnb A number given to the relation. Set at 0 if omitted.
 #' @return zr An object of class \code{bcaspec} called a bca for "basic chance assignment". This is a list containing the following components:  \itemize{
 #' \item con The measure of conflict.
@@ -25,7 +28,7 @@
 #' # Roadworks: {yes, no}. From experience,
 #' # I am 75 % sure that there will be RoadWorks if there is no rain.
 #' 
-#' #' # 1. The tt table of the logical implication
+#'  # 1. The tt table of the logical implication
 #'  ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
 #'  nrow=4, byrow = TRUE, 
 #'  dimnames = list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
@@ -49,9 +52,11 @@
   #
   calls <- names(sapply(match.call(), deparse))[-1]
   if(any("infovarnames" %in% calls) & missing(varnames)) {
+    warning("Parameter name 'infovarnames' is deprecated. Use 'varnames' instead.")
     varnames <- infovarnames
   }
   if(any("infovaluenames" %in% calls) & missing(valuenames)) {
+    warning("Parameter name 'infovaluenames' is deprecated. Use 'valuenames' instead.")
     valuenames <- infovaluenames
   }
   #
@@ -70,6 +75,9 @@
   }
   if (is.null(colnames(tt))) { 
     stop("Column names of tt matrix are missing.") 
+  }
+  if (missing(varnames)) { 
+    stop("varnames argument missing.") 
   }
   # End checks
   #

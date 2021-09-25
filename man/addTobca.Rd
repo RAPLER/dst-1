@@ -2,7 +2,6 @@
 % Please edit documentation in R/addTobca.R
 \name{addTobca}
 \alias{addTobca}
-\alias{f}
 \title{Add some elements of 0 mass to an existing basic chance assignment.}
 \usage{
 addTobca(x, tt, f)
@@ -11,6 +10,8 @@ addTobca(x, tt, f)
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
 
 \item{tt}{A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the tt matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.}
+
+\item{f}{Deprecated. Old name for \code{tt} matrix.}
 }
 \value{
 x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{f}.

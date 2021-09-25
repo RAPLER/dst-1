@@ -14,6 +14,8 @@ dsrwon(x, y, varnames = NULL, relnb = NULL, infovarnames)
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
 \item{relnb}{Identification number of the relation. Can be omitted.}
+
+\item{infovarnames}{Deprecated. Old name for \code{varnames}.}
 }
 \value{
 A basic chance assignment with these two components added: \itemize{

@@ -21,16 +21,16 @@ test_that("bcaRel", {
   #
   # T5: sum of masses must equal 1
   spec3 <- matrix(c(1,1,1,2,0.75,0.75,75,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-  expect_error(bcaRel(tt = tt2, spec = spec3, infovar = info1) ,"Sum of masses not equal to 1 : check your data.")
+  expect_error(bcaRel(tt = tt2, spec = spec3, infovar = info1, varnames = c("W", "R"  )) ,"Sum of masses not equal to 1 : check your data.")
   #
-  # T6: Result is of class "bcaspec"
-  result <- bcaRel(tt = tt2, spec = spec1, infovar = info1) 
+  # T6: varnames argument missing
+  expect_error(bcaRel(tt = tt2, spec = spec1, infovar = info1) ,"varnames argument missing.")
+  #
+  # T7: Result is of class "bcaspec"
+  result <- bcaRel(tt = tt2, spec = spec1, infovar = info1, varnames = c("W", "R"  )) 
   expect_is(result, "bcaspec")
-  # T7: if infovarnames omitted, vars are named v1, v2, etc.
-  result <- bcaRel(tt = tt2, spec = spec1, infovar = info1, relnb = 6)
-  expect_equal(names(result$valuenames), c("v1", "v2"))
   #
-  # T7: check for column names
+    # T8: check for column names
   tt3 <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),nrow=4, byrow = TRUE )
   expect_error(bcaRel(tt = tt3, spec = spec1, infovar = info1), "Column names of tt matrix are missing.")
 })

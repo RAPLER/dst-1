@@ -8,6 +8,8 @@ nameRows(tt, f)
 }
 \arguments{
 \item{tt}{A (0,1)-matrix or a boolean matrix.}
+
+\item{f}{Deprecated. Old name for \code{tt} matrix.}
 }
 \value{
 A character vector of labels obtained for the rows of the matrix \code{tt}. The length of the result is \code{nrow(tt)}.

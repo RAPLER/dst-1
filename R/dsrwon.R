@@ -5,6 +5,7 @@
 #' @param x A basic chance assignment (see \code{\link{bca}}).
 #' @param y A  A basic chance assignment (see \code{\link{bca}}).
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
+#' @param infovarnames Deprecated. Old name for \code{varnames}.
 #' @param relnb Identification number of the relation. Can be omitted.
 #' @return A basic chance assignment with these two components added: \itemize{
 #'   \item I12 Intersection table of subsets.
@@ -35,6 +36,7 @@ dsrwon<-function(x,y, varnames = NULL, relnb = NULL, infovarnames) {
   calls <- names(sapply(match.call(), deparse))[-1]
   # catch old parameter infovarnames and replace by varnames if used instead of varnames
   if(any("infovarnames" %in% calls) & missing(varnames)) {
+    warning("Parameter name 'infovarnames' is deprecated. Use 'varnames' instead.")
     varnames <- infovarnames
   }
   # end catches

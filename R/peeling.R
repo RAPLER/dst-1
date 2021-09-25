@@ -6,7 +6,6 @@
 #' @param hgm The incidence matrix of the hypergraph (bipartite graph), which is the  description of the relations between the variables. The variables are the nodes of the hypergraph, and the relations are the edges. Each column describes a relation between the variables by a (0,1) vector. A "1" indicates that a variable belongs to the relation and a "0" not. This matrix must have row and column names. These names are used to show the graph. They need not be the same as variables and relations names of the set of bca's to be analyzed. Use shorter names to obtain a clearer graph.
 #' @param hg_rel_names The names of the relations, which are objects of class "bcaspec".
 #' @param elim_order The order of elimination of the variables. A vector of length nrow(hgm). variables are identified by numbers. The first number gives the first variable to eliminate. The variable of interest comes last.
-#' @param showgraph = TRUE: show graph in the Plots window. Default = FALSE.
 #' @param verbose = TRUE: print steps on the console. Default = FALSE.
 #' @return A bca class object.
 #' @author Claude Boivin, Stat.ASSQ
@@ -15,9 +14,10 @@
 #' \item Almond, R. G. (1989) Fusion and Propagation of Graphical Belief Models: An Implementation and an Example. Ph. D. Thesis, the Department of Statistics, Harvard University. 288 pages (for the description of the algorithm, see pages 52-53).
 #' }
 #' @examples 
-#' Zadeh's Example
+#' # Zadeh's Example
 #' 
-#' # 1. Defining variables and relations (for details, see vignette: Using dst Package on Zadeh's Example)
+#' # 1. Defining variables and relations 
+#' # (for details, see vignette: Zadeh_Example)
 #' e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE),
 #'  m= c(0.99, 0.01, 0), cnames =c("M", "T"), 
 #'  varnames = "D1", varnb = 1)
@@ -29,7 +29,9 @@
 #' varnames = "D", varnb = 3)
 #' # Defining the relation between the variables
 #' # tt matrix
-#' tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), 
+#' tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,
+#' 1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,
+#' 0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), 
 #' ncol = 7,byrow = TRUE)
 #' colnames(tt_r1) = c("M", "T", "C", "T", "M", "T", "C")
 #' # The mass function
@@ -56,9 +58,9 @@
 #' elim_order <- c(1,2,3)
 #' 
 #' tabresul(peeling(vars_def = meddiag_vars1, hgm = meddiag_hgm,
-#' hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3), showgraph = TRUE) )
+#' hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3)) )
 #' 
-peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE , showgraph = FALSE) {
+peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) {
   #
   # Local variables: varmarge, ordelim, var_to_elim, i, j, irel_to_elim, rels_nb, rels_names, nb_rel, yv, yv2, yinfov, infovar, infovalues, init_tt, init_spec, init_info, relRef, xtnd_rel, name_relXtnd, name_newcol, newrelnb, name_rel_comb, name_rel_marge, rel_marginalized
   #
@@ -103,21 +105,6 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE ,
     }
   var_to_elim <- rownames(hgm)[ordelim] 
   #
-  # 3. The graph
-  if (showgraph == TRUE) {
-    hg_data <- list(hgm, names(vars_def), hg_rel_names) #OK
-    #
-    # Graph structure 
-    hg <- igraph::graph_from_incidence_matrix(incidence = hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
-    igraph::V(hg)
-    # Show variables as circles, relations and evidence as rectangles
-    igraph::V(hg)$shape <- c("circle", "crectangle")[igraph::V(hg)$type+1]
-    igraph::V(hg)$label.cex <- 0.6
-    igraph::V(hg)$label.font <- 2
-    #
-    # render graph
-    plot(hg, vertex.label = igraph::V(hg)$name, vertex.size=(3+6*igraph::V(hg)$type)*6, sub="Hypergraph (Belief network)")
-  }
   #
   # 4. LOOP 1: Variable Elimination
   # 

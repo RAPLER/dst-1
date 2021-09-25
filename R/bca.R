@@ -4,13 +4,17 @@
 #' The set \eqn{\Theta} is called the frame of discernment. Each subset \eqn{A  of  \Theta} with a positive mass value is called a focal element or a proposition. The associated mass value is a number of the \code{(0,1]} interval, called "basic chance assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
 #' @aliases bpa
 #' @param tt (formerly f) A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
+#' @param f Deprecated. Old name for \code{tt} matrix. 
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
 #' 
-#' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first. searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
+#' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
 #' @param idvar The number given to the variable. A number is necessary to correctly manage relations between variables  and make computations on a graph. 0 if omitted. 
+#' @param varnb Deprecated. Old name for \code{idvar}. 
 #' @param infovar  A two-column matrix containing variable identification numbers and the number of elements of the variable. Generated if omitted.
 #' @param varnames The name of the variable. Generated if omitted.
+#' @param infovarnames Deprecated. Old name for \code{varnames}.
+#' @param valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
 #' @param inforel Not used here. Defined within function \code{\link{bcaRel}}.
 #' @return y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
 #'   \item tt The table of focal elements tt. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
@@ -55,13 +59,16 @@ bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, va
   # catch old parameter f and replace by tt if used instead of tt
   calls <- names(sapply(match.call(), deparse))[-1]
   if(any("f" %in% calls) & missing(tt)) {
+    warning("Parameter name 'f' is deprecated. Use 'tt' instead.")
     tt <- f
   }
   # same for varnb, infovarnames, etc.
   if(any("varnb" %in% calls) & missing(idvar)) {
+    warning("Parameter name 'varnb' is deprecated. Use 'idvar' instead.")
     idvar <- varnb
   }
   if(any("infovarnames" %in% calls) & missing(varnames)) {
+    warning("Parameter name 'infovarnames' is deprecated. Use 'varnames' instead.")
     varnames <- infovarnames
   }
   # end catches

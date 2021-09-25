@@ -25,7 +25,7 @@ bca(
 
 \item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.}
 
-\item{cnames}{A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first. searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
+\item{cnames}{A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
 
 \item{con}{The measure of conflict can be provided. 0 by default.}
 
@@ -35,7 +35,15 @@ bca(
 
 \item{varnames}{The name of the variable. Generated if omitted.}
 
+\item{valuenames}{A list of the names of the variables with the name of the elements of their frame of discernment.}
+
 \item{inforel}{Not used here. Defined within function \code{\link{bcaRel}}.}
+
+\item{f}{Deprecated. Old name for \code{tt} matrix.}
+
+\item{varnb}{Deprecated. Old name for \code{idvar}.}
+
+\item{infovarnames}{Deprecated. Old name for \code{varnames}.}
 }
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{

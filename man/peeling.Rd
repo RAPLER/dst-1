@@ -4,14 +4,7 @@
 \alias{peeling}
 \title{The peeling algorithm}
 \usage{
-peeling(
-  vars_def,
-  hgm,
-  hg_rel_names,
-  elim_order,
-  verbose = FALSE,
-  showgraph = FALSE
-)
+peeling(vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE)
 }
 \arguments{
 \item{vars_def}{A list of the variables and their possible values. Simply concatenate the valuenames parameter of all the variables of the hypergraph to obtain this list.}
@@ -23,8 +16,6 @@ peeling(
 \item{elim_order}{The order of elimination of the variables. A vector of length nrow(hgm). variables are identified by numbers. The first number gives the first variable to eliminate. The variable of interest comes last.}
 
 \item{verbose}{= TRUE: print steps on the console. Default = FALSE.}
-
-\item{showgraph}{= TRUE: show graph in the Plots window. Default = FALSE.}
 }
 \value{
 A bca class object.
@@ -36,9 +27,10 @@ An implementation of the peeling algorithm based on the description of the algor
 The peeling algorithm works on an undirected graph. Nodes (variables) of the graph are eliminated (removed of the graph) one by one until only the variable of interest remains. An order of elimination (peeling) of the variables must be chosen, since no algorithm has yet been provided for that. At each step, a procedure of extension is applied to the bca's to merge, and marginalization is applied. The marginalization has the effect to integrate in the remaining nodes the information of the eliminated variable.
 }
 \examples{
-Zadeh's Example
+# Zadeh's Example
 
-# 1. Defining variables and relations (for details, see vignette: Using dst Package on Zadeh's Example)
+# 1. Defining variables and relations 
+# (for details, see vignette: Zadeh_Example)
 e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE),
  m= c(0.99, 0.01, 0), cnames =c("M", "T"), 
  varnames = "D1", varnb = 1)
@@ -50,7 +42,9 @@ m= c(1), cnames =c("M", "T", "C"),
 varnames = "D", varnb = 3)
 # Defining the relation between the variables
 # tt matrix
-tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), 
+tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,
+1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,
+0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), 
 ncol = 7,byrow = TRUE)
 colnames(tt_r1) = c("M", "T", "C", "T", "M", "T", "C")
 # The mass function
@@ -77,7 +71,7 @@ meddiag_rel_names <- c("e1", "e2", "r1")
 elim_order <- c(1,2,3)
 
 tabresul(peeling(vars_def = meddiag_vars1, hgm = meddiag_hgm,
-hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3), showgraph = TRUE) )
+hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3)) )
 
 }
 \references{

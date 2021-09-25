@@ -22,9 +22,15 @@ bcaRel(
 
 \item{infovar}{A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.}
 
-\item{varnames}{The names of the variables. If omitted, variables are named \code{v1, v2, etc}.}
+\item{varnames}{The names of the variables.}
+
+\item{valuenames}{A list of the names of the variables with the name of the elements of their frame of discernment.}
 
 \item{relnb}{A number given to the relation. Set at 0 if omitted.}
+
+\item{infovarnames}{Deprecated. Old name for \code{varnames}.}
+
+\item{infovaluenames}{Deprecated. Old name for \code{valuenames}.}
 }
 \value{
 zr An object of class \code{bcaspec} called a bca for "basic chance assignment". This is a list containing the following components:  \itemize{
@@ -47,7 +53,7 @@ This function is used to represent a mass function which establish a relation be
 # Roadworks: {yes, no}. From experience,
 # I am 75 \% sure that there will be RoadWorks if there is no rain.
 
-#' # 1. The tt table of the logical implication
+ # 1. The tt table of the logical implication
  ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
  nrow=4, byrow = TRUE, 
  dimnames = list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
