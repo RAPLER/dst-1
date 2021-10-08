@@ -1,12 +1,12 @@
 #' Naming the columns of the tt matrix
 #' 
-#' This utility function makes use of the valuenames  and size parameters  of a set of variables to assign values names to the columns of a tt matrix.
+#' This utility function makes use of the valuenames  and size parameters  of a set of variables to assign values names to the columns of a \code{tt} matrix.
 #'  
 #' @param valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
 #' @param size A vector of the size of the variables.
-#' @return A character vector of length equal to the sum of the sizes of the variables
+#' @return A character vector of length equal to the sum of the sizes of the variables.
 #' @author Claude Boivin, Stat.ASSQ
-# @examples 
+#' @examples 
 #' infoval <- list(A = c("a1", "a2"), B = c("b1", "b2", "b3"))
 #' sizes <- c(2,3)
 #'  print(nameCols(valuenames = infoval, size = sizes) )

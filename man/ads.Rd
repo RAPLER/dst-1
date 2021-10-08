@@ -5,10 +5,10 @@
 \alias{ads}
 \title{The Captain's Problem. ads: Relation between variables Arrival (A), Departure delay (D) and Sailing delay (S)}
 \format{
-An integer matrix with 18 rows and 17 columns.
+An integer matrix with 18 rows and 17 columns
 \describe{
-  \item{[1,c(1,2)]}{value = 0, not used}
-  \item{[1,3:17]}{Identification numbers of the three variables. Column 3 to 9: variable 1; column 10 to 13: variable 2; column 14 to 17: variable 3.}
+  \item{[1, c(1,2)]}{value = 0, not used}
+  \item{[1, 3:17]}{Identification numbers of the three variables. Column 3 to 9: variable 1; column 10 to 13: variable 2; column 14 to 17: variable 3.}
   \item{nospec}{identification number of the specification}
   \item{m}{the value of the specification, a number between 0 and 1}
   \item{6}{1 if 6 is part of the specification, 0 otherwise}
@@ -27,7 +27,7 @@ An integer matrix with 18 rows and 17 columns.
 ads
 }
 \description{
-This dataset is the tt matrix establishing the relation A = D + S, where A = {0:6}, D = {0:3} and S = {0:3}. All the elements (a,d,s) of (A x D x S) where a = d + s is true form a subset with a mass value of 1. To construct the tt matrix, we put the variables A, D, S side by side, as in a truth table representation.
+This dataset is the \code{tt} matrix establishing the relation A = D + S, where A = {0:6}, D = {0:3} and S = {0:3}. The subset made of all the triplets (a,d,s) of (A x D x S) where a = d + s is true has a mass value of 1. To construct the \code{tt} matrix, we put the variables A, D, S side by side, as in a truth table representation. Each triplet of the subset is described by a row of the matrix as a vector of zeros and ones.
 }
 \author{
 Claude Boivin, Stat.ASSQ

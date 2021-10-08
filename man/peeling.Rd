@@ -7,13 +7,13 @@
 peeling(vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE)
 }
 \arguments{
-\item{vars_def}{A list of the variables and their possible values. Simply concatenate the valuenames parameter of all the variables of the hypergraph to obtain this list.}
+\item{vars_def}{A list of variables and their possible values. Concatenate the valuenames parameter of all the variables of the hypergraph to obtain this list.}
 
-\item{hgm}{The incidence matrix of the hypergraph (bipartite graph), which is the  description of the relations between the variables. The variables are the nodes of the hypergraph, and the relations are the edges. Each column describes a relation between the variables by a (0,1) vector. A "1" indicates that a variable belongs to the relation and a "0" not. This matrix must have row and column names. These names are used to show the graph. They need not be the same as variables and relations names of the set of bca's to be analyzed. Use shorter names to obtain a clearer graph.}
+\item{hgm}{The incidence matrix of the hypergraph (bipartite graph), which is the  description of the relations between the variables. The variables are the nodes of the hypergraph, and the relations are the edges. Each column describes a relation between the variables by a (0,1) vector. A "1" indicates that a variable belongs to the relation and a "0" not. This matrix must have row and column names. These names are used to show the graph eventually. They need not be the same as variables and relations names of the set of bca's to be analyzed. Use short names to obtain a clear graph.}
 
 \item{hg_rel_names}{The names of the relations, which are objects of class "bcaspec".}
 
-\item{elim_order}{The order of elimination of the variables. A vector of length nrow(hgm). variables are identified by numbers. The first number gives the first variable to eliminate. The variable of interest comes last.}
+\item{elim_order}{The order of elimination of the variables. A vector of length \code{nrow(hgm)}. Variables are identified by numbers. The first number gives the first variable to eliminate. The variable of interest comes last.}
 
 \item{verbose}{= TRUE: print steps on the console. Default = FALSE.}
 }
@@ -21,25 +21,24 @@ peeling(vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE)
 A bca class object.
 }
 \description{
-An implementation of the peeling algorithm based on the description of the algorithm in terms of hypergraphs by R. Almond [1989].\cr
+An implementation of the peeling algorithm based on its description in terms of hypergraphs by R. Almond [1989].\cr
 }
 \details{
-The peeling algorithm works on an undirected graph. Nodes (variables) of the graph are eliminated (removed of the graph) one by one until only the variable of interest remains. An order of elimination (peeling) of the variables must be chosen, since no algorithm has yet been provided for that. At each step, a procedure of extension is applied to the bca's to merge, and marginalization is applied. The marginalization has the effect to integrate in the remaining nodes the information of the eliminated variable.
+The peeling algorithm works on an undirected graph. Nodes of the graph (variables) are removed one by one until only the variable of interest remains. An order of elimination (peeling) of the variables must be chosen by the user. No algorithm is provided for that matter. At each step, a procedure of extension is applied to the bca's to merge, and marginalization is applied to eliminate a variable. The marginalization has the effect to integrate in the remaining nodes the information of the eliminated variable.
 }
 \examples{
 # Zadeh's Example
-
 # 1. Defining variables and relations 
 # (for details, see vignette: Zadeh_Example)
-e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE),
- m= c(0.99, 0.01, 0), cnames =c("M", "T"), 
- varnames = "D1", varnb = 1)
-e2 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), 
-m= c(0.99, 0.01, 0), cnames =c("C", "T"), 
-varnames = "D2", varnb = 2)
-p_diag <- bca(f= matrix(c(1,1,1), ncol=3, byrow=TRUE), 
-m= c(1), cnames =c("M", "T", "C"), 
-varnames = "D", varnb = 3)
+e1 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE),
+ m = c(0.99, 0.01, 0), cnames = c("M", "T"), 
+ varnames = "D1", idvar = 1)
+e2 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE),
+m = c(0.99, 0.01, 0), cnames = c("C", "T"), 
+varnames = "D2", idvar = 2)
+p_diag <- bca(tt = matrix(c(1,1,1), ncol = 3, byrow = TRUE), 
+m = 1, cnames = c("M", "T", "C"), 
+varnames = "D", idvar = 3)
 # Defining the relation between the variables
 # tt matrix
 tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,
@@ -48,17 +47,17 @@ tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,
 ncol = 7,byrow = TRUE)
 colnames(tt_r1) = c("M", "T", "C", "T", "M", "T", "C")
 # The mass function
-spec_r1 = matrix(c(rep(1,7),2, rep(1,7), 0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
-# Variables numbers and dimension of their Fod
-info_r1 =matrix(c(1:3, 2,2,3), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
+spec_r1 <- matrix(c(rep(1,7),2, rep(1,7), 0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+# Variables numbers and dimension of their frame
+info_r1 <- matrix(c(1:3, 2,2,3), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
 #  The relation between e1, e2 and a patient p
-r1 <-bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1, varnames = c("D1", "D2", "D"), relnb = 1)
+r1 <- bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1, varnames = c("D1", "D2", "D"), relnb = 1)
 
 # 2. Setting the incidence matrix of the grapph
 rel1 <- 1*1:3 \%in\% r1$infovar[,1]
 ev1 <- 1*1:3 \%in\% e1$infovar[,1]
 ev2 <- 1*1:3 \%in\% e2$infovar[,1]
-meddiag_hgm <- matrix(c(ev1,ev2, rel1), ncol=3, 
+meddiag_hgm <- matrix(c(ev1,ev2, rel1), ncol = 3, 
 dimnames = list(c("D1", "D2", "D"), c("e1","e2", "r1")))
 
 # 3. Setting the names of the variables and their frame of discernment
@@ -76,7 +75,7 @@ hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3)) )
 }
 \references{
 \itemize{
-\item Almond, R. G. (1989) Fusion and Propagation of Graphical Belief Models: An Implementation and an Example. Ph. D. Thesis, the Department of Statistics, Harvard University. 288 pages (for the description of the algorithm, see pages 52-53).
+\item Almond, R. G. (1989) Fusion and Propagation of Graphical Belief Models: An Implementation and an Example. Ph. D. Thesis, the Department of Statistics, Harvard University. 288 pages (for the description of the peeling algorithm, see pages 52-53).
 }
 }
 \author{

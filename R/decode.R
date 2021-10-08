@@ -5,8 +5,7 @@
 #' @param base A scalar or a numeric vector which describes the number system in which the data is coded.
 #' @param ind The value to decode represented by a numeric vector in the \code{base} system.
 #' @return A scalar representing the conversion of the coded number \code{ind} to its decimal representation.
-#' @details If the base value is a number system, namely base 2, we need only to enter a scalar, which is treated to match the length of the expression to decode. 
-#' If the base value is a number system, e.g. base 2, we need only to enter it as a scalar, which is then processed to match the length of the expression to decode. If \code{length(ind)}  is less than \code{length(base)}, zeroes are added to the left of the vector \code{ind}  to match the length of the two vectors. And vice-versa. 
+#' @details If the base value is a number system, e.g. base 2, we need only to enter it as a scalar, which is then processed to match the length of the expression to decode. If \code{length(ind)}  is less than \code{length(base)}, zeroes are added to the left of the vector \code{ind}  to match the length of the two vectors. And vice-versa. 
 
 #' @author Claude Boivin, Stat.ASSQ. 
 #' @export

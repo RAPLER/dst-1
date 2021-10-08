@@ -7,23 +7,23 @@
 extmin(rel1, relRef)
 }
 \arguments{
-\item{rel1}{An object of class bcaspec, i.e. a basic chance assignment of one variable or a relation.}
+\item{rel1}{An object of class bcaspec, i.e. a basic chance assignment defined on one variable or a relation.}
 
 \item{relRef}{The relation of reference. It can be an existing relation, or it can be constructed as a vacuous function.}
 }
 \value{
-R the resulting extended bca.
+the resulting extended bca.
 }
 \description{
-This function works on a basic chance assignment (bca) \code{x} defined on a single variable or more. A relation of reference is given, and an extension of the space of code{x} is made to the larger product space of the relation of reference. The basic chance assignment to extend and the relation of reference must have at least one common variable for the extension to be made possible.
+This function works on a basic chance assignment (bca) \code{x} defined on a single variable or more. A relation of reference is given, and an extension of the space of \code{x} is made to the larger product space of the relation of reference. The basic chance assignment to extend and the relation of reference must have at least one common variable for the extension to occur.
 }
 \details{
-The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the tt matrix. The relation of reference \code{relRef}  may simply be an empty relation defined on the set of variables of interest or a relation already defined.
+The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the tt matrix. The relation of reference \code{relRef}  may be a relation already existing or simply the the vacuous relation defined on the product set of variables of interest.
 }
 \examples{
-# Making an empty reference relation with mass(frame) = 1 and extending a bca to its space.
-init_tt= matrix(rep(1,10),nrow=1, 
-dimnames =list(NULL, c("3", "2", "1", "0", 
+# Making a vacuous reference relation and extending a bca to its space.
+init_tt = matrix(rep(1,10),nrow = 1, 
+dimnames = list(NULL, c("3", "2", "1", "0", 
  "true", "false",  "foul", "fair",  "true", "false")) )
  init_spec <- matrix(c(1,1), ncol = 2, 
  dimnames = list(NULL, c("specnb", "mass")))
@@ -34,12 +34,12 @@ dimnames =list(NULL, c("3", "2", "1", "0",
   varnames = c("Sail", "Loading", "Weather", "Repairs"),
   relnb = 0)
  # a bcaspec defined on one variable
- l_rel <- bca(tt = matrix(c(1,0,1,0,1,1), ncol=2), 
- m=c(0.3,0.5,0.2), cnames=c("true", "false"), 
- infovar=matrix(c(4,2), ncol = 2, 
+ l_rel <- bca(tt = matrix(c(1,0,1,0,1,1), ncol = 2), 
+ m = c(0.3,0.5,0.2), cnames = c("true", "false"), 
+ infovar = matrix(c(4,2), ncol = 2, 
  dimnames = list(NULL, c("varnb", "size"))), 
- varnames= c("Loading"), 
- inforel= matrix(c(7,1), ncol = 2, 
+ varnames = c("Loading"), 
+ inforel = matrix(c(7,1), ncol = 2, 
  dimnames = list(NULL, c("relnb", "depth"))))
  z <- extmin(l_rel, relRef)
  prmatrix(t(z$tt), collab = rep("", nrow(z$tt)))

@@ -7,9 +7,9 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples
-#' z <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
-#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
-#' cnames =c("a", "b", "c"), varnb = 1)
+#' z <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' byrow = TRUE), m = c(0.2,0.5, 0.3), 
+#' cnames = c("a", "b", "c"), varnb = 1)
 #' bcaPrint(z)
 bcaPrint <- function(x) {
   #

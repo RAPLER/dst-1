@@ -12,7 +12,7 @@ matrixToMarray(tt, valuenames)
 \item{valuenames}{A list of the names of the variables with the name of each value of their frame of discernment.}
 }
 \value{
-mtt The array (product space) representation of the tt matrix.
+mtt The array (product space) representation of the \code{tt} matrix.
 }
 \description{
 The matrix representation of a relation is converted to the array representation or product space representation.
@@ -23,7 +23,7 @@ wr_tt <- matrix(c(1,rep(0,3),rep(c(1,0),3),0,1,1,1,0,0,
 1,0,rep(1,5),0,1,1,0,rep(1,5)), ncol=4, byrow = TRUE)
 colnames(wr_tt) <- c("Wy Ry", "Wy Rn", "Wn Ry", "Wn Rn")
 rownames(wr_tt) <- nameRows(wr_tt)
-vars= list( RdWorks = c("Wy", "Wn") , Rain = c("Ry", "Rn"))
+vars = list( RdWorks = c("Wy", "Wn") , Rain = c("Ry", "Rn"))
 print(zmToa <- matrixToMarray(tt = wr_tt, valuenames = vars ) )
  
 }

@@ -7,7 +7,7 @@
 marrayToMatrix(mtt)
 }
 \arguments{
-\item{mtt}{The matrix tt of the relation in  multiarray format}
+\item{mtt}{The matrix \code{tt} of the relation in  multiarray format}
 }
 \value{
 tt The matrix representation of the data.
@@ -17,7 +17,7 @@ The array representation or product space representation is converted to the mat
 }
 \examples{
  mtt <- array(c(1,0,0,0,1,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,0,1,0,1,1,1,1,1,1), c(2,2,8), 
- dimnames = list( RdWorks=c("Wy", "Wn") , Rain=c("Ry", "Rn"), ev=1:8) )
+ dimnames = list( RdWorks=c("Wy", "Wn") , Rain = c("Ry", "Rn"), ev=1:8) )
  print(z <- marrayToMatrix(mtt))
 
 }

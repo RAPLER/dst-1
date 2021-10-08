@@ -1,21 +1,21 @@
 #' Product space representation of a relation
 #'
 #' This utility function takes the input matrix of a relation between two or more variables and yields its product space representation. 
-#' @param tt A (0,1) or boolean matrix, where the values of the variables put in relation are set side by side, as in a truth table.
-#' @param specnb A vector of integers ranging from 1 to \code{k}, where \code{k} is the number of subsets of the \code{tt} matrix. Values must start at one and can be increased only by 0 or 1. They determine the partitioning of the rows of the \code{tt} matrix between the \code{k} subsets.
+#' @param tt A (0,1) or boolean matrix, where the variables are set side by side, as in a truth table. Each variable has a number of columns equal to the number of possible values.
+#' @param specnb A vector of integers ranging from 1 to \code{k}, where \code{k} is the number of subsets of the \code{tt} matrix. Values must start at one and can be increased by 1 or not. They determine the partitioning of the rows of the \code{tt} matrix between the \code{k} subsets.
 #' @param infovar  A two-column matrix containing identification numbers of the variables and the number of elements of each variable (size of the frame).
 #' @return The matrix of the product space representation of the relation. 
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples 
-#'  ttfw= matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow=3,
+#'  ttfw <- matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow = 3,
 #'   byrow = TRUE, 
-#'   dimnames =list(NULL, c("foul", "fair", "foul", "fair")) )
-#'  specfw = c(1,1,2) 
-#'  infovarfw =matrix(c(5,7,2,2), ncol = 2, 
+#'   dimnames = list(NULL, c("foul", "fair", "foul", "fair")) )
+#'  specfw <- c(1,1,2) 
+#'  infovarfw <- matrix(c(5,7,2,2), ncol = 2, 
 #'  dimnames = list(NULL, c("varnb", "size")) )
 #'  rownames(ttfw) <- nameRows(ttfw)
 #'  ttfw
-#' productSpace(tt=ttfw, specnb=specfw, infovar=infovarfw)
+#' productSpace(tt = ttfw, specnb = specfw, infovar = infovarfw)
 #' @export
 #' 
 productSpace <- function(tt, specnb, infovar) {
@@ -41,8 +41,8 @@ productSpace <- function(tt, specnb, infovar) {
   if ((is.numeric(specnb) ==FALSE) |(length(specnb) != nrow(tt))) {
     stop("specnb parameter must be a numeric vector of length nrow(tt)")
   } 
-  z1=specnb[-1]
-  z0=specnb[-length(specnb)]
+  z1 <- specnb[-1]
+  z0 <- specnb[-length(specnb)]
   if (sum((z1 - z0) > 1) >0) {
     stop("specnb values must be a sequence of numbers increasing by increments of 1 at most.")
     } else # ok to execute function
@@ -52,7 +52,7 @@ productSpace <- function(tt, specnb, infovar) {
       #
       # 3.1 some working variables...
       #
-  zz=cbind(specnb,tt)
+  zz <- cbind(specnb,tt)
   zz<-as.data.frame(zz)
   znelem <- table(specnb) # nb elements of each specification
   ndims <-length(size)
@@ -66,7 +66,7 @@ productSpace <- function(tt, specnb, infovar) {
   # use column names
   #
   if (is.null(colnames(tt))) {
-    cnames <- paste(rep("c",ncol(tt)),c(1:ncol(tt)),sep="")
+    cnames <- paste(rep("c",ncol(tt)),c(1:ncol(tt)),sep = "")
   } else {
     cnames <- colnames(tt)
   }
@@ -100,13 +100,13 @@ productSpace <- function(tt, specnb, infovar) {
   #  B2: Loop on elements of the subset (specification j)
     for (k in 1:znelem[j]) {
       zs <- zx[k,1:zinds[1]]
-      zs1=as.vector(t(zs))
+      zs1 <- as.vector(t(zs))
       names(zs1) = colnames(zs)
   # C:  Loop on the variables
       for (l in 2:length(varnb)) {
         zw <-zx[k, (1+zinds[l-1]):(zinds[l])]
-        zw1=as.vector(t(zw))
-        names(zw1) = colnames(zw)
+        zw1 <- as.vector(t(zw))
+        names(zw1) <- colnames(zw)
         # elements in the product space
        zs1 <- outer(zw1, zs1, "*")  
       } # End of loop C
@@ -118,7 +118,7 @@ productSpace <- function(tt, specnb, infovar) {
   } # End of loop A
   #
   # Result
-    y <-matrix(y, ncol = prod(size), byrow = TRUE) # by rows to follow the order of the column names
+    y <- matrix(y, ncol = prod(size), byrow = TRUE) # by rows to follow the order of the column names
     colnames(y) <- zNcolsLast
     y
   }

@@ -1,6 +1,6 @@
 #' Combination of two mass functions
 #' 
-#'The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and described by their respective basic chance assignments \code{x}  and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see \code{\link{nzdsr}}).
+#'The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and described by their respective basic chance assignments \code{x}  and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see function \code{\link{nzdsr}}).
 #' @details The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.  
 #' @param x A basic chance assignment (see \code{\link{bca}}).
 #' @param y A  A basic chance assignment (see \code{\link{bca}}).
@@ -14,16 +14,16 @@
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
-#' x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
-#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
-#' cnames =c("a", "b", "c"),  
+#' x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' byrow = TRUE), m = c(0.2,0.5, 0.3), 
+#' cnames = c("a", "b", "c"),  
 #' varnames = "x", varnb=1)
-#' x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, 
-#' byrow = TRUE), m=c(0.6, 0.4),  
+#' x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+#' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  
 #' varnames = "x", varnb = 1)
 #' dsrwon(x1,x2)
-#' frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
+#' frame <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(frame, frame)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 dsrwon<-function(x,y, varnames = NULL, relnb = NULL, infovarnames) {

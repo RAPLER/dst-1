@@ -11,20 +11,20 @@
 #'   }
 #' @author Claude Boivin, Stat.ASSQ
 #' @examples  
-#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3,
-#' byrow = TRUE), m=c(0.2,0.5, 0.3), 
-#' cnames =c("a", "b", "c"), 
-#' varnames = "x", varnb = 1)
-#' y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, 
-#' byrow = TRUE), m=c(0.6, 0.4),  
-#' cnames = c("a", "b", "c"), varnames = "y", varnb = 1)
+#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3,
+#' byrow = TRUE), m = c(0.2,0.5, 0.3), 
+#' cnames = c("a", "b", "c"), 
+#' varnames = "x", idvar = 1)
+#' y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+#' byrow = TRUE), m = c(0.6, 0.4),  
+#' cnames = c("a", "b", "c"), varnames = "y", idvar = 1)
 #' xy <- dsrwon(x,y)
 #' xyNorm <- nzdsr(xy)
 #' tabresul(xyNorm) 
 #' ## print("Show all elementary events")
 #' xy1 <- addTobca(nzdsr(dsrwon(x,y)), 
 #' matrix(c(0,1,0,0,0,1), 
-#' nrow=2, byrow = TRUE))
+#' nrow = 2, byrow = TRUE))
 #' tabresul(xy1)
 #' ## print("Remove focal elements with 0 mass")
 #' tabresul(xy1, removeZeroes = TRUE)
@@ -73,9 +73,9 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   # 3.3 Put masses in the same order as the W2 matrix
   #
   macc <- macc[sort_order]
-  macc <- matrix(macc,ncol=1, dimnames =list(NULL, "mass"))
+  macc <- matrix(macc,ncol = 1, dimnames = list(NULL, "mass"))
   #
-  # 3.4. remove elements with mass=0, but the frame
+  # 3.4. remove elements with mass = 0, but the frame
   INUL<-c(macc[-length(macc)]>0,TRUE)
   if (removeZeroes == TRUE) {
     macc1<-t(rbind(macc[INUL]))
@@ -91,21 +91,21 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   # 3.5. Prepare a table of results reduced to the singletons
   if (singletonsOnly == TRUE) {
     r <- mbp
-    z2<-r[,c(1:(ncol(r)-4))]
+    z2 <- r[,c(1:(ncol(r)-4))]
     if (!is.null(dim(z2))) {
-      r1<-r[apply(z2,1,sum)==1, , drop = FALSE]
+      r1 <- r[apply(z2,1,sum) == 1, , drop = FALSE]
     } else {
-      z2<-rbind(r[,c(1:(ncol(x$tt)))])
-      r1<-r[apply(z2,1,sum)==1,]
+      z2 <- rbind(r[,c(1:(ncol(x$tt)))])
+      r1 <- r[apply(z2,1,sum) == 1,]
       if (is.null(dim(r1))) {
-        r1<-t(as.matrix(r1))
+        r1 <- t(as.matrix(r1))
       }
     }
     mbp <- r1
   }
   #
   # 4. Final result
-  resul<-list(mbp=mbp, Conflict=x$con)
+  resul<-list(mbp = mbp, Conflict = x$con)
   return(resul)
 }
  

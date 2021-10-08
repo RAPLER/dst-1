@@ -12,14 +12,16 @@ nameCols_prod(valuenames, size)
 \item{size}{A vector of the size of the variables.}
 }
 \value{
-A character vector of length equal to the product of the sizes of the variables
+A character vector of length equal to the product of the sizes of the variables.
 }
 \description{
-This utility function makes use of the valuenames  and size parameters  of a set of variables to assign values names to the columns of the tt matrix of their product space.
+This utility function makes use of the valuenames  and size parameters  of a set of variables to assign values names to the columns of the \code{tt} matrix of their product space.
 }
-\author{
-Claude Boivin, Stat.ASSQ
+\examples{
 infoval <- list(A = c("a1", "a2"), B = c("b1", "b2", "b3"))
 sizes <- c(2,3)
  print(nameCols_prod(valuenames = infoval, size = sizes) )
+}
+\author{
+Claude Boivin, Stat.ASSQ
 }

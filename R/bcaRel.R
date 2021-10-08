@@ -1,9 +1,9 @@
 #' Representation of a mass function in a product space
 #'
-#' This function is used to represent a mass function which establish a relation between two or more variables in their product space.
+#' This function is used to represent a relation between two or more variables in their product space \code{P}. The relation can be described by more than one subset of \code{P}. Each subset can also  include more than one element. Complete disjunctive coding is used to represent un element in the input matrix of the function.
 #' 
-#' @param tt A (0,1)-matrix or a boolean matrix establishing the relation between two or more variables. The matrix is constructed by placing the variables side by side, as in a truth table representation.
-#' @param spec A two-column matrix. First column: numbers given to the subsets. Second column: the mass values of the subsets. A subset number and its associated mass value are repeated to match the number of elements of the subset.
+#' @param tt The description matrix of the subsets establishing the relation. This matrix is obtained by putting the variables side by side, as in a truth table representation. For each variable, there are as many columns as possible values. Each row of the matrix is an element of a subset. Chaque element is described by a sequence of 0 (absence of value of a variable) or 1 (presence of value). This forms a complete disjunctive coding.
+#' @param spec A two column matrix. First column: numbers assigned to the sub-assemblies. Second column: the mass values of the sub-assemblies. If the subset has more than one element, the number of the subset and its associated mass value are repeated to match the number of elements in the subset.
 #' @param infovar  A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.
 #' @param varnames The names of the variables.
 #' @param infovarnames Deprecated. Old name for \code{varnames}.
@@ -11,12 +11,12 @@
 #' @param infovaluenames Deprecated. Old name for \code{valuenames}. 
 #' @param relnb A number given to the relation. Set at 0 if omitted.
 #' @return zr An object of class \code{bcaspec} called a bca for "basic chance assignment". This is a list containing the following components:  \itemize{
-#' \item con The measure of conflict.
-#' \item tt The resulting table of subsets. Rownames of the matrix of subsets are generated from the column names of the elements of the product frame. See \code{\link{nameRows}} for details.
-#' \item spec The resulting two-column matrix of specification numbers with associated mass values.
-#' \item infovar The two-column matrix of variables number and size given in the input data.
-#' \item valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
-#' \item inforel A two-column matrix containing the relation number and the depth (number of variables) of the relation.
+#' \item con: The measure of conflict.
+#' \item tt: The resulting table of subsets. Rownames of the matrix of subsets are generated from the column names of the elements of the product frame. See \code{\link{nameRows}} for details.
+#' \item spec: The resulting two-column matrix of specification numbers with associated mass values.
+#' \item infovar: The two-column matrix of variables number and size given in the input data.
+#' \item valuenames: A list of the names of the variables with the name of the elements of their frame of discernment.
+#' \item inforel: A two-column matrix containing the relation number and the depth (number of variables) of the relation.
 #' } 
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
@@ -30,7 +30,7 @@
 #' 
 #'  # 1. The tt table of the logical implication
 #'  ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
-#'  nrow=4, byrow = TRUE, 
+#'  nrow = 4, byrow = TRUE, 
 #'  dimnames = list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
 #'  
 #'  # 2. The mass distribution

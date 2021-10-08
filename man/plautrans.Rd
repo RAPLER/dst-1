@@ -13,17 +13,17 @@ plautrans(x)
 The matrix of singletons with their plausibility transformation added in the last column.
 }
 \description{
-Given a mass function defined on some subsets of a frame \eqn{\Theta}, the application of the plausibility transformation to the singletons of \eqn{\Theta} yields the probability distribution associated with the this mass function.
+Given a mass function defined on some subsets of a frame \eqn{\Theta}, the application of the plausibility transformation to the singletons of \eqn{\Theta} yields the probability distribution associated with this mass function.
 }
 \details{
 We compute the plausibility measure of all the singletons of the frame of discernment. The probability distribution of the singletons is obtained from their plausibility measures.
 }
 \examples{
  
-x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
-byrow = TRUE), m=c(0.2,0.5, 0.3), 
-cnames =c("a", "b", "c"), 
-infovarnames = "x", varnb = 1)
+x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+byrow = TRUE), m = c(0.2,0.5, 0.3), 
+cnames = c("a", "b", "c"), 
+varnames = "x", varnb = 1)
 plautrans(x)
 }
 \references{

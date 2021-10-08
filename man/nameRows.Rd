@@ -12,16 +12,16 @@ nameRows(tt, f)
 \item{f}{Deprecated. Old name for \code{tt} matrix.}
 }
 \value{
-A character vector of labels obtained for the rows of the matrix \code{tt}. The length of the result is \code{nrow(tt)}.
+A character vector of labels obtained for the rows of the \code{tt} matrix. The length of the result is \code{nrow(tt)}.
 }
 \description{
-This function determines the name of a row from all the columns that have a 1 for that row.
+This function determines the name of a row from all the columns of the \code{tt} that show 1 for that row.
 }
 \details{
-The row consisting all 1's is called "frame", to avoid too long a character string. The empty set is identified by its code "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a product space defined on many variables, row labels can become very long.
+The row containing only 1s is called "frame", to avoid too long a label. The empty set is identified by its code "u00f8". The "+" sign is used to represent the logical "or" operator. The space " " is used to represent the logical "and" operator. Note that in the case of a product space defined on many variables, row labels can become very long.
 }
 \examples{
-tt <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)
+tt <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol = 3, byrow = TRUE)
 colnames(tt) <- c("A","B","C")
 rownames(tt) <-nameRows(tt)
 tt

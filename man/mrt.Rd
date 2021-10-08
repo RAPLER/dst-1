@@ -5,7 +5,7 @@
 \alias{mrt}
 \title{The Captain's Problem. mrt: Relation between variables Maintenance done (M = true) and  Repairs at sea (R)}
 \format{
-An integer matrix with 4 rows and 6 columns.
+A (0,1) matrix with 4 rows and 6 columns.
 \describe{
   \item{[1,c(1,2)]}{value = 0, not used}
   \item{[1,3:6]}{Identification numbers of the two variables. Column 3,4: variable 6; columns 5,6: variable 8}
@@ -22,10 +22,10 @@ An integer matrix with 4 rows and 6 columns.
 mrt
 }
 \description{
-This dataset is the tt matrix establishing a set of two relations between the two variables. First, Repairs = true if Maintenance = true in (M x R). We are 10\% sure that there will be Repairs if maintenance is done. Second, Repairs = false if Maintenance = true in (M x R). We are 70\% sure that there will be no repairs if maintenance is done.
+This dataset is the \code{tt} matrix establishing a set of two relations between the two variables. First, Repairs = true if Maintenance = true in (M x R). We are 10\% sure that there will be Repairs if maintenance is done. Second, Repairs = false if Maintenance = true in (M x R). We are 70\% sure that there will be no repairs if maintenance is done.
 }
 \details{
-These two relations are implication rules. The remaining mass of 0.2 is allotted to the frame. To construct the tt matrix, we put the variables M and R side by side, as in a truth table representation.
+These two relations are implication rules. The remaining mass of 0.2 is allotted to the frame. To construct the \code{tt} matrix, we put the variables M and R side by side, as in a truth table representation. Each pair of the subset is described by a row of the matrix as a vector of zeros and ones.
 }
 \author{
 Claude Boivin, Stat.ASSQ

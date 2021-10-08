@@ -114,7 +114,7 @@ bcaPrint(r1)
 ## The belief network for this situation
 We now have all the elements of a small network made of one relation (r1) between three variables: Disease (D), Diagnosis1 (D1), Diagnosis2 (D2),  and two pieces of evidence coming from *Expert one* (e1) and *Expert two* (e2).
 
-The three variables are the nodes of the graph: Disease (D), Diagnosis1 (D1), Diagnosis2 (D2). The edges (hyperedges) are given by the relation r1 and the two pieces of evidence (*Expert one* and *Expert two*). Using the igraph package, ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. http://igraph.org] a bipartite graph corresponding to the hypergraph is obtained.
+The three variables are the nodes of the graph: Disease (D), Diagnosis1 (D1), Diagnosis2 (D2). The edges (hyperedges) are given by the relation r1 and the two pieces of evidence (*Expert one* and *Expert two*). Using the igraph package, ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. https://igraph.org] a bipartite graph corresponding to the hypergraph is obtained.
 
 ```{r, fig.show='hold', fig_caption: yes, echo=FALSE, message=FALSE}
 # The network

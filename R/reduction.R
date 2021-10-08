@@ -2,14 +2,14 @@
 #' 
 #' This utility function is used to obtain a summary of a vector of data for many operators. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}). 
 #' @aliases aplRDV
-#' @param x A vector of numbers or character strings.
+#' @param x A vector of numbers or a character string.
 #' @param f The operator. Must be compatible with the type of input vector (numeric or character)
 #' @return The result of applying the chosen operator to all the elements of the vector is an object of length 1.
 #' 
 #' @examples
-#'  reduction(c(1,2,3,4), f="-")
-#'  reduction(c(1,0,1,1,0), f="|")
-#'  reduction(c("a", "b", "c"), f="paste")
+#'  reduction(c(1,2,3,4), f = "-")
+#'  reduction(c(1,0,1,1,0), f = "|")
+#'  reduction(c("a", "b", "c"), f = "paste")
 #'  
 #' @export
 #' @author Claude Boivin, Stat.ASSQ.
@@ -20,7 +20,7 @@
 #' \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New-York.
 #'  }
 #'  
-reduction<-function(x,f="+") {
+reduction<-function(x,f) {
   #
   # Local variables: None
   # Functions calls: None

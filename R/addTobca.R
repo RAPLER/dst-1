@@ -4,20 +4,20 @@
 #' @param x A basic chance assignment (see \code{\link{bca}}).
 #' @param tt A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the tt matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.
 #' @param f Deprecated. Old name for \code{tt} matrix. 
-#' @return x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{f}.
+#' @return x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{tt}.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples  
-#' y <- bca(f = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), 
-#' m=c(0.6, 0.4),  cnames = c("a", "b", "c"), varnb=1)
-#' addTobca(y, matrix(c(0,1,0,0,0,1, 0,1,1), nrow=3, byrow = TRUE))
+#' y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), 
+#' m = c(0.6, 0.4),  cnames = c("a", "b", "c"), idvar = 1)
+#' addTobca(y, matrix(c(0,1,0,0,0,1, 0,1,1), nrow = 3, byrow = TRUE))
 #' x <- bca(f = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 #' byrow = TRUE), m=c(0.2,0.5, 0.3), 
-#' cnames =c("a", "b", "c"), varnb=1)
+#' cnames = c("a", "b", "c"), idvar = 1)
 #' xy <- dsrwon(x,y)
-#' xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+#' xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' xy1
-#' addTobca(x, f = diag(1,  ncol(x$tt) ) ) # add all singletons
+#' addTobca(x, tt = diag(1,  ncol(x$tt) ) ) # add all singletons
 #' 
 addTobca <- function(x, tt, f) {
   #

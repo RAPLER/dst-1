@@ -1,13 +1,13 @@
 #' Transformation of an array data to its matrix representation
 #'
 #'The array representation or product space representation is converted to the matrix representation of the corresponding relation.
-#' @param mtt The matrix tt of the relation in  multiarray format
+#' @param mtt The matrix \code{tt} of the relation in  multiarray format
 #' @return tt The matrix representation of the data.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 
 #'  mtt <- array(c(1,0,0,0,1,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,0,1,0,1,1,1,1,1,1), c(2,2,8), 
-#'  dimnames = list( RdWorks=c("Wy", "Wn") , Rain=c("Ry", "Rn"), ev=1:8) )
+#'  dimnames = list( RdWorks=c("Wy", "Wn") , Rain = c("Ry", "Rn"), ev=1:8) )
 #'  print(z <- marrayToMatrix(mtt))
 #' 
 marrayToMatrix <- function(mtt) {

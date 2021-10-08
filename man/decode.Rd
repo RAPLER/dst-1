@@ -19,7 +19,6 @@ A scalar representing the conversion of the coded number \code{ind} to its decim
 The \code{aplDecode} function of the project APL in R (\url{https://rpubs.com/deleeuw/158476}) has been adapted to follow the standard implementation of the APL \code{decode} function.
 }
 \details{
-If the base value is a number system, namely base 2, we need only to enter a scalar, which is treated to match the length of the expression to decode. 
 If the base value is a number system, e.g. base 2, we need only to enter it as a scalar, which is then processed to match the length of the expression to decode. If \code{length(ind)}  is less than \code{length(base)}, zeroes are added to the left of the vector \code{ind}  to match the length of the two vectors. And vice-versa.
 }
 \examples{

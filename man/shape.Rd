@@ -11,10 +11,10 @@ shape(a)
 \item{a}{An array or a vector.}
 }
 \value{
-The dimensions of the array \code{a} or the length of the vector \code{a}.
+The dimension of the array \code{a} or the length of the vector \code{a}.
 }
 \description{
-\code{shape} returns sizes of each dimension of given array or the length of a given vector. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}).
+\code{shape} returns the dimension of given array or returns the length of a given vector. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}).
 }
 \examples{
 shape(array(c(1:6), c(2,3)))

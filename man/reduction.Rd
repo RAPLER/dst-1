@@ -5,10 +5,10 @@
 \alias{aplRDV}
 \title{Summary of a vector for any operator.}
 \usage{
-reduction(x, f = "+")
+reduction(x, f)
 }
 \arguments{
-\item{x}{A vector of numbers or character strings.}
+\item{x}{A vector of numbers or a character string.}
 
 \item{f}{The operator. Must be compatible with the type of input vector (numeric or character)}
 }
@@ -19,9 +19,9 @@ The result of applying the chosen operator to all the elements of the vector is 
 This utility function is used to obtain a summary of a vector of data for many operators. The function is taken from the project APL in R (\url{https://rpubs.com/deleeuw/158476}).
 }
 \examples{
- reduction(c(1,2,3,4), f="-")
- reduction(c(1,0,1,1,0), f="|")
- reduction(c("a", "b", "c"), f="paste")
+ reduction(c(1,2,3,4), f = "-")
+ reduction(c(1,0,1,1,0), f = "|")
+ reduction(c("a", "b", "c"), f = "paste")
  
 }
 \references{

@@ -25,21 +25,21 @@ Degrees of Belief \code{Bel} and Plausibility \code{Pl} of the focal elements of
 The degree of belief \code{Bel} is defined by: \cr
 \deqn{bel(A) = Sum((m(B); B \subseteq A))}{bel(A) = Sum((m(B); B <= A))} for every subset B of A.\cr
 The degree of plausibility \code{pl} is defined by: \cr
-\deqn{pl(A) = Sum[(m(B); B \cap A \neg \o]}{pl(A) = Sum[(m(B); B and A not empty]} for every subset \code{B} of the frame of discernment. \cr
+\deqn{pl(A) = Sum[(m(B); B \cap A \neq \emptyset]}{pl(A) = Sum[(m(B); (B & A) not empty]} for every subset \code{B} of the frame of discernment. \cr
 The plausibility ratio of a focal element \code{A} versus its contrary \code{not A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
 }
 \examples{
-x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
-byrow = TRUE), m=c(0.2,0.5, 0.3), 
-cnames =c("a", "b", "c"), varnames = "x", varnb = 1)
+x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+byrow = TRUE), m = c(0.2,0.5, 0.3), 
+cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 belplau(x)
-y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, 
-byrow = TRUE), m=c(0.6, 0.4),  
-cnames = c("a", "b", "c"),  varnames = "y", varnb = 1)
+y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+byrow = TRUE), m = c(0.6, 0.4),  
+cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
 xy <- nzdsr(dsrwon(x,y))
 belplau(xy)
 print("compare all elementary events")
-xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow=2, byrow = TRUE))
+xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 belplau(xy1) 
 
 }

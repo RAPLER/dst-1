@@ -11,10 +11,10 @@ An integer matrix with 10 rows and 12 columns.
   \item{[1,3:12]}{Identification numbers of the four variables. Column 3 to 6: variable 2; columns 7,8: variable 4; columns 9, 10: variable 5: columns 11,12: variable 6.}
   \item{nospec}{identification number of the specification}
   \item{m}{the value of the specification, a number between 0 and 1}
-  \item{d3}{1 if d3 is part of the specification, 0 otherwise}
-  \item{d2}{1 if d2 is part of the specification, 0 otherwise}
-  \item{d1}{1 if d1 is part of the specification, 0 otherwise}
-  \item{d0}{1 if d0 is part of the specification, 0 otherwise}
+  \item{3}{1 if d3 is part of the specification, 0 otherwise}
+  \item{2}{1 if d2 is part of the specification, 0 otherwise}
+  \item{1}{1 if d1 is part of the specification, 0 otherwise}
+  \item{0}{1 if d0 is part of the specification, 0 otherwise}
   \item{true}{1 if true is part of the specification, 0 otherwise}
   \item{false}{1 if false is part of the specification, 0 otherwise}
   \item{foul}{1 if foul is part of the specification, 0 otherwise}
@@ -28,7 +28,7 @@ An integer matrix with 10 rows and 12 columns.
 dlfm
 }
 \description{
-This dataset is the tt matrix establishing the relation between the four variables. Each event (loading = true, forecast = foul, Maintenance = true) adds one day of Departure Delay. The elements (d,l, f, m) of (D x L x F x M) satisfying the relation form a subset with a mass value of 1. To construct the tt matrix, we put the variables D,L,F,M side by side, as in a truth table representation.
+This dataset is the \code{tt} matrix establishing the relation between the four variables. Each event (loading = true, forecast = foul, Maintenance = true) adds one day of Departure Delay. The elements (d,l, f, m) of (D x L x F x M) satisfying the relation form a subset with a mass value of 1. To construct the \code{tt} matrix, we put the variables D,L,F,M side by side, as in a truth table representation. Each 4-tuple of the subset is described by a row of the matrix as a vector of zeros and ones.
 }
 \author{
 Claude Boivin, Stat.ASSQ
