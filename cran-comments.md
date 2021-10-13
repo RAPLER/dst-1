@@ -3,17 +3,17 @@ title: "cran-comments"
 output: github_document
 ---
 
-## Test environments 2020-03-26
-* local OS X install: R-devel (2020-02-23 r77849)
-* win-builder: R version 4.0.0 alpha (2020-03-26 r78078)
-* R version 3.6.2 (2017-01-27) running under Ubuntu 16.04.6 LTS
+## Test environments 2021-10-08
+* local OS X install: R-devel (2020-02-23 r77849): OK
+* win-builder: R Under development (unstable) (2021-10-07 r81018): OK
 
 * R CMD check results
 0 errors | 0 warnings | 0 notes 
 
 * R-hub builder  
+  using R Under development (unstable) (2021-08-17 r80776)
   Windows Server 2008 R2 SP1, R-devel, 32/64 bit: OK
-  Ubuntu Linux 16.04 LTS, R-release, GCC: OK
+  Ubuntu Linux 20.04.1 LTS, R-release, GCC: OK
   Fedora Linux, R-devel, clang, gfortran: OK
   
 ## Additional checks for dst ────────────────────────────────────
