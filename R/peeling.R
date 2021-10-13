@@ -38,7 +38,8 @@
 #' # Variables numbers and dimension of their frame
 #' info_r1 <- matrix(c(1:3, 2,2,3), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
 #' #  The relation between e1, e2 and a patient p
-#' r1 <- bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1, varnames = c("D1", "D2", "D"), relnb = 1)
+#' r1 <- bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1,
+#'  varnames = c("D1", "D2", "D"), relnb = 1)
 #' 
 #' # 2. Setting the incidence matrix of the grapph
 #' rel1 <- 1*1:3 %in% r1$infovar[,1]

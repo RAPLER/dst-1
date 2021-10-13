@@ -7,7 +7,7 @@
 marrayToMatrix(mtt)
 }
 \arguments{
-\item{mtt}{The matrix \code{tt} of the relation in  multiarray format}
+\item{mtt}{The matrix \code{tt} of the relation in  array format}
 }
 \value{
 tt The matrix representation of the data.

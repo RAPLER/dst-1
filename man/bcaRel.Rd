@@ -16,7 +16,7 @@ bcaRel(
 )
 }
 \arguments{
-\item{tt}{The description matrix of the subsets establishing the relation. This matrix is obtained by putting the variables side by side, as in a truth table representation. For each variable, there are as many columns as possible values. Each row of the matrix is an element of a subset. Chaque element is described by a sequence of 0 (absence of value of a variable) or 1 (presence of value). This forms a complete disjunctive coding.}
+\item{tt}{The description matrix of the subsets establishing the relation. This matrix is obtained by putting the variables side by side, as in a truth table representation. For each variable, there are as many columns as possible values. Each row of the matrix is an element of a subset. Each element is described by a sequence of 0 (absence of value of a variable) or 1 (presence of value). This forms a complete disjunctive coding.}
 
 \item{spec}{A two column matrix. First column: numbers assigned to the sub-assemblies. Second column: the mass values of the sub-assemblies. If the subset has more than one element, the number of the subset and its associated mass value are repeated to match the number of elements in the subset.}
 
@@ -43,7 +43,7 @@ zr An object of class \code{bcaspec} called a bca for "basic chance assignment".
 }
 }
 \description{
-This function is used to represent a relation between two or more variables in their product space \code{P}. The relation can be described by more than one subset of \code{P}. Each subset can also  include more than one element. Complete disjunctive coding is used to represent un element in the input matrix of the function.
+This function is used to represent a relation between two or more variables in their product space \code{P}. The relation can be described by more than one subset of \code{P}. Each subset can also  include more than one element. Complete disjunctive coding is used to represent one element in the input matrix of the function.
 }
 \examples{
 # A logical implication rule
