@@ -3,7 +3,7 @@ Type: Package
 Title: Using the Theory of Belief Functions 
 Encoding: UTF-8
 Version: 1.5.0
-Date: 2021-09-20
+Date: 2021-10-14
 Author: Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
 Description: Using the Theory of Belief Functions for evidence calculus. Basic probability assignments, or mass functions, can be defined on the subsets of a set of possible values and combined. A mass function can be extended to a larger frame. Marginalization, i.e. reduction to a smaller frame can also be done. These features can be combined to analyze small belief networks and take into account situations where information cannot be satisfactorily described by probability distributions.
