@@ -34,12 +34,12 @@ bcaRel(
 }
 \value{
 An object of class \code{bcaspec} called a bca for "basic chance assignment". This is a list containing the following components:  \itemize{
-\item con: The measure of conflict.
-\item tt: The resulting table of subsets. Rownames of the matrix of subsets are generated from the column names of the elements of the product frame. See \code{\link{nameRows}} for details.
-\item spec: The resulting two-column matrix of specification numbers with associated mass values.
-\item infovar: The two-column matrix of variables number and size given in the input data.
-\item valuenames: A list of the names of the variables with the name of the elements of their frame of discernment.
-\item inforel: A two-column matrix containing the relation number and the depth (number of variables) of the relation.
+\item con The measure of conflict.
+\item tt The resulting table of subsets. Rownames of the matrix of subsets are generated from the column names of the elements of the product frame. See \code{\link{nameRows}} for details.
+\item spec The resulting two-column matrix of specification numbers with associated mass values.
+\item infovar The two-column matrix of variables number and size given in the input data.
+\item valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
+\item inforel A two-column matrix containing the relation number and the depth (number of variables) of the relation.
 }
 }
 \description{
@@ -53,7 +53,7 @@ This function is used to represent a relation between two or more variables in t
 # Roadworks: {yes, no}. From experience,
 # I am 75 \% sure that there will be RoadWorks if there is no rain.
 
- # 1. The \code{tt} table of the logical implication
+ # 1. The tt table of the logical implication
  ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
  nrow = 4, byrow = TRUE, 
  dimnames = list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
