@@ -2,7 +2,7 @@
 % Please edit documentation in R/nameCols.R
 \name{nameCols}
 \alias{nameCols}
-\title{Naming the columns of the tt matrix}
+\title{Naming the columns of the \code{tt} matrix}
 \usage{
 nameCols(valuenames, size)
 }

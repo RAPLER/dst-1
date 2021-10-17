@@ -47,13 +47,13 @@ bca(
 }
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
-  \item tt:  The table of focal elements. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
-  \item spec:  A two column matrix. First column contains numbers given to the subsets, 1 to  \code{nrow(tt)}. Second column contains the mass values of the subsets. 
-  \item con:  The measure of conflict.
-  \item infovar:  The number of the variable and the size of the frame of discernment.
-  \item varnames:  The name of the variable.
-  \item valuenames:  A list of length 1 consisting of the name of the variable with the names of the elements of the frame of discernment (the column names of the \code{tt} matrix).
-  \item inforel:  Set at 0. used in function \code{\link{bcaRel}}.
+  \item tt  The table of focal elements. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
+  \item spec  A two column matrix. First column contains numbers given to the subsets, 1 to  \code{nrow(tt)}. Second column contains the mass values of the subsets. 
+  \item con  The measure of conflict.
+  \item infovar  The number of the variable and the size of the frame of discernment.
+  \item varnames  The name of the variable.
+  \item valuenames  A list of length 1 consisting of the name of the variable with the names of the elements of the frame of discernment (the column names of the \code{tt} matrix).
+  \item inforel  Set at 0. used in function \code{\link{bcaRel}}.
   }
 }
 \description{

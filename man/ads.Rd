@@ -3,7 +3,7 @@
 \docType{data}
 \name{ads}
 \alias{ads}
-\title{The Captain's Problem. ads: Relation between variables Arrival (A), Departure delay (D) and Sailing delay (S)}
+\title{The Captain's Problem. \code{ads}: Relation between variables Arrival (A), Departure delay (D) and Sailing delay (S)}
 \format{
 An integer matrix with 18 rows and 17 columns
 \describe{

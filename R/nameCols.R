@@ -1,4 +1,4 @@
-#' Naming the columns of the tt matrix
+#' Naming the columns of the \code{tt} matrix
 #' 
 #' This utility function makes use of the valuenames  and size parameters  of a set of variables to assign values names to the columns of a \code{tt} matrix.
 #'  

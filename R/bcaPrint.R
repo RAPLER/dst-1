@@ -1,4 +1,4 @@
-#' Simple printing of the tt matrix and mass values of a basic chance assignment (bca)
+#' Simple printing of the \code{tt} matrix and mass values of a basic chance assignment (bca)
 #'
 #' This utility function does a simple printing of a bca
 #' 

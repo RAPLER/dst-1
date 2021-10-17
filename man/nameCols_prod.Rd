@@ -2,7 +2,7 @@
 % Please edit documentation in R/nameCols_prod.R
 \name{nameCols_prod}
 \alias{nameCols_prod}
-\title{Naming the columns of the tt matrix of a product space}
+\title{Naming the columns of the \code{tt} matrix of a product space}
 \usage{
 nameCols_prod(valuenames, size)
 }

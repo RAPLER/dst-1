@@ -3,7 +3,7 @@
 \docType{data}
 \name{mrt}
 \alias{mrt}
-\title{The Captain's Problem. mrt: Relation between variables Maintenance done (M = true) and  Repairs at sea (R)}
+\title{The Captain's Problem. \code{mrt}: Relation between variables Maintenance done (M = true) and  Repairs at sea (R)}
 \format{
 A (0,1) matrix with 4 rows and 6 columns.
 \describe{

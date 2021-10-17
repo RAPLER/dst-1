@@ -15,7 +15,7 @@ tabresul(x, singletonsOnly = FALSE, removeZeroes = FALSE)
 }
 \value{
 A list of two elements: \itemize{
-  \item mbp: The table of focal elements with the addition of their associated mass, degree of belief, plausibility and the plausibility ratio.
+  \item mbp The table of focal elements with the addition of their associated mass, degree of belief, plausibility and the plausibility ratio.
   \item con The measure of conflict between subsets.
   }
 }

@@ -3,7 +3,7 @@
 \docType{data}
 \name{fw}
 \alias{fw}
-\title{The Captain's Problem. fw: Relation between variables Forecast of the weather (F) and  Weather at sea (W)}
+\title{The Captain's Problem. \code{fw}: Relation between variables Forecast of the weather (F) and  Weather at sea (W)}
 \format{
 An integer matrix with 4 rows and 6 columns.
 \describe{

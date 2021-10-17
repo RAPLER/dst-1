@@ -3,7 +3,7 @@
 \docType{data}
 \name{dlfm}
 \alias{dlfm}
-\title{The Captain's Problem. dlfm: Relation between variables Departure delay (D), Loading delay (L), Forecast of the weather (F), Maintenance delay (M)}
+\title{The Captain's Problem. \code{dlfm}: Relation between variables Departure delay (D), Loading delay (L), Forecast of the weather (F), Maintenance delay (M)}
 \format{
 An integer matrix with 10 rows and 12 columns.
 \describe{

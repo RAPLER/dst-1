@@ -4,7 +4,7 @@
 #' 
 #' @param rel1 An object of class bcaspec, i.e. a basic chance assignment defined on one variable or a relation.
 #' @param relRef The relation of reference. It can be an existing relation, or it can be constructed as a vacuous function. 
-#' @details The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the tt matrix. The relation of reference \code{relRef}  may be a relation already existing or simply the the vacuous relation defined on the product set of variables of interest.
+#' @details The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the \code{tt} matrix. The relation of reference \code{relRef}  may be a relation already existing or simply the the vacuous relation defined on the product set of variables of interest.
 #' 
 #' @return the resulting extended bca.
 #' @author Claude Boivin, Stat.ASSQ

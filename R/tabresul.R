@@ -6,7 +6,7 @@
 #' @param removeZeroes = TRUE removes subsets with 0 mass.
 #' @param singletonsOnly = TRUE reduces the table of results to elementary events (singletons).
 #' @return A list of two elements: \itemize{
-#'   \item mbp: The table of focal elements with the addition of their associated mass, degree of belief, plausibility and the plausibility ratio.
+#'   \item mbp The table of focal elements with the addition of their associated mass, degree of belief, plausibility and the plausibility ratio.
 #'   \item con The measure of conflict between subsets.
 #'   }
 #' @author Claude Boivin, Stat.ASSQ

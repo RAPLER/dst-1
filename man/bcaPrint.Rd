@@ -2,7 +2,7 @@
 % Please edit documentation in R/bcaPrint.R
 \name{bcaPrint}
 \alias{bcaPrint}
-\title{Simple printing of the tt matrix and mass values of a basic chance assignment (bca)}
+\title{Simple printing of the \code{tt} matrix and mass values of a basic chance assignment (bca)}
 \usage{
 bcaPrint(x)
 }

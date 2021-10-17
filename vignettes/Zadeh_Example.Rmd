@@ -85,7 +85,7 @@ The two experts are reasoning in two different spaces of possibilities. To be ab
 
   $D = \{M, T\} \cup \{C, T\} = \{M, T, C\}$.
 
-Hence, the patients' evaluation of his/her disease involves the disjunction of the evidences of the two experts.This situation is described by a relation of implication between experts and patient:
+Thus, the patient's assessment of his illness involves bringing together the testimonies of the two experts, using the "or" operator. This situation is described by a relation of implication between experts and patient:
 
 r1: $D1 \cup D2 \rightarrow D$.
 

@@ -2,7 +2,7 @@
 #'
 #'The array representation or product space representation is converted to the matrix representation of the corresponding relation.
 #' @param mtt The matrix \code{tt} of the relation in  array format
-#' @return tt The matrix representation of the data.
+#' @return The matrix representation of the data.
 #' @author Claude Boivin, Stat.ASSQ
 #' @export
 #' @examples 

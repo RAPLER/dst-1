@@ -1,4 +1,4 @@
-#' Naming the columns of the tt matrix of a product space
+#' Naming the columns of the \code{tt} matrix of a product space
 #' 
 #' This utility function makes use of the valuenames  and size parameters  of a set of variables to assign values names to the columns of the \code{tt} matrix of their product space.
 #'  

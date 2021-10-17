@@ -10,7 +10,7 @@ marrayToMatrix(mtt)
 \item{mtt}{The matrix \code{tt} of the relation in  array format}
 }
 \value{
-tt The matrix representation of the data.
+The matrix representation of the data.
 }
 \description{
 The array representation or product space representation is converted to the matrix representation of the corresponding relation.

@@ -3,7 +3,7 @@
 \docType{data}
 \name{mrf}
 \alias{mrf}
-\title{The Captain's Problem. mrf: Relation between variables No Maintenance (M = false) and  Repairs at sea (R)}
+\title{The Captain's Problem. \code{mrf}: Relation between variables No Maintenance (M = false) and  Repairs at sea (R)}
 \format{
 A (0,1) matrix with 4 rows and 6 columns.
 \describe{
