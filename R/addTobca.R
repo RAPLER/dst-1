@@ -21,8 +21,8 @@
 #' 
 addTobca <- function(x, tt, f) {
   #
-  # Local variables: specnb 
-  # Functions calls: None 
+  # Local variables: zt1, zt2, tt1 
+  # Functions calls: dotprod, reduction 
   #
   # 0. Catch old parameters names, if any and replace by the new ones
   #
@@ -46,11 +46,17 @@ addTobca <- function(x, tt, f) {
     }
   #
   # 2. Calculations
+  # 2.1 Check for replicates 
   #
-  x$tt <- rbind(tt,x$tt)
+  zt1 <- dotprod(tt, t(x$tt), g = "&", f = "==")
+  zt2 <- apply(zt1, MARGIN = 1, FUN = "reduction", f = "|")
+  tt1 <- tt[!zt2,]
+  #
+  # 2.2 transform tt matrix of x
+  x$tt <- rbind(tt1,x$tt)
   rownames(x$tt) <- nameRows(x$tt)
   specnb <- 1:nrow(x$tt)
-  mass <- c(rep(0,nrow(tt)), x$spec[,2])
+  mass <- c(rep(0,length(zt2)), x$spec[,2])
   x$spec <- cbind(specnb, mass)
   return(x)
 } 
