@@ -24,7 +24,7 @@ Given a previously defined basic chance assignment (bca), the user may want to a
 y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), 
 m = c(0.6, 0.4),  cnames = c("a", "b", "c"), idvar = 1)
 addTobca(y, matrix(c(0,1,0,0,0,1, 0,1,1), nrow = 3, byrow = TRUE))
-x <- bca(f = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 byrow = TRUE), m=c(0.2,0.5, 0.3), 
 cnames = c("a", "b", "c"), idvar = 1)
 xy <- dsrwon(x,y)
