@@ -56,11 +56,7 @@ addTobca <- function(x, tt, f) {
   x$tt <- rbind(tt1,x$tt)
   rownames(x$tt) <- nameRows(x$tt)
   specnb <- 1:nrow(x$tt)
-<<<<<<< HEAD
   mass <- c(rep(0, sum(!zt2)), x$spec[,2])
-=======
-  mass <- c(rep(0,length(zt2)), x$spec[,2])
->>>>>>> b1a03ddb29441e57fd58a4352eec27971e737957
   x$spec <- cbind(specnb, mass)
   return(x)
 } 
