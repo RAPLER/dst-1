@@ -70,10 +70,16 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
      W2 <- matrix(W2,ncol = length(W2), dimnames = list(NULL, names(W2)))
   }
   #
-  # 3.3 Put masses in the same order as the W2 matrix
-  #
+  # 3.3 Put mass vector and belief measures in the same order as the W2 matrix
+  # Mass vector
   macc <- macc[sort_order]
   macc <- matrix(macc,ncol = 1, dimnames = list(NULL, "mass"))
+  #
+  # Belief measures
+  BP <- BP[sort_order,]
+  if (is.matrix(BP) == FALSE) {
+    BP <- matrix(BP,ncol = length(BP), dimnames = list(NULL, names(BP)))
+  }
   #
   # 3.4. remove elements with mass = 0, but the frame
   INUL<-c(macc[-length(macc)]>0,TRUE)
