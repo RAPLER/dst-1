@@ -112,9 +112,9 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
     cat( "Hg matrix", print(hgm), "\n")
     }
   for(i in 1:length(ordelim)) {
-    cat("i = :", i, ". Variable no ",  ordelim[i], ":", var_to_elim[i] , "\n")
+    cat("i = :", i, ". Eliminating variable no ",  ordelim[i], ":", var_to_elim[i] , "\n")
     #
-    print("")
+    # print("")
    irel_to_elim <- hgm[var_to_elim[i],]*1:ncol(hgm)
    rels_nb <- irel_to_elim[irel_to_elim>0]
    cat("rels numbers to elim", rels_nb, "\n" )
@@ -127,7 +127,7 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
    while (j <= nb_rel) {
      if ( verbose == TRUE )  {
       cat("Relations to combine: ", rels_names)
-      print("")
+      # print("")
       }
      yv2 <- get(rels_names[j])$infovar
      yv <- rbind(yv,yv2)
@@ -168,7 +168,7 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
         assign(name_relXtnd[j], xtnd_rel)
         # B: combine two extended relations
         if ( verbose == TRUE ) {
-          cat("combining extended relation number :" ,j, "\n")
+          cat("\n","combining extended relation number :" ,j, "\n")
           }
         rel_comb <- nzdsr(dsrwon(rel_comb, get(name_relXtnd[j]), relnb = newrelnb) )
         # C: remove old relation from hypergraph
