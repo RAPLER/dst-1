@@ -1,19 +1,19 @@
 ---
-title: "Using dst Package on Zadeh's Example"
+title: "Peeling algorithm on Zadeh's Example"
 author: "Claude Boivin, Stat.ASSQ"
-date: "2020-01-19"
+date: "2021-12-21"
 output: rmarkdown::html_vignette
+# output: word_document
 vignette: >
-  %\VignetteIndexEntry{Using dst Package on Zadeh's Example}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+ %\VignetteIndexEntry{Peeling algorithm on Zadeh's Example}
+ %\VignetteEngine{knitr::rmarkdown}
+ %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
 #
 # devtools::load_all(".") # only used in place of dst when testing with R-devel
-# attach package dst
-library(dst)
+library(dst)  # attach package dst
 #
 # knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(
@@ -29,21 +29,29 @@ We suppose that a patient is examined by two doctors, A and B. A’s diagnosis i
 
 Zadeh considers the same space of diseases {M, T, C} for the two experts. Hence, after the combination of the two pieces of evidence by Dempster's rule, we find as a result that the belief of a brain tumor is certain. 
 
-```{r, echo = FALSE, warning=FALSE}
+```{r "Zadeh's example", echo = FALSE, warning=FALSE}
 # Diagnosis from Expert 1. Coding the evidence with the bca function
-ZExpert1 <- bca(f= matrix(c(1,0,0,0,1,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis1", varnb = 1)
-# show the definition of ZExpert1
-cat("Diagnosis of Expert 1")
-bcaPrint(ZExpert1)
+Expert1 <- bca(tt = matrix(c(1,0,0,0,1,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis1", idvar = 1)
+# show the definition of Expert1
+cat("Expert 1")
+cat("Space of possibilities")
+Expert1$valuenames
+cat("\r")
+bcaPrint(Expert1)
 #
 # Diagnosis from Expert 2. Coding the evidence with the bca function
-ZExpert2 <- bca(f= matrix(c(0,1,0,0,0,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.01, 0.99, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis2", varnb = 2)
-# show the definition of ZExpert2
-cat("Diagnosis of Expert 2")
-bcaPrint(ZExpert2)
+Expert2 <- bca(tt = matrix(c(0,1,0,0,0,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.01, 0.99, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis2", idvar = 2)
+# show the definition of Expert2
+cat("\r")
+cat("Expert 2")
+cat("Space of possibilities")
+Expert2$valuenames
+cat("\r")
+bcaPrint(Expert2)
 # Combination of Expert 1 and Expert 2 using Dempster's rule
+cat("\r")
 cat("Combination of the two experts by Dempster's rule")
-Ze1e2 <- nzdsr(dsrwon(ZExpert1, ZExpert2, relnb = 1))
+Ze1e2 <- nzdsr(dsrwon(Expert1, Expert2, relnb = 1))
 tabresul(Ze1e2)
 ```
 
@@ -53,39 +61,45 @@ Indeed, the result does not reflect the opinions of the two experts. Before reje
 
 ## Diagnosis of the two experts
 
-Let's take *Expert one*.  *Expert one* distributes the whole mass between the two singletons {M} and {T}. *Expert one* does not consider {C} as a possibility. Hence we conclude that the Fod of *Expert one* cannot be {M, T, C}. We say that *Expert one* has restricted the space of possibilities of his/her diagnostic to the Fod {M, T}:
+Let's take *Expert one*.  *Expert one* distributes the whole mass between the two singletons {M} and {T}. *Expert one* does not consider {C} as a possibility. Hence we conclude that the space of possibilities of *Expert one* cannot be {M, T, C}. We say that *Expert one* has restricted the space of possibilities of his/her diagnostic to the set {M, T}:
 
-$Fod(D1) = \{M, T\}$. For simplicity, we write $D1 =\{M, T\}$.
+$F(D1) = \{M, T\}$. For simplicity, we write $D1 =\{M, T\}$.
 
 The same line of reasoning is applied to *Expert two*. The whole mass of one is allotted to the set {T, C}, and the third possibility (M) is not considered at all.
 Hence $D2 = \{T, C\}$.
 
 I show the coding of these two pieces of evidence with the function *bca* of the package *dst*. 
-```{r}
-# attach package dst
-library(dst)
+```{r "pieces of evidence", echo = FALSE, warning=FALSE}
+library(dst)  # attach package dst
 #
-# Diagnosis from first expert (function e1 attached to variable D1)
-e1 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T"), varnames = "D1", varnb = 1)
+# Diagnosis from first expert (evidence e1 attached to variable D1)
+e1 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T"), varnames = "D1", idvar = 1)
 #
 # show the definition of e1
-# "Diagnosis of Expert 1 (function e1 attached to variable D1)"
+cat("Expert 1")
+cat("Space of possibilities")
+e1$valuenames
+cat("\r")
 bcaPrint(e1)
 #
-# Diagnosis from second expert (function e2 attached to variable D2)
-e2 <- bca(f= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("C", "T"), varnames = "D2", varnb = 2)
+# Diagnosis from second expert (evidence e2 attached to variable D2)
+e2 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("C", "T"), varnames = "D2", idvar = 2)
 #
 # show the definition of e2
-# "Diagnosis of Expert 2 (function e2 attached to variable D2)"
+cat("\r")
+cat("Expert 2")
+cat("Space of possibilities")
+e2$valuenames
+cat("\r")
 bcaPrint(e2)
 ```
 
 ## Linking the Experts to... the Patient
-The two experts are reasoning in two different spaces of possibilities. To be able to combine their diagnosis, we need a common ground. This can be done if we introduce a third person, the patient, with a variable of interest, his/her disease (D). Then it is natural to take the union of the Fod of *Expert one* and *Expert two* as the Fod of the patient:
+The two experts are reasoning in two different spaces of possibilities. To be able to combine their diagnosis, we need a common ground. This can be done if we introduce a third person, the patient, with a variable of interest, his/her disease (D). Then it is natural to take the union of the space of possibilities of *Expert one* and *Expert two* as the space of possibilities of the patient:
 
   $D = \{M, T\} \cup \{C, T\} = \{M, T, C\}$.
 
-Thus, the patient's assessment of his illness involves bringing together the testimonies of the two experts, using the "or" operator. This situation is described by a relation of implication between experts and patient:
+Thus, the patient's assessment of his/her illness involves bringing together the assessment of the two experts, using the "or" operator. This situation is described by a relation of implication between experts and patient:
 
 r1: $D1 \cup D2 \rightarrow D$.
 
@@ -93,7 +107,7 @@ The relation *r1* is represented in the product space $\prod(D1, D2, D)$ by one 
 
 $m(M C M + M C C + M T M + M T T + T C T + T C C + T T T) = 1$ (for simplicity, the "+" sign is used as the $\vee$ disjunctive operator in the functions of the package dst). Now I use the function *bcaRel* to code this relation.
 
-```{r}
+```{r "relation", echo = FALSE, warning=FALSE}
 # 1. Defining the relation with a (0,1) matrix
 tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), ncol = 7,byrow = TRUE)
 colnames(tt_r1) = c("M", "T", "C", "T", "M", "T", "C")
@@ -101,20 +115,23 @@ colnames(tt_r1) = c("M", "T", "C", "T", "M", "T", "C")
 # 2. Setting the mass function
 spec_r1 = matrix(c(rep(1,7),2, rep(1,7), 0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
 #
-# 3. Names of variables names and dimension of their Fod
+# 3. Names of variables names and dimension of their space of possibilities
 info_r1 =matrix(c(1:3, 2,2,3), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
 #
 #  The relation between e1, e2 and a patient p
 r1 <-bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1, varnames = c("D1", "D2", "D"), relnb = 1)
-# show the relation
-# "Relation between Experts and patient defined in the product space D1 x D2 x D"
+#
+cat(" The relation r1")
 bcaPrint(r1)
 ```
 
-## The belief network for this situation
+## The belief network
+
 We now have all the elements of a small network made of one relation (r1) between three variables: Disease (D), Diagnosis1 (D1), Diagnosis2 (D2),  and two pieces of evidence coming from *Expert one* (e1) and *Expert two* (e2).
 
-The three variables are the nodes of the graph: Disease (D), Diagnosis1 (D1), Diagnosis2 (D2). The edges (hyperedges) are given by the relation r1 and the two pieces of evidence (*Expert one* and *Expert two*). Using the igraph package, ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. https://igraph.org] a bipartite graph corresponding to the hypergraph is obtained.
+The three variables *D*, *D1* and *D2* are the nodes of the graph. The edges (hyperedges) are given by the relation *r1* and the two pieces of evidence *e1* and *e2*. 
+
+Using the igraph package, ^[Csardi G, Nepusz T: The igraph software package for complex network research, InterJournal, Complex Systems 1695. 2006. https://igraph.org] a bipartite graph corresponding to the hypergraph can be obtained.
 
 ```{r, fig.show='hold', fig_caption: yes, echo=FALSE, message=FALSE}
 # The network
@@ -145,112 +162,68 @@ V(meddiag_hg)$shape <- c("circle", "crectangle")[V(meddiag_hg)$type+1]
 V(meddiag_hg)$label.cex <- 0.6
 V(meddiag_hg)$label.font <- 2
 # render graph
-plot(meddiag_hg, vertex.label = V(meddiag_hg)$name, vertex.size=(3+6*V(meddiag_hg)$type)*6, sub="Hypergraph (Belief network) for Zadeh's Example")
+plot(meddiag_hg, vertex.label = V(meddiag_hg)$name, vertex.size=(3+6*V(meddiag_hg)$type)*6, sub="Belief network for Zadeh's Example")
 }
 ```
 
-## Calculations on the Belief Network
+## Calculations on the Belief Network: The peeling algorithm
 
-Our goal is the calculation of a belief function "p" attached to the variable of interest "D" (Disease of the patient). At the beginning of the process, this function is simply the vacuous specification:
+Our goal is the calculation of the belief function of the variable of interest "D" (Disease of the patient). We apply an algorithm called "Peeling" to the belief network. This is a process of successive elimination of variables (peeling) until only  the variable of interest (*D* here) remains. The elimination of a variable has the effect of integrating its contribution to the reduced graph. 
 
-$p(\{M, T, C\}) = 1$.
+Four parameters are necessary to activate the algorithm. The first three are already defined when constructing the hypergraph. The fourth parameter is an order of elimination of the variables that we have to set.
 
-We proceed by successive elimination of variables until only  the variable *D* remains, and the result of the function *p* is obtained.
+1. Identification of variables and their space of possibilities
+$$\begin{array}\
+F(D1) = \{M, T\}\\
+F(D2) = \{M, C\}\\
+F(D) = \{M, T, C\}
+\end{array}
+$$
 
-The calculations involved are following the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. International Journal of Approximate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
 
-Three kinds of operations are involved in the calculations:
-a) the minimal (vacuous) extension of a mass function to a larger Fod;
+2. Incidence matrix of the graph (nodes and edges)
+```{r Print incidence matrix, echo=FALSE}
+print(meddiag_hgm)
+```
+3. The names of data specifications (evidence and relations between variables)
+```{r Print names of evidence and relations, echo=FALSE}
+meddiag_data_names
+```
+
+4. The variable numbers are used to fix the order of elimination. Here we eliminate D1 first, then D2.
+```{r Define elimination order, echo=FALSE}
+cbind(r1$infovar, r1$varnames)
+elim_order = c(1, 2, 3)
+```
+The calculations involved follow the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. International Journal of Approximate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
+
+Three kinds of operations are involved in the process of variable elimination:
+a) the minimal (vacuous) extension of a mass function to a larger space of possibilities;
 b) the combination of two mass functions by Dempster's rule;
-c) the marginalization of a mass function, i.e. eliminating a variable to reduce the function to a smaller Fod. Let's do it.
+c) the marginalization of a mass function, i.e. eliminating a variable to reduce the function to a smaller space of possibilities. Let's do it.
 
-First step: eliminate variable D1 (Diagnosis1). Using function *extmin*, we extend the mass function e1 to the space $\prod(D1, D2, D)$; then we combine e1 extended with r1, using functions *dsrwon* and *nzdsr* (normalization); finally, we use function *elim* to eliminate D1 by marginalizing to $\prod(D2, D)$. The mass function obtained is named rel_2.
+First step: Eliminate variable D1 (Diagnosis1). The mass function *e1* is  extended to the space $\prod(D1, D2, D)$; then *e1 extended* is combined with *r1* by Dempster's rule; finally, D1 is eliminated by marginalizing the result of the combination to $\prod(D2, D)$. The mass function obtained is named *rel_2*.
 
-```{r}
-# some settings to begin
-# variables numbers: D1=1, D2=2, D=3
-N <- 1:3
-# Elimination order of the variables. The goal: Disease (variable 3)
-elim_order <- c(1,2,3)
-var_to_elim <- rownames(meddiag_hgm)[order(elim_order)]
-#
-# 1: first step
-# "first variable to eliminate"
-cat(var_to_elim[1]) # Diagnosis1 (1)
-irel_to_elim<- meddiag_hgm["D1",]*1:ncol(meddiag_hgm)
-rels_nb <- irel_to_elim[irel_to_elim>0]
-#
-# 1 Fusion of Expert1 and Relation 1 and eliminate variable Diagnosis1
-# 1.1 Extension of e1 (Expert1)
-Expert1_ext <- extmin(get(meddiag_data_names[1]), get(meddiag_data_names[3])) 
-# "Evidence of Expert 1 extended to the product space D1 x D2 x D"
-bcaPrint(Expert1_ext)
-#
-# 1.2 Combination of Expert1 and r1
-r2 <- nzdsr(dsrwon(Expert1_ext, get(meddiag_data_names[3]), relnb = 1 + length(meddiag_data_names)))
-# "Subsets resulting from the combination of Expert 1 extended and r1"
-bcaPrint(r2)
-#
-# 1.3 Marginalization (eliminate variable D1)
-rel_2 <- elim(r2, xnb = order(elim_order)[1])
-# "subsets in the product space D2 x D (after elimination of D1"
-bcaPrint(rel_2)
-```
-After this first step, the graph is updated.
+Second step: Eliminate variable D2 (Diagnosis2). Evidence *e2* is extended to the space $\prod(D2, D)$; Then *e2 extended* is combined with *rel_2* by Dempster's rule; the result of the combination is marginalized to D to produce the final result.
 
-```{r echo=FALSE}
-# update hg and relations names
-# remove e1 and r1, add r2
-R2 <- 1*1:3 %in% rel_2$infovar[,1]
-meddiag_hgm1 <- cbind(meddiag_hgm[,-c(1,3)], R2)
-colnames(meddiag_hgm1) <- c("e2", "r2")  
-meddiag_data_names1 <- c(meddiag_data_names[-c(1,3)], "rel_2")
-meddiag_var_names1 <- meddiag_var_names[-order(elim_order)[1]]
-meddiag <- list(meddiag_hgm1, meddiag_var_names1, meddiag_data_names1)
-meddiag_hg <- graph_from_incidence_matrix(incidence = meddiag_hgm1, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
-# V(meddiag_hg)
-# Show variables as circles, relations and evidence as rectangles
-V(meddiag_hg)$shape <- c("circle", "crectangle")[V(meddiag_hg)$type+1]
-V(meddiag_hg)$label.cex <- 0.6
-V(meddiag_hg)$label.font <- 2
-# render graph
-plot(meddiag_hg, vertex.label = V(meddiag_hg)$name, vertex.size=(3+6*V(meddiag_hg)$type)*6, sub = "Reduced belief network after elimination of variable D1")
-```
+## The result
 
-Second step: Eliminate variable D2 (Diagnosis2). We extend e2 to the space $\prod(D2, D)$; we combine e2 extended with rel_2 and marginalize to D to get the final result.
-
-```{r}
-# 2. Second step
-# Fusion of Expert2 and Relation 2 and eliminate diagnosis2
-#
-# 2.1 Extension of Expert2 (e2)
-# here, use rel_2 as the relation of reference for extmin 
-Expert2_ext <- extmin(e2, rel_2) 
-temp1 <- as.data.frame(cbind(rownames(Expert2_ext$tt), Expert2_ext$spec))
-colnames(temp1)[1] <- "Expert2_ext"
-# "Evidence of Expert 2 extended to the product space D2 x D"
-print(temp1)
-#
-# 2.2 combinaison pf Expert2 and rel_2
-r3 <- nzdsr(dsrwon(Expert2_ext, rel_2, relnb = 3))
-temp1 <- as.data.frame(cbind(rownames(r3$tt), r3$spec))
-colnames(temp1)[1] <- "r3"
-# "Subsets of the space D2 x D resulting from the combination of Expert 2 extended and r2"
-print(temp1)
-#
-# 2.3 Final result: the belief function p attached to variable D)
-p <- elim(r3, xnb = order(elim_order)[2])
+```{r The peeling, echo = FALSE, warning=FALSE}
+p <- peeling(vars_def = meddiag_vars1, hgm = meddiag_hgm, hg_rel_names = meddiag_data_names, elim_order = c(1, 2, 3), verbose = FALSE ) 
 #
 # add singletons with 0 mass to show all singletons in the results
-p_sing <- addTobca(x = p,  f = matrix(c(1,0,0,0,0,1), ncol=3))
+p_sing <- addTobca(x = p,  tt = matrix(c(1,0,0,0,0,1), ncol=3))
 # "The final result after elimination of variable D2"
 tabresul(p_sing)
 ```
 
-The plausibility ratio column shows that the odds for $M \vee C$ against T are 50:1.  hence, the disease of the patient must be M or C. We also see that each single hypothesis, M, or, C, remains highly plausible (0.99). Although there is some support for T, its plausibility is very weak at 0.019. Finally, we use the plausibility transformation ^[Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314–330] to look at the probability distribution over the Fod {M, T, C} of the patient that we obtain
+The plausibility ratio column shows that the odds of $M \vee C$ against T are 50:1.  hence, the disease of the patient must be M or C. We also see that each single hypothesis, M and C, remains highly plausible (0.99). Although there is some support for T, its plausibility is very weak at 0.019. 
 
-```{r}
+Finally, we use the plausibility transformation ^[Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314–330] to look at the results from the point of view of probability distribution. We see again that the odds for M against T or for C against T are very similar.
+
+
+
+```{r, echo = FALSE, warning=FALSE}
 plautrans(p)
 ```
-Now we have very high odds for M against T or for C against T: 495:1.
 
