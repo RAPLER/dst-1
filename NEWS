@@ -1,3 +1,9 @@
+dst 1.5.1
+
+addTobca: 2021-12-13. Added a check to remove duplicate subsets.
+tabresul: 2021-12-14. Correction to the ordering of the three last rows of the table of results.
+Vignette Zadeh's Example: 2021-12-21. Done with the peeling algorithm.
+===============================
 dst 1.5.0
 
 Functions revised. All functions : code simplification and documentation
