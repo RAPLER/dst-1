@@ -3,10 +3,11 @@ title: "cran-comments"
 output: github_document
 ---
 
-## Test environments 2021-12-22
+## Test environments
 * local OS X install: R-devel (2020-02-23 r77849): OK 
 * win-builder: R Under development (unstable) (2021-12-22 r81408): OK
 * win-builder: R version 4.1.2 (2021-11-01): OK
+* check_win_release: OK
 * R CMD check results
 0 errors | 0 warnings | 0 notes 
 
