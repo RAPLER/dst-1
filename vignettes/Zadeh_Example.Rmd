@@ -1,13 +1,9 @@
 ---
 title: "Peeling algorithm on Zadeh's Example"
-author: "Claude Boivin, Stat.ASSQ"
-date: "2021-12-21"
-output: rmarkdown::html_vignette
+author: "Claude Boivin^[Stat.ASSQ]"
+date: "2022-03-03"
+output: html_document
 # output: word_document
-vignette: >
- %\VignetteIndexEntry{Peeling algorithm on Zadeh's Example}
- %\VignetteEngine{knitr::rmarkdown}
- %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
@@ -18,11 +14,15 @@ library(dst)  # attach package dst
 # knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = ""
 )
 ```
 
-The criticism of Dempster-Shafer Theory (DST) by L. A. Zadeh ^[L. A. Zadeh. A mathematical theory of evidence (book review). AI Magazine, 55(81—83), 1984] has generated a lot of discussions and articles on the subject of conflicting evidence. In 2005, R. Haenni ^[R. Haenni. Shedding New Light on Zadeh’s Criticism of Dempster’s Rule of Combination. Conference: Information Fusion, 2005 8th International Conference] showed that the surprising result obtained by applying Dempster's rule to Zadeh's example was more due to the modelling of the situation than Dempster's rule not working. I add my grain of salt to the debate on Zadeh's example by showing a formulation of the problem as a small belief network and using Dempster's rule of combination to obtain a realistic result. This belief network gives the same results as the combination of the two evidences with the disjunctive rule of combination ^[P. Smets (1993). Belief Functions: The Disjunctive Rule of Combination and the Generalized Bayesian Theorem. IRIDIA - Université Libre de Bruxelles, Brussels, Belgium]. At the same time, I show how to use my *R* package *dst* ^[https://cran.r-project.org/package=dst] to do calculations on a belief network.
+# Summary
+
+The criticism of Dempster-Shafer Theory (DST) by L. A. Zadeh ^[L. A. Zadeh. A mathematical theory of evidence (book review). AI Magazine, 55(81—83), 1984] has generated a lot of discussions and articles on the subject of conflicting evidence. In 2005, R. Haenni ^[R. Haenni. Shedding New Light on Zadeh’s Criticism of Dempster’s Rule of Combination. Conference: Information Fusion, 2005 8th International Conference] showed that the surprising result obtained by applying Dempster's rule to Zadeh's example was more due to the modelling of the situation than Dempster's rule not working. I add my grain of salt to the debate on Zadeh's example by showing a formulation of the problem as a small belief network and using Dempster's rule of combination to obtain a realistic result. This belief network gives the same results as the combination of the two evidences with the disjunctive rule of combination ^[P. Smets (1993). Belief Functions: The Disjunctive Rule of Combination and the Generalized Bayesian Theorem. IRIDIA - Université Libre de Bruxelles, Brussels, Belgium]. At the same time, I show how to do the calculations using my *R* package *dst*^[https://cran.r-project.org/package=dst]. The reader interested can redo the calculations or even do a different analysis using R and the rmarkdown file provided alongside this post.
+
+
 
 ## Zadeh's Example
 We suppose that a patient is examined by two doctors, A and B. A’s diagnosis is that P has either meningitis (M), with probability 0.99, or brain tumor (T), with probability 0.01. B agrees with A that the probability of a brain tumor is 0.01, but believes that it is the probability of concussion (C) rather than meningitis that is 0.99. 
@@ -33,8 +33,7 @@ Zadeh considers the same space of diseases {M, T, C} for the two experts. Hence,
 # Diagnosis from Expert 1. Coding the evidence with the bca function
 Expert1 <- bca(tt = matrix(c(1,0,0,0,1,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis1", idvar = 1)
 # show the definition of Expert1
-cat("Expert 1")
-cat("Space of possibilities")
+cat("Space of possibilities and Basic Chance Assignment of Expert 1")
 Expert1$valuenames
 cat("\r")
 bcaPrint(Expert1)
@@ -43,8 +42,7 @@ bcaPrint(Expert1)
 Expert2 <- bca(tt = matrix(c(0,1,0,0,0,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.01, 0.99, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis2", idvar = 2)
 # show the definition of Expert2
 cat("\r")
-cat("Expert 2")
-cat("Space of possibilities")
+cat("Space of possibilities and Basic Chance Assignment of Expert 2")
 Expert2$valuenames
 cat("\r")
 bcaPrint(Expert2)
@@ -52,7 +50,8 @@ bcaPrint(Expert2)
 cat("\r")
 cat("Combination of the two experts by Dempster's rule")
 Ze1e2 <- nzdsr(dsrwon(Expert1, Expert2, relnb = 1))
-tabresul(Ze1e2)
+zz <- tabresul(Ze1e2)
+format(as.data.frame(zz$mbp), digits=2)
 ```
 
 Indeed, the result does not reflect the opinions of the two experts. Before rejecting Dempster's rule as inappropriate to this situation, let's look more closely at the problem at hand. 
@@ -61,11 +60,11 @@ Indeed, the result does not reflect the opinions of the two experts. Before reje
 
 ## Diagnosis of the two experts
 
-Let's take *Expert one*.  *Expert one* distributes the whole mass between the two singletons {M} and {T}. *Expert one* does not consider {C} as a possibility. Hence we conclude that the space of possibilities of *Expert one* cannot be {M, T, C}. We say that *Expert one* has restricted the space of possibilities of his/her diagnostic to the set {M, T}:
+Let's take *Expert one*.  *Expert number one* distributes the whole mass between the two singletons {M} and {T}. *Expert number one* does not consider {C} as a possibility. Hence we conclude that the space of possibilities of *Expert number one* cannot be {M, T, C}. We can say that *Expert number one* has restricted the space of possibilities of his/her diagnostic to the set {M, T}:
 
 $F(D1) = \{M, T\}$. For simplicity, we write $D1 =\{M, T\}$.
 
-The same line of reasoning is applied to *Expert two*. The whole mass of one is allotted to the set {T, C}, and the third possibility (M) is not considered at all.
+The same line of reasoning is applied to *Expert number two*. The whole mass of one is allotted to the set {T, C}, and the third possibility (M) is not considered at all.
 Hence $D2 = \{T, C\}$.
 
 I show the coding of these two pieces of evidence with the function *bca* of the package *dst*. 
@@ -76,8 +75,7 @@ library(dst)  # attach package dst
 e1 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T"), varnames = "D1", idvar = 1)
 #
 # show the definition of e1
-cat("Expert 1")
-cat("Space of possibilities")
+cat("Space of possibilities and Basic Chance Assignment of Expert 1")
 e1$valuenames
 cat("\r")
 bcaPrint(e1)
@@ -87,19 +85,18 @@ e2 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), 
 #
 # show the definition of e2
 cat("\r")
-cat("Expert 2")
-cat("Space of possibilities")
+cat("Space of possibilities and Basic Chance Assignment of Expert 2")
 e2$valuenames
 cat("\r")
 bcaPrint(e2)
 ```
 
 ## Linking the Experts to... the Patient
-The two experts are reasoning in two different spaces of possibilities. To be able to combine their diagnosis, we need a common ground. This can be done if we introduce a third person, the patient, with a variable of interest, his/her disease (D). Then it is natural to take the union of the space of possibilities of *Expert one* and *Expert two* as the space of possibilities of the patient:
+The two experts are reasoning in two different spaces of possibilities. To be able to combine their diagnosis, we need a common ground. This can be done if we introduce a third person, the patient, with a variable of interest, his/her disease (D). Then it is natural to take the union of the space of possibilities of *Expert number one* and *Expert number two* as the space of possibilities of the patient:
 
   $D = \{M, T\} \cup \{C, T\} = \{M, T, C\}$.
 
-Thus, the patient's assessment of his/her illness involves bringing together the assessment of the two experts, using the "or" operator. This situation is described by a relation of implication between experts and patient:
+Thus, the diagnosis of the patient's disease involves pooling the assessments of the two experts, using the "or" operator. This situation is described by a relation of implication between experts and patient:
 
 r1: $D1 \cup D2 \rightarrow D$.
 
@@ -170,19 +167,19 @@ plot(meddiag_hg, vertex.label = V(meddiag_hg)$name, vertex.size=(3+6*V(meddiag_h
 
 Our goal is the calculation of the belief function of the variable of interest "D" (Disease of the patient). We apply an algorithm called "Peeling" to the belief network. This is a process of successive elimination of variables (peeling) until only  the variable of interest (*D* here) remains. The elimination of a variable has the effect of integrating its contribution to the reduced graph. 
 
-Four parameters are necessary to activate the algorithm. The first three are already defined when constructing the hypergraph. The fourth parameter is an order of elimination of the variables that we have to set.
+Four parameters are necessary to trigger the algorithm. The first three are already defined when constructing the hypergraph. The fourth parameter is an order of elimination of the variables that we have to set.
 
 1. Identification of variables and their space of possibilities
-$$\begin{array}\
-F(D1) = \{M, T\}\\
-F(D2) = \{M, C\}\\
-F(D) = \{M, T, C\}
-\end{array}
-$$
+$$F(D1) = \{M, T\}$$
+$$F(D2) = \{M, C\}$$
+$$F(D) = \{M, T, C\}$$
+
 
 
 2. Incidence matrix of the graph (nodes and edges)
 ```{r Print incidence matrix, echo=FALSE}
+cat("Row names are variables names (nodes).\n")
+cat("Column names are for pieces of evidence and relations (edges).\n")
 print(meddiag_hgm)
 ```
 3. The names of data specifications (evidence and relations between variables)
@@ -190,9 +187,9 @@ print(meddiag_hgm)
 meddiag_data_names
 ```
 
-4. The variable numbers are used to fix the order of elimination. Here we eliminate D1 first, then D2.
+4. Variable numbers are used to fix the order of elimination. Here we eliminate D1 first, then D2.
 ```{r Define elimination order, echo=FALSE}
-cbind(r1$infovar, r1$varnames)
+format(as.data.frame(cbind(r1$infovar, r1$varnames) ) )
 elim_order = c(1, 2, 3)
 ```
 The calculations involved follow the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. International Journal of Approximate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
@@ -209,12 +206,15 @@ Second step: Eliminate variable D2 (Diagnosis2). Evidence *e2* is extended to th
 ## The result
 
 ```{r The peeling, echo = FALSE, warning=FALSE}
+# cat("\  ")
 p <- peeling(vars_def = meddiag_vars1, hgm = meddiag_hgm, hg_rel_names = meddiag_data_names, elim_order = c(1, 2, 3), verbose = FALSE ) 
 #
 # add singletons with 0 mass to show all singletons in the results
 p_sing <- addTobca(x = p,  tt = matrix(c(1,0,0,0,0,1), ncol=3))
 # "The final result after elimination of variable D2"
-tabresul(p_sing)
+cat("\  ")
+zz <- tabresul(p_sing)
+format(as.data.frame(zz$mbp), digits=2)
 ```
 
 The plausibility ratio column shows that the odds of $M \vee C$ against T are 50:1.  hence, the disease of the patient must be M or C. We also see that each single hypothesis, M and C, remains highly plausible (0.99). Although there is some support for T, its plausibility is very weak at 0.019. 
@@ -224,6 +224,6 @@ Finally, we use the plausibility transformation ^[Cobb, B. R. and Shenoy, P.P. (
 
 
 ```{r, echo = FALSE, warning=FALSE}
-plautrans(p)
+format(as.data.frame(plautrans(p) ), digits = 4)
 ```
 
