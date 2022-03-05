@@ -1,6 +1,6 @@
 ---
 title: "Introduction to Belief Functions"
-author: "Claude Boivin, Stat.ASSQ"
+author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >

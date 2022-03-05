@@ -1,6 +1,6 @@
 ---
 title: "The Monty Hall Game"
-author: "Claude Boivin, Stat.ASSQ"
+author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
 date: "2020-01-26"
 # date: "`r Sys.Date()`"
 # output: word_document
