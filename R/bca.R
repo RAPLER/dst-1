@@ -52,7 +52,7 @@
 bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL, f, varnb, infovarnames) {
   #
   # Local variables: None 
-  # Functions calls: None
+  # Functions calls: nameRows
   #
   # 1. Catch old parameters names, if any and replace by the new ones
   #
@@ -77,7 +77,8 @@ bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, va
   #
   if (is.null(cnames)) { cnames = colnames (tt)} # cnames stay null if no column names present
   if (is.null(cnames)) {    
-    cnames <- paste(rep("col",ncol(tt)),c(1:ncol(tt)),sep="")
+    # cnames <- paste(rep("col",ncol(tt)),c(1:ncol(tt)),sep="")
+    cnames <- colnames(tt, do.NULL = FALSE, prefix = "col") # mod. 20221204
     }
   if((abs(sum(m)-1)>0.000001) | (length(tt[,1])!=length(m)) | (length(tt[1,])!=length(cnames))) { 
     stop("Error in input arguments: check your input data.") 
