@@ -13,6 +13,7 @@
 marrayToMatrix <- function(mtt) {
   #
   # 0. Local variables: nbvar, dims, var_to_keep, ztt0
+  # Functions calls: nameRows
   #
   # # 1. Check input data
   #
