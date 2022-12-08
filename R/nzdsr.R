@@ -26,6 +26,7 @@
 nzdsr<-function(x) {
   #
   # Local variables: nc, vacuous, w1, w12, mac, MACC, empty, m_empty, tri, ind
+  # Functions calls: nameRows
   #
   ## 1. Checks
   if ( inherits(x, "bcaspec") == FALSE) {
