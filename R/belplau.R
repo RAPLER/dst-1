@@ -36,7 +36,7 @@
 belplau<-function (x, remove=FALSE) {
   #
   # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC1, W2a, IBEL, BEL, IPLAU, PLAU, rplau
-  # Functions calls: dotprod
+  # Functions calls: dotprod, nameRows
   #
   # 1. Checking input data 
   #
