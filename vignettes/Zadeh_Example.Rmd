@@ -1,6 +1,6 @@
 ---
 title: "Peeling algorithm on Zadeh's Example"
-author: "Claude Boivin^[Stat.ASSQ]"
+author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
 date: "2022-03-03"
 output: html_document
 # output: word_document
