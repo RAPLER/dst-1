@@ -1,6 +1,6 @@
 ---
 title: "Captain's Example"
-author: Claude Boivin
+author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
 date: "2018-06-20. Revised 2020-02-09"
 output: rmarkdown::html_vignette
 # output: word_document
