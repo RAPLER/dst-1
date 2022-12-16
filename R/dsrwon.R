@@ -30,6 +30,8 @@ dsrwon<-function(x,y, varnames = NULL, relnb = NULL, infovarnames) {
   #
   # Local variables: x1, y1, z, values1, values2, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: doubles, nameRows, dotprod
+  # test
+  # 2022-12-15 call to doubles removed
   #
   # 0. Catch old parameters names, if any and replace by the new ones
   #
@@ -81,7 +83,9 @@ dsrwon<-function(x,y, varnames = NULL, relnb = NULL, infovarnames) {
   #
   # Remove duplicates from the table
   #
-  W1<- doubles(N12)      ## remove duplicates 
+  # test 2022-12-15
+  # W1<- doubles(N12)      ## remove duplicates 
+  W1<- N12[!duplicated(N12),]  ## remplace fonction "doubles"
   rownames(W1) <- nameRows(W1)
   #
   ## 2.3 Identify contributions to each subset and compute mass
