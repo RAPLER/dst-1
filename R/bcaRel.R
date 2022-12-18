@@ -46,7 +46,7 @@
   bcaRel <- function(tt, spec, infovar, varnames, valuenames, relnb = NULL, infovarnames, infovaluenames) {
   #
   # Local variables: v, z1, colnz1, 
-  # Functions calls: doubles, productSpace, bca
+  # Functions calls: productSpace, bca
   #
   # 1. Catch old parameters names, if anay and replace by the new ones
   #
@@ -84,7 +84,11 @@
   # 3. Transform mass vector
   # remove duplicates in each specification to test the sum of masses
   #
-  v <- doubles(spec)[,2]
+  # change 2022-12-15
+  # v <- doubles(spec)[,2] ## remove duplicates 
+  v <- spec[,2]
+  v<- v[!duplicated(v)]  ## remplace fonction "doubles"
+  #      
   if (abs(sum(v)-1)>0.000001)  { 
     stop("Sum of masses not equal to 1 : check your data.") 
   }
