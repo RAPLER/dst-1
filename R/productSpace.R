@@ -25,7 +25,7 @@ productSpace <- function(tt, specnb, infovar) {
   # j, zt, zx, 
   # k, zs, zs1,
   # l, zw, zw1
-  # Functions calls: doubles, bca
+  # Functions calls: bca
   #
   # 2. checks
   #
