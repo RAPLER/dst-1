@@ -69,7 +69,12 @@ elim <- function(rel, xnb) {
   #
   # 3.2. convert array to matrix
   z2 <- marrayToMatrix(proj)
-  w1 <- doubles(z2*1) # mult by 1 to transform from logical to numeric
+  #
+  # test 2022-12-18
+  z2 <- z2*1 #mult by 1 to transform from logical to numeric
+  w1<- z2[!duplicated(z2),]  ## remplace fonction "doubles"
+  # w1 <- doubles(z2*1) # remove duplicates
+  #
   I12 <- dotprod(w1, t(z2), g = "&", f = "==")
   m1<- t(array(m,c(ncol(I12), nrow(I12))))
   m1 <- apply(I12*m1, 1, sum)
