@@ -8,7 +8,7 @@
 #' @param elim_order The order of elimination of the variables. A vector of length \code{nrow(hgm)}. Variables are identified by numbers. The first number gives the first variable to eliminate. The variable of interest comes last.
 #' @param verbose = TRUE: print steps on the console. Default = FALSE.
 #' @return A bca class object.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @references \itemize{
 #' \item Almond, R. G. (1989) Fusion and Propagation of Graphical Belief Models: An Implementation and an Example. Ph. D. Thesis, the Department of Statistics, Harvard University. 288 pages (for the description of the peeling algorithm, see pages 52-53).
@@ -133,7 +133,12 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
      yv <- rbind(yv,yv2)
      j <- j+1
    }
-   yinfov <- doubles(yv)
+   #
+   yinfov<- yv[!duplicated(yv),]  ## Remove duplicated rows
+   if (is.matrix(yinfov) == FALSE) {
+     yinfov <- t(as.matrix(yinfov))
+   }
+   #
    infovar <- yinfov[order(yinfov[,1]),]
    # extract valuenames
    infovalues <- vars_def[infovar[,1]] 
