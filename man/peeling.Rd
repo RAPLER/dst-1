@@ -80,5 +80,5 @@ hg_rel_names = meddiag_rel_names, elim_order = c(1, 2, 3)) )
 }
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }
