@@ -70,5 +70,5 @@ bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
 
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

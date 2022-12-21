@@ -18,7 +18,7 @@
 #' \item valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
 #' \item inforel A two-column matrix containing the relation number and the depth (number of variables) of the relation.
 #' } 
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples
 #' # A logical implication rule
@@ -84,10 +84,8 @@
   # 3. Transform mass vector
   # remove duplicates in each specification to test the sum of masses
   #
-  # change 2022-12-15
-  # v <- doubles(spec)[,2] ## remove duplicates 
   v <- spec[,2]
-  v<- v[!duplicated(v)]  ## remplace fonction "doubles"
+  v<- v[!duplicated(v)]  ## remove duplicates 
   #      
   if (abs(sum(v)-1)>0.000001)  { 
     stop("Sum of masses not equal to 1 : check your data.") 
