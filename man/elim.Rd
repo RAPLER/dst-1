@@ -38,5 +38,5 @@ bcaPrint(elim(wr_rel, xnb = 4))
  
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }
