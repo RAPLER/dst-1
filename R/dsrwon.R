@@ -11,7 +11,7 @@
 #'   \item I12 Intersection table of subsets.
 #'   \item Sort_order Sort order of subsets.
 #'   }
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples 
 #' x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
@@ -29,10 +29,7 @@
 dsrwon<-function(x,y, varnames = NULL, relnb = NULL, infovarnames) {
   #
   # Local variables: x1, y1, z, values1, values2, V12, N12, W1, I12, MAC, nMAC
-  # Functions calls: doubles, nameRows, dotprod
-  # test
-  # 2022-12-15 call to doubles removed
-  #
+  # Functions calls: nameRows, dotprod
   # 0. Catch old parameters names, if any and replace by the new ones
   #
   calls <- names(sapply(match.call(), deparse))[-1]
@@ -82,10 +79,10 @@ dsrwon<-function(x,y, varnames = NULL, relnb = NULL, infovarnames) {
   N12<-aperm(N12,c(2,1)) 
   #
   # Remove duplicates from the table
-  #
-  # test 2022-12-15
-  # W1<- doubles(N12)      ## remove duplicates 
-  W1<- N12[!duplicated(N12),]  ## remplace fonction "doubles"
+  W1<- N12[!duplicated(N12),]  ## remove duplicates 
+  if (is.matrix(W1) == FALSE) {
+    W1 <- t(as.matrix(W1))
+  }
   rownames(W1) <- nameRows(W1)
   #
   ## 2.3 Identify contributions to each subset and compute mass
