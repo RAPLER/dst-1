@@ -26,8 +26,8 @@
 #'  
 elim <- function(rel, xnb) {
   #
-  # Local variables: size_vars, nbvar, size_vars_inv, varnb, varnb_inv, varRank, dim_to_keep, n, m, itab, fun3, proj, var_to_keep, varRank_to_keep, z2, w1, I12, m1, idnames, znamesCols
-  # Functions calls: matrixToMarray, reduction, marrayToMatrix, doubles, dotprod, nameCols_prod, bca
+  # Local variables: size_vars, nbvar, size_vars_inv, varnb, varnb_inv, varRank, dim_to_keep, n, m, itab, fun3, proj, var_to_keep, varRank_to_keep, z2, w1, I12, m1, idnames
+  # Functions calls: matrixToMarray, reduction, marrayToMatrix, dotprod, bca
   #
   # 1. Checks and Some working vars
   #
@@ -59,7 +59,7 @@ elim <- function(rel, xnb) {
   proj <- apply(itab, c(dim_to_keep,(1+nbvar)), FUN= fun3, oper= "|")
   #
   # 3. transform projection array to tt matrix
-  # uses utility functions "marrayToMatrix", "doubles", "dotprod"
+  # uses utility functions "marrayToMatrix", "dotprod"
   #
   # 3.1. Define infovar parameter
   var_to_keep <- varnb*!varnb %in% (xnb)
@@ -70,33 +70,18 @@ elim <- function(rel, xnb) {
   # 3.2. convert array to matrix
   z2 <- marrayToMatrix(proj)
   #
-  # test 2022-12-18
-  z2 <- z2*1 #mult by 1 to transform from logical to numeric
-  w1<- z2[!duplicated(z2),]  ## remplace fonction "doubles"
-  # w1 <- doubles(z2*1) # remove duplicates
+  w1<- (z2*1)[!duplicated(z2*1),]  # Remove duplicate rows
+  if (is.matrix(w1) == FALSE) {
+    w1 <- t(as.matrix(w1))
+  }
   #
   I12 <- dotprod(w1, t(z2), g = "&", f = "==")
   m1<- t(array(m,c(ncol(I12), nrow(I12))))
   m1 <- apply(I12*m1, 1, sum)
   tt=w1
-  #
-  # 4. naming the columns of tt matrix
   idnames <- names(rel$valuenames)[varRank_to_keep]
-  # # Old code
-  # znamesCols <- matrix(rel$valuenames[[varRank_to_keep[1]]], ncol = 1)
-  # if (length(idnames) > 1) {
-  #   for (i in 2:length(idnames)) {
-  #     ci <-matrix(rel$valuenames[[varRank_to_keep[i]]], ncol = 1)
-  #     znamesCols <- dotprod(znamesCols, t(ci), "paste", "paste")  # pour dotprod des noms
-  #     znamesCols <-t(matrix(t(znamesCols), ncol = prod(dim(znamesCols))))
-  #   }
-  # }
-  # # End  # Old code
-  # New code
-  znamesCols <- nameCols_prod(valuenames = rel$valuenames[varRank_to_keep] , size = infovar[,2])
-  # end New code
-  colnames(tt) <- as.vector(znamesCols)
-  # End naming cols
+  #
+  # 4. naming the columns of tt matrix. Already done
   #
   # 5. Other parameters
   #
@@ -106,6 +91,6 @@ elim <- function(rel, xnb) {
   inforel <- rel$inforel
   #
   # 6. Result
-  r <- bca(tt = tt, m = m1, cnames = rownames(w1), con = rel$con, infovar = infovar, varnames = idnames, valuenames = valuenames, inforel = inforel)
+  r <- bca(tt = tt, m = m1,  con = rel$con, infovar = infovar, varnames = idnames, valuenames = valuenames, inforel = inforel)
 return(r)
 }
