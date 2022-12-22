@@ -4,7 +4,7 @@
 #' @param rel The relation to reduce, an object of class bcaspec.
 #' @param xnb Identification number of the variable to eliminate.
 #' @return r The reduced relation
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples  
 #' # We construct a relation between two variables to show marginalization.
