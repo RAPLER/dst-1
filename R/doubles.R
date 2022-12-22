@@ -1,8 +1,9 @@
-#' Remove duplicate rows in a two-dimensional table
-#'
+#' Remove duplicate rows in a two-dimensional table. 
+#' 
+#' Recursive function.
 #' @param x A matrix of numeric, character or logical type.
 #' @return The submitted matrix with duplicated rows removed from.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples 
 #' td0 <- matrix(c(rep(c(1,0,1),times=3),0,0,1,1,1,1, 1,1,1),ncol = 3,byrow = TRUE)

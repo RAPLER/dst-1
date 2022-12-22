@@ -2,7 +2,7 @@
 % Please edit documentation in R/doubles.R
 \name{doubles}
 \alias{doubles}
-\title{Remove duplicate rows in a two-dimensional table}
+\title{Remove duplicate rows in a two-dimensional table.}
 \usage{
 doubles(x)
 }
@@ -13,7 +13,7 @@ doubles(x)
 The submitted matrix with duplicated rows removed from.
 }
 \description{
-Remove duplicate rows in a two-dimensional table
+Recursive function.
 }
 \examples{
 td0 <- matrix(c(rep(c(1,0,1),times=3),0,0,1,1,1,1, 1,1,1),ncol = 3,byrow = TRUE)
@@ -28,5 +28,5 @@ td4 <- matrix(as.logical(td1),nrow = 5,byrow = TRUE)
 (doubles(td4))
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }
