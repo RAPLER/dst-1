@@ -1,6 +1,6 @@
 #' Prepare a table of results
 #'
-#' This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{belplau}, function \code{tabresul} does not reconstruct the row names. So you can assign simple rownames of your choice to the tt matrix of your resulting bca before calling function \code{tabresul}.
+#' This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{belplau}, function \code{tabresul} does not reconstruct the row names from the column names. You can assign short rownames of your choice to the tt matrix of your resulting bca before calling function \code{tabresul}.
 #' @aliases tabresul
 #' @param x A basic chance assignment (bca)
 #' @param removeZeroes = TRUE removes subsets with 0 mass.
@@ -9,7 +9,7 @@
 #'   \item mbp The table of focal elements with the addition of their associated mass, degree of belief, plausibility and the plausibility ratio.
 #'   \item con The measure of conflict between subsets.
 #'   }
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @examples  
 #' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3,
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
@@ -34,7 +34,7 @@
 #' 
 tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  
   #
-  # Local variables: row_m_empty, macc, W2, INUL, macc1, W2a, BP, mbp, 
+  # Local variables: row_m_empty, macc, W2, INUL, macc1, W2a, BP, ztab, r, r1, mbp 
   # Functions calls: belplau
   #
   # 1. check input data 
@@ -58,55 +58,36 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   # 3.1. Compute Bel and Pl functions and prepare final result
   #
   BP<-belplau(x)
-  macc<-t(rbind(x$spec[,2]))
-  W2<-rbind(x$tt)
-  # 
-  # 3.2 Order the subsets so the frame is in the last position of tt matrix
+  ztab <- cbind(x$tt, x$spec[,2], BP)
+  colnames(ztab)[1+ncol(x$tt)] <- "mass"
+  # Order the subsets so the frame is in the last position of tt matrix
   # we don't want it removed if 0
-  #
+  W2<-rbind(x$tt)
   sort_order<-order(apply(W2,1,sum))
-  W2 <- W2[sort_order,]
-  if (is.matrix(W2) == FALSE) {
-     W2 <- matrix(W2,ncol = length(W2), dimnames = list(NULL, names(W2)))
+  ztab=ztab[sort_order,]
+  if (is.matrix(ztab) == FALSE) {
+    ztab <- matrix(ztab,ncol = length(ztab), dimnames = list("frame", names(ztab)))
   }
+  mbp <- ztab
   #
-  # 3.3 Put mass vector and belief measures in the same order as the W2 matrix
-  # Mass vector
-  macc <- macc[sort_order]
-  macc <- matrix(macc,ncol = 1, dimnames = list(NULL, "mass"))
-  #
-  # Belief measures
-  BP <- BP[sort_order,]
-  if (is.matrix(BP) == FALSE) {
-    BP <- matrix(BP,ncol = length(BP), dimnames = list(NULL, names(BP)))
-  }
-  #
-  # 3.4. remove elements with mass = 0, but the frame
-  INUL<-c(macc[-length(macc)]>0,TRUE)
+  # 3.2 Remove elements with mass = 0, but the frame 
+  # (which is the last row of the table)
+  # 
   if (removeZeroes == TRUE) {
-    macc1<-t(rbind(macc[INUL]))
-    W2a <- rbind(W2[INUL,])
-    BP <- rbind(BP[INUL,])
-  } else {
-    macc1<-macc
-    W2a<-W2
-  }
-  colnames(macc1)<-"mass"
-  mbp<-cbind(W2a,macc1,BP)
-  #
-  # 3.5. Prepare a table of results reduced to the singletons
-  if (singletonsOnly == TRUE) {
-    r <- mbp
-    z2 <- r[,c(1:(ncol(r)-4))]
-    if (!is.null(dim(z2))) {
-      r1 <- r[apply(z2,1,sum) == 1, , drop = FALSE]
-    } else {
-      z2 <- rbind(r[,c(1:(ncol(x$tt)))])
-      r1 <- r[apply(z2,1,sum) == 1,]
-      if (is.null(dim(r1))) {
-        r1 <- t(as.matrix(r1))
-      }
+    mbp = rbind(ztab[ztab[-nrow(ztab),(1+ncol(x$tt))] >0,], ztab[nrow(ztab),])
+    rownames(mbp)[nrow(mbp)] <- "frame"
     }
+  #
+  # 3.3. Prepare a table of results reduced to the singletons
+  if (singletonsOnly == TRUE) {
+    r <- ztab
+    if (nrow(r) > 1) {
+      r1 <- rbind(r[apply(r[,c(1:(ncol(r)-4))],1,sum) == 1, , drop = FALSE], r[nrow(r),])
+      rownames(r1)[nrow(r1)] <- "frame"
+    } else {
+      r1 <- ztab
+      print("No singleton to print")
+      }
     mbp <- r1
   }
   #

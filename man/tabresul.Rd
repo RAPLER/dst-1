@@ -20,7 +20,7 @@ A list of two elements: \itemize{
   }
 }
 \description{
-This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{belplau}, function \code{tabresul} does not reconstruct the row names. So you can assign simple rownames of your choice to the tt matrix of your resulting bca before calling function \code{tabresul}.
+This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{belplau}, function \code{tabresul} does not reconstruct the row names from the column names. You can assign short rownames of your choice to the tt matrix of your resulting bca before calling function \code{tabresul}.
 }
 \examples{
  
@@ -45,5 +45,5 @@ print("Retain singletons only")
 tabresul(xy1, singletonsOnly = TRUE)
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }
