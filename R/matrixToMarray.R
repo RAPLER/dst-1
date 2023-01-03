@@ -4,7 +4,7 @@
 #' @param tt A (0,1)-matrix or a boolean matrix establishing the relation between two or more variables. The matrix is constructed by placing the variables side by side, as in a truth table representation.
 #' @param valuenames A list of the names of the variables with the name of each value of their frame of discernment.
 #' @return mtt The array (product space) representation of the \code{tt} matrix.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples
 #' # Define  wr_tt, a matrix describing the relation between two variables

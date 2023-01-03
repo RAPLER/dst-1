@@ -12,7 +12,7 @@
 #'  reduction(c("a", "b", "c"), f = "paste")
 #'  
 #' @export
-#' @author Claude Boivin, Stat.ASSQ.
+#' @author Claude Boivin
 #' 
 #' @references \itemize{
 #' \item Jan de Leeuw and Masanao Yajima (March 07, 2016) \emph{APL in R (Version 009)}, Source code. \url{https://rpubs.com/deleeuw/158476}

@@ -7,7 +7,7 @@
 #' @param g Any operator: +, -, *, /, &, |, ==, <=, paste etc. 
 #' @param f Any operator: +, -, *, /, &, |, ==, <=, paste etc. 
 #' @return The result of the generalized inner product is returned.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples 
 #' print("Standard matrix product")

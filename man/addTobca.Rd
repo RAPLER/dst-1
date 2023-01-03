@@ -34,5 +34,5 @@ addTobca(x, tt = diag(1,  ncol(x$tt) ) ) # add all singletons
 
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

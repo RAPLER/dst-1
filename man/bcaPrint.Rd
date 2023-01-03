@@ -22,5 +22,5 @@ cnames = c("a", "b", "c"), idvar = 1)
 bcaPrint(z)
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

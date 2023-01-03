@@ -49,5 +49,5 @@ dimnames = list(NULL, c("3", "2", "1", "0",
 G. Shafer and P. P. Shenoy. Local Computations in Hypertrees. School of Business, University of Kansas, Lawrence, KS, 1991. See p. 78, vacuous extension of a belief function.
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

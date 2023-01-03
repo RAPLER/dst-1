@@ -36,5 +36,5 @@ nzdsr(y2)
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

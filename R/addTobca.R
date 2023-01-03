@@ -5,7 +5,7 @@
 #' @param tt A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the \code{tt} matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.
 #' @param f Deprecated. Old name for \code{tt} matrix. 
 #' @return x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{tt}.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples  
 #' y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), 

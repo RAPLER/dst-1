@@ -30,5 +30,5 @@ plautrans(x)
 Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

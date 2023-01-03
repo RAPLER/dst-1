@@ -5,7 +5,7 @@
 #' @param specnb A vector of integers ranging from 1 to \code{k}, where \code{k} is the number of subsets of the \code{tt} matrix. Values must start at one and can be increased by 1 or not. They determine the partitioning of the rows of the \code{tt} matrix between the \code{k} subsets.
 #' @param infovar  A two-column matrix containing identification numbers of the variables and the number of elements of each variable (size of the frame).
 #' @return The matrix of the product space representation of the relation. 
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @examples 
 #'  ttfw <- matrix(c(1,0,1,0,0,1,0,1,1,1,1,1),nrow = 3,
 #'   byrow = TRUE, 

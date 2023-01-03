@@ -37,5 +37,5 @@ decode(1.5, c(1,2,3)) # polynomial 1*x^2 +2*x +3 evaluated at x=1.5
  }
 }
 \author{
-Claude Boivin, Stat.ASSQ.
+Claude Boivin
 }

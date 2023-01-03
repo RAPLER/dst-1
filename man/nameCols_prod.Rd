@@ -23,5 +23,5 @@ sizes <- c(2,3)
  print(nameCols_prod(valuenames = infoval, size = sizes) )
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

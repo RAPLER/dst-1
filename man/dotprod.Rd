@@ -43,5 +43,5 @@ BobandDoles <- matrix(c("Robert", "", "", "Dole"),
 dotprod(team_names, t(BobandDoles),g="|",f="==") * (1:nrow(team_names))
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

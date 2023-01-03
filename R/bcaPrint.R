@@ -4,7 +4,7 @@
 #' 
 #' @param x A list of class bcaspec.
 #' @return A table of subsets with their associated mass. Subsets are identified by row names.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples
 #' z <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 

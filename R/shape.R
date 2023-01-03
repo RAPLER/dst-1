@@ -8,7 +8,7 @@
 #' @examples
 #' shape(array(c(1:6), c(2,3)))
 #' shape(c("a", "b"))
-#' @author Claude Boivin, Stat.ASSQ.
+#' @author Claude Boivin
 #' 
 #' @references \itemize{
 #' \item Jan de Leeuw and Masanao Yajima (March 07, 2016) \emph{APL in R (Version 009)}, Source code. \url{https://rpubs.com/deleeuw/158476}

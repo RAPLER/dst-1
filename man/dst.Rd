@@ -17,5 +17,5 @@ The main operations that can be done are: \itemize{
  }
 }
 \author{
-Claude Boivin, Stat.ASSQ <webapp.cb@gmail.com>
+Claude Boivin <webapp.cb@gmail.com>
 }

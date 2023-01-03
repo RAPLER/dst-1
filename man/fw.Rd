@@ -25,6 +25,6 @@ fw
 This dataset is the \code{tt} matrix establishing the relation between the two variables. An accurate forecast is described by this subset of two events: {(Forecast = foul, Weather = foul) and (Forecast = fair, Weather = fair)}. We assign a mass value of 0.8 to this subset. The remaining mass of 0.2 is allotted to the frame. To construct the \code{tt} matrix, we put the variables F and W side by side, as in a truth table representation. Each pair of the subset is described by a row of the matrix as a vector of zeros and ones.
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }
 \keyword{datasets}

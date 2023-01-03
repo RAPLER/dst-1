@@ -30,5 +30,5 @@ encode(c(365,24,60), 2997) # convert 2997 minutes to days-hrs-min.
  }
 }
 \author{
-Claude Boivin, Stat.ASSQ.
+Claude Boivin
 }

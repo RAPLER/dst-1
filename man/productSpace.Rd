@@ -31,5 +31,5 @@ This utility function takes the input matrix of a relation between two or more v
 productSpace(tt = ttfw, specnb = specfw, infovar = infovarfw)
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

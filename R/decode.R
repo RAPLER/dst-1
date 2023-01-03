@@ -7,7 +7,7 @@
 #' @return A scalar representing the conversion of the coded number \code{ind} to its decimal representation.
 #' @details If the base value is a number system, e.g. base 2, we need only to enter it as a scalar, which is then processed to match the length of the expression to decode. If \code{length(ind)}  is less than \code{length(base)}, zeroes are added to the left of the vector \code{ind}  to match the length of the two vectors. And vice-versa. 
 
-#' @author Claude Boivin, Stat.ASSQ. 
+#' @author Claude Boivin
 #' @export
 #' @references \itemize{
 #' \item Jan de Leeuw and Masanao Yajima (March 07, 2016) \emph{APL in R (Version 009)}, Source code. \url{https://rpubs.com/deleeuw/158476}

@@ -86,5 +86,5 @@ vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 }
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

@@ -25,7 +25,7 @@
 #'   \item valuenames  A list of length 1 consisting of the name of the variable with the names of the elements of the frame of discernment (the column names of the \code{tt} matrix).
 #'   \item inforel  Set at 0. used in function \code{\link{bcaRel}}.
 #'   }
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples 
 #' tt<- t(matrix(c(1,0,1,1),ncol = 2))

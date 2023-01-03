@@ -28,5 +28,5 @@ print(zmToa <- matrixToMarray(tt = wr_tt, valuenames = vars ) )
  
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

@@ -28,5 +28,5 @@ shape(c("a", "b"))
  }
 }
 \author{
-Claude Boivin, Stat.ASSQ.
+Claude Boivin
 }

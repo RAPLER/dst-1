@@ -27,5 +27,5 @@ rownames(tt) <-nameRows(tt)
 tt
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

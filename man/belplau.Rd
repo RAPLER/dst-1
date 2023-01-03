@@ -50,5 +50,5 @@ belplau(xy1)
 }
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

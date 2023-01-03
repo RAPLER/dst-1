@@ -3,7 +3,7 @@
 #'The array representation or product space representation is converted to the matrix representation of the corresponding relation.
 #' @param mtt The matrix \code{tt} of the relation in  array format
 #' @return The matrix representation of the data.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @export
 #' @examples 
 #'  mtt <- array(c(1,0,0,0,1,1,0,0,1,0,0,1,1,0,1,0,1,1,0,1,1,1,1,0,1,0,1,1,1,1,1,1), c(2,2,8), 

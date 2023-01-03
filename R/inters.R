@@ -5,7 +5,7 @@
 #' @param x A (0,1)-matrix or a boolean matrix of M rows by K columns, or a vector of length K.
 #' @param y A (0,1)-matrix or a boolean matrix of N rows by K columns or a vector of length K.
 #' @return The result is a (0,1)-table of dimensions (M x K) x N). In the case of vectors, the result is a (0,1)-table of dimensions (1 x K) x 1)
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @examples 
 #' mx <- matrix(c(0,1,0,0,1,1,1,1,1),nrow = 3, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c")))
 #'  rownames(mx) <- nameRows(mx)

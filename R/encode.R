@@ -5,7 +5,7 @@
 #' @param base A numeric vector which describes the number system in which we want to recode the data.
 #' @param ind The value to convert represented by a number or a numeric vector.
 #' @return A vector or a matrix of the data converted.
-#' @author Claude Boivin, Stat.ASSQ. 
+#' @author Claude Boivin
 #' @references \itemize{
 #' \item Jan de Leeuw and Masanao Yajima (March 07, 2016) \emph{APL in R (Version 009)}, Source code. \url{https://rpubs.com/deleeuw/158476}
 #'  \item  L. Gilman and A. J. Rose.(1974): \emph{APL an Interactive Approach}, Second Edition, John Wiley, New York.

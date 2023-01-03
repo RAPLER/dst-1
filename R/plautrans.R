@@ -4,7 +4,7 @@
 #' @param x A bca mass function.
 #' @details We compute the plausibility measure of all the singletons of the frame of discernment. The probability distribution of the singletons is obtained from their plausibility measures.
 #' @return The matrix of singletons with their plausibility transformation added in the last column.
-#' @author Claude Boivin, Stat.ASSQ
+#' @author Claude Boivin
 #' @references Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.
 #' @examples  
 #' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 

@@ -22,5 +22,5 @@ The array representation or product space representation is converted to the mat
 
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }

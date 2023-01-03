@@ -32,5 +32,5 @@ This utility function is used to obtain a summary of a vector of data for many o
  }
 }
 \author{
-Claude Boivin, Stat.ASSQ.
+Claude Boivin
 }

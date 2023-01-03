@@ -35,5 +35,5 @@ y4 <-matrix(c(1,0,0,1,1,1,1,1),nrow = 2, byrow = TRUE, dimnames = list(NULL, c("
 inters(x4,y4)
 }
 \author{
-Claude Boivin, Stat.ASSQ
+Claude Boivin
 }
