@@ -85,10 +85,7 @@
   # remove duplicates in each specification to test the sum of masses
   #
   # correction 2023-03-19 Changement du 15 dec 22 pas bon
-  v<- matrix(spec[!duplicated(spec)], ncol=2)
-  v<- v[,2]
- # v <- spec[,2]
- #  v<- v[!duplicated(v)]  ## remove duplicates 
+  v<- spec[!duplicated(spec),2] ## remove duplicates 
   #      
   if (abs(sum(v)-1)>0.000001)  { 
     stop("Sum of masses not equal to 1 : check your data.") 
