@@ -54,7 +54,7 @@ belplau<-function (x, remove=FALSE) {
     row_m_empty <- row_m_empty[1]
     if (!is.na(row_m_empty)) {
       if (x$spec[row_m_empty,2] > 0) {
-    stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
+    stop("Invalid data: Empty set among the focal elements. Normalization necessary. Apply function nzdsr to your bca to normalize your result.")
       }
     }
   }
