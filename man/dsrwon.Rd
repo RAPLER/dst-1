@@ -4,12 +4,14 @@
 \alias{dsrwon}
 \title{Combination of two mass functions}
 \usage{
-dsrwon(x, y, varnames = NULL, relnb = NULL, infovarnames)
+dsrwon(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarnames)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
 
-\item{y}{A  A basic chance assignment (see \code{\link{bca}}).}
+\item{y}{A basic chance assignment (see \code{\link{bca}}).}
+
+\item{mcores}{Make use of multiple cores ("yes") or not ("no"). Default = "no".}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
@@ -27,6 +29,8 @@ A basic chance assignment with these two components added: \itemize{
 The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and described by their respective basic chance assignments \code{x}  and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see function \code{\link{nzdsr}}).
 }
 \details{
+The calculations make use of multiple cores available.
+
 The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.
 }
 \examples{
