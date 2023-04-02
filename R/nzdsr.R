@@ -39,6 +39,7 @@ nzdsr<-function(x) {
   nc <- ncol(x$tt)
   vacuous <- bca(matrix(rep(1, nc), nrow=1), m=1)
   vacuous$valuenames <- x$valuenames
+  vacuous$infovar <- x$infovar
   x <- dsrwon(x,vacuous)
   #
   # 3. Assign variables
