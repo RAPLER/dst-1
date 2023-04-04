@@ -8,7 +8,7 @@ test_that("addTobca", {
   expect_error(addTobca(x = x1, tt = f1) , "Input x not of class bcaspec.")
   #
   # T2 tt must be a (0,1) or logical matrix
-  x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), varnb=1)
+  x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"), idvar=1)
   f2 <- c(1,0,1)
   expect_error(addTobca(x = x2, tt = f2) , "tt parameter must be a \\(0,1\\) or logical matrix.")
   #

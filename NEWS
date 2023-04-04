@@ -1,3 +1,18 @@
+dst 1.5.2
+
+nzdsr: 2023-04-01. Added a missing specification to variable vacuous.
+
+bcaTrunc: 2023-01-08. New. Function to allow truncation of a belief function containing a large number of focal elements to a threshold value.
+
+bcaRel, dsrwon, elim, peeling: Removed a recursive function and simplified code. 
+
+tabresul: 2023-01-03. Function revised. Removed a lag between row labels and data
+
+dotprod: 2023-01-04. Check to input parameters added.
+
+dsrwon: Added parallel coomputing capability, using multiple cores.
+
+===============================
 dst 1.5.1
 
 addTobca: 2021-12-13. Added a check to remove duplicate subsets.
@@ -19,6 +34,7 @@ Functions revised. All functions : code simplification and documentation
 
 ===============================
 dst 1.4.1.9002
+
 Correction to function plautrans
 The check for the presence of the empty set did not work properly.
 =============
