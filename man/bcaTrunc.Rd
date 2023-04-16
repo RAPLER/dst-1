@@ -28,8 +28,6 @@ cnames = c("a", "b", "c", "d"))
 bcaPrint(x)
 tr_x <- bcaTrunc(x, seuil = 0.1)
 bcaPrint(tr_x)
-}
-\references{
 
 }
 \author{
