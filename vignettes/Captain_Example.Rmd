@@ -1,5 +1,5 @@
 ---
-title: "Captain's Example"
+title: "Captain_Example"
 author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
 date: "2018-06-20. Revised 2020-02-09"
 output: rmarkdown::html_vignette
@@ -138,7 +138,7 @@ bcaPrint(mrf_rel)
 Since R5 and R6 are defined on the same space MxR, we can immediately combine them in a single relation, using Dempster Rule of combination.
 
 ```{r Relation MR12}
-mr_rel <- nzdsr(dsrwon(mrt_rel, mrf_rel))
+mr_rel <- nzdsr(dsrwon(mrt_rel, mrf_rel)) 
 bcaPrint(mr_rel)
 ```
 ## Input of evidence
@@ -234,7 +234,7 @@ rels_nb <- irel_to_elim[irel_to_elim>0]
 l_ext <- extmin(get(captain_rel_names[6]), get(captain_rel_names[2])) 
 # combine E1, R2
 # use length(captain_rel_names) to assign the next relation nb
-rel_2_6 <- nzdsr(dsrwon(l_ext, get(captain_rel_names[2]), relnb = 1+length(captain_rel_names)))
+rel_2_6 <- nzdsr(dsrwon(l_ext, get(captain_rel_names[2]), relnb = 1+length(captain_rel_names)) )
 # eliminate the variable "Loading" (4)
 rel_9 <- elim(rel_2_6, xnb = order(elim_order)[1])
 #
@@ -284,7 +284,7 @@ mr_ext <- extmin(get(captain_rel_names1[4]), relRef)
 swr_ext <- extmin(get(captain_rel_names1[2]), relRef)
 # 3: combine the two relations
 # combine extended relations
-rel_3_5 <- nzdsr(dsrwon(mr_ext,swr_ext, relnb = 10) )
+rel_3_5 <- nzdsr(dsrwon(mr_ext,swr_ext, relnb = 10) ) 
 #4 eliminate the variable "Maintenance" (8)
 rel_10 <- elim(rel_3_5, xnb = order(elim_order)[2])
 #
@@ -333,7 +333,7 @@ fw_ext <- extmin(get(captain_rel_names2[rels_nb[1]]), relRef)
 rel_10_ext <- extmin(get(captain_rel_names2[rels_nb[2]]), relRef)
 # 3: combine the two relations
 # combine extended relations
-rel_4_10 <- nzdsr(dsrwon(fw_ext,rel_10_ext, relnb = 11) )
+rel_4_10 <- nzdsr(dsrwon(fw_ext,rel_10_ext, relnb = 11) ) 
 #
 # 4 eliminate the variable "Weather" (7)
 rel_11 <- elim(rel_4_10, xnb = order(elim_order)[3])
@@ -386,8 +386,8 @@ rel_11_ext <- extmin(get(captain_rel_names3[rels_nb[3]]), relRef)
 #
 # 3: combine the relations
 # combine extended relations
-rel_3_9 <- nzdsr(dsrwon(m_ext,rel_9_ext, relnb = 12) )
-rel_3_9_11 <- nzdsr(dsrwon(rel_3_9,rel_11_ext, relnb = 12) )
+rel_3_9 <- nzdsr(dsrwon(m_ext,rel_9_ext, relnb = 12) ) 
+rel_3_9_11 <- nzdsr(dsrwon(rel_3_9,rel_11_ext, relnb = 12) ) 
 #
 # 4 eliminate the variable "Maintenance" (6)
 rel_12 <- elim(rel_3_9_11, xnb = order(elim_order)[4])
@@ -438,7 +438,7 @@ f_ext <- extmin(get(captain_rel_names4[rels_nb[1]]), relRef)
 #
 # 3: combine the relations
 # combine extended relations
-rel_E2_12 <- nzdsr(dsrwon(f_ext,rel_12, relnb = 13) )
+rel_E2_12 <- nzdsr(dsrwon(f_ext,rel_12, relnb = 13) ) 
 # 4 eliminate the variable "Forecast" (5)
 rel_13 <- elim(rel_E2_12, xnb = order(elim_order)[5])
 #
@@ -491,7 +491,7 @@ rel_13_ext <- extmin(get(captain_rel_names5[rels_nb[2]]), relRef)
 #
 # 3: combine the relations
 # combine extended relations
-rel_1_13 <- nzdsr(dsrwon(ads_rel,rel_13_ext, relnb = 14) )
+rel_1_13 <- nzdsr(dsrwon(ads_rel,rel_13_ext, relnb = 14, mcores = "yes") ) 
 # 4 eliminate the variable "SAiling" (3)
 rel_14 <- elim(rel_1_13, xnb = order(elim_order)[6])
 #
@@ -543,16 +543,17 @@ dimnames = list(NULL, c("varnb", "size")) )
 infovar = init_info, varnames = names(infovalues), relnb = 15)
 # extend the relations 
   captain_rel_names6[rels_nb[1]] # " rel"
-  rel_ext <- extmin(get(captain_rel_names6[rels_nb[1]]), relRef) ## no need to extend. make a check on this case in an algorith.
+  rel_ext <- extmin(get(captain_rel_names6[rels_nb[1]]), relRef) ## no need to extend. make a check on this case in an algorithm.
   captain_rel_names6[rels_nb[2]] # rel_14
   rel_14_ext <- extmin(get(captain_rel_names6[rels_nb[2]]), relRef)   
 #
 # 3: combine the relations
 # combine extended relations
-  rel_comb <- nzdsr(dsrwon(rel_ext,rel_14_ext, relnb = 15) )
+rel_comb <- nzdsr(dsrwon(rel_ext,rel_14_ext, relnb = 15, mcores = "yes") ) 
+cat("Results")
 }
 # 4 eliminate the variable "Sailing" (3)
-rel_15 <- elim(rel_14, xnb = order(elim_order)[7])
+rel_15 <- elim(rel_14, xnb = order(elim_order)[7]) 
 bcaPrint(rel_15)
 belplau(rel_15)
 ```

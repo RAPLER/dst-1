@@ -2,8 +2,11 @@
 title: "Peeling algorithm on Zadeh's Example"
 author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
 date: "2022-03-03"
-output: html_document
-# output: word_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Peeling algorithm on Zadeh's Example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
