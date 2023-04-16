@@ -37,11 +37,11 @@ The two bca's \code{x} and \code{y} must be defined on the same frame of discern
 x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 byrow = TRUE), m = c(0.2,0.5, 0.3), 
 cnames = c("a", "b", "c"),  
-varnames = "x", varnb=1)
+varnames = "x", idvar = 1)
 x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6, 0.4),  
 cnames = c("a", "b", "c"),  
-varnames = "x", varnb = 1)
+varnames = "x", idvar = 1)
 dsrwon(x1,x2)
 frame <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 dsrwon(frame, frame)

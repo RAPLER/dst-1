@@ -20,11 +20,11 @@
 #' x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"),  
-#' varnames = "x", varnb=1)
+#' varnames = "x", idvar = 1)
 #' x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  
-#' varnames = "x", varnb = 1)
+#' varnames = "x", idvar = 1)
 #' dsrwon(x1,x2)
 #' frame <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(frame, frame)
@@ -84,7 +84,7 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   ## 2. Calculations
   # Use all available cores minus one.
   #
-  ## 2.1 Combine masses
+  ## 2.1 Combine mass vectors
   V12<-outer(zx$spec[,2],zy$spec[,2], "*")     # compute masses OK, not long.
   #
   ## 2.2 combine subsets
@@ -92,8 +92,8 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   #
   # Use multiple cores = "yes"
   if (mcores == "yes") {
-    y1_df <- as.data.frame(t(y1))
-    (requireNamespace("parallel", quietly = TRUE) ) 
+  y1_df <- as.data.frame(t(y1))
+  if  (requireNamespace("parallel", quietly = TRUE) ) {
     library(parallel) 
     ncores <- detectCores(logical = FALSE)
     grappe <- makeCluster(ncores-1)
@@ -101,9 +101,10 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
     clusterExport(cl = grappe, varlist = list("x1", "y1_df"), envir = environment() )
     mx1y1_par <- parSapply( cl = grappe, X=1:ncol(y1_df), FUN = function(X) { inters(x1, t(y1_df[X])) }, simplify = FALSE, USE.NAMES = TRUE ) # intersection of the subsets
     stopCluster(grappe)
-    N12 <- array(unlist(mx1y1_par), dim = c(shape(mx1y1_par[[1]])[1:2], shape(mx1y1_par)), dimnames = list(unlist(dimnames(mx1y1_par[[1]])[1]), colnames(x1), rownames(y1)) )
+  }
+  N12 <- array(unlist(mx1y1_par), dim = c(shape(mx1y1_par[[1]])[1:2], shape(mx1y1_par)), dimnames = list(unlist(dimnames(mx1y1_par[[1]])[1]), colnames(x1), rownames(y1)) )
   } else {
-    N12<-inters(x1,y1)         # intersection of the subsets
+    N12<-inters(x1, y1)         # intersection of the subsets
   }
   #
   N12<-aperm(N12,c(2,1,3))   # transformation
@@ -120,17 +121,18 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   ## 2.3 Identify contributions to each subset and compute mass
   #
   if (mcores == "yes") {
-  z2_df <- as.data.frame(aperm(N12,c(2,1)))
-  # library(parallel)  ## alresdy loaded
-  ncores <- detectCores(logical = FALSE)
-  grappe <- makeCluster(ncores-1)
-  clusterEvalQ(cl = grappe, expr = library(dst))
-  clusterExport(cl = grappe, varlist = list("W1", "z2_df"), envir = environment() )
+  if  (requireNamespace("parallel", quietly = TRUE) ) {
+    z2_df <- as.data.frame(aperm(N12,c(2,1)))
+    ncores <- detectCores(logical = FALSE)
+    grappe <- makeCluster(ncores-1)
+    clusterEvalQ(cl = grappe, expr = library(dst))
+    clusterExport(cl = grappe, varlist = list("W1", "z2_df"), envir = environment() )
   #
   ## 2.3 Identify contributions to each subset and compute mass
   #
- I12_par <- parSapply( cl = grappe, X=1:ncol(z2_df), FUN = function(X) {  dotprod  (W1, as.matrix(z2_df[,X]), g = "&",f = "==")  }, simplify = FALSE, USE.NAMES = TRUE ) 
-  stopCluster(grappe)
+   I12_par <- parSapply( cl = grappe, X=1:ncol(z2_df), FUN = function(X) {  dotprod  (W1, as.matrix(z2_df[,X]), g = "&",f = "==")  }, simplify = FALSE, USE.NAMES = TRUE ) 
+   stopCluster(grappe)
+  }
   # List to array conversion
   I12 <- array(unlist(I12_par), dim = c(shape(I12_par[[1]])[1], shape(I12_par)))
   } else {
