@@ -16,5 +16,6 @@ Depends:
 Suggests: testthat,
     knitr,
     rmarkdown,
-    igraph
+    igraph,
+    parallel
 VignetteBuilder: knitr
