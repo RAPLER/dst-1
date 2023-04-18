@@ -1,5 +1,6 @@
-dst 1.5.2
+dst 1.5.1.9004
 
+nzdsr: 2023-04-17.  Added another missing specification to variable vacuous
 nzdsr: 2023-04-01. Added a missing specification to variable vacuous.
 
 bcaTrunc: 2023-01-08. New. Function to allow truncation of a belief function containing a large number of focal elements to a threshold value.

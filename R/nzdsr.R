@@ -37,7 +37,7 @@ nzdsr<-function(x) {
   #
   ## 2. Reconstruct I12 matrix (need to be updated if missing or if function addTobca has been used to add subsets)
   nc <- ncol(x$tt)
-  vacuous <- bca(matrix(rep(1, nc), nrow=1), m=1)
+  vacuous <- bca(matrix(rep(1, nc), nrow=1), m=1, cnames = colnames(x$tt))
   vacuous$valuenames <- x$valuenames
   vacuous$infovar <- x$infovar
   x <- dsrwon(x,vacuous)
