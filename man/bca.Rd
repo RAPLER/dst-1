@@ -17,7 +17,8 @@ bca(
   inforel = NULL,
   f,
   varnb,
-  infovarnames
+  infovarnames,
+  ssnames = NULL
 )
 }
 \arguments{
@@ -44,6 +45,8 @@ bca(
 \item{varnb}{Deprecated. Old name for \code{idvar}.}
 
 \item{infovarnames}{Deprecated. Old name for \code{varnames}.}
+
+\item{ssnames}{NEW. A list of labels to uniquely identify each subset of the bca. It will replace the tt matrix.}
 }
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
@@ -66,7 +69,8 @@ m<- c(.9,.1)
 cnames <- c("yes","no")
 bca(tt, m)
 bca(tt, m, cnames)
-bca(tt, m, cnames, idvar = 1)
+sslabel <- list("yes", "frame")
+bca(tt, m, cnames, ssnames = sslabel, idvar = 1)
 tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 colnames(tt1) <- c("yes", "no")
 m <- c(.9, .1)

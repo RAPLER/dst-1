@@ -6,7 +6,7 @@
 #' @param tt A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
 #' @param f Deprecated. Old name for \code{tt} matrix. 
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
-#' 
+#' @param ssnames NEW. A list of labels to uniquely identify each subset of the bca. It will replace the tt matrix.
 #' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
 #' @param idvar The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted. 
@@ -33,7 +33,8 @@
 #' cnames <- c("yes","no")
 #' bca(tt, m)
 #' bca(tt, m, cnames)
-#' bca(tt, m, cnames, idvar = 1)
+#' sslabel <- list("yes", "frame")
+#' bca(tt, m, cnames, ssnames = sslabel, idvar = 1)
 #' tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 #' colnames(tt1) <- c("yes", "no")
 #' m <- c(.9, .1)
@@ -49,7 +50,7 @@
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL, f, varnb, infovarnames) {
+bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL, f, varnb, infovarnames, ssnames = NULL) {
   #
   # Local variables: None 
   # Functions calls: nameRows
@@ -126,7 +127,11 @@ bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, va
     # 7. Construction of the result
     #
     rownames(tt) <- nameRows(tt)
-    y<-list(con = con, tt = tt, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
+    #
+    ## test
+    y<-list(con = con, tt = tt, ssnames = ssnames, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel) 
+    # end test
+    #
     class(y) <- append(class(y), "bcaspec")
     return(y)
   }
