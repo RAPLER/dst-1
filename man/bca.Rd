@@ -6,7 +6,7 @@
 \title{Basic chance assignment mass function}
 \usage{
 bca(
-  tt,
+  tt = NULL,
   m,
   cnames = NULL,
   con = NULL,
@@ -18,7 +18,8 @@ bca(
   f,
   varnb,
   infovarnames,
-  ssnames = NULL
+  ssnames = NULL,
+  sfod = NULL
 )
 }
 \arguments{
@@ -46,7 +47,9 @@ bca(
 
 \item{infovarnames}{Deprecated. Old name for \code{varnames}.}
 
-\item{ssnames}{NEW. A list of labels to uniquely identify each subset of the bca. It will replace the tt matrix.}
+\item{ssnames}{NEW. A list of labels to uniquely identify each subset of the bca. It will replace the tt matrix when desired.}
+
+\item{sfod}{NEW. Size of the frame of discernment (Fod).}
 }
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
@@ -63,6 +66,9 @@ y An object of class \code{bcaspec} called a bca for "basic chance assignment": 
 Function \code{bca} is used to define subsets of a finite set \eqn{\Theta} of possible values and to assign their corresponding mass value.\cr
 The set \eqn{\Theta} is called the frame of discernment. Each subset \eqn{A} of  \eqn{Theta} with a positive mass value is called a focal element or a proposition. The associated mass value is a number of the \code{(0,1]} interval, called "basic chance assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
 }
+\details{
+There is two ways of defining the bca: a (0,1) matrix or a list of subsets labels.
+}
 \examples{
 tt<- t(matrix(c(1,0,1,1),ncol = 2))
 m<- c(.9,.1)
@@ -70,7 +76,7 @@ cnames <- c("yes","no")
 bca(tt, m)
 bca(tt, m, cnames)
 sslabel <- list("yes", "frame")
-bca(tt, m, cnames, ssnames = sslabel, idvar = 1)
+bca(m = m, cnames = cnames, ssnames = sslabel, sfod = 2, idvar = 1)
 tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 colnames(tt1) <- c("yes", "no")
 m <- c(.9, .1)
@@ -82,6 +88,14 @@ y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2,
 byrow = TRUE), m = c(0.6,0.4), 
 cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+x1 <- bca(m = c(0.2,0.5, 0.3), 
+ssnames = list(c("b", "c"), c("a", "b"), c("a", "b", "c") ),  
+sfod = 3,
+varnames = "x", idvar = 1) 
+x2 <- bca(m = c(0.6, 0.4),  
+ssnames = list(c("a"), c("a", "b", "c") ),
+sfod = 3,  
+varnames = "x", idvar = 1)
 }
 \references{
 \itemize{

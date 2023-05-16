@@ -2,11 +2,14 @@
 #' 
 #' Function \code{bca} is used to define subsets of a finite set \eqn{\Theta} of possible values and to assign their corresponding mass value.\cr
 #' The set \eqn{\Theta} is called the frame of discernment. Each subset \eqn{A} of  \eqn{Theta} with a positive mass value is called a focal element or a proposition. The associated mass value is a number of the \code{(0,1]} interval, called "basic chance assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
+#' 
+#' There is two ways of defining the bca: a (0,1) matrix or a list of subsets labels.
 #' @aliases bpa
 #' @param tt A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
+#' @param ssnames NEW. A list of labels to uniquely identify each subset of the bca. It will replace the tt matrix when desired.
+#' @param sfod NEW. Size of the frame of discernment (Fod).
 #' @param f Deprecated. Old name for \code{tt} matrix. 
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
-#' @param ssnames NEW. A list of labels to uniquely identify each subset of the bca. It will replace the tt matrix.
 #' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
 #' @param idvar The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted. 
@@ -34,7 +37,7 @@
 #' bca(tt, m)
 #' bca(tt, m, cnames)
 #' sslabel <- list("yes", "frame")
-#' bca(tt, m, cnames, ssnames = sslabel, idvar = 1)
+#' bca(m = m, cnames = cnames, ssnames = sslabel, sfod = 2, idvar = 1)
 #' tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 #' colnames(tt1) <- c("yes", "no")
 #' m <- c(.9, .1)
@@ -46,11 +49,19 @@
 #' byrow = TRUE), m = c(0.6,0.4), 
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+#' x1 <- bca(m = c(0.2,0.5, 0.3), 
+#' ssnames = list(c("b", "c"), c("a", "b"), c("a", "b", "c") ),  
+#' sfod = 3,
+#' varnames = "x", idvar = 1) 
+#' x2 <- bca(m = c(0.6, 0.4),  
+#' ssnames = list(c("a"), c("a", "b", "c") ),
+#' sfod = 3,  
+#' varnames = "x", idvar = 1)
 #' @references \itemize{
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL, f, varnb, infovarnames, ssnames = NULL) {
+bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL, f, varnb, infovarnames, ssnames = NULL, sfod = NULL) {
   #
   # Local variables: None 
   # Functions calls: nameRows
@@ -74,18 +85,22 @@ bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, va
   }
   # end catches
   #
-  # 2. Determine names of tt matrix and fix some parameters
+  # 2. Choose between tt or ssnames and Determine names of columns of tt matrix and fix some parameters
   #
+  # Case 1: bca constructed with a (0,1) description matrix
+  #
+ if (!is.null(tt)) {
   if (is.null(cnames)) { cnames = colnames (tt)} # cnames stay null if no column names present
   if (is.null(cnames)) {    
     # cnames <- paste(rep("col",ncol(tt)),c(1:ncol(tt)),sep="")
     cnames <- colnames(tt, do.NULL = FALSE, prefix = "col") # mod. 20221204
-    }
+  } 
   if((abs(sum(m)-1)>0.000001) | (length(tt[,1])!=length(m)) | (length(tt[1,])!=length(cnames))) { 
     stop("Error in input arguments: check your input data.") 
     }
   else {
     colnames(tt) <- cnames
+    
     if (is.null(con)) { con <- 0 }
     if (is.null(idvar)) { idvar <- 0 }
     #
@@ -129,10 +144,64 @@ bca<-function(tt, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, va
     rownames(tt) <- nameRows(tt)
     #
     ## test
-    y<-list(con = con, tt = tt, ssnames = ssnames, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel) 
+    y<-list(con = con, tt = tt,ssnames = NULL, sfod = NULL, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel) 
     # end test
     #
     class(y) <- append(class(y), "bcaspec")
     return(y)
   }
- }
+  } else {
+     #
+     # Case 2: bca constructed with a list of subsets labels
+     #
+    if ( is.null(ssnames) ) {
+      stop("Error in input arguments: No subsets labels provided")
+    }
+    if ( is.null(sfod) ) {
+      stop("Error in input arguments: No value provided for the size of the frame of discernment.")
+    }
+    if (abs(sum(m)-1)>0.000001)  { 
+      stop("Error in input arguments: Mass vector values must sum to one.") 
+    }
+    else {
+      if (is.null(con)) { con <- 0 }
+      if (is.null(idvar)) { idvar <- 0 }
+      #
+      # 3. Build infovar parameter
+      #
+      if (is.null(infovar)) {
+        infovar <- matrix(c(idvar, sfod), ncol = 2)
+      }
+      colnames(infovar) <- c("varnb", "size")
+      idvar <- infovar[,1]
+      #
+      # 4. Build varnames and valuenames (former = infovaluenames)
+      #
+      # check and use varnames if provided
+      if (is.null(valuenames) | missing(valuenames)) {
+        valuenames <- NULL
+      }
+      if (is.null(varnames)) {
+        varnames <- "x"
+      } 
+      #
+      # 5. Build specification matrix spec
+      #
+      spec <- cbind(1:length(ssnames), m)
+      colnames(spec) <- c("specnb", "mass")
+      #  
+      # 6. inforel parameter
+      #
+      if (missing(inforel) | is.null(inforel)) { 
+        inforel <- matrix(c(0, 0), ncol = 2)
+      }
+      colnames(inforel) <- c("relnb", "depth")
+      # 
+      # 7. Construction of the result
+      #
+      y<-list(con = con, tt = NULL, ssnames = ssnames, sfod = sfod,  spec = spec , infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel) 
+      class(y) <- append(class(y), "bcaspec")
+      return(y)
+    }
+  }
+ } 
