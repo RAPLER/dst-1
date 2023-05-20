@@ -34,14 +34,21 @@ The calculations make use of multiple cores available.
 The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.
 }
 \examples{
-x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 byrow = TRUE), m = c(0.2,0.5, 0.3), 
 cnames = c("a", "b", "c"),  
-varnames = "x", idvar = 1)
-x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+varnames = "x", idvar = 1) 
+y2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6, 0.4),  
 cnames = c("a", "b", "c"),  
 varnames = "x", idvar = 1)
+dsrwon(y1,y2)
+x1 <- bca(m = c(0.2,0.5, 0.3), 
+varnames = "x", idvar = 1, 
+ssnames = list(c("b", "c"), c("a", "b"), c("a", "b", "c")), sfod = 3)
+x2 <- bca(m = c(0.6, 0.4),  
+varnames = "x", idvar = 1, 
+ssnames = list(c("a"), c("a", "b", "c")), sfod = 3)
 dsrwon(x1,x2)
 frame <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 dsrwon(frame, frame)

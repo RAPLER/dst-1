@@ -17,14 +17,21 @@
 #' @author Claude Boivin
 #' @export
 #' @examples 
-#' x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"),  
-#' varnames = "x", idvar = 1)
-#' x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+#' varnames = "x", idvar = 1) 
+#' y2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  
 #' varnames = "x", idvar = 1)
+#' dsrwon(y1,y2)
+#' x1 <- bca(m = c(0.2,0.5, 0.3), 
+#' varnames = "x", idvar = 1, 
+#' ssnames = list(c("b", "c"), c("a", "b"), c("a", "b", "c")), sfod = 3)
+#' x2 <- bca(m = c(0.6, 0.4),  
+#' varnames = "x", idvar = 1, 
+#' ssnames = list(c("a"), c("a", "b", "c")), sfod = 3)
 #' dsrwon(x1,x2)
 #' frame <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(frame, frame)
@@ -54,7 +61,8 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
     stop("Specification of parameter infovar of the two bca's must identical.")
   }
   #
-  # Put the bca witx the largegst tt mattrix in second
+  # Put the bca with the largegst tt mattrix in second
+  if (!is.null(x$tt)) {
   if (nrow(x$tt) <= nrow(y$tt) ) {
     zx <- x
     zy <-y
@@ -80,16 +88,30 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   if ((length(values1) != length(values2)) | (nbval != length(values1))) {
     stop("Value names of the two frames differ. Check value names of variables as well as their position.")
   }
+  ## 2a. Calculations
   #
-  ## 2. Calculations
-  # Use all available cores minus one.
+  ## 2a.1 Combine mass vectors
+  V12<-outer(zx$spec[,2],zy$spec[,2], "*")      # compute masses OK, not long.
+  } else {
+  if (length(x$ssnames) <= length(y$ssnames) ) {
+      zx <- x
+      zy <-y
+    } else {
+      zx <- y
+      zy <- x
+    }
+  # NB refaire ici les tests de L74-L90 avec ssnames
   #
-  ## 2.1 Combine mass vectors
-  V12<-outer(zx$spec[,2],zy$spec[,2], "*")     # compute masses OK, not long.
+  ## 2b. Calculations
+  #
+  ## 2b.1 Combine mass vectors
+  V12<-t(outer(zx$spec[,2],zy$spec[,2], "*") )     # compute masses OK, not long.
+  } 
   #
   ## 2.2 combine subsets
   # transform table of intersections: (M x N) rows by K 
-  #
+  # 
+  if (is.null(zx$ssnames) | is.null(zy$ssnames) ) {
   # Use multiple cores = "yes"
   if (mcores == "yes") {
   y1_df <- as.data.frame(t(y1))
@@ -105,7 +127,7 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   N12 <- array(unlist(mx1y1_par), dim = c(shape(mx1y1_par[[1]])[1:2], shape(mx1y1_par)), dimnames = list(unlist(dimnames(mx1y1_par[[1]])[1]), colnames(x1), rownames(y1)) )
   } else {
     N12<-inters(x1, y1)         # intersection of the subsets
-  }
+    }
   #
   N12<-aperm(N12,c(2,1,3))   # transformation
   N12<-array(c(N12),c(dim(N12)[1],prod(dim(N12)[-1])), dimnames= list(colnames(x1), NULL) )
@@ -137,22 +159,84 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   I12 <- array(unlist(I12_par), dim = c(shape(I12_par[[1]])[1], shape(I12_par)))
   } else {
    I12<-dotprod(W1,aperm(N12,c(2,1)),g="&",f="==")  
+   # 2023-05-04 to test
+   # replace dotprod by outer(rownames(W1), rownames(N12), FUN = "==")
+   # end test
+   MAC<-apply(I12*t(array(V12,dim(t(I12)))),1,sum) 
   }
-  MAC<-apply(I12*t(array(V12,dim(t(I12)))),1,sum)     
-  #
-  ## 2.4  Order the subsets to find if the empty subset is there. Put empty set in first position of tt matrix
-  # 
+  ## 2.4.1  Order the subsets to find if the empty subset is there. Put empty set in first position of tt matrix
   sort_order<-order(apply(W1,1,sum))
   tt <- W1[sort_order,]
   if (is.matrix(tt) == FALSE) {
     tt <- matrix(tt,ncol = length(tt), dimnames = list(NULL, names(tt)))
   }
-  #
-  ## 2.5 Identify if the empty set is present and define m_empty accordingly with it mass
+  ## 2.5.1 Identify if the empty set is present and define m_empty accordingly with it mass
   # Put masses in the same order as the tt matrix
   #
   z<- sum(W1[sort_order[1],])
-   if (z==0) {
+  if (z==0) {
+    empty<-sort_order[1]  
+    m_empty<-MAC[empty] 
+  } else {
+    empty<-0
+    m_empty<-0
+  }
+  MAC <- MAC[sort_order]
+  mMAC <-matrix(MAC,ncol=1, dimnames =list(NULL, "mass"))
+  #
+  ## 2.6.1 Define spec matrix
+  #
+  spec <- cbind(1:nrow(tt), mMAC)
+  colnames(spec) <- c("specnb", "mass")
+  # 
+  ## 2.7.1  Revised 2021-04-23
+  con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
+  if  ((con12 == 1) | (m_empty == 1)) { 
+    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')}
+  # "con" stays unchanged by a vacuous combination
+  if (nrow(zx$tt)==1 |nrow(zy$tt) == 1) {
+    con <- con12 
+  } else {
+    con<-1-(1-con12)*(1-m_empty) # OK checked
+  }
+  # test avec subset names
+  } 
+  #
+  # NEW. Test avec utilisation de subsets names
+  #
+  else {
+    # compute N12 and transform
+    #
+    N12 <-  mapply(FUN= function(X,Y) {lapply(X = 1:length(zx$ssnames), FUN = function(X) {intersect(zx$ssnames[[X]], zy$ssnames[[Y]])} )}, Y=1:length(zy$ssnames) ) 
+    # Transform N12
+    cN12 <- c(N12)
+    cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { reduction(cN12[[X]], f = "paste")})
+    cN12cf <- unlist(lapply(X=1:length(cN12c), FUN = function(X) {if (length(cN12c[[X]]) == 0){ cN12c[[X]] = "Empty"} else cN12c[[X]] }) )
+    #
+    # Compute W1 as character vector and list
+    W1 <- cN12cf[!duplicated(cN12cf)]
+    W1_list <- cN12[!duplicated(cN12)]
+     #
+    # Transformations to obtain I12 matrix
+    # Transform W1
+    #
+    # W1c <- lapply(X=1:length(W1), FUN =  function(X) { reduction(W1[[X]], f = "paste")})
+    # W1cf <- unlist(lapply(X=1:length(W1c), FUN = function(X) {if (length(W1c[[X]]) == 0){ W1c[[X]] = "Empty"} else W1c[[X]] }) )
+    #
+    # Compute I12 matrix
+    I12 <- outer(W1, cN12cf, FUN = "==" )
+   #
+   # 2.4.2  Order the subsets to find if the empty subset is there. Put empty set in first position of ssnames list
+   #
+   MAC<-apply(I12*t(array(t(V12),dim(t(I12)))),1,sum)   
+   sort_order<-order(unlist(lapply(X=1:5, FUN = function(X) {shape(W1_list[[X]])} )))
+   tt <- NULL
+    #
+  ## 2.5.2 Identify if the empty set is present and define m_empty accordingly with it mass
+  # Put masses in the same order as the ssnames list
+  #
+  z <- unlist(W1_list[sort_order[[1]]])
+   if (rlang::is_empty(z) == TRUE) {
      empty<-sort_order[1]  
      m_empty<-MAC[empty] 
    } else {
@@ -161,33 +245,35 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
    }
   # 
    MAC <- MAC[sort_order]
-  # m_empty <- MAC[1]
    mMAC <-matrix(MAC,ncol=1, dimnames =list(NULL, "mass"))
    #
-   ## 2.6 define spec matrix
+   ## 2.6.2 Define spec matrix
    #
-  spec <- cbind((1:nrow(tt)), mMAC)
+  spec <- cbind(1:shape(W1), mMAC)
   colnames(spec) <- c("specnb", "mass")
   #
   #
-  ## 2.7  Revised 2021-04-23
+  ## 2.7.2  
   con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
   if  ((con12 == 1) | (m_empty == 1)) { 
     warning('Totally conflicting evidence (con = 1). Data is inconsistent.')}
-   # "con" stays unchanged by a vacuous combination
- if (nrow(zx$tt)==1 |nrow(zy$tt) == 1) {
+   #
+   # NOTE: "con" stays unchanged by a vacuous combination
+   #
+ if (shape(zx$ssnames) == 1 | shape(zy$ssnames) == 1) {
    con <- con12 
    } else {
-   con<-1-(1-con12)*(1-m_empty) # OK checked
+   con<-1-(1-con12)*(1-m_empty) 
    }
-  # End Revision 2021-04-23
+  }
+  # end test avec subsets names
   #
   ## 3. The result
   #
   ## 3.1 Name the resulting variables and fix parameters
   #
   # varnames and valuenames
- valuenames <- zx$valuenames
+  valuenames <- zx$valuenames
   if (!is.null(varnames)) {
     names(valuenames) <- varnames
   }
@@ -208,8 +294,13 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   #
   # construction of the result
   #
-  z <- list(con = con, tt=tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order)
-  class(z) <- append(class(z), "bcaspec")
+  if (is.null(zx$ssnames) | is.null(zy$ssnames) ) {
+    z <- list(con = con, tt=tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = NULL)
+  class(z) <- append(class(z), "bcaspec") 
+  } else {
+    z <- list(con = con, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = W1_list[sort_order])
+    class(z) <- append(class(z), "bcaspec") 
+  }
   return(z)
   }
  
