@@ -298,10 +298,10 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   # construction of the result
   #
   if (is.null(zx$ssnames) | is.null(zy$ssnames) ) {
-    z <- list(con = con, tt=tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = NULL)
+    z <- list(con = con, tt=tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = NULL, sfod = NULL)
   class(z) <- append(class(z), "bcaspec") 
   } else {
-    z <- list(con = con, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = W1_list[sort_order])
+    z <- list(con = con, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = W1_list[sort_order], sfod = zx$sfod)
     class(z) <- append(class(z), "bcaspec") 
   }
   return(z)
