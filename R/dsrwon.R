@@ -33,8 +33,11 @@
 #' varnames = "x", idvar = 1, 
 #' ssnames = list(c("a"), c("a", "b", "c")), sfod = 3)
 #' dsrwon(x1,x2)
-#' frame <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-#' dsrwon(frame, frame)
+#' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+#' dsrwon(vacuous, vacuous)
+#' vacuous <- bca(m = 1,  
+#' varnames = "x", idvar = 1, 
+#' ssnames = list(c("a", "b", "c")), sfod = 3)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarnames) {
   #
@@ -229,7 +232,7 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
    # 2.4.2  Order the subsets to find if the empty subset is there. Put empty set in first position of ssnames list
    #
    MAC<-apply(I12*t(array(t(V12),dim(t(I12)))),1,sum)   
-   sort_order<-order(unlist(lapply(X=1:5, FUN = function(X) {shape(W1_list[[X]])} )))
+   sort_order<-order(unlist(lapply(X=1:length(W1_list), FUN = function(X) {shape(W1_list[[X]])} )))
    tt <- NULL
     #
   ## 2.5.2 Identify if the empty set is present and define m_empty accordingly with it mass
