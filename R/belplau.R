@@ -43,6 +43,16 @@ belplau<-function (x, remove=FALSE) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
+  # computation using description matrix tt
+  #
+  # use ssnames to reconstruct tt if null
+  if (is.null(x$tt) ) { 
+    z <- x$ssnames
+    z1l <- lapply(X = 1:length(z), FUN = function(X) {outer(z[[X]], z[[4]], "==") } ) 
+    x$tt <- t(mapply(FUN= function(X,Y) {unlist(lapply(X=1:ncol(z1l[[length(z1l)]]), FUN =  function(X) { reduction(z1l[[Y]][,X], f = "|")}) ) }, Y=1:length(z) ) )
+  }
+  colnames(x$tt) <- c(z[[length(z)]])
+  #
   # check if matrix of only one row
   xtest <- x$tt
   if (is.matrix(xtest) == FALSE) { 
@@ -63,7 +73,10 @@ belplau<-function (x, remove=FALSE) {
   #
   MACC<-x$spec[,2] # vector of masses
   W2 <- rbind(x$tt)
+  #
+  # Case where remove = TRUE
   # Remove subsets with zero mass, but the frame
+  #
   INUL<-c(MACC[-length(MACC)]>0,TRUE)
   if (remove == TRUE) {
     MACC1<-MACC[INUL]
