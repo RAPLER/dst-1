@@ -165,8 +165,9 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
    # 2023-05-04 to test
    # replace dotprod by outer(rownames(W1), rownames(N12), FUN = "==")
    # end test
-   MAC<-apply(I12*t(array(V12,dim(t(I12)))),1,sum) 
   }
+   MAC<-apply(I12*t(array(V12,dim(t(I12)))),1,sum) 
+ 
   ## 2.4.1  Order the subsets to find if the empty subset is there. Put empty set in first position of tt matrix
   sort_order<-order(apply(W1,1,sum))
   tt <- W1[sort_order,]
