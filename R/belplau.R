@@ -50,8 +50,8 @@ belplau<-function (x, remove=FALSE) {
     z <- x$ssnames
     z1l <- lapply(X = 1:length(z), FUN = function(X) {outer(z[[X]], z[[4]], "==") } ) 
     x$tt <- t(mapply(FUN= function(X,Y) {unlist(lapply(X=1:ncol(z1l[[length(z1l)]]), FUN =  function(X) { reduction(z1l[[Y]][,X], f = "|")}) ) }, Y=1:length(z) ) )
-  }
   colnames(x$tt) <- c(z[[length(z)]])
+  }
   #
   # check if matrix of only one row
   xtest <- x$tt
