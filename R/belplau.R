@@ -46,6 +46,8 @@ belplau<-function (x, remove=FALSE) {
   # computation using description matrix tt
   #
   # use ssnames to reconstruct tt if null
+  # matrix tt needed to compute IBEL
+  #
   if (is.null(x$tt) ) { 
     z <- x$ssnames
     z1l <- lapply(X = 1:length(z), FUN = function(X) {outer(z[[X]], z[[4]], "==") } ) 
@@ -53,11 +55,12 @@ belplau<-function (x, remove=FALSE) {
   colnames(x$tt) <- c(z[[length(z)]])
   }
   #
-  # check if matrix of only one row
+  # check if only one row, convert to matrix
   xtest <- x$tt
   if (is.matrix(xtest) == FALSE) { 
     xtest <- t(as.matrix(xtest)) 
   }
+  #
   # check if m_empty present and if not 0
   if (sum((apply(xtest, 1, sum)) == 0) > 0) {
     row_m_empty <- match(1:nrow(xtest), rownames(xtest) == "\u00f8")
@@ -69,12 +72,16 @@ belplau<-function (x, remove=FALSE) {
     }
   }
   #
+  # End checks and preparation
+  #
   # 2. Prepare data for calculations of bel and pl functions
   #
-  MACC<-x$spec[,2] # vector of masses
-  W2 <- rbind(x$tt)
+  # vector of masses and description matrix tt needed for these calculations
   #
-  # Case where remove = TRUE
+  MACC<-x$spec[,2]  # vector of masses
+  W2 <- rbind(x$tt) # description matrix
+  #
+  # Case where y=user don't want subsets wiyh zero mass (remove = TRUE)
   # Remove subsets with zero mass, but the frame
   #
   INUL<-c(MACC[-length(MACC)]>0,TRUE)
@@ -88,18 +95,25 @@ belplau<-function (x, remove=FALSE) {
   }
   #
   # 3. Indices for the calculation of the measure of belief
-  #
+  # To compute the belief value of a subset, we need to determine all which subsets of the bca are contained in this subset (inclusion). Inclusion is an order relation.
+  # function dotprod (inner product) does the task of determining, for each subset A, the subsets whose mass will be added to give the belief of A.
+  # Each element "x" of the frame of discernment (fod) is described by a binary(logical) vector. The (only) "1" in the vector indicates which element of the fod "x" is.
   IBEL<-dotprod(W2a,t(W2a),g="&",f="<=") 
   ## Calculation of Bel
+  # Knowing now which subsets contributes, we need only to sum their masses.
   BEL<-apply(IBEL*MACC1,2,sum)
   #
   # 4. Indices to calculate the measure of plausibility
   #
+  # By the same logic, we determine which subsets intersects with each subset of the bca
+  #
   IPLAU<-dotprod(W2a,t(W2a),g="|",f="&")
   ## Calculation of Plau
+  # Knowing now which subsets contributes, we need only to sum their masses.
   PLAU<-apply(IPLAU*MACC1,2,sum)
   #
   # 4. Calculation of the plausibility ratio
+  # We compute here a measure similar to an odd ratio of a subset to its contrary (complementary event) 
   rplau<-PLAU/(1-BEL)
   #
   # 5. Final results  
