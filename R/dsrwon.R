@@ -41,7 +41,7 @@
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarnames) {
   #
-  # Local variables: zx, zy, x1, y1, z, values1, values2, V12, N12, W1, I12, MAC, nMAC
+  # Local variables: m1,, m2, zx, zy, x1, y1, z, values1, values2, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   # 0. Catch old parameters names, if any and replace by the new ones
   #
@@ -93,6 +93,14 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   }
   ## 2a. Calculations
   #
+  # Check mass vector
+  m1 <- zx$spec[,2]
+  m2 <- zy$spec[,2]
+  if ( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) {
+    print(m1)
+    print(m2)
+    stop("Invalid data, sum of masses of one vector, or both, greater than one.")
+  }
   ## 2a.1 Combine mass vectors
   V12<-outer(zx$spec[,2],zy$spec[,2], "*")      # compute masses OK, not long.
   } else {
@@ -107,7 +115,16 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   #
   ## 2b. Calculations
   #
+  # Check mass vector
+    m1 <- zx$spec[,2]
+    m2 <- zy$spec[,2]
+    if ( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) {
+      print(m1)
+      print(m2)
+      stop("Invalid data, sum of masses of one vector, or both, greater than one.")
+    }
   ## 2b.1 Combine mass vectors
+
   V12<-t(outer(zx$spec[,2],zy$spec[,2], "*") )     # compute masses OK, not long.
   } 
   #
