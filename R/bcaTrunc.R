@@ -41,9 +41,18 @@ bcaTrunc <-function(x, seuil) {
   zdata <- zdata[1:(-1+nrow(zdata)),] # remove frame temporarily (for the case where m(frame) < seuil)
   #
   # 2.2. find rows to merge and do union of these rows
+  # Note: IF there is only one subset with mass < treshold, there will be nothong to merge. The bca will remain unchanged.
   in_ztgo <- zdata[,(2+ncol(x$tt))] < seuil # index of elements to group
   ztgo <- zdata[in_ztgo,]  # subsetting rows to merge
+  # ensure ztgo is always matrix
+  if (is.matrix(ztgo) == FALSE) {
+    ztgo <- t(as.matrix(ztgo))
+  }
   zb= ztgo[,1:ncol(x$tt)]
+  # ensure zb is always matrix
+  if (is.matrix(zb) == FALSE) {
+    zb <- t(as.matrix(zb))
+  }
   # ztgo_or <- apply(ztgo[,1:ncol(x$tt)], 2, any) # obtain union of subsets 
   ztgo_or=apply(zb, 2, FUN= function(zb) {reduction(zb, f="|") } )  # Union of subsets
   zz <- matrix(ztgo_or, nrow = nrow(ztgo), ncol = ncol(x$tt), byrow = TRUE) # rows to group are described by the same subset (ztgo_or)
