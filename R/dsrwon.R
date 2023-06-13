@@ -211,14 +211,25 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   colnames(spec) <- c("specnb", "mass")
   # 
   ## 2.7.1  Revised 2021-04-23
-  con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
-  if  ((con12 == 1) | (m_empty == 1)) { 
-    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')}
+  ##
+  # test 2023-06-12 remove c12
+  # con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
+ # con12 (measure of conflict) must not be in this test, only as a decision aid
+  # # test 2023-06-12
+  con12 <- m_empty
+  #
+ # if  ((con12 == 1) | (m_empty == 1)) { 
+   if  (m_empty == 1) { 
+    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
+     }
   # "con" stays unchanged by a vacuous combination
   if (nrow(zx$tt)==1 |nrow(zy$tt) == 1) {
     con <- con12 
   } else {
-    con<-1-(1-con12)*(1-m_empty) # OK checked
+    # # test 2023-06-12
+    con <- m_empty
+   # con<-1-(1-con12)*(1-m_empty) # OK checked
+   #  
   }
   # test avec subset names
   } 
@@ -275,16 +286,32 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   #
   #
   ## 2.7.2  
-  con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
-  if  ((con12 == 1) | (m_empty == 1)) { 
-    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')}
-   #
-   # NOTE: "con" stays unchanged by a vacuous combination
-   #
+ #  con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
+ #  # con12 (measure of conflict) must not be in this test, only as a decision aid
+ # # if  ((con12 == 1) | (m_empty == 1)) { 
+ #  if  (m_empty == 1) { 
+ #    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
+ #    }
+  # test 2023-06-12 remove c12
+  # con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
+  # con12 (measure of conflict) must not be in this test, only as a decision aid
+  # # test 2023-06-12
+  con12 <- m_empty
+  #
+  # if  ((con12 == 1) | (m_empty == 1)) { 
+  if  (m_empty == 1) { 
+    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
+  }
+  #
+  # NOTE: "con" stays unchanged by a vacuous combination
+  #
  if (shape(zx$ssnames) == 1 | shape(zy$ssnames) == 1) {
    con <- con12 
    } else {
-   con<-1-(1-con12)*(1-m_empty) 
+     # # test 2023-06-12
+    con <- m_empty
+  # con<-1-(1-con12)*(1-m_empty) 
+  #
    }
   }
   # end test avec subsets names
