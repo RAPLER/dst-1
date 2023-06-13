@@ -32,8 +32,10 @@ nzdsr<-function(x) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
-  if (x$con == 1) { 
-    stop('Completely conflicting evidence (con = 1). Data is inconsistent.')}
+  # 2023-06-12.
+  # Remove this test The conflict indice does not play a role in the combination by Dempster's rule. This is only a decision aid in the analysis of conflicting evidence
+  # if (x$con == 1) { 
+  #   stop('Completely conflicting evidence (con = 1). Data is inconsistent.')}
   #
   ## 2. Reconstruct I12 matrix (need to be updated if missing or if function addTobca has been used to add subsets)
   if (is.null(x$ssnames) ) {

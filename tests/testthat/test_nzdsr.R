@@ -7,10 +7,10 @@ test_that("nzdsr", {
   expect_error(nzdsr(x1) , "Input argument not of class bcaspec.")
   # T2 ncol of x and y must be equal. 
   #
-  # T3 Warning message when evidence is completely contradictory
-  cnames <- c("yes","no")
-  f1<- t(matrix(c(1,0,1,1),ncol=2))
-  m1<- c(1,0)
-  x1 <- bca(f1, m1, cnames, con = 1)
-  expect_error(nzdsr(x = x1) , 'Completely conflicting evidence \\(con = 1\\). Data is inconsistent.')
+  # # T3 Warning message when evidence is completely contradictory
+  # cnames <- c("yes","no")
+  # f1<- t(matrix(c(1,0,1,1),ncol=2))
+  # m1<- c(1,0)
+  # x1 <- bca(f1, m1, cnames, con = 1)
+  # expect_error(nzdsr(x = x1) , 'Completely conflicting evidence \\(con = 1\\). Data is inconsistent.')
 })
