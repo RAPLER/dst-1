@@ -18,18 +18,18 @@ It may occur that the result of the combination of two basic chance assignments 
 \examples{
 x1 <- bca(tt= matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
 m = c(0.9,0.1), cnames = c("yes", "no"),
-varnames = "x", varnb = 1)
+varnames = "x", idvar = 1)
 x2 <- bca(tt = matrix(c(0,1,1,1),nrow = 2, byrow = TRUE), 
 m = c(0.5,0.5), cnames = c("yes", "no"), 
-varnames = "x", varnb = 1)
+varnames = "x", idvar = 1)
 print("combination of x1 and x2")
 x1x2 <- dsrwon(x1,x2, varname = "x")
 nzdsr(x1x2) 
 
 print("normalization of a bca definition.")
-y2 <- bca(f = matrix(c(0,0,0,1,0,0,1,1,1),nrow = 3, 
+y2 <- bca(tt = matrix(c(0,0,0,1,0,0,1,1,1),nrow = 3, 
 byrow = TRUE), m = c(0.2,0.5,0.3), 
-cnames = c("a", "b", "c"), varnb = 1)
+cnames = c("a", "b", "c"), idvar = 1)
 nzdsr(y2)  
 }
 \references{

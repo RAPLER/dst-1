@@ -8,18 +8,18 @@
 #' @examples 
 #' x1 <- bca(tt= matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
 #' m = c(0.9,0.1), cnames = c("yes", "no"),
-#' varnames = "x", varnb = 1)
+#' varnames = "x", idvar = 1)
 #' x2 <- bca(tt = matrix(c(0,1,1,1),nrow = 2, byrow = TRUE), 
 #' m = c(0.5,0.5), cnames = c("yes", "no"), 
-#' varnames = "x", varnb = 1)
+#' varnames = "x", idvar = 1)
 #' print("combination of x1 and x2")
 #' x1x2 <- dsrwon(x1,x2, varname = "x")
 #' nzdsr(x1x2) 
 #' 
 #' print("normalization of a bca definition.")
-#' y2 <- bca(f = matrix(c(0,0,0,1,0,0,1,1,1),nrow = 3, 
+#' y2 <- bca(tt = matrix(c(0,0,0,1,0,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5,0.3), 
-#' cnames = c("a", "b", "c"), varnb = 1)
+#' cnames = c("a", "b", "c"), idvar = 1)
 #' nzdsr(y2)  
 #' @export
 #' 
@@ -32,23 +32,36 @@ nzdsr<-function(x) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
+  #
   # 2023-06-12.
+  #
   # Remove this test The conflict indice does not play a role in the combination by Dempster's rule. This is only a decision aid in the analysis of conflicting evidence
   # if (x$con == 1) { 
   #   stop('Completely conflicting evidence (con = 1). Data is inconsistent.')}
   #
+  # End 2023-06-12
+  #
   ## 2. Reconstruct I12 matrix (need to be updated if missing or if function addTobca has been used to add subsets)
-  if (is.null(x$ssnames) ) {
-  nc <- ncol(x$tt)
-  vacuous <- bca(matrix(rep(1, nc), nrow=1), m=1, cnames = colnames(x$tt))
-  } else { 
-    vacuous <- bca(m = 1,  
-      varnames = "x", 
-      ssnames = list(x$ssnames[[length(x$ssnames)]]), sfod = x$sfod)
-    }
-  vacuous$valuenames <- x$valuenames
-  vacuous$infovar <- x$infovar
-  x <- dsrwon(x,vacuous)
+  #
+  # 2023-06-22 
+  #
+  # Put in comment all code pertaining to reconstruction of I12 and sort_order, using dsrwon. I12 and sort_order are is not necessary to this function when the bca inputted has not changed (by addTobca),
+  #
+  ## Start comment for I12
+  #
+  # if (is.null(x$ssnames) ) {
+  # nc <- ncol(x$tt)
+  # vacuous <- bca(matrix(rep(1, nc), nrow=1), m=1, cnames = colnames(x$tt))
+  # } else { 
+  #   vacuous <- bca(m = 1,  
+  #     varnames = "x", 
+  #     ssnames = list(x$ssnames[[length(x$ssnames)]]), sfod = x$sfod)
+  #   }
+  # vacuous$valuenames <- x$valuenames
+  # vacuous$infovar <- x$infovar
+  # x <- dsrwon(x,vacuous)
+  # 
+  # End comment for I12 
   # case of tt matrix
   if (is.null(x$ssnames)  ) {
   #
@@ -58,6 +71,16 @@ nzdsr<-function(x) {
   w1<- x$tt
   mac<-x$spec[,2]
   nc=ncol(w1) 
+  #
+  # 2023-06-22 test
+  # If sort_order is missing take x$spec[,2] as the order (we assume that r=the empty set is in first position, if there is one)
+  #
+  if (is.null(x$sort_order)) {
+    x$sort_order <- x$spec[,1]
+  }
+  #
+  # End 2023-06-22 test
+  #
   tri<-x$sort_order
   #
   # 4. remove empty set and normalize masses
@@ -100,7 +123,7 @@ nzdsr<-function(x) {
   #
   # construction of the result
   #
-  z <- list(con=x$con, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, ssnames = NULL, sfod = NULL)
+  z <- list(con = m_empty, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, ssnames = NULL, sfod = NULL)
   class(z) <- append(class(z), "bcaspec")
   } else {
   #  
@@ -133,7 +156,7 @@ nzdsr<-function(x) {
   #
   # construction of the result
   #
-  z <- list(con=x$con, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel, ssnames = ssnames, sfod = length(ssnames[[length(ssnames)]]))
+  z <- list(con = m_empty, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel, ssnames = ssnames, sfod = length(ssnames[[length(ssnames)]]))
   class(z) <- append(class(z), "bcaspec")
   }
   return(z)
