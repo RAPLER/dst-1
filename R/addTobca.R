@@ -17,7 +17,8 @@
 #' xy <- dsrwon(x,y)
 #' xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' xy1
-#' addTobca(x, tt = diag(1,  ncol(x$tt) ) ) # add all singletons
+#' # add all singletons to a bca
+#' addTobca(x, tt = diag(rep(1, ncol(x$tt) ) )  ) 
 #' 
 addTobca <- function(x, tt, f) {
   #
@@ -53,10 +54,34 @@ addTobca <- function(x, tt, f) {
   tt1 <- tt[!zt2,]
   #
   # 2.2 transform tt matrix of x
-  x$tt <- rbind(tt1,x$tt)
-  rownames(x$tt) <- nameRows(x$tt)
-  specnb <- 1:nrow(x$tt)
+  ztt <- rbind(tt1,x$tt)
+  rownames(ztt) <- nameRows(ztt)
+  ## 2.3 Order the subsets to find if the empty subset is there. Put empty set in first position of tt matrix
+  sort_order<-order(apply(ztt,1,sum))
+  x$tt <- ztt[sort_order,]
+  if (is.matrix(x$tt) == FALSE) {
+    x$tt <- matrix(tt,ncol = length(tt), dimnames = list(NULL, names(tt)))
+  }
+  ## 2.4 Identify if the empty set is present and define m_empty accordingly with it mass
+  #
   mass <- c(rep(0, sum(!zt2)), x$spec[,2])
-  x$spec <- cbind(specnb, mass)
+  z<- sum(ztt[sort_order[1],])
+  if (z==0) {
+    empty<-sort_order[1]  
+    m_empty<-mass[empty] 
+  } else {
+    empty<-0
+    m_empty<-0
+  }
+  #
+  # 2.5 Put masses in the same order as the tt matrix
+  mass <- mass[sort_order]
+  mMAC <-matrix(mass,ncol=1, dimnames =list(NULL, "mass"))
+  #
+  ## 2.6 Redefine spec matrix
+  #
+  spec <- cbind(1:nrow(x$tt), mMAC)
+  colnames(spec) <- c("specnb", "mass")
+  x$spec <- spec
   return(x)
 } 
