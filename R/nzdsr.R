@@ -20,6 +20,9 @@
 #' y2 <- bca(tt = matrix(c(0,0,0,1,0,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5,0.3), 
 #' cnames = c("a", "b", "c"), idvar = 1)
+#' cat("y2")
+#' cat("\  ")
+#' y2
 #' nzdsr(y2)  
 #' @export
 #' 
@@ -72,14 +75,12 @@ nzdsr<-function(x) {
   mac<-x$spec[,2]
   nc=ncol(w1) 
   #
-  # 2023-06-22 test
-  # If sort_order is missing take x$spec[,2] as the order (we assume that r=the empty set is in first position, if there is one)
+  ## 2023-06-26 test reconstruct sort_order if missing
   #
   if (is.null(x$sort_order)) {
-    x$sort_order <- x$spec[,1]
+  x$sort_order<-order(apply(x$tt,1,sum))
   }
-  #
-  # End 2023-06-22 test
+  # End 2023-06-28 Test
   #
   tri<-x$sort_order
   #
