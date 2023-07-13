@@ -83,5 +83,7 @@ addTobca <- function(x, tt, f) {
   spec <- cbind(1:nrow(x$tt), mMAC)
   colnames(spec) <- c("specnb", "mass")
   x$spec <- spec
+  ## 2.7 2023-07-12 update sort_order
+  x$sort_order <- sort_order
   return(x)
 } 
