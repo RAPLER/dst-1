@@ -52,20 +52,31 @@ addTobca <- function(x, tt, f) {
   zt1 <- dotprod(tt, t(x$tt), g = "&", f = "==")
   zt2 <- apply(zt1, MARGIN = 1, FUN = "reduction", f = "|")
   tt1 <- tt[!zt2,]
+  if (is.matrix(tt1) == FALSE) {
+    tt1 <- matrix(tt1,ncol = length(tt1), dimnames = list(NULL, names(tt1)))
+  }
+  if (nrow(tt1) == 0) {
+    stop("No new subset submitted. Review your input data.") 
+  }
   #
-  # 2.2 transform tt matrix of x
-  ztt <- rbind(tt1,x$tt)
-  rownames(ztt) <- nameRows(ztt)
+  # 2.2 transform tt matrix of x and retain status of rows (old and new)
+  x1 <- cbind(x$tt,0)
+  tt1 <- cbind(tt1,1)
+  ztt <- rbind(tt1,x1)
+ # rownames(ztt) <- nameRows(ztt)
   ## 2.3 Order the subsets to find if the empty subset is there. Put empty set in first position of tt matrix
   sort_order<-order(apply(ztt,1,sum))
-  x$tt <- ztt[sort_order,]
+  ztt <- ztt[sort_order,]
+  x$tt <- ztt[,-ncol(ztt)]
   if (is.matrix(x$tt) == FALSE) {
-    x$tt <- matrix(tt,ncol = length(tt), dimnames = list(NULL, names(tt)))
+    x$tt <- matrix(x$tt,ncol = length(x$tt), dimnames = list(NULL, names(x$tt)))
   }
+ rownames(x$tt) <- nameRows(x$tt)
+  status <- ztt[,ncol(ztt)]
   ## 2.4 Identify if the empty set is present and define m_empty accordingly with it mass
   #
   mass <- c(rep(0, sum(!zt2)), x$spec[,2])
-  z<- sum(ztt[sort_order[1],])
+  z<- sum(x$tt[sort_order[1],])
   if (z==0) {
     empty<-sort_order[1]  
     m_empty<-mass[empty] 
@@ -80,9 +91,11 @@ addTobca <- function(x, tt, f) {
   #
   ## 2.6 Redefine spec matrix
   #
-  spec <- cbind(1:nrow(x$tt), mMAC)
-  colnames(spec) <- c("specnb", "mass")
+  spec <- cbind(1:nrow(x$tt), mMAC, status)
+  colnames(spec) <- c("specnb", "mass", "status")
+  rownames(spec) <- rownames(x$tt)
   x$spec <- spec
+  #
   ## 2.7 2023-07-12 update sort_order
   x$sort_order <- sort_order
   return(x)
