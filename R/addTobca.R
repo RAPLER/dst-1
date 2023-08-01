@@ -28,11 +28,11 @@ addTobca <- function(x, tt, f) {
   # 0. Catch old parameters names, if any and replace by the new ones
   #
   # catch old parameter f and replace by tt if used instead of tt
-  calls <- names(sapply(match.call(), deparse))[-1]
-  if(any("f" %in% calls) & missing(tt)) {
-    warning("Parameter name 'f' is deprecated. Use 'tt' instead.")
-    tt <- f
-  }
+  # calls <- names(sapply(match.call(), deparse))[-1]
+  # if(any("f" %in% calls) & missing(tt)) {
+  #   warning("Parameter name 'f' is deprecated. Use 'tt' instead.")
+  #   tt <- f
+  # }
   #
   # 1. Parameter checks
   #
@@ -56,8 +56,9 @@ addTobca <- function(x, tt, f) {
     tt1 <- matrix(tt1,ncol = length(tt1), dimnames = list(NULL, names(tt1)))
   }
   if (nrow(tt1) == 0) {
-    stop("No new subset submitted. Review your input data.") 
-  }
+    # No new subset submitted 
+    return(x)  
+  } 
   #
   # 2.2 transform tt matrix of x and retain status of rows (old and new)
   x1 <- cbind(x$tt,0)
