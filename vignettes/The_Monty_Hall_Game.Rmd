@@ -229,6 +229,6 @@ To be more specific and make a bridge with probability theory, we can add to our
 
 The function *addTobca* serves this purpose.
 ```{r}
-MHC_plus_singl <- addTobca(MHC, f=matrix(c(0,1,0,0,0,1), ncol = 3, byrow = TRUE))
+MHC_plus_singl <- addTobca(MHC, tt = matrix(c(0,1,0,0,0,1), ncol = 3, byrow = TRUE))
 tabresul(MHC_plus_singl)
 ```
