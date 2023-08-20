@@ -2,7 +2,7 @@ Package: dst
 Type: Package
 Title: Using the Theory of Belief Functions 
 Encoding: UTF-8
-Version: 1.5.1.9004
+Version: 1.5.1.9005
 Date: 2023-04-17
 Author: Claude Boivin <webapp.cb@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
@@ -13,9 +13,14 @@ BugReports: https://github.com/RAPLER/dst-1/issues
 RoxygenNote: 7.1.2
 Depends:
     R (>= 2.10)
-Suggests: testthat,
+Imports: 
+    methods,
+    Matrix,
+    parallel,
+    rlang
+Suggests: 
+    igraph,
     knitr,
     rmarkdown,
-    igraph,
-    parallel
+    testthat
 VignetteBuilder: knitr
