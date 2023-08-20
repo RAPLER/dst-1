@@ -34,8 +34,8 @@ dotprod<-function(x,y,g,f){
   # Local variables: ff, gg, i, j, temp, k,  
   # Functions calls: None
   #
-  if ((is.matrix(x) ==FALSE) | (is.matrix(y) ==FALSE)) {
-    stop("Input parameters must be matrices.")
+  if ( ((is.matrix(x) ==FALSE) & (isS4(x) == FALSE)) | ((is.matrix(y) ==FALSE) & (isS4(y) == FALSE)) ) {
+    stop("Input parameters must be matrices or sparse matrices.")
   }
   if (ncol(x) !=nrow(y)) {
     stop("nb of columns of first matrix not equal to nb rows second matrix.")
@@ -53,6 +53,9 @@ dotprod<-function(x,y,g,f){
       }
       resul[i,j]=temp
     }
+  }
+  if ((isS4(x) == TRUE) | (isS4(y) == TRUE)) {
+  resul <- methods::as(resul, "RsparseMatrix")  
   }
  resul
 }
