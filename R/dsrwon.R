@@ -34,14 +34,14 @@
 #' ssnames = list(c("a"), c("a", "b", "c")), sfod = 3)
 #' dsrwon(x1,x2)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-#' dsrwon(vacuous, vacuous)
 #' vacuous <- bca(m = 1,  
 #' varnames = "x", idvar = 1, 
 #' ssnames = list(c("a", "b", "c")), sfod = 3)
+#' ## dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarnames) {
   #
-  # Local variables: m1,, m2, zx, zy, x1, y1, z, values1, values2, V12, N12, W1, I12, MAC, nMAC
+  # Local variables: m1, m2, zx, zy, x1, y1, z, zz1, zz2,W1_list, W1s, values1, values2, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   # 0. Catch old parameters names, if any and replace by the new ones
   #
@@ -54,105 +54,128 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   # end catches
   #
   ## 1. Checks
-  # class bcaspec
+  # 1.1. class bcaspec
   #
   if ( (inherits(x, "bcaspec") == FALSE) | (inherits(y, "bcaspec") == FALSE)) {
     stop("One or more inputs not of class bcaspec.")
   }
   #
+  # 1.2. x and y must have the same number of variables
   if   ( nrow(x$infovar) != nrow(y$infovar) ) {
     stop("Specification of parameter infovar of the two bca's must identical.")
   }
   #
-  # Put the bca with the largegst tt mattrix in second
-  if (!is.null(x$tt)) {
-  if (nrow(x$tt) <= nrow(y$tt) ) {
+  # 1.3.  Check mass vector
+  #
+  m1 <- x$spec[,2]
+  m2 <- y$spec[,2]
+  if ( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) {
+    print(m1)
+    print(m2)
+    stop("Invalid data, sum of masses of one vector, or both, greater than one.")
+  }
+  #
+  # 1.4 prepare data for parallel processing 
+  # Put the bca with the largegst number of subsets in second
+  #
+  if  ( nrow(x$spec) <= nrow(y$spec) ) {
     zx <- x
     zy <-y
-  } else {
+  } 
+  else {
     zx <- y
     zy <- x
   }
+  # 2. Computation using tt matrices
+  # 2.1. checks specific to the tt matrix 
+  if (!is.null(x$tt)) {
   # 
-  # x1 and y1 must have same frame of discernment
+  # 2.1.1. x1 and y1 must have same frame of discernment
   # and same number of elements
   #
-  x1<-rbind(zx$tt)  # (M x K) matrix
-  y1<-rbind(zy$tt)  # (N x K) matrix
+  x1<-rbind(zx$tt)  # (M x K) matrix or sparse matrix
+  y1<-rbind(zy$tt)  # (N x K) matrix or sparse matrix
   if (ncol(x1) != ncol(y1)) {
     stop("Nb of elements of frame x and frame y not equal.") 
   }
   #
-  ## x1 and x2 must have the same value names put in the same order
+  ## 2.1.2. x1 and x2 must have the same value names put in the same order
   #
   values1 <- unlist(zx$valuenames)
   values2 <- unlist(zy$valuenames)
   nbval <- sum(values1 == values2)
   if ((length(values1) != length(values2)) | (nbval != length(values1))) {
     stop("Value names of the two frames differ. Check value names of variables as well as their position.")
-  }
+    }
+  #
   ## 2a. Calculations
   #
-  # Check mass vector
-  m1 <- zx$spec[,2]
-  m2 <- zy$spec[,2]
-  if ( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) {
-    print(m1)
-    print(m2)
-    stop("Invalid data, sum of masses of one vector, or both, greater than one.")
   }
   ## 2a.1 Combine mass vectors
-  V12<-outer(zx$spec[,2],zy$spec[,2], "*")      # compute masses OK, not long.
-  } else {
-  if (length(x$ssnames) <= length(y$ssnames) ) {
-      zx <- x
-      zy <-y
-    } else {
-      zx <- y
-      zy <- x
-    }
-  # NB refaire ici les tests de L74-L90 avec ssnames
-  #
-  ## 2b. Calculations
-  #
-  # Check mass vector
-    m1 <- zx$spec[,2]
-    m2 <- zy$spec[,2]
-    if ( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) {
-      print(m1)
-      print(m2)
-      stop("Invalid data, sum of masses of one vector, or both, greater than one.")
-    }
-  ## 2b.1 Combine mass vectors
-
-  V12<-t(outer(zx$spec[,2],zy$spec[,2], "*") )     # compute masses OK, not long.
-  } 
+  V12<-outer(zx$spec[,2],zy$spec[,2], "*")
+  # # NB refaire ici les tests de L74-L90 avec ssnames
+  # #
+  # ## 2b. Calculations
+  # #
+  # ## 2b.1 Combine mass vectors
+  # #  
+  # V12<-t(outer(zx$spec[,2],zy$spec[,2], "*") )     # compute masses OK, not long.
   #
   ## 2.2 combine subsets
   # transform table of intersections: (M x N) rows by K 
   # 
-  if (is.null(zx$ssnames) | is.null(zy$ssnames) ) {
+  # test
+  if ((!is.null(zx$tt)) & (!is.null(zy$tt) ) ) {
+ # if (is.null(zx$ssnames) | is.null(zy$ssnames) ) {
+    # 3.0  test 20230727
+    # test avec subset names
+    # Obtain ssnames via tt colnames 
+    #
+    zframe <-colnames(zx$tt)
+    zx$ssnames <- lapply(X=1:nrow(zx$tt), FUN = function(X) {zframe[zx$tt[X,]*1:ncol(zx$tt)]})
+    zy$ssnames <- lapply(X=1:nrow(zy$tt), FUN = function(X) {zframe[zy$tt[X,]*1:ncol(zy$tt)]})
+    #
   # Use multiple cores = "yes"
-  if (mcores == "yes") {
+#  if  ((mcores == "yes") & (is.matrix(zx$tt) == TRUE) ) {
+  if  (mcores == "yes") {
+    if ((isS4(x1) == TRUE ) | (isS4(y1) == TRUE ) ) {
+      y1_df <- Matrix::sparseMatrix(i = (y1@j+1), p = (y1@p), x=TRUE, dims = dim(y1)[2:1], dimnames = list(dimnames(y1)[[2]], dimnames(y1)[[1]]))
+    } 
+    else {
   y1_df <- as.data.frame(t(y1))
-  if  (requireNamespace("parallel", quietly = TRUE) ) {
-    library(parallel) 
-    ncores <- detectCores(logical = FALSE)
-    grappe <- makeCluster(ncores-1)
-    clusterEvalQ(cl = grappe, expr = library(dst))
-    clusterExport(cl = grappe, varlist = list("x1", "y1_df"), envir = environment() )
-    mx1y1_par <- parSapply( cl = grappe, X=1:ncol(y1_df), FUN = function(X) { inters(x1, t(y1_df[X])) }, simplify = FALSE, USE.NAMES = TRUE ) # intersection of the subsets
-    stopCluster(grappe)
-  }
-  N12 <- array(unlist(mx1y1_par), dim = c(shape(mx1y1_par[[1]])[1:2], shape(mx1y1_par)), dimnames = list(unlist(dimnames(mx1y1_par[[1]])[1]), colnames(x1), rownames(y1)) )
-  } else {
+    }
+  ncores <- parallel::detectCores(logical = FALSE)
+  grappe <- parallel::makeCluster(ncores-1)
+ # use devtools for testing
+  #
+  # test
+  parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
+  # parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+  # end test
+  #
+  parallel::clusterExport(cl = grappe, varlist = list("x1", "y1_df"), envir = environment() )
+    if (isS4(y1_df) == TRUE) {
+      mx1y1_par <-  parallel::parSapply( cl = grappe, X=1:nrow(y1_df), FUN = function(X) { inters(x1, matrix(y1_df[X,], nrow = 1) ) }, simplify = FALSE, USE.NAMES = TRUE ) # intersection of the subsets
+    } 
+  else {
+      mx1y1_par <-  parallel::parSapply( cl = grappe, X=1:ncol(y1_df), FUN = function(X) { inters(x1, t(y1_df[X])) }, simplify = FALSE, USE.NAMES = TRUE ) # intersection of the subsets
+    }
+    parallel::stopCluster(grappe)
+  # Transformation 
+      N12 <- mx1y1_par[[1]]
+      for (i in 2:shape(mx1y1_par) ) {
+        N12 <- rbind(N12, mx1y1_par[[i]] )
+      }
+  } 
+    else {
     N12<-inters(x1, y1)         # intersection of the subsets
     }
-  #
-  N12<-aperm(N12,c(2,1,3))   # transformation
-  N12<-array(c(N12),c(dim(N12)[1],prod(dim(N12)[-1])), dimnames= list(colnames(x1), NULL) )
-  N12<-aperm(N12,c(2,1)) 
-  rownames(N12) <- nameRows(N12)
+ #
+ # Matrix transformation
+ #
+    if (isS4(N12) == TRUE ) {
+    N12 <- as.matrix(N12) # convert sparse to matrix. to be able to apply duplicated() operator
+  }
   #
   # Remove duplicates from the table
   W1<- N12[!duplicated(N12),]  ## remove duplicates 
@@ -162,35 +185,47 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   #
   ## 2.3 Identify contributions to each subset and compute mass
   #
-  if (mcores == "yes") {
-  if  (requireNamespace("parallel", quietly = TRUE) ) {
-    z2_df <- as.data.frame(aperm(N12,c(2,1)))
-    ncores <- detectCores(logical = FALSE)
-    grappe <- makeCluster(ncores-1)
-    clusterEvalQ(cl = grappe, expr = library(dst))
-    clusterExport(cl = grappe, varlist = list("W1", "z2_df"), envir = environment() )
+#  if ((mcores == "yes") & (is.matrix(zx$tt) == TRUE) ) {
+  if  (mcores == "yes") {
+    #test
+  #  z2_df <- as.data.frame(aperm(N12,c(2,1)))
+    # end test
+   ncores <-  parallel::detectCores(logical = FALSE)
+   grappe <-  parallel::makeCluster(ncores-1)
+    # use devtools for testing
+    #
+    # test
+    parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
+    # parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+ #   parallel::clusterExport(cl = grappe, varlist = list("W1", "z2_df"), envir = environment() )
+    parallel::clusterExport(cl = grappe, varlist = list("W1", "N12"), envir = environment() )
+  # end test
   #
   ## 2.3 Identify contributions to each subset and compute mass
   #
-   I12_par <- parSapply( cl = grappe, X=1:ncol(z2_df), FUN = function(X) {  dotprod  (W1, as.matrix(z2_df[,X]), g = "&",f = "==")  }, simplify = FALSE, USE.NAMES = TRUE ) 
-   stopCluster(grappe)
-  }
+  # test
+   # I12_par <-  parallel::parSapply( cl = grappe, X=1:ncol(z2_df), FUN = function(X) {  dotprod  (W1, as.matrix(z2_df[,X]), g = "&",f = "==")  }, simplify = FALSE, USE.NAMES = TRUE ) 
+    I12_par <-  parallel::parSapply( cl = grappe, X=1:nrow(N12), FUN = function(X) {  outer(rownames(W1), rownames(N12)[X], FUN = "==")  }, simplify = FALSE, USE.NAMES = TRUE ) 
+   parallel::stopCluster(grappe)
+#  }
   # List to array conversion
   I12 <- array(unlist(I12_par), dim = c(shape(I12_par[[1]])[1], shape(I12_par)))
-  } else {
-   I12<-dotprod(W1,aperm(N12,c(2,1)),g="&",f="==")  
-   # 2023-05-04 to test
-   # replace dotprod by outer(rownames(W1), rownames(N12), FUN = "==")
-   # end test
+  } 
+  else {
+    I12 <- outer(rownames(W1), rownames(N12), FUN = "==")
+    if (isS4(N12) == TRUE) {
+      I12 <- methods::as(I12, "RsparseMatrix")  
+    }
   }
-   MAC<-apply(I12*t(array(V12,dim(t(I12)))),1,sum) 
+   MAC<-apply(I12*t(array(V12,dim(I12)[2:1]) ),1,sum) 
  
   ## 2.4.1  Order the subsets to find if the empty subset is there. Put empty set in first position of tt matrix
-  sort_order<-order(apply(W1,1,sum))
+  sort_order <-order(apply(W1,1,sum))
   tt <- W1[sort_order,]
-  if (is.matrix(tt) == FALSE) {
+  if ((is.matrix(tt) == FALSE) & (is.matrix(W1) == TRUE) ) {
     tt <- matrix(tt,ncol = length(tt), dimnames = list(NULL, names(tt)))
   }
+  #
   ## 2.5.1 Identify if the empty set is present and define m_empty accordingly with it mass
   # Put masses in the same order as the tt matrix
   #
@@ -198,7 +233,8 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   if (z==0) {
     empty<-sort_order[1]  
     m_empty<-MAC[empty] 
-  } else {
+  } 
+  else {
     empty<-0
     m_empty<-0
   }
@@ -210,43 +246,35 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   spec <- cbind(1:nrow(tt), mMAC)
   colnames(spec) <- c("specnb", "mass")
   # 
-  ## 2.7.1  Revised 2021-04-23
-  ##
-  # test 2023-06-12 remove c12
-  # con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
- # con12 (measure of conflict) must not be in this test, only as a decision aid
-  # # test 2023-06-12
-  con12 <- m_empty
-  #
- # if  ((con12 == 1) | (m_empty == 1)) { 
-   if  (m_empty == 1) { 
+  ## 2.7.1  Revised 2023-06-14
+  ## measure of contradiction (con). It is simply m_empty, always
+  # 
+  con <- m_empty
+  if  (con == 1) { 
     warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
-     }
-  # "con" stays unchanged by a vacuous combination
-  if (nrow(zx$tt)==1 |nrow(zy$tt) == 1) {
-    con <- con12 
-  } else {
-    # # test 2023-06-12
-    con <- m_empty
-   # con<-1-(1-con12)*(1-m_empty) # OK checked
-   #  
-  }
-  # test avec subset names
+       }
   } 
   #
-  # NEW. Test avec utilisation de subsets names
+  # 3. NEW. Test avec utilisation de subsets names
   #
-  else {
-    # compute N12 and transform
+  if ((is.null(zx$tt)) | (is.null(zy$tt) ) ) {
+ # else {
+    #
+    # Computation with ssnames
+    # 3.1.compute N12 and transform
     #
     N12 <-  mapply(FUN= function(X,Y) {lapply(X = 1:length(zx$ssnames), FUN = function(X) {intersect(zx$ssnames[[X]], zy$ssnames[[Y]])} )}, Y=1:length(zy$ssnames) ) 
     # Transform N12
+    # for every element of the list, sequence of elements of the subsets
     cN12 <- c(N12)
+    # Obtain ssnames as a list
     cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { reduction(cN12[[X]], f = "paste")})
-    cN12cf <- unlist(lapply(X=1:length(cN12c), FUN = function(X) {if (length(cN12c[[X]]) == 0){ cN12c[[X]] = "Empty"} else cN12c[[X]] }) )
+    # Transform list in character vector
+    cN12v <- unlist(lapply(X=1:length(cN12c), FUN = function(X) {if (length(cN12c[[X]]) == 0){ cN12c[[X]] <- "Empty"} else cN12c[[X]] }) )
     #
-    # Compute W1 as character vector and list
-    W1 <- cN12cf[!duplicated(cN12cf)]
+    # 3.2 Compute W1 as character vector and list
+    #
+    W1 <- cN12v[!duplicated(cN12v)]
     W1_list <- cN12[!duplicated(cN12)]
      #
     # Transformations to obtain I12 matrix
@@ -255,23 +283,62 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
     # W1c <- lapply(X=1:length(W1), FUN =  function(X) { reduction(W1[[X]], f = "paste")})
     # W1cf <- unlist(lapply(X=1:length(W1c), FUN = function(X) {if (length(W1c[[X]]) == 0){ W1c[[X]] = "Empty"} else W1c[[X]] }) )
     #
-    # Compute I12 matrix
-    I12 <- outer(W1, cN12cf, FUN = "==" )
+    # 3.3 Compute I12 matrix
+    #
+    I12 <- outer(W1, cN12v, FUN = "==" )
    #
    # 2.4.2  Order the subsets to find if the empty subset is there. Put empty set in first position of ssnames list
    #
-   MAC<-apply(I12*t(array(t(V12),dim(t(I12)))),1,sum)   
+   # compute masses
+   MAC<-apply(I12*t(array(V12,dim(t(I12)))),1,sum)   
+   #
    sort_order<-order(unlist(lapply(X=1:length(W1_list), FUN = function(X) {shape(W1_list[[X]])} )))
-   tt <- NULL
-    #
+   W1s <- W1_list[sort_order] # put W1_list in order
+   zframe <- W1s[[length(W1s)]]
+   # Reconstruct tt from ssnames
+   # matrices will ne to big  this way
+   zz1 <- lapply(X=1:length(W1s), FUN = function(X) {outer(W1s[[X]], zframe, "==")})
+   zz2 <- mapply(FUN= function(X,Y) {lapply(X = 1:length(W1s), FUN = function(X) {reduction((zz1[[X]])[,Y], f="|")}) }, Y=1:length(zframe)) 
+   # if ( sum(unlist(zz2[1,])) == 0 ) {
+   #   zz2[1,] <- rep(0, length(zframe))
+   # }
+   # tt <- matrix(unlist(t(zz2)), nrow = dim(zz2)[1], byrow = TRUE)
+   # tt <- methods::as(tt, "RsparseMatrix")
+   # colnames(tt) <- zframe
+   # rownames(tt) <- nameRows(tt)
+   # #
+   # Reconstruct tt from ssnames Second method
+   #
+   rowIdx <- vector()
+   colIdx <- vector()
+   for (i in 1:length(W1s) )  {
+     tempc <-  (unlist(zz2[i,])*(1:length(zframe)) )
+     colIdx <- c(colIdx, tempc )
+     tempr <- rep(i,sum(tempc >0) )
+     rowIdx <- c(rowIdx, tempr)
+   }
+   colIdx <- colIdx[colIdx>0]
+   # création de la matrice sparse
+   tt <- Matrix::sparseMatrix(
+     i = rowIdx,
+     j = colIdx, 
+     x = 1, 
+     dims = c(length(W1s), length(zframe) )
+   )
+   tt <- methods::as(tt, "RsparseMatrix")
+   colnames(tt) <- zframe
+   rownames(tt) <- nameRows(tt)
+   #
+   # sparse tt
   ## 2.5.2 Identify if the empty set is present and define m_empty accordingly with it mass
   # Put masses in the same order as the ssnames list
   #
-  z <- unlist(W1_list[sort_order[[1]]])
+  z <- unlist(W1s[[1]])
    if (rlang::is_empty(z) == TRUE) {
      empty<-sort_order[1]  
      m_empty<-MAC[empty] 
-   } else {
+   } else 
+     {
      empty<-0
      m_empty<-0
    }
@@ -285,34 +352,13 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   colnames(spec) <- c("specnb", "mass")
   #
   #
-  ## 2.7.2  
- #  con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
- #  # con12 (measure of conflict) must not be in this test, only as a decision aid
- # # if  ((con12 == 1) | (m_empty == 1)) { 
- #  if  (m_empty == 1) { 
- #    warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
- #    }
-  # test 2023-06-12 remove c12
-  # con12<-1-(1-zx$con)*(1-zy$con) # conflicting evidence inputted
-  # con12 (measure of conflict) must not be in this test, only as a decision aid
-  # # test 2023-06-12
-  con12 <- m_empty
+  ## 2.7.2  Revised 2023-06-14
+  # Measure of conflict (con). It is simply m_empty, always
   #
-  # if  ((con12 == 1) | (m_empty == 1)) { 
-  if  (m_empty == 1) { 
+  con <- m_empty
+  if  (con == 1) { 
     warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
-  }
-  #
-  # NOTE: "con" stays unchanged by a vacuous combination
-  #
- if (shape(zx$ssnames) == 1 | shape(zy$ssnames) == 1) {
-   con <- con12 
-   } else {
-     # # test 2023-06-12
-    con <- m_empty
-  # con<-1-(1-con12)*(1-m_empty) 
-  #
-   }
+    }
   }
   # end test avec subsets names
   #
@@ -334,7 +380,8 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   # inforel parameter
   if (missing(relnb) | is.null(relnb)) { 
     inforel <- zx$inforel
-    } else {
+    } 
+  else {
     depth <- zx$inforel[,2]
     inforel <- matrix(c(relnb, depth), ncol = 2)
     colnames(inforel) <- c("relnb", "depth")
@@ -342,11 +389,13 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   #
   # construction of the result
   #
-  if (is.null(zx$ssnames) | is.null(zy$ssnames) ) {
+  if ((!is.null(zx$tt)) & (!is.null(zy$tt) ) ) {
+ #  if (is.null(zx$ssnames) | is.null(zy$ssnames) ) {
     z <- list(con = con, tt=tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = NULL, sfod = NULL)
   class(z) <- append(class(z), "bcaspec") 
-  } else {
-    z <- list(con = con, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = W1_list[sort_order], sfod = zx$sfod)
+  } 
+  else {
+    z <- list(con = con, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, I12=I12, sort_order=sort_order, ssnames = W1_list[sort_order], sfod = zx$sfod)
     class(z) <- append(class(z), "bcaspec") 
   }
   return(z)

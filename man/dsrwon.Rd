@@ -51,10 +51,10 @@ varnames = "x", idvar = 1,
 ssnames = list(c("a"), c("a", "b", "c")), sfod = 3)
 dsrwon(x1,x2)
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-dsrwon(vacuous, vacuous)
 vacuous <- bca(m = 1,  
 varnames = "x", idvar = 1, 
 ssnames = list(c("a", "b", "c")), sfod = 3)
+## dsrwon(vacuous, vacuous)
 }
 \references{
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
