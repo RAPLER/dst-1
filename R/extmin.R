@@ -135,7 +135,7 @@ extmin <- function(rel1, relRef) {
   rtt <- marrayToMatrix(zc)
   #
   # result  
-  zr <-list(con = rel1$con, tt = rtt, spec = rel1$spec, infovar = infovar, varnames = relRef$varnames, valuenames= relRef$valuenames, inforel = relRef$inforel)
+  zr <-list(con = rel1$con, tt = rtt, ssnames = NULL, sfod = NULL, spec = rel1$spec, infovar = infovar, varnames = relRef$varnames, valuenames= relRef$valuenames, inforel = relRef$inforel)
   class(zr) <- append(class(zr), "bcaspec")
   return(zr)
 }
