@@ -126,7 +126,8 @@ nzdsr<-function(x) {
   #
   z <- list(con = m_empty, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, ssnames = NULL, sfod = NULL)
   class(z) <- append(class(z), "bcaspec")
-  } else {
+  } 
+  else {
   #  
   # 4b. remove empty set and normalize masses
   #  
