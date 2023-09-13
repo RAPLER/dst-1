@@ -17,9 +17,7 @@ bca(
   inforel = NULL,
   f,
   varnb,
-  infovarnames,
-  ssnames = NULL,
-  sfod = NULL
+  infovarnames
 )
 }
 \arguments{
@@ -46,10 +44,6 @@ bca(
 \item{varnb}{Deprecated. Old name for \code{idvar}.}
 
 \item{infovarnames}{Deprecated. Old name for \code{varnames}.}
-
-\item{ssnames}{NEW. A list of labels to uniquely identify each subset of the bca. It will replace the tt matrix when desired.}
-
-\item{sfod}{NEW. Size of the frame of discernment (Fod).}
 }
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
@@ -75,8 +69,7 @@ m<- c(.9,.1)
 cnames <- c("yes","no")
 bca(tt, m)
 bca(tt, m, cnames)
-sslabel <- list("yes", "frame")
-bca(m = m, cnames = cnames, ssnames = sslabel, sfod = 2, idvar = 1)
+bca(m = m, cnames = cnames, idvar = 1)
 tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 colnames(tt1) <- c("yes", "no")
 m <- c(.9, .1)
@@ -89,12 +82,8 @@ byrow = TRUE), m = c(0.6,0.4),
 cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 x1 <- bca(m = c(0.2,0.5, 0.3), 
-ssnames = list(c("b", "c"), c("a", "b"), c("a", "b", "c") ),  
-sfod = 3,
 varnames = "x", idvar = 1) 
 x2 <- bca(m = c(0.6, 0.4),  
-ssnames = list(c("a"), c("a", "b", "c") ),
-sfod = 3,  
 varnames = "x", idvar = 1)
 }
 \references{
