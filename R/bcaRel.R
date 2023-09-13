@@ -121,7 +121,7 @@
     #
     # Result
     #
-   zr <-bca(tt = z1, ssnames = NULL, sfod = NULL, m = v, cnames = colnz1, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
+   zr <-bca(tt = z1, m = v, cnames = colnz1, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
    return(zr)
   }
 }
