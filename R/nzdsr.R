@@ -124,7 +124,7 @@ nzdsr<-function(x) {
   #
   # construction of the result
   #
-  z <- list(con = m_empty, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, ssnames = NULL, sfod = NULL)
+  z <- list(con = m_empty, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
   class(z) <- append(class(z), "bcaspec")
   } 
   else {
@@ -158,7 +158,7 @@ nzdsr<-function(x) {
   #
   # construction of the result
   #
-  z <- list(con = m_empty, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel, ssnames = ssnames, sfod = length(ssnames[[length(ssnames)]]))
+  z <- list(con = m_empty, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel)
   class(z) <- append(class(z), "bcaspec")
   }
   return(z)
