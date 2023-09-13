@@ -136,7 +136,7 @@ bcaTrunc <-function(x, seuil) {
   # tr_x <-dsrwon(tr_x, vacuous)
   # 3. Construction of the result
   #
-  y<-list(con = x$con, tt = tr_x, ssnames = x$ssnames, sfod = x$sfod,  spec = spec , infovar = x$infovar, varnames = x$varnames, valuenames = x$valuenames, inforel = x$inforel) 
+  y<-list(con = x$con, tt = tr_x,  spec = spec , infovar = x$infovar, varnames = x$varnames, valuenames = x$valuenames, inforel = x$inforel) 
   class(y) <- append(class(y), "bcaspec")
   return(y)
  }
