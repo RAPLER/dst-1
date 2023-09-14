@@ -4,12 +4,22 @@
 \alias{dsrwon}
 \title{Combination of two mass functions}
 \usage{
-dsrwon(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarnames)
+dsrwon(
+  x,
+  y,
+  sparseM = FALSE,
+  mcores = "no",
+  varnames = NULL,
+  relnb = NULL,
+  infovarnames
+)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
 
 \item{y}{A basic chance assignment (see \code{\link{bca}}).}
+
+\item{sparseM}{Put TRUE to indicate the use of sparse matrices as input. Default = FALSE.}
 
 \item{mcores}{Make use of multiple cores ("yes") or not ("no"). Default = "no".}
 
@@ -43,18 +53,8 @@ byrow = TRUE), m = c(0.6, 0.4),
 cnames = c("a", "b", "c"),  
 varnames = "x", idvar = 1)
 dsrwon(y1,y2)
-x1 <- bca(m = c(0.2,0.5, 0.3), 
-varnames = "x", idvar = 1, 
-ssnames = list(c("b", "c"), c("a", "b"), c("a", "b", "c")), sfod = 3)
-x2 <- bca(m = c(0.6, 0.4),  
-varnames = "x", idvar = 1, 
-ssnames = list(c("a"), c("a", "b", "c")), sfod = 3)
-dsrwon(x1,x2)
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-vacuous <- bca(m = 1,  
-varnames = "x", idvar = 1, 
-ssnames = list(c("a", "b", "c")), sfod = 3)
-## dsrwon(vacuous, vacuous)
+dsrwon(vacuous, vacuous)
 }
 \references{
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
