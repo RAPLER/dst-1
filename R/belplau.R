@@ -57,8 +57,11 @@ belplau<-function (x, remove=FALSE) {
   #
   # check if only one row, convert to matrix
   xtest <- x$tt
-  if (is.matrix(xtest) == FALSE) { 
-    xtest <- t(as.matrix(xtest)) 
+  # if (is.matrix(xtest) == FALSE) { 
+  #   xtest <- t(as.matrix(xtest)) 
+  # }
+  if (shape(shape(xtest)) < 2 ) {
+    xtest <- matrix(xtest, nrow = 1)
   }
   #
   # check if m_empty present and if not 0
