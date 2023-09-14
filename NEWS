@@ -1,3 +1,11 @@
+dst 1.5.1.9006
+
+ssnames: New function. Construct subsets names from the columns names of tt matrix. Subsets names will be used to do intersections instead of (0,1) matrices.
+
+dsrwon. New version allowing the use of sparse matrices.
+
+dotprod, inters nameRows. Update of functions to allow the use of sparse matrices
+-------
 dst 1.5.1.9004
 
 nzdsr: 2023-04-17.  Added another missing specification to variable vacuous
