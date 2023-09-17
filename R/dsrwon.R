@@ -130,8 +130,8 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
  # use devtools for testing
   #
   # test
-  parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
-  # parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+ # parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
+ parallel::clusterEvalQ(cl = grappe, expr = library(dst))
   # end test
   #
   parallel::clusterExport(cl = grappe, varlist = list("x1", "y1"), envir = environment() )
@@ -167,8 +167,8 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
     # use devtools for testing
     #
     # test
-    parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
-    # parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+   # parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
+    parallel::clusterEvalQ(cl = grappe, expr = library(dst))
     parallel::clusterExport(cl = grappe, varlist = list("W1", "N12"), envir = environment() )
   # end test
   #
@@ -243,8 +243,8 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
       # use devtools for testing
       #
       # test
-      parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
-      # parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+     # parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
+      parallel::clusterEvalQ(cl = grappe, expr = library(dst))
       # end test
       #
       zzx=zx$ssnames
@@ -260,6 +260,12 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
     # for every element of the list, sequence of elements of the subsets
     cN12 <- c(t(N12) )
     # Obtain ssnames as a list
+    # # Test  pour enlever "reduuction"
+    # cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { paste(cN12[[X]], collapse = ' ')}) 
+    # # Transform list in character vector
+    # cN12v <- unlist(lapply(X=1:length(zzz), FUN = function(X) {if (zzz[[X]] == ""){ zzz[[X]] = "Empty"} else zzz[[X]] }) )
+    # # Fin test pour enlever "reduuction"
+    #
     cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { reduction(cN12[[X]], f = "paste")})
     # Transform list in character vector
     cN12v <- unlist(lapply(X=1:length(cN12c), FUN = function(X) {if (length(cN12c[[X]]) == 0){ cN12c[[X]] <- "Empty"} else cN12c[[X]] }) )
@@ -276,8 +282,8 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
       # use devtools for testing
       #
       # test
-      parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
-      # parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+      # parallel::clusterEvalQ(cl = grappe, expr = devtools::load_all("."))
+      parallel::clusterEvalQ(cl = grappe, expr = library(dst))
       # end test
       #
       parallel::clusterExport(cl = grappe, varlist = list("W1", "cN12v"), envir = environment() )
