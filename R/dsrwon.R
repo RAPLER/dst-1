@@ -98,11 +98,11 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
   nbval <- sum(values1 == values2)
   if ((length(values1) != length(values2)) | (nbval != length(values1))) {
     stop("Value names of the two frames differ. Check value names of variables as well as their position.")
-    }
-  #
   }
+  #
   ## 2a. Calculations
   #
+  }
   ## 2a.1 Combine mass vectors
   V12<-outer(zx$spec[,2],zy$spec[,2], "*")
   #
