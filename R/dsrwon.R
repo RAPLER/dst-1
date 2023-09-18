@@ -126,7 +126,7 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
   # Use multiple cores = "yes"
   if  (mcores == "yes") {
   ncores <- parallel::detectCores(logical = FALSE)
-  grappe <- parallel::makeCluster(ncores)
+  grappe <- parallel::makeCluster(ncores-1)
  # use devtools for testing
   #
   # test
@@ -163,7 +163,7 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
   #
   if  (mcores == "yes") {
    ncores <-  parallel::detectCores(logical = FALSE)
-   grappe <-  parallel::makeCluster(ncores)
+   grappe <-  parallel::makeCluster(ncores-1)
     # use devtools for testing
     #
     # test
@@ -239,7 +239,7 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
     # Use multiple cores = "yes"
     if  (mcores == "yes") {
       ncores <- parallel::detectCores(logical = FALSE)
-      grappe <- parallel::makeCluster(ncores)
+      grappe <- parallel::makeCluster(ncores-1)
       # use devtools for testing
       #
       # test
@@ -278,7 +278,7 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
     # identify contribution of cN12v to each subset of W1
     if  (mcores == "yes") {
       ncores <- parallel::detectCores(logical = FALSE)
-      grappe <- parallel::makeCluster(ncores)
+      grappe <- parallel::makeCluster(ncores-1)
       # use devtools for testing
       #
       # test
