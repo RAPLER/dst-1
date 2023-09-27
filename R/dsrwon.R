@@ -266,7 +266,8 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
     # cN12v <- unlist(lapply(X=1:length(zzz), FUN = function(X) {if (zzz[[X]] == ""){ zzz[[X]] = "Empty"} else zzz[[X]] }) )
     # # Fin test pour enlever "reduuction"
     #
-    cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { reduction(cN12[[X]], f = "paste")})
+   # cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { reduction(cN12[[X]], f = "paste")})
+   cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { Reduce("paste", cN12[[X]])}) # Plus rapide
     # Transform list in character vector
     cN12v <- unlist(lapply(X=1:length(cN12c), FUN = function(X) {if (length(cN12c[[X]]) == 0){ cN12c[[X]] <- "Empty"} else cN12c[[X]] }) )
     #
