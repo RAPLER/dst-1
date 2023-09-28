@@ -1,6 +1,10 @@
-dst 1.5..1.9008
-Temporarily removed the possibility of using subsets label (parameter ssnames) instead of a description matrix (parameter tt). This possibility will retested later.
+dst 1.5.1.9009
+Same as .9008
+_______________
+dst 1.5.1.9008
 
+Temporarily removed the possibility of using subsets label (parameter ssnames) instead of a description matrix (parameter tt). This possibility will retested later.
+_________________
 dst 1.5.1.9007
 
 addTobca: A parameter "status" has been added to the "spec" of the bca in order to distinguish the new subsets added from the ones already present (documentation to be updated with an example).
