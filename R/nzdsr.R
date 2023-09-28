@@ -66,7 +66,10 @@ nzdsr<-function(x) {
   # 
   # End comment for I12 
   # case of tt matrix
-  if (is.null(x$ssnames)  ) {
+  #
+  # test 20230927 faire seulement avec tt matrice
+  #
+ # if (is.null(x$ssnames)  ) {
   #
   # 3. Assign variables
   #
@@ -126,40 +129,43 @@ nzdsr<-function(x) {
   #
   z <- list(con = m_empty, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
   class(z) <- append(class(z), "bcaspec")
-  } 
-  else {
-  #  
-  # 4b. remove empty set and normalize masses
-  #  
-  MAC <- x$spec[,2]
-  if (x$spec[1,2] != 0) {
-    MACC <- MAC[-1]/(1-MAC[1])  
-    } else {
-    MACC <- MAC
-    }
   #
-  # 5b. Update bca parameters 
-  #
-  # ssnames
-  ssnames <- x$ssnames[-1]
-  #
-  # spec parameter
-  #
-  spec <- cbind((1:(-1+length(x$ssnames)) ), MACC)
-  colnames(spec) <- c("specnb", "mass") 
-  #
-  # infovar, varnames, valuenames, inforel parameters
-  #
-  infovar <- x$infovar
-  varnames <- x$varnames
-  relnb <- (x$inforel)[1,1]
-  inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
-  colnames(inforel) <- c("relnb", "depth") 
-  #
-  # construction of the result
-  #
-  z <- list(con = m_empty, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel)
-  class(z) <- append(class(z), "bcaspec")
-  }
+  # fin test 20230927 
+  # partie ssnames en comment pour test
+  # } 
+  # else {
+  # #  
+  # # 4b. remove empty set and normalize masses
+  # #  
+  # MAC <- x$spec[,2]
+  # if (x$spec[1,2] != 0) {
+  #   MACC <- MAC[-1]/(1-MAC[1])  
+  #   } else {
+  #   MACC <- MAC
+  #   }
+  # #
+  # # 5b. Update bca parameters 
+  # #
+  # # ssnames
+  # ssnames <- x$ssnames[-1]
+  # #
+  # # spec parameter
+  # #
+  # spec <- cbind((1:(-1+length(x$ssnames)) ), MACC)
+  # colnames(spec) <- c("specnb", "mass") 
+  # #
+  # # infovar, varnames, valuenames, inforel parameters
+  # #
+  # infovar <- x$infovar
+  # varnames <- x$varnames
+  # relnb <- (x$inforel)[1,1]
+  # inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
+  # colnames(inforel) <- c("relnb", "depth") 
+  # #
+  # # construction of the result
+  # #
+  # z <- list(con = m_empty, tt = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel)
+  # class(z) <- append(class(z), "bcaspec")
+  # }
   return(z)
     }
