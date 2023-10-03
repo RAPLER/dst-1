@@ -14,14 +14,11 @@ bca(
   infovar = NULL,
   varnames = NULL,
   valuenames = NULL,
-  inforel = NULL,
-  f,
-  varnb,
-  infovarnames
+  inforel = NULL
 )
 }
 \arguments{
-\item{tt}{A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
+\item{tt}{Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
 
 \item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.}
 
@@ -38,12 +35,6 @@ bca(
 \item{valuenames}{A list of the names of the variables with the name of the elements of their frame of discernment.}
 
 \item{inforel}{Not used here. Defined within function \code{\link{bcaRel}}.}
-
-\item{f}{Deprecated. Old name for \code{tt} matrix.}
-
-\item{varnb}{Deprecated. Old name for \code{idvar}.}
-
-\item{infovarnames}{Deprecated. Old name for \code{varnames}.}
 }
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
@@ -53,6 +44,7 @@ y An object of class \code{bcaspec} called a bca for "basic chance assignment": 
   \item infovar  The number of the variable and the size of the frame of discernment.
   \item varnames  The name of the variable.
   \item valuenames  A list of length 1 consisting of the name of the variable with the names of the elements of the frame of discernment (the column names of the \code{tt} matrix).
+  \ittem ssnames A list of subsets names done from the column names of the tt matrix.
   \item inforel  Set at 0. used in function \code{\link{bcaRel}}.
   }
 }
@@ -69,7 +61,7 @@ m<- c(.9,.1)
 cnames <- c("yes","no")
 bca(tt, m)
 bca(tt, m, cnames)
-bca(m = m, cnames = cnames, idvar = 1)
+bca(m = m, cnames = cnames, idvar = 1) # Error if no tt matrix supplied
 tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 colnames(tt1) <- c("yes", "no")
 m <- c(.9, .1)
@@ -81,10 +73,6 @@ y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2,
 byrow = TRUE), m = c(0.6,0.4), 
 cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-x1 <- bca(m = c(0.2,0.5, 0.3), 
-varnames = "x", idvar = 1) 
-x2 <- bca(m = c(0.6, 0.4),  
-varnames = "x", idvar = 1)
 }
 \references{
 \itemize{

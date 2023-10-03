@@ -5,16 +5,13 @@
 #' 
 #' There is two ways of defining the bca: a (0,1) matrix or a list of subsets labels.
 #' @aliases bpa
-#' @param tt A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
-#' @param f Deprecated. Old name for \code{tt} matrix. 
+#' @param tt Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
 #' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
 #' @param idvar The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted. 
-#' @param varnb Deprecated. Old name for \code{idvar}. 
 #' @param infovar  A two-column matrix containing variable identification numbers and the number of elements of the variable. Generated if omitted.
 #' @param varnames The name of the variable. Generated if omitted.
-#' @param infovarnames Deprecated. Old name for \code{varnames}.
 #' @param valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
 #' @param inforel Not used here. Defined within function \code{\link{bcaRel}}.
 #' @return y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
@@ -24,6 +21,7 @@
 #'   \item infovar  The number of the variable and the size of the frame of discernment.
 #'   \item varnames  The name of the variable.
 #'   \item valuenames  A list of length 1 consisting of the name of the variable with the names of the elements of the frame of discernment (the column names of the \code{tt} matrix).
+#'   \ittem ssnames A list of subsets names done from the column names of the tt matrix.
 #'   \item inforel  Set at 0. used in function \code{\link{bcaRel}}.
 #'   }
 #' @author Claude Boivin
@@ -34,7 +32,7 @@
 #' cnames <- c("yes","no")
 #' bca(tt, m)
 #' bca(tt, m, cnames)
-#' bca(m = m, cnames = cnames, idvar = 1)
+#' bca(m = m, cnames = cnames, idvar = 1) # Error if no tt matrix supplied
 #' tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 #' colnames(tt1) <- c("yes", "no")
 #' m <- c(.9, .1)
@@ -46,18 +44,14 @@
 #' byrow = TRUE), m = c(0.6,0.4), 
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-#' x1 <- bca(m = c(0.2,0.5, 0.3), 
-#' varnames = "x", idvar = 1) 
-#' x2 <- bca(m = c(0.6, 0.4),  
-#' varnames = "x", idvar = 1)
 #' @references \itemize{
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL, f, varnb, infovarnames) {
+bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
-  # Local variables: None 
-  # Functions calls: nameRows
+  # Local variables: ztable, zdup, zframe, znames
+  # Functions calls: nameRows, ssnames
   #
   # 1. Catch old parameters names, if any and replace by the new ones
   #
@@ -80,25 +74,39 @@ bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = N
   #
   # 2. Choose between tt or ssnames and Determine names of columns of tt matrix and fix some parameters
   #
-  # Case 1: bca constructed with a (0,1) description matrix
+  # 2 Check inputs: bca constructed with a (0,1) description matrix
+  # Check on tt
+ if (is.null(tt)) {
+   stop("Error in input arguments: description matrix tt is missing.") 
+ }
   #
- if (!is.null(tt)) {
-  if (is.null(cnames)) { cnames = colnames (tt)} # cnames stay null if no column names present
-  if (is.null(cnames)) {    
-    # cnames <- paste(rep("col",ncol(tt)),c(1:ncol(tt)),sep="")
-    cnames <- colnames(tt, do.NULL = FALSE, prefix = "col") # mod. 20221204
+  # Check column names
+  if (is.null(cnames)) { 
+    cnames = colnames (tt) # cnames stay null if no column names present
   } 
-  if((abs(sum(m)-1)>0.000001) | (length(tt[,1])!=length(m)) | (length(tt[1,])!=length(cnames))) { 
+  if (is.null(cnames)) {    
+    cnames <- colnames(tt, do.NULL = FALSE, prefix = "col") 
+  } 
+  #
+  # Check for duplicates column names
+  ztable <- outer(cnames, cnames, "==")
+  zdup <- apply(ztable, 2, sum)
+  if (sum(zdup) != ncol(tt)) {
+    stop("Error in input arguments: Duplicate names in column names of tt matrix or in column names supplied.") 
+  }
+  #
+  # Check mass vector
+  #
+  if((abs(sum(m)-1)>0.000001) | (length(tt[,1])!=length(m)) ) { 
     stop("Error in input arguments: check your input data.") 
     }
   else {
-    colnames(tt) <- cnames
-    
+    colnames(tt) <- cnames # for the case where tt matrix had no column names
     if (is.null(con)) { con <- 0 }
     if (is.null(idvar)) { idvar <- 0 }
-    #
-    # 3. Build infovar parameter
-    #
+  #
+  # 3. Build infovar parameter
+  #
     if (is.null(infovar)) {
       infovar <- matrix(c(idvar, ncol(tt)), ncol = 2)
     }
@@ -132,18 +140,21 @@ bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = N
     }
     colnames(inforel) <- c("relnb", "depth")
     # 
-    # 7. Construction of the result
+    # 7 build subsets names
+    # 
+    zframe <-colnames(tt)
+    znames <- lapply(X=1:nrow(tt), FUN = function(X) {zframe[tt[X,]*1:ncol(tt)]})
+    #
+    # 8. Construction of the result
     #
     rownames(tt) <- nameRows(tt)
     #
-    ## test
-    y<-list(con = con, tt = tt, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel) 
+    y<-list(con = con, tt = tt, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
     # end test
     #
     class(y) <- append(class(y), "bcaspec")
     return(y)
   }
-  } 
   # Section with ssnames removed
   # else {
   #    #
