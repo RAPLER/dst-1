@@ -27,6 +27,12 @@
 #' cnames = c("a", "b", "c"),  
 #' varnames = "x", idvar = 1)
 #' dsrwon(y1,y2)
+#' # Sparse matrices
+#' y1s <- y1
+#' y2s <- y2
+#' y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
+#' y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
+#' y1y2s <- dsrwon(y1s, y2s, sparseM = TRUE)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
@@ -111,12 +117,14 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
   ## 2.2 combine subsets
   # transform table of intersections: (M x N) rows by K 
   # 
-     # Obtain ssnames via tt colnames
+     # Obtain ssnames via tt colnames iif mising
+  if (is.null(zx$ssnames) | is.null(zy$ssnames)) {
   if ((!is.null(zx$tt)) & (!is.null(zy$tt) ) ) {
      zframe <-colnames(zx$tt)
      zx$ssnames <- lapply(X=1:nrow(zx$tt), FUN = function(X) {zframe[zx$tt[X,]*1:ncol(zx$tt)]})
      zy$ssnames <- lapply(X=1:nrow(zy$tt), FUN = function(X) {zframe[zy$tt[X,]*1:ncol(zy$tt)]})
   }
+  }  
   #
   #  Calculations with tt matrices, non sparse)
   if (sparseM == FALSE ) {
@@ -260,7 +268,7 @@ dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", varnames = NULL, relnb = 
     # for every element of the list, sequence of elements of the subsets
     cN12 <- c(t(N12) )
     # Obtain ssnames as a list
-    # # Test  pour enlever "reduuction"
+    # # Test  pour enlever "reduction"
     # cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { paste(cN12[[X]], collapse = ' ')}) 
     # # Transform list in character vector
     # cN12v <- unlist(lapply(X=1:length(zzz), FUN = function(X) {if (zzz[[X]] == ""){ zzz[[X]] = "Empty"} else zzz[[X]] }) )
