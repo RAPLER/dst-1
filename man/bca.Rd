@@ -44,7 +44,7 @@ y An object of class \code{bcaspec} called a bca for "basic chance assignment": 
   \item infovar  The number of the variable and the size of the frame of discernment.
   \item varnames  The name of the variable.
   \item valuenames  A list of length 1 consisting of the name of the variable with the names of the elements of the frame of discernment (the column names of the \code{tt} matrix).
-  \ittem ssnames A list of subsets names done from the column names of the tt matrix.
+  \item ssnames A list of subsets names done from the column names of the tt matrix.
   \item inforel  Set at 0. used in function \code{\link{bcaRel}}.
   }
 }
