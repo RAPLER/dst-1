@@ -8,6 +8,7 @@
 #' The plausibility ratio of a focal element \code{A} versus its contrary \code{not A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.
+#' @param h = NULL: Hypothesis to be tested
 #' @return A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
 #'  \item Column 1: the degree of belief \code{Bel};
 #'  \item Column 2: the degree of Plausibility \code{Pl};
@@ -33,7 +34,7 @@
 #' xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' belplau(xy1) 
 #' 
-belplau<-function (x, remove=FALSE) {
+belplau<-function (x, remove=FALSE, h=NULL) {
   #
   # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC1, W2a, IBEL, BEL, IPLAU, PLAU, rplau
   # Functions calls: dotprod, nameRows
@@ -95,6 +96,10 @@ belplau<-function (x, remove=FALSE) {
   } else {
     MACC1<-MACC
     W2a<-W2
+  }
+  # 2.5 Check if there's hypothesis to be tested
+  if (!is.null(h)) {
+    return(belplauH(MACC,W2,h))
   }
   #
   # 3. Indices for the calculation of the measure of belief
