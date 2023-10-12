@@ -1,3 +1,17 @@
+dst 1.5.1.9011
+
+Changes to function dsrwon 
+- Parameter sparseM removed. Not necessary to specify this. Replaced byy parametter use_ssnames.
+
+- New parameter: use_ssnames = c(TRUE, FALSE). Default = FALSE. use "TRUE" when you want to work specifically with subsets names to do the intersections. Work only with the univariate frame of discernment. Does'nt work yet with product spaces.
+
+- New parameter: skpt_tt = c(FALSE, TRUE). Default = FALSE". Choose TRUE if you don't want to save this table. Useful if you apply the function repeatedly, and you want to save the last result only.
+
+Function bca.
+- Parameter ssnames added.
+- test for duplicate column names added
+
+-----------
 dst 1.5.1.9010
 Same as 9009
 ______________

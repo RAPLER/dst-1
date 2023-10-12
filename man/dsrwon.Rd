@@ -9,8 +9,10 @@ dsrwon(
   y,
   sparseM = FALSE,
   mcores = "no",
+  use_ssnames = FALSE,
   varnames = NULL,
   relnb = NULL,
+  skpt_tt = FALSE,
   infovarnames
 )
 }
@@ -19,13 +21,15 @@ dsrwon(
 
 \item{y}{A basic chance assignment (see \code{\link{bca}}).}
 
-\item{sparseM}{Put TRUE to indicate the use of sparse matrices as input. Default = FALSE.}
-
 \item{mcores}{Make use of multiple cores ("yes") or not ("no"). Default = "no".}
+
+\item{use_ssnames}{= TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
 \item{relnb}{Identification number of the relation. Can be omitted.}
+
+\item{skpt_tt}{Skip reconstruction of tt matrix. Default = FALSE.}
 
 \item{infovarnames}{Deprecated. Old name for \code{varnames}.}
 }
@@ -58,7 +62,7 @@ y1s <- y1
 y2s <- y2
 y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
-y1y2s <- dsrwon(y1s, y2s, sparseM = TRUE)
+y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 dsrwon(vacuous, vacuous)
 }
@@ -66,5 +70,5 @@ dsrwon(vacuous, vacuous)
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 }
 \author{
-Claude Boivin
+Claude Boivin, Peiyuan Zhu
 }
