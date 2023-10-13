@@ -23,7 +23,7 @@ test_that("extmin", {
 #
 x4 <- bca(tt = matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true", "false"), infovar=matrix(c(5,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), varnames= c("B"), inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
 #
-y4 <- bca(tt = matrix(c(1,0,1,0,1,1,1,0,1,0,1,1), ncol=4), m=c(0.3,0.5,0.2), cnames=c("true", "false","true", "false"), infovar=matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), varnames= NULL, inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
+y4 <- bca(tt = matrix(c(1,0,1,0,1,1,1,0,1,0,1,1), ncol=4), m=c(0.3,0.5,0.2), cnames=c("true", "false","true1", "false1"), infovar=matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), varnames= NULL, inforel= matrix(c(7,1), ncol = 2, dimnames = list(NULL, c("relnb", "depth"))))
 #
 expect_error(extmin(x4, y4), "Variables names of rel not in relRef. Check variables names.")
 #
