@@ -1,6 +1,12 @@
 dst 1.5.1.9011
 
-Changes to function dsrwon 
+New function: belplauH: 
+Efficient computation of the measures of belief, disbelief and plausibility.
+
+Function belplau:
+Modified to call belplauH (computation more efficient).
+
+Changes to function dsrwon :
 - Parameter sparseM removed. Not necessary to specify this. Replaced byy parametter use_ssnames.
 
 - New parameter: use_ssnames = c(TRUE, FALSE). Default = FALSE. use "TRUE" when you want to work specifically with subsets names to do the intersections. Work only with the univariate frame of discernment. Does'nt work yet with product spaces.

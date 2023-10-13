@@ -8,11 +8,13 @@
 #' The plausibility ratio of a focal element \code{A} versus its contrary \code{not A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.
-#' @param h = NULL: Hypothesis to be tested
+#' @param h = NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}
 #' @return A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
-#'  \item Column 1: the degree of belief \code{Bel};
-#'  \item Column 2: the degree of Plausibility \code{Pl};
-#'  \item Column 3: the Plausibility ratio
+#'  \item Column 1: the degree of Belief \code{bel};
+#'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
+#'  \item Column 3: the degree of Epistemic uncertainty \code{unc};
+#'  \item Column 4: the degree of Plausibility \code{plau};
+#'  \item Column 5: the Plausibility ratio \code{rplau}.
 #'    }
 #' @author Claude Boivin
 #' @export
@@ -29,15 +31,17 @@
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
 #' xy <- nzdsr(dsrwon(x,y))
-#' belplau(xy)
+#' belpllau(xy)
 #' print("compare all elementary events")
 #' xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' belplau(xy1) 
+#' belplau(xy1, remove = TRUE) 
+#' belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
 #' 
-belplau<-function (x, remove=FALSE, h=NULL) {
+belplau<-function (x, remove = FALSE, h = NULL) {
   #
-  # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC1, W2a, IBEL, BEL, IPLAU, PLAU, rplau
-  # Functions calls: dotprod, nameRows
+  # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC1, W2a)
+  # Functions calls: belplauH, nameRows
   #
   # 1. Checking input data 
   #
@@ -51,16 +55,13 @@ belplau<-function (x, remove=FALSE, h=NULL) {
   #
   if (is.null(x$tt) ) { 
     z <- x$ssnames
-    z1l <- lapply(X = 1:length(z), FUN = function(X) {outer(z[[X]], z[[4]], "==") } ) 
+    z1l <- lapply(X = 1:length(z), FUN = function(X) {outer(z[[X]], z[[length(z)]], "==") } ) 
     x$tt <- t(mapply(FUN= function(X,Y) {unlist(lapply(X=1:ncol(z1l[[length(z1l)]]), FUN =  function(X) { reduction(z1l[[Y]][,X], f = "|")}) ) }, Y=1:length(z) ) )
   colnames(x$tt) <- c(z[[length(z)]])
   }
   #
-  # check if only one row, convert to matrix
+  # check if only one row, then convert to matrix
   xtest <- x$tt
-  # if (is.matrix(xtest) == FALSE) { 
-  #   xtest <- t(as.matrix(xtest)) 
-  # }
   if (shape(shape(xtest)) < 2 ) {
     xtest <- matrix(xtest, nrow = 1)
   }
@@ -85,50 +86,33 @@ belplau<-function (x, remove=FALSE, h=NULL) {
   MACC<-x$spec[,2]  # vector of masses
   W2 <- rbind(x$tt) # description matrix
   #
-  # Case where y=user don't want subsets wiyh zero mass (remove = TRUE)
+  # Case where user do not want subsets with zero mass (remove = TRUE)
   # Remove subsets with zero mass, but the frame
   #
   INUL<-c(MACC[-length(MACC)]>0,TRUE)
-  if (remove == TRUE) {
-    MACC1<-MACC[INUL]
-#    W2a<-matrix(W2[INUL,],ncol=ncol(W2))
-    W2a <- rbind(W2[INUL,])
-  } else {
-    MACC1<-MACC
-    W2a<-W2
-  }
+  if (remove != FALSE) {
+    MACC<-MACC[INUL]
+    W2 <- rbind(W2[INUL,])
+  } 
+  #
   # 2.5 Check if there's hypothesis to be tested
   if (!is.null(h)) {
-    return(belplauH(MACC,W2,h))
+    # check that h is like x$tt
+    if ((is.matrix(h) ==FALSE) ) {
+      stop("h parameter must be a (0,1) or logical matrix.")
+    }
+    if (ncol(h) != ncol(x$tt)) {
+      stop("Error in input arguments: number of columns of h not equal to ncol(x$tt)") 
+    }
+    if (is.null(colnames(h)) ) {
+      colnames(h) <- colnames(x$tt)
+      rownames(h) <- nameRows(h)
+    }  
+    resul <- belplauH(MACC,W2,h) 
   }
-  #
-  # 3. Indices for the calculation of the measure of belief
-  # To compute the belief value of a subset, we need to determine all which subsets of the bca are contained in this subset (inclusion). Inclusion is an order relation.
-  # function dotprod (inner product) does the task of determining, for each subset A, the subsets whose mass will be added to give the belief of A.
-  # Each element "x" of the frame of discernment (fod) is described by a binary(logical) vector. The (only) "1" in the vector indicates which element of the fod "x" is.
-  IBEL<-dotprod(W2a,t(W2a),g="&",f="<=") 
-  ## Calculation of Bel
-  # Knowing now which subsets contributes, we need only to sum their masses.
-  BEL<-apply(IBEL*MACC1,2,sum)
-  #
-  # 4. Indices to calculate the measure of plausibility
-  #
-  # By the same logic, we determine which subsets intersects with each subset of the bca
-  #
-  IPLAU<-dotprod(W2a,t(W2a),g="|",f="&")
-  ## Calculation of Plau
-  # Knowing now which subsets contributes, we need only to sum their masses.
-  PLAU<-apply(IPLAU*MACC1,2,sum)
-  #
-  # 4. Calculation of the plausibility ratio
-  # We compute here a measure similar to an odd ratio of a subset to its contrary (complementary event) 
-  rplau<-PLAU/(1-BEL)
-  #
-  # 5. Final results  
-  #
-  resul<-cbind(BEL,PLAU, rplau)
-  rownames(resul) <- nameRows(W2a)
-  colnames(resul)<-c("Belief","Plausibility", "Plty Ratio")
+  else {
+    resul <- belplauH(MACC, W2, h = W2) 
+  }
   return(resul)
 }
 
