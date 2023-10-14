@@ -37,7 +37,7 @@
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x, y, sparseM = FALSE, mcores = "no", use_ssnames = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
   # Local variables: m1, m2, zx, zy, x1, y1, z, zz1 ,W1_list, W1s, values1, values2, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #

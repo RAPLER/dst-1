@@ -7,7 +7,6 @@
 dsrwon(
   x,
   y,
-  sparseM = FALSE,
   mcores = "no",
   use_ssnames = FALSE,
   varnames = NULL,

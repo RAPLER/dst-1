@@ -56,5 +56,5 @@ belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
 }
 }
 \author{
-Claude Boivin
+Claude Boivin, Peiyuan Zhu
 }
