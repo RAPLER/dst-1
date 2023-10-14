@@ -16,7 +16,7 @@
 #'  \item Column 4: the degree of Plausibility \code{plau};
 #'  \item Column 5: the Plausibility ratio \code{rplau}.
 #'    }
-#' @author Claude Boivin
+#' @author Claude Boivin, Peiyuan Zhu
 #' @export
 #' @references \itemize{
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 39-43.
