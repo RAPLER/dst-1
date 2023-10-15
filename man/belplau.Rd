@@ -41,7 +41,7 @@ y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2,
 byrow = TRUE), m = c(0.6, 0.4),  
 cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
 xy <- nzdsr(dsrwon(x,y))
-belpllau(xy)
+belplau(xy)
 print("compare all elementary events")
 xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 belplau(xy1) 

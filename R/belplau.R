@@ -31,7 +31,7 @@
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
 #' xy <- nzdsr(dsrwon(x,y))
-#' belpllau(xy)
+#' belplau(xy)
 #' print("compare all elementary events")
 #' xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' belplau(xy1) 
@@ -40,8 +40,8 @@
 #' 
 belplau<-function (x, remove = FALSE, h = NULL) {
   #
-  # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC1, W2a)
-  # Functions calls: belplauH, nameRows
+  # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC, W2)
+  # Functions calls: belplauH, nameRows, ttmatrix
   #
   # 1. Checking input data 
   #
@@ -51,13 +51,15 @@ belplau<-function (x, remove = FALSE, h = NULL) {
   # computation using description matrix tt
   #
   # use ssnames to reconstruct tt if null
-  # matrix tt needed to compute IBEL
   #
-  if (is.null(x$tt) ) { 
-    z <- x$ssnames
-    z1l <- lapply(X = 1:length(z), FUN = function(X) {outer(z[[X]], z[[length(z)]], "==") } ) 
-    x$tt <- t(mapply(FUN= function(X,Y) {unlist(lapply(X=1:ncol(z1l[[length(z1l)]]), FUN =  function(X) { reduction(z1l[[Y]][,X], f = "|")}) ) }, Y=1:length(z) ) )
-  colnames(x$tt) <- c(z[[length(z)]])
+  if (is.null(x$tt) ) {
+    if (is.null(x$ssnames) == FALSE) {
+      z <- x$ssnames
+      x$tt <- ttmatrix(z)
+    }
+    else {
+      stop("No description matrix and no subsets names found. ")
+    }
   }
   #
   # check if only one row, then convert to matrix
@@ -98,7 +100,7 @@ belplau<-function (x, remove = FALSE, h = NULL) {
   # 2.5 Check if there's hypothesis to be tested
   if (!is.null(h)) {
     # check that h is like x$tt
-    if ((is.matrix(h) ==FALSE) ) {
+    if ((is.matrix(h) == FALSE) ) {
       stop("h parameter must be a (0,1) or logical matrix.")
     }
     if (ncol(h) != ncol(x$tt)) {
