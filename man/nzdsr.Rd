@@ -25,12 +25,12 @@ varnames = "x", idvar = 1)
 print("combination of x1 and x2")
 x1x2 <- dsrwon(x1,x2, varname = "x")
 nzdsr(x1x2) 
-Test with sparse matrices
+# Test with sparse matrices
 x1s=x1
 x2s=x2
 x1s$tt <- methods::as(x1$tt, "RsparseMatrix")
 x2s$tt <- methods::as(x2$tt, "RsparseMatrix")
-x1x2s <- dsrwon(x1s, x2s, sparseM = TRUE)
+x1x2s <- dsrwon(x1s, x2s, use_ssnames = TRUE)
 nzdsr(x1x2s)
 
 print("normalization of a bca definition.")
