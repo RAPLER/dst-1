@@ -1,5 +1,11 @@
 dst 1.5.1.9011
 
+Function nzdsr:
+Call to function ttmatrix to reconstruc description matrix from subsets names
+
+new function: ttmatrix
+Construct a description matrix from a list of subsets names.
+
 New function: belplauH: 
 Efficient computation of the measures of belief, disbelief and plausibility.
 
