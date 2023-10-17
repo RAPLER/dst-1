@@ -17,7 +17,8 @@ Imports:
     methods,
     Matrix,
     parallel,
-    rlang
+    rlang,
+    tidyverse
 Suggests: 
     igraph,
     knitr,
