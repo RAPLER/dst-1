@@ -1,7 +1,6 @@
 #' Print summary statistics of large mass functions
 #' 
 #' @param x A basic chance assignment (see \code{\link{bca}}).
-#' @param num_cut = 10 number of groups with equal number of subsets
 #' @param num_top_mass = 10 number of top masses to be printed
 #' @return 
 #' \itemize{
@@ -15,7 +14,7 @@
 #' x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))
 #' bcaPrintL(x)
 
-bcaPrintL <- function(x, num_cut=10, num_top_mass=10) {
+bcaPrintL <- function(x, num_top_mass=10) {
   # Local variables: conf, labs, n, N, size, m, df, df_by_size, df_by_m
   conf <- x$con
   labs <- x$ssnames
@@ -23,10 +22,9 @@ bcaPrintL <- function(x, num_cut=10, num_top_mass=10) {
   N <- min(n, num_top_mass)
   size <- unlist(lapply(labs, length))
   m <- x$spec[, 2]
-  M <- min(length(unique(m)), length(unique(size)), num_cut)
   df <- data.frame(m=m, size=size)
-  df_by_size <- df %>% mutate(size_bins = cut_number(size, n = M)) %>% group_by(size_bins)
-  df_by_m <- df %>% mutate(m_bins = cut_number(m, n = M)) %>% group_by(m_bins)
+  df_by_size <- df %>% mutate(size_bins = cut_width(size, 10)) %>% group_by(size_bins)
+  df_by_m <- df %>% mutate(m_bins = cut_width(m, 1e-5)) %>% group_by(m_bins)
   
   # basic statistics of subsets
   print(paste("num subsets :", length(labs)))
