@@ -4,20 +4,18 @@
 \alias{bcaPrintL}
 \title{Print summary statistics of large mass functions}
 \usage{
-bcaPrintL(x, num_cut = 10, num_top_mass = 10)
+bcaPrintL(x, num_top_mass = 10)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
-
-\item{num_cut}{= 10 number of groups with equal number of subsets}
 
 \item{num_top_mass}{= 10 number of top masses to be printed}
 }
 \value{
 \itemize{
-  \item tables of basic and more comprehensive statistics of subsets
-  \item tables of basic and more comprehensive statistics of masses
-  \item tables of basic and more comprehensive statistics of masses vs subsets
+  \item table of basic and more comprehensive statistics of subsets
+  \item table of basic and more comprehensive statistics of masses
+  \item table of basic and more comprehensive statistics of masses vs subsets
 }
 }
 \description{
