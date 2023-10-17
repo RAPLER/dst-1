@@ -16,15 +16,17 @@
 #' bcaPrintL(x)
 
 bcaPrintL <- function(x, num_cut=10, num_top_mass=10) {
-  # Local variables: conf, labs, n, N, size, m, df, df_by_size, df_by_m
+  # Local variables: conf, labs, n, N, M, size, m, df, df_by_size, df_by_m
   conf <- x$con
   labs <- x$ssnames
   n <- length(x$ssnames)
+  N <- min(n - 1, num_cut)
+  M <- min(n, num_top_mass)
   size <- unlist(lapply(labs, length))
   m <- x$spec[, 2]
   df <- data.frame(m=m, size=size)
-  df_by_size <- df %>% mutate(size_bins = cut_number(size, n = min(n, num_cut))) %>% group_by(size_bins)
-  df_by_m <- df %>% mutate(m_bins = cut_number(m, n = min(n, num_cut))) %>% group_by(m_bins)
+  df_by_size <- df %>% mutate(size_bins = cut_number(size, n = N)) %>% group_by(size_bins)
+  df_by_m <- df %>% mutate(m_bins = cut_number(m, n = N)) %>% group_by(m_bins)
   
   # basic statistics of subsets
   print(paste("num subsets :", length(labs)))
@@ -35,8 +37,8 @@ bcaPrintL <- function(x, num_cut=10, num_top_mass=10) {
   
   # basic statistics of masses
   print(paste("conflict :", conf))
-  print(paste("top", min(n, num_top_mass), "masses :"))
-  print(sort(m, decreasing = TRUE)[1:min(n, num_top_mass)])
+  print(paste("top", M, "masses :"))
+  print(sort(m, decreasing = TRUE)[1:M])
   
   # more comprehensive statistics of masses
   print("mass dist :")
