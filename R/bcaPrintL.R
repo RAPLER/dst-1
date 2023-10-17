@@ -23,7 +23,7 @@ bcaPrintL <- function(x, num_cut=10, num_top_mass=10) {
   N <- min(n, num_top_mass)
   size <- unlist(lapply(labs, length))
   m <- x$spec[, 2]
-  M <- min(unique(m), unique(size), num_cut)
+  M <- min(length(unique(m)), length(unique(size)), num_cut)
   df <- data.frame(m=m, size=size)
   df_by_size <- df %>% mutate(size_bins = cut_number(size, n = M)) %>% group_by(size_bins)
   df_by_m <- df %>% mutate(m_bins = cut_number(m, n = M)) %>% group_by(m_bins)
