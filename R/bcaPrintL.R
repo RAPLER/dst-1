@@ -5,9 +5,9 @@
 #' @param num_top_mass = 10 number of top masses to be printed
 #' @return 
 #' \itemize{
-#'   \item tables of basic and more comprehensive statistics of subsets
-#'   \item tables of basic and more comprehensive statistics of masses
-#'   \item tables of basic and more comprehensive statistics of masses vs subsets
+#'   \item table of basic and more comprehensive statistics of subsets
+#'   \item table of basic and more comprehensive statistics of masses
+#'   \item table of basic and more comprehensive statistics of masses vs subsets
 #' }
 #' @author Peiyuan Zhu
 #' @export
@@ -16,17 +16,17 @@
 #' bcaPrintL(x)
 
 bcaPrintL <- function(x, num_cut=10, num_top_mass=10) {
-  # Local variables: conf, labs, n, N, M, size, m, df, df_by_size, df_by_m
+  # Local variables: conf, labs, n, N, size, m, df, df_by_size, df_by_m
   conf <- x$con
   labs <- x$ssnames
   n <- length(x$ssnames)
-  N <- min(n - 1, num_cut)
-  M <- min(n, num_top_mass)
+  N <- min(n, num_top_mass)
   size <- unlist(lapply(labs, length))
   m <- x$spec[, 2]
+  M <- min(unique(m), unique(size), num_cut)
   df <- data.frame(m=m, size=size)
-  df_by_size <- df %>% mutate(size_bins = cut_number(size, n = N)) %>% group_by(size_bins)
-  df_by_m <- df %>% mutate(m_bins = cut_number(m, n = N)) %>% group_by(m_bins)
+  df_by_size <- df %>% mutate(size_bins = cut_number(size, n = M)) %>% group_by(size_bins)
+  df_by_m <- df %>% mutate(m_bins = cut_number(m, n = M)) %>% group_by(m_bins)
   
   # basic statistics of subsets
   print(paste("num subsets :", length(labs)))
@@ -37,8 +37,8 @@ bcaPrintL <- function(x, num_cut=10, num_top_mass=10) {
   
   # basic statistics of masses
   print(paste("conflict :", conf))
-  print(paste("top", M, "masses :"))
-  print(sort(m, decreasing = TRUE)[1:M])
+  print(paste("top", N, "masses :"))
+  print(sort(m, decreasing = TRUE)[1:N])
   
   # more comprehensive statistics of masses
   print("mass dist :")
