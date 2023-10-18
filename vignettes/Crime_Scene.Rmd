@@ -5,7 +5,7 @@ date: "2023-10-13"
 output: rmarkdown::html_vignette
 # output: word_document
 vignette: >
-  %\VignetteIndexEntry{Captain_Example}
+  %\VignetteIndexEntry{Crime_Scene}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
