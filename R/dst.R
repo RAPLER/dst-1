@@ -9,6 +9,6 @@
 #'  \item extension of a bca,
 #'  \item marginalization of a bca. 
 #'  }
-#' @docType package
-#' @name dst
+#' @keywords internal
+"_PACKAGE"
 NULL
