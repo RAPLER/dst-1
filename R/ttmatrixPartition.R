@@ -8,9 +8,9 @@
 #' @examples 
 #' # test singleton hypotheses
 #' x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))
-#' pa <- partition(3, x$infovar[2])
+#' pa <- ttmatrixPar(3, x$infovar[2])
 #' belplau(x, h=pa)
-partition <- function(n, m) {
+ttmatrixPartition <- function(n, m) {
   # create block diagonal matrix
   h <- t(kronecker(diag(1, n), rep(1, round(m/n))))
   # match dimensions
