@@ -4,12 +4,18 @@
 \alias{mFromMarginal}
 \title{Construct m vector of a bca from marginal probabilities}
 \usage{
-mFromMarginal(marg_probs, a = 1e-05, min_prob = 0, max_prob = 2)
+mFromMarginal(marg_probs, a = 1e-05, min_prob = 0, max_prob = 2, simple = TRUE)
 }
 \arguments{
 \item{marg_probs}{vector of marginal probabilities}
 
 \item{a=1e-5}{probability that the sample is reliable}
+
+\item{min_prob=0}{lower bound on marginal probabilities}
+
+\item{max_prob=2}{upper bound on marginal probabilities}
+
+\item{simple=TRUE}{whether to use simple support function}
 }
 \value{
 vector of probability masses obtained from uniformly sampling the cut

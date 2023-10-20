@@ -4,12 +4,24 @@
 \alias{ttmatrixFromMarginal}
 \title{Construct tt matrix of a bca from marginal probabilities}
 \usage{
-ttmatrixFromMarginal(marg_probs, from_above = TRUE)
+ttmatrixFromMarginal(
+  marg_probs,
+  min_prob = 0,
+  max_prob = 2,
+  from_above = TRUE,
+  simple = TRUE
+)
 }
 \arguments{
 \item{marg_probs}{marginal probabilities}
 
-\item{from_above}{whether to cut marginal probabilities from above}
+\item{from_above=TRUE}{whether to cut marginal probabilities from above}
+
+\item{min_prob=0}{lower bound on marginal probabilities}
+
+\item{max_prob=2}{upper bound on marginal probabilities}
+
+\item{simple=TRUE}{whether to use simple support function}
 }
 \value{
 matrix of possible subsets obtained from the cuts
