@@ -10,5 +10,5 @@ test_that("intersBySSName", {
                         byrow = TRUE), m = c(0.6, 0.4),  
             cnames = c("a", "b", "c"),  
             varnames = "x", idvar = 1)
-  expect_equal(Reduce("paste",intersBySSName(y1$ssnames[[1]], y2$ssnames[[2]])), "b c")
+  expect_equal(intersBySSName(y1$ssnames[[1]], y2$ssnames[[2]]), "b c")
 })
