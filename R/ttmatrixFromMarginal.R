@@ -12,6 +12,6 @@
 #' x <- c(2,2,1.5,1.2,1,0,0)
 #' ttmatrixFromMarginal(x, FALSE)
 ttmatrixFromMarginal <- function(marg_probs, from_above=FALSE, simple=FALSE, min_prob=0, max_prob=2) {
-  x <- if(from_above) {2 - marg_probs} else {marg_probs}
+  x <- if(from_above) {max_prob - marg_probs} else {marg_probs}
   return(do.call("rbind", lapply(if(simple) {c((max_prob - min_prob) / 2, min_prob)} else {sort(unique(x), decreasing = TRUE)}, function(c) as.integer(x >= c)))) 
 }
