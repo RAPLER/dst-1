@@ -20,5 +20,5 @@ intersBySSName<-function(zx,yz) {
   if (length(zz)==0)
     return("Empty")
   else
-    return(intersect(zx,yz))
+    return(zz)
 }
