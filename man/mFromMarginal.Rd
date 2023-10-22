@@ -4,10 +4,18 @@
 \alias{mFromMarginal}
 \title{Construct m vector of a bca from marginal probabilities}
 \usage{
-mFromMarginal(marg_probs, a = 1e-05, min_prob = 0, max_prob = 2, simple = TRUE)
+mFromMarginal(
+  marg_probs,
+  a = 1e-05,
+  min_prob = 0,
+  max_prob = 2,
+  simple = FALSE
+)
 }
 \arguments{
 \item{marg_probs}{vector of marginal probabilities}
+
+\item{from_above=TRUE}{whether to cut marginal probabilities from above}
 
 \item{a=1e-5}{probability that the sample is reliable}
 
@@ -24,8 +32,8 @@ vector of probability masses obtained from uniformly sampling the cut
 Construct m vector of a bca from marginal probabilities
 }
 \examples{
-p <- c(2,2,1.5,1.2,1,0,0)
-mFromMarginal(p, FALSE)
+x <- c(2,2,1.5,1.2,1,0,0)
+mFromMarginal(x, FALSE)
 }
 \author{
 Peiyuan Zhu

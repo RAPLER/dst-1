@@ -8,18 +8,14 @@ ttmatrixFromMarginal(
   marg_probs,
   min_prob = 0,
   max_prob = 2,
-  from_above = TRUE,
-  simple = TRUE
+  from_above = FALSE,
+  simple = FALSE
 )
 }
 \arguments{
 \item{marg_probs}{marginal probabilities}
 
 \item{from_above=TRUE}{whether to cut marginal probabilities from above}
-
-\item{min_prob=0}{lower bound on marginal probabilities}
-
-\item{max_prob=2}{upper bound on marginal probabilities}
 
 \item{simple=TRUE}{whether to use simple support function}
 }
@@ -30,8 +26,8 @@ matrix of possible subsets obtained from the cuts
 Construct tt matrix of a bca from marginal probabilities
 }
 \examples{
-p <- c(2,2,1.5,1.2,1,0,0)
-ttmatrixFromMarginal(p, FALSE)
+x <- c(2,2,1.5,1.2,1,0,0)
+ttmatrixFromMarginal(x, FALSE)
 }
 \author{
 Peiyuan Zhu

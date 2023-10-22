@@ -244,18 +244,16 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
       zzx=zx$ssnames
       zzy=zy$ssnames
       parallel::clusterExport(cl = grappe, varlist = list("zzx", "zzy"), envir = environment() )
-      N12 <-  parallel::mcmapply(FUN= function(X,Y) {lapply(X = 1:length(zzx), FUN = function(X) {intersect(zzx[[X]], zzy[[Y]])} )}, Y=1:length(zzy) )  # intersection of the subsets
+      N12 <-  parallel::mcmapply(FUN= function(X,Y) {lapply(X = 1:length(zzx), FUN = function(X) {intersBySSName(zzx[[X]], zzy[[Y]])} )}, Y=1:length(zzy) )  # intersection of the subsets
       parallel::stopCluster(grappe)
     }
     else {
-      N12 <-  mapply(FUN= function(X,Y) {lapply(X = 1:length(zx$ssnames), FUN = function(X) {intersect(zx$ssnames[[X]], zy$ssnames[[Y]])} )}, Y=1:length(zy$ssnames) ) 
+      N12 <-  mapply(FUN= function(X,Y) {lapply(X = 1:length(zx$ssnames), FUN = function(X) {intersBySSName(zx$ssnames[[X]], zy$ssnames[[Y]])} )}, Y=1:length(zy$ssnames) ) 
     }
   # Transform N12 to an appropriate format
   # for every element of the list, obtain the elements forming the subsets
   cN12 <- c(t(N12) )
-  cN12c <- lapply(X=1:length(cN12), FUN =  function(X) { Reduce("paste", cN12[[X]])}) 
-  # Transform list in character vector
-  cN12v <- unlist(lapply(X=1:length(cN12c), FUN = function(X) {if (length(cN12c[[X]]) == 0){ cN12c[[X]] <- "Empty"} else cN12c[[X]] }) )
+  cN12v <- lapply(X=1:length(cN12), FUN =  function(X) { Reduce("paste", cN12[[X]])}) 
   #
   # 3.2 Obttain unique subsets resulting from the intersections  (W1 as character vector and list)
   #
