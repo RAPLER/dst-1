@@ -7,9 +7,9 @@
 mFromMarginal(
   marg_probs,
   a = 1e-05,
+  simple = FALSE,
   min_prob = 0,
-  max_prob = 2,
-  simple = FALSE
+  max_prob = 2
 )
 }
 \arguments{
@@ -19,11 +19,11 @@ mFromMarginal(
 
 \item{a=1e-5}{probability that the sample is reliable}
 
+\item{simple=TRUE}{whether to use simple support function}
+
 \item{min_prob=0}{lower bound on marginal probabilities}
 
 \item{max_prob=2}{upper bound on marginal probabilities}
-
-\item{simple=TRUE}{whether to use simple support function}
 }
 \value{
 vector of probability masses obtained from uniformly sampling the cut
