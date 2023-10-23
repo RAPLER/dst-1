@@ -253,7 +253,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
   # Transform N12 to an appropriate format
   # for every element of the list, obtain the elements forming the subsets
   cN12 <- c(t(N12) )
-  cN12v <- unlist(cN12) 
+  cN12v <- unlist(lapply(X=1:length(cN12), FUN = function(X) { Reduce("paste", cN12[[X]])}))
   #
   # 3.2 Obtain unique subsets resulting from the intersections  (W1 as character vector and list)
   #
