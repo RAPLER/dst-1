@@ -107,7 +107,7 @@ Let's encode this evidence with function *bca*.
 
 ```{r}
 # Evidence related to choice of door A
-MHA_E <-  bca(f= diag(1,3,3), m= rep(1/3, 3), cnames =c("car", "goat1", "goat2"), varnames = "MHA", varnb = 1)
+MHA_E <-  bca(tt= diag(1,3,3), m= rep(1/3, 3), cnames =c("car", "goat1", "goat2"), varnames = "MHA", idvar = 1)
 # Evidence of the contestant (function MHA_E attached to variable A)
 bcaPrint(MHA_E)
 ```
@@ -120,7 +120,7 @@ $m({goat1, goat2}) = 1$.
 Let's translate this in R with function *bca*:
 ```{r}
 # Evidence for door B
-MHB_E <- bca(f= matrix(c(0,1,1), ncol=3, byrow = TRUE), m=1, cnames =c("car", "goat1", "goat2"), varnames = "MHB" , varnb=2)
+MHB_E <- bca(tt= matrix(c(0,1,1), ncol=3, byrow = TRUE), m=1, cnames =c("car", "goat1", "goat2"), varnames = "MHB" , idvar=2)
 # Evidence added by the Host (function MHB_E attached to variable B)
 bcaPrint(MHB_E)
 ```
