@@ -82,7 +82,7 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   if (singletonsOnly == TRUE) {
     r <- ztab
     if (nrow(r) > 1) {
-      r1 <- rbind(r[apply(r[,c(1:(ncol(r)-4))],1,sum) == 1, , drop = FALSE], r[nrow(r),])
+      r1 <- rbind(r[apply(r[,c(1:(ncol(r)-(1+ncol(BP))))],1,sum) == 1, , drop = FALSE], r[nrow(r),])
       rownames(r1)[nrow(r1)] <- "frame"
     } else {
       r1 <- ztab
