@@ -148,7 +148,7 @@ $Ω_L$ = {true, false}.
 m({true}) = 0.5 ; m({false})= 0.3 ; m({true}, {false}) = 0.2
 
 ```{r evidence Loading}
-l_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.3, 0.5, 0.2), cnames = c("true", "false"), varnb = 4, varnames = "Loading")
+l_rel <- bca(tt = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.3, 0.5, 0.2), cnames = c("true", "false"), idvar = 4, varnames = "Loading")
 bcaPrint(l_rel)
 ```
 
@@ -157,7 +157,7 @@ $Ω_W$= {foul, fair}.
 m({foul}) = 0.2 ; m({fair})= 0.6 ; m({foul}, {fair}) = 0.2
 
 ```{r evidence Forecast}
-f_rel <- bca(f = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.2, 0.6, 0.2), cnames = c("foul", "fair"), varnb = 5, varnames = "Forecast")
+f_rel <- bca(tt = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.2, 0.6, 0.2), cnames = c("foul", "fair"), idvar = 5, varnames = "Forecast")
 bcaPrint(f_rel)
 ```
 
@@ -166,7 +166,7 @@ $Ω_M$ = {true, false},
 m({true}) = 0 ; m({false})= 1 .
 
 ```{r evidence Maintenance}
-m_rel <- bca(f = matrix(c(1,0,0,1), ncol = 2, byrow = TRUE), m = c(0, 1), cnames = c("true", "false"), varnb = 6, varnames = "Maintenance")
+m_rel <- bca(tt = matrix(c(1,0,0,1), ncol = 2, byrow = TRUE), m = c(0, 1), cnames = c("true", "false"), idvar = 6, varnames = "Maintenance")
 bcaPrint(m_rel)
 ```
 
