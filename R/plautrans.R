@@ -10,7 +10,7 @@
 #' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), 
-#' varnames = "x", varnb = 1)
+#' varnames = "x", idvar = 1)
 #' plautrans(x)
 #' @export
 #' 
@@ -48,7 +48,7 @@ plautrans <- function(x) {
   #
   # 2.3. compute measures of belief and plausibility with fn tabresul
   zx<-rbind(tabresul(x, singletonsOnly = TRUE)$mbp)
-  nsing <- -4+ncol(zx)
+  nsing <- -1+nrow(zx)
   z1<-apply(rbind(zx[,1:nsing, drop = FALSE]),1,sum)
   zs<-rbind(zx[z1==1,])
   #
@@ -58,7 +58,7 @@ plautrans <- function(x) {
   zs <- zs[order(zord,  decreasing = TRUE),]
   #
   # 2.5. calculate probability distribution of singletons
-  trplau<-zs[,nsing+3]/sum(zs[,nsing+3])
+  trplau<-zs[,nsing+5]/sum(zs[,nsing+5])
   y<-cbind(zs[,1:nsing],trplau)
   return(y)
 }
