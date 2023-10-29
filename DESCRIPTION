@@ -20,8 +20,8 @@ Imports:
     rlang,
     tidyverse
 Suggests: 
-    igraph,
     knitr,
     rmarkdown,
     testthat
+LinkingTo: igraph
 VignetteBuilder: knitr
