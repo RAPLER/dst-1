@@ -95,7 +95,7 @@
   varnb <- (infovar)[,1]
   if (length(varnb) < 2) # No transfo if only 1 variable.
     { 
-    zr <- bca(tt, (spec)[,2], cnames = colnames(tt), varnb = varnb)
+    zr <- bca(tt, (spec)[,2], cnames = colnames(tt), idvar = varnb)
     return(zr)
     } 
     else
