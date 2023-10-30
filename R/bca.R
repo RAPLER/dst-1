@@ -32,7 +32,6 @@
 #' cnames <- c("yes","no")
 #' bca(tt, m)
 #' bca(tt, m, cnames)
-#' bca(m = m, cnames = cnames, idvar = 1) # Error if no tt matrix supplied
 #' tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 #' colnames(tt1) <- c("yes", "no")
 #' m <- c(.9, .1)
@@ -53,24 +52,7 @@ bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = N
   # Local variables: ztable, zdup, zframe, znames
   # Functions calls: nameRows, ssnames
   #
-  # 1. Catch old parameters names, if any and replace by the new ones
-  #
-  # catch old parameter f and replace by tt if used instead of tt
-  calls <- names(sapply(match.call(), deparse))[-1]
-  if(any("f" %in% calls) & missing(tt)) {
-    warning("Parameter name 'f' is deprecated. Use 'tt' instead.")
-    tt <- f
-  }
-  # same for varnb, infovarnames, etc.
-  if(any("varnb" %in% calls) & missing(idvar)) {
-    warning("Parameter name 'varnb' is deprecated. Use 'idvar' instead.")
-    idvar <- varnb
-  }
-  if(any("infovarnames" %in% calls) & missing(varnames)) {
-    warning("Parameter name 'infovarnames' is deprecated. Use 'varnames' instead.")
-    varnames <- infovarnames
-  }
-  # end catches
+  # 1, Empty section
   #
   # 2. Choose between tt or ssnames and Determine names of columns of tt matrix and fix some parameters
   #
