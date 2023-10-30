@@ -4,16 +4,8 @@
 \alias{bcaRel}
 \title{Representation of a mass function in a product space}
 \usage{
-bcaRel(
-  tt,
-  spec,
-  infovar,
-  varnames,
-  valuenames,
-  relnb = NULL,
-  infovarnames,
-  infovaluenames
-)
+bcaRel(tt, spec, infovar, varnames, valuenames, relnb = NULL,
+  infovarnames, infovaluenames)
 }
 \arguments{
 \item{tt}{The description matrix of the subsets establishing the relation. This matrix is obtained by putting the variables side by side, as in a truth table representation. For each variable, there are as many columns as possible values. Each row of the matrix is an element of a subset. Each element is described by a sequence of 0 (absence of value of a variable) or 1 (presence of value). This forms a complete disjunctive coding.}
