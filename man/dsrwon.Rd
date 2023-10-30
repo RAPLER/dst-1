@@ -4,16 +4,8 @@
 \alias{dsrwon}
 \title{Combination of two mass functions}
 \usage{
-dsrwon(
-  x,
-  y,
-  mcores = "no",
-  use_ssnames = FALSE,
-  varnames = NULL,
-  relnb = NULL,
-  skpt_tt = FALSE,
-  infovarnames
-)
+dsrwon(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL,
+  relnb = NULL, skpt_tt = FALSE, infovarnames)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
