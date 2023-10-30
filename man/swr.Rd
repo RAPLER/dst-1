@@ -4,8 +4,7 @@
 \name{swr}
 \alias{swr}
 \title{The Captain's Problem. \code{swr}: Relation between variables Sailing delay (S), Weather at sea (W), and Repairs at sea (R)}
-\format{
-An integer matrix with 6 rows and 10 columns.
+\format{An integer matrix with 6 rows and 10 columns.
 \describe{
   \item{[1,c(1,2)]}{value = 0, not used}
   \item{[1,3:10]}{Identification numbers of the three variables. Column 3 to 6: variable 3; columns 7,8: variable 7, columns 9,10: variable 8}
@@ -19,8 +18,7 @@ An integer matrix with 6 rows and 10 columns.
   \item{fair}{1 if fair is part of the specification, 0 otherwise}
   \item{true}{1 if true is part of the specification, 0 otherwise}
   \item{false}{1 if false is part of the specification, 0 otherwise}
-  }
-}
+  }}
 \source{
 \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
 }
