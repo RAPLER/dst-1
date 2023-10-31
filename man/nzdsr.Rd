@@ -38,7 +38,7 @@ y2 <- bca(tt = matrix(c(0,0,0,1,0,0,1,1,1),nrow = 3,
 byrow = TRUE), m = c(0.2,0.5,0.3), 
 cnames = c("a", "b", "c"), idvar = 1)
 cat("y2")
-cat("\  ")
+cat("\\  ")
 y2
 nzdsr(y2)  
 }
