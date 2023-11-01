@@ -1,3 +1,6 @@
+# dst 1.5.1.9011
+
+* Added a `NEWS.md` file to track changes to the package.
 dst 1.5.1.9011
 
 Function nzdsr:
