@@ -41,12 +41,12 @@ Using the basic chance assignment object, we can calculate the belplau object, w
 (4) The plausibility is calculated via the remaining masses that are not attributed to disbelief.
 (5) The plausibility ratio is calculated via the ratio between the remaining masses that are not attributed to disbelief and the remaining masses that are not attributed to belief.
 
-
-
 ```{r}
 belplau1<-belplau(bpa1)
 belplau1
 ```
+
+In the language of bett
 
 Notice since both belief and basic mass assignment take the same values as both are defined via the summation operation. No belief on any suspect more specific than the entire group, can solemnly justify the entire crime scene. The second chance assignment assigns 0.6 to $\{\text{Peter}, \text{John}\}$ and 0.4 to $\Theta$ following the same logic as the first basic chance assignment. Its basic chance assignment object can be created likewise.
 
@@ -65,7 +65,7 @@ belplau2
 
 Having computed two basic chance assignment objects, we can use dsrwon to combine them and obtain a new basic chance assignment object. We cannot combine belplau objects as it is known that there's no close form solution to the combined result in general. Here we use the word "combination" to distinguish up-projecting marginal masses into the product space and then down-project onto the marginal space from the masses on the product space in Dempster-Shafer theroy aside from constructing probability measure on the product space, usually done via Kolmogorov extension theorem among the frequentist methods, or random measure from de Finetti theorem among the Bayesian methods. 
 
-More precisely, the combination rule constructs a new basic chance assignment object by summing over multiplies of masses over intersections from the two input basic chance assignment objects and normalizing over probabilities non-conflicting items. This way we construct joint beliefs via independent assessments, while preserving the marginal beliefs. 
+More precisely, the combination rule constructs a new basic chance assignment object by summing over multiplies of masses over intersections from the two input basic chance assignment objects and normalizing over probabilities non-conflicting items. There are several ways to interpret this process. 
 
 ```{r}
 bpa3<-dsrwon(bpa1, bpa2)
