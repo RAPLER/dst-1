@@ -42,15 +42,15 @@
 #' y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6,0.4), 
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
-#' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+#' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
 #' @references \itemize{
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
+bca<-function(tt = NULL, m, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
   # Local variables: ztable, zdup, zframe, znames
-  # Functions calls: nameRows, ssnames
+  # Functions calls: nameRows, DoSSnames
   #
   # 1, Empty section
   #
@@ -124,8 +124,12 @@ bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = N
     # 
     # 7 build subsets names
     # 
-    zframe <-colnames(tt)
-    znames <- lapply(X=1:nrow(tt), FUN = function(X) {zframe[tt[X,]*1:ncol(tt)]})
+    if (is.null(ssnames) == TRUE ) {
+      znames <- DoSSnames(tt)
+    }
+    else {
+      znames <- ssnames
+    }
     #
     # 8. Construction of the result
     #
@@ -137,59 +141,4 @@ bca<-function(tt = NULL, m, cnames = NULL, con = NULL, idvar = NULL, infovar = N
     class(y) <- append(class(y), "bcaspec")
     return(y)
   }
-  # Section with ssnames removed
-  # else {
-  #    #
-  #    # Case 2: bca constructed with a list of subsets labels
-  #    #
-  #   if ( is.null(ssnames) ) {
-  #     stop("Error in input arguments: No subsets labels provided")
-  #   }
-  #   if ( is.null(sfod) ) {
-  #     stop("Error in input arguments: No value provided for the size of the frame of discernment.")
-  #   }
-  #   if (abs(sum(m)-1)>0.000001)  { 
-  #     stop("Error in input arguments: Mass vector values must sum to one.") 
-  #   }
-  #   else {
-  #     if (is.null(con)) { con <- 0 }
-  #     if (is.null(idvar)) { idvar <- 0 }
-  #     #
-  #     # 3. Build infovar parameter
-  #     #
-  #     if (is.null(infovar)) {
-  #       infovar <- matrix(c(idvar, sfod), ncol = 2)
-  #     }
-  #     colnames(infovar) <- c("varnb", "size")
-  #     idvar <- infovar[,1]
-  #     #
-  #     # 4. Build varnames and valuenames (former = infovaluenames)
-  #     #
-  #     # check and use varnames if provided
-  #     if (is.null(valuenames) | missing(valuenames)) {
-  #       valuenames <- NULL
-  #     }
-  #     if (is.null(varnames)) {
-  #       varnames <- "x"
-  #     } 
-  #     #
-  #     # 5. Build specification matrix spec
-  #     #
-  #     spec <- cbind(1:length(ssnames), m)
-  #     colnames(spec) <- c("specnb", "mass")
-  #     #  
-  #     # 6. inforel parameter
-  #     #
-  #     if (missing(inforel) | is.null(inforel)) { 
-  #       inforel <- matrix(c(0, 0), ncol = 2)
-  #     }
-  #     colnames(inforel) <- c("relnb", "depth")
-  #     # 
-  #     # 7. Construction of the result
-  #     #
-  #     y<-list(con = con, tt = NULL, ssnames = ssnames, sfod = sfod,  spec = spec , infovar = infovar, varnames = varnames, valuenames = NULL, inforel = inforel) 
-  #     class(y) <- append(class(y), "bcaspec")
-  #     return(y)
-  #   }
-  # }
  } 

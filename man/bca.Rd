@@ -5,17 +5,9 @@
 \alias{bpa}
 \title{Basic chance assignment mass function}
 \usage{
-bca(
-  tt = NULL,
-  m,
-  cnames = NULL,
-  con = NULL,
-  idvar = NULL,
-  infovar = NULL,
-  varnames = NULL,
-  valuenames = NULL,
-  inforel = NULL
-)
+bca(tt = NULL, m, cnames = NULL, con = NULL, ssnames = NULL,
+  idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL,
+  inforel = NULL)
 }
 \arguments{
 \item{tt}{Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
@@ -71,7 +63,7 @@ cnames = c("a", "b", "c"), idvar = 1)
 y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6,0.4), 
 cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
-vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
 }
 \references{
 \itemize{
