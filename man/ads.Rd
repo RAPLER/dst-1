@@ -4,7 +4,8 @@
 \name{ads}
 \alias{ads}
 \title{The Captain's Problem. \code{ads}: Relation between variables Arrival (A), Departure delay (D) and Sailing delay (S)}
-\format{An integer matrix with 18 rows and 17 columns
+\format{
+An integer matrix with 18 rows and 17 columns
 \describe{
   \item{[1, c(1,2)]}{value = 0, not used}
   \item{[1, 3:17]}{Identification numbers of the three variables. Column 3 to 9: variable 1; column 10 to 13: variable 2; column 14 to 17: variable 3.}
@@ -17,7 +18,8 @@
   \item{2}{1 if 2 is part of the specification, 0 otherwise}
   \item{1}{1 if 1 is part of the specification, 0 otherwise}
   \item{0}{1 if 0 is part of the specification, 0 otherwise}
-  }}
+  }
+}
 \source{
 \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
 }
