@@ -1,5 +1,9 @@
 # dst 1.5.1.9011
 
+* Function bca: parameter ssnames is reinstalled in the function call
+
+* Name of function ssnnames changed for DoSSnames to avoid confusion with parameter ssnames oof bca object.
+
 * Added a `NEWS.md` file to track changes to the package.
 
 ## Changes and additions
