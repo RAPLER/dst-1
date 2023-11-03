@@ -57,6 +57,9 @@ bcaPrintLarge <- function(x, num_top_mass=10, cut_width_size=10, cut_width_m=1e-
   print("subset dist by mass size :")
   print(df_by_m %>% summarise(q=list(quantile(size))) %>% unnest_wider(q))
   
+  print("subset num by mass size :")
+  print(df_by_m %>% summarise(n=list(quantile(n()))) %>% unnest_wider(q))
+  
   # statistics of computation
   print(paste("memory size :", object.size(x),"bytes"))
 }
