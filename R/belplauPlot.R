@@ -1,4 +1,5 @@
 #' Plot belplau matrix
+#' 
 #' @param belplau_mat: belplau matrix e.g. belplau(bpa)
 #' @param xlab: x-axis labels e.g. c("1:34","35:68","69:101")
 #' @param color: color of xlab e.g. c(0,1,0)

@@ -18,22 +18,24 @@
 #' rownames(hyp) <- nameRows(hyp)
 #' belplauH(MACC = x$spec[,2], W2 = x$tt, h = hyp)
 belplauH <-function(MACC, W2, h) {
-  bel <- rep(0,nrow(h))
-  disbel <- rep(0,nrow(h))
+  log_bel <- rep(-Inf,nrow(h))
+  log_disbel <- rep(-Inf,nrow(h))
   for (i in 1:nrow(W2)) {
     # print(i)
     for (j in 1:nrow(h)) {
       # if bpa$tt[i,] is contained in h[j,]
       if (all(h[j,]-W2[i,] >= 0)) {
-        bel[j] <- bel[j] + MACC[i]
+        log_bel[j] <- logsum(log_bel[j], log(MACC[i]))
       }
       # if complement of bpa$tt[i,] is contained in h[j,]
       if (all(+(!h[j,])-W2[i,] >= 0)) {
-        disbel[j] <- disbel[j] + MACC[i]
+        log_disbel[j] <- logsum(log_disbel[j], log(MACC[i]))
       }
     }
     # if (i == 100) break
   }
+  bel <- exp(log_bel)
+  disbel <- exp(log_disbel)
   plau <- 1 - disbel
   rplau <- plau / (1 - bel)
   unc <- plau - bel

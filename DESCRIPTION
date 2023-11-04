@@ -19,7 +19,8 @@ Imports:
     Matrix,
     parallel,
     rlang,
-    tidyverse
+    tidyverse,
+    matrixStats
 Suggests: 
     knitr,
     rmarkdown,

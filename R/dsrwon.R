@@ -107,7 +107,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
   }
   #
   # Combine mass vectors
-  V12<-outer(zx$spec[,2],zy$spec[,2], "*")
+  V12<-outer(zx$spec[,2],zy$spec[,2], function(x,y) log(x)+log(y))
   #
   # End Section 1
   #
@@ -169,14 +169,14 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     parallel::clusterExport(cl = grappe, varlist = list("W1", "N12"), envir = environment() )
     # end test
     #
-    I12_par <-  parallel::parSapply( cl = grappe, X=1:nrow(N12), FUN = function(X) {  outer(rownames(W1), rownames(N12)[X], FUN = "==")  }, simplify = FALSE, USE.NAMES = TRUE )
+    I12_par <-  parallel::parSapply( cl = grappe, X=1:nrow(N12), FUN = function(X) {  outer(rownames(W1), rownames(N12)[X], FUN = function(x,y) ifelse(x==y, 0,-Inf))  }, simplify = FALSE, USE.NAMES = TRUE )
     parallel::stopCluster(grappe)
    #
    # List to array conversion
    I12 <- array(unlist(I12_par), dim = c(shape(I12_par[[1]])[1], shape(I12_par)))
    }
     else {
-     I12 <- outer(rownames(W1), rownames(N12), FUN = "==")
+     I12 <- outer(rownames(W1), rownames(N12), FUN = function(x,y) ifelse(x==y, 0,-Inf))
      if (isS4(N12) == TRUE) {
        I12 <- methods::as(I12, "RsparseMatrix")
      }
@@ -184,10 +184,10 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
   #
   # 2.4 Compute mmass vector
     if (mcores == "yes") {
-      MAC<-apply(I12*t(array(V12,dim(I12)[2:1]) ),1,sum)
+      MAC<-apply(I12+t(array(V12,dim(I12)[2:1]) ),1,function(x) exp(Reduce(logsum, x)))
     }
     else {
-      MAC<-apply(I12*t(array(t(V12),dim(I12)[2:1]) ),1,sum)
+      MAC<-apply(I12+t(array(t(V12),dim(I12)[2:1]) ),1,function(x) exp(Reduce(logsum, x)))
     }
   #
   # 2.5 Order the subsets to find if the empty subset among them.
@@ -279,7 +279,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
   #
   #  3.4 Compute sum of masses of each subset
   V12_vec <- c(t(V12))
-  MAC <- unlist(lapply(X=1:length(I12), FUN= function(X)  {sum(V12_vec[I12[[X]]]) } ) )
+  MAC <- unlist(lapply(X=1:length(I12), FUN= function(X)  { exp(Reduce(logsum, V12_vec[I12[[X]]])) } ) )
   # 
   # 3.5 Order W1 to put empty first and put masses in the same order
   #  
