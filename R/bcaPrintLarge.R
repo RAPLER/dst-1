@@ -36,8 +36,10 @@ bcaPrintLarge <- function(x, num_top_mass=10, cut_width_size=10, cut_width_m=1e-
   
   # basic statistics of masses
   print(paste("conflict :", conf))
-  print(paste("top", n, "masses :"))
+  print(paste("top", n, "largest masses :"))
   print(sort(m, decreasing = TRUE)[1:n])
+  print(paste("top", n, "smallest masses :"))
+  print(sort(m, decreasing = FALSE)[1:n])
   
   # more comprehensive statistics of masses
   print("mass dist :")
