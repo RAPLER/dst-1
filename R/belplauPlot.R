@@ -11,7 +11,7 @@
 #' bpa <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
-#' bel_plau <- belplau(x)
+#' bel_plau <- belplau(bpa)
 #' belplauPlot(bel_plau)
 belplauPlot<-function(belplau_mat, xlab, color, y="rplau") {
   ggplot(as.data.frame(belplau_mat) %>% mutate(index=xlab)) +

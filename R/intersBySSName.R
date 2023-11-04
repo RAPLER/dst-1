@@ -1,7 +1,7 @@
 #' Intersect two vectors of ssnames
 #' 
 #' @param zx a vector of ssnames from one bca
-#' @param zy a vector of ssnames from another bca
+#' @param yz a vector of ssnames from another bca
 #' @return ssnames in the intersection of the two bcas
 #' @author Peiyuan Zhu
 #' @export

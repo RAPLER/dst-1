@@ -9,7 +9,7 @@ intersBySSName(zx, yz)
 \arguments{
 \item{zx}{a vector of ssnames from one bca}
 
-\item{zy}{a vector of ssnames from another bca}
+\item{yz}{a vector of ssnames from another bca}
 }
 \value{
 ssnames in the intersection of the two bcas

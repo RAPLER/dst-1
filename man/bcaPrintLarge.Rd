@@ -4,7 +4,13 @@
 \alias{bcaPrintLarge}
 \title{Print summary statistics of large mass functions}
 \usage{
-bcaPrintLarge(x, num_top_mass = 10, cut_width_size = 10, cut_width_m = 1e-05)
+bcaPrintLarge(
+  x,
+  info_list = "all",
+  num_top_mass = 10,
+  cut_width_size = 10,
+  cut_width_m = 1e-05
+)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
@@ -14,6 +20,17 @@ bcaPrintLarge(x, num_top_mass = 10, cut_width_size = 10, cut_width_m = 1e-05)
 \item{cut_width_size}{width of a cut among subset sizes}
 
 \item{cut_width_m}{width of a cut among masses}
+
+\item{info_list="all"}{statistics to be printed in a vector of characters
+\itemize{
+  \item "all": everything
+  \item "basic_subset_stat": basic statistics of subsets
+  \item "comp_subset_stat": more comprehensive statistics of subsets
+  \item "basic_mass_stat": basic statistics of masses
+  \item "comp_mass_stat": more comprehensive statistics of masses
+  \item "basic_joint_stat": basic statistics of masses vs subsets
+  \item "comp_joint_stat": more comprehensive statistics of masses vs subsets
+}}
 }
 \value{
 \itemize{
@@ -26,6 +43,7 @@ bcaPrintLarge(x, num_top_mass = 10, cut_width_size = 10, cut_width_m = 1e-05)
 Print summary statistics of large mass functions
 }
 \examples{
+library(tidyverse)
 x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))
 bcaPrintLarge(x)
 }
