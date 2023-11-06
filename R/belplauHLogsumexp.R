@@ -36,8 +36,8 @@ belplauHLogsumexp <-function(MACC, W2, h) {
   }
   bel <- exp(log_bel)
   disbel <- exp(log_disbel)
-  plau <- 1 - disbel
-  rplau <- plau / (1 - bel)
+  plau <- exp(log1p(- disbel))
+  rplau <- exp(log(plau) - log1p( - bel))
   unc <- plau - bel
   z <- cbind(bel,disbel,unc,plau,rplau)
   rownames(z) <- rownames(h)
