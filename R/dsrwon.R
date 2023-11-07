@@ -93,15 +93,12 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   # Use multiple cores = "yes"
   if (mcores == "yes") {
   y1_df <- as.data.frame(t(y1))
-  if  (requireNamespace("parallel", quietly = TRUE) ) {
-    library(parallel) 
-    ncores <- detectCores(logical = FALSE)
-    grappe <- makeCluster(ncores-1)
-    clusterEvalQ(cl = grappe, expr = library(dst))
-    clusterExport(cl = grappe, varlist = list("x1", "y1_df"), envir = environment() )
-    mx1y1_par <- parSapply( cl = grappe, X=1:ncol(y1_df), FUN = function(X) { inters(x1, t(y1_df[X])) }, simplify = FALSE, USE.NAMES = TRUE ) # intersection of the subsets
-    stopCluster(grappe)
-  }
+    ncores <- parallel::detectCores(logical = FALSE)
+    grappe <- parallel::makeCluster(ncores-1)
+    parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+    parallel::clusterExport(cl = grappe, varlist = list("x1", "y1_df"), envir = environment() )
+    mx1y1_par <- parallel::parSapply( cl = grappe, X=1:ncol(y1_df), FUN = function(X) { inters(x1, t(y1_df[X])) }, simplify = FALSE, USE.NAMES = TRUE ) # intersection of the subsets
+    parallel::stopCluster(grappe)
   N12 <- array(unlist(mx1y1_par), dim = c(shape(mx1y1_par[[1]])[1:2], shape(mx1y1_par)), dimnames = list(unlist(dimnames(mx1y1_par[[1]])[1]), colnames(x1), rownames(y1)) )
   } else {
     N12<-inters(x1, y1)         # intersection of the subsets
@@ -121,18 +118,16 @@ dsrwon<-function(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarname
   ## 2.3 Identify contributions to each subset and compute mass
   #
   if (mcores == "yes") {
-  if  (requireNamespace("parallel", quietly = TRUE) ) {
     z2_df <- as.data.frame(aperm(N12,c(2,1)))
-    ncores <- detectCores(logical = FALSE)
-    grappe <- makeCluster(ncores-1)
-    clusterEvalQ(cl = grappe, expr = library(dst))
-    clusterExport(cl = grappe, varlist = list("W1", "z2_df"), envir = environment() )
+    ncores <- parallel::detectCores(logical = FALSE)
+    grappe <- parallel::makeCluster(ncores-1)
+    parallel::clusterEvalQ(cl = grappe, expr = library(dst))
+    parallel::clusterExport(cl = grappe, varlist = list("W1", "z2_df"), envir = environment() )
   #
   ## 2.3 Identify contributions to each subset and compute mass
   #
-   I12_par <- parSapply( cl = grappe, X=1:ncol(z2_df), FUN = function(X) {  dotprod  (W1, as.matrix(z2_df[,X]), g = "&",f = "==")  }, simplify = FALSE, USE.NAMES = TRUE ) 
-   stopCluster(grappe)
-  }
+   I12_par <- parallel::parSapply( cl = grappe, X=1:ncol(z2_df), FUN = function(X) {  dotprod  (W1, as.matrix(z2_df[,X]), g = "&",f = "==")  }, simplify = FALSE, USE.NAMES = TRUE ) 
+   parallel::stopCluster(grappe)
   # List to array conversion
   I12 <- array(unlist(I12_par), dim = c(shape(I12_par[[1]])[1], shape(I12_par)))
   } else {
