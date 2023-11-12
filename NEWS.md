@@ -1,5 +1,7 @@
 # dst 1.5.1.9011
 
+* Function bcaTrunc: Parameter "use_ssnames" added to allow use of subsets names to do truncation instead of description (tt) matrix. Default al FALSE.
+
 * Function bca: parameter ssnames is reinstalled in the function call
 
 * Name of function ssnnames changed for DoSSnames to avoid confusion with parameter ssnames oof bca object.
@@ -133,6 +135,11 @@
 * function dsrwon: added a check on values names to ensure that the two bca's combined are defined on the same space.
 
 * function extmin: added checks on names of variables, as well as their number and their position in a product space
+
+
+
+
+
 
 # dst 1.4.0
 *  version 1.4.0 published on CRAN 2019-08-20
