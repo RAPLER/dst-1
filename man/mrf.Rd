@@ -4,7 +4,8 @@
 \name{mrf}
 \alias{mrf}
 \title{The Captain's Problem. \code{mrf}: Relation between variables No Maintenance (M = false) and  Repairs at sea (R)}
-\format{A (0,1) matrix with 4 rows and 6 columns.
+\format{
+A (0,1) matrix with 4 rows and 6 columns.
 \describe{
   \item{[1,c(1,2)]}{value = 0, not used}
   \item{[1,3:6]}{Identification numbers of the two variables. Column 3,4: variable 6; columns 5,6: variable 8}
@@ -12,7 +13,8 @@
   \item{m}{the value of the specification, a number between 0 and 1}
   \item{true}{1 if true is part of the specification, 0 otherwise}
   \item{false}{1 if false is part of the specification, 0 otherwise}
-  }}
+  }
+}
 \source{
 \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
 }
