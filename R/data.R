@@ -1,6 +1,6 @@
 #' The Captain's Problem. \code{ads}: Relation between variables Arrival (A), Departure delay (D) and Sailing delay (S)
 #' 
-#' This dataset is the \code{tt} matrix establishing the relation A = D + S, where A = {0:6}, D = {0:3} and S = {0:3}. The subset made of all the triplets (a,d,s) of (A x D x S) where a = d + s is true has a mass value of 1. To construct the \code{tt} matrix, we put the variables A, D, S side by side, as in a truth table representation. Each triplet of the subset is described by a row of the matrix as a vector of zeros and ones.
+#' This dataset is the \code{tt} matrix establishing the relation A = D + S, where A = 0:6, D = 0:3 and S = 0:3. The subset made of all the triplets (a,d,s) of (A x D x S) where a = d + s is true has a mass value of 1. To construct the \code{tt} matrix, we put the variables A, D, S side by side, as in a truth table representation. Each triplet of the subset is described by a row of the matrix as a vector of zeros and ones.
 #' @author Claude Boivin, Stat.ASSQ
 #' @format An integer matrix with 18 rows and 17 columns
 #' \describe{
@@ -16,7 +16,7 @@
 #'   \item{1}{1 if 1 is part of the specification, 0 otherwise}
 #'   \item{0}{1 if 0 is part of the specification, 0 otherwise}
 #'   }
-#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "ads"
 #' 
 #' The Captain's Problem. \code{dlfm}: Relation between variables Departure delay (D), Loading delay (L), Forecast of the weather (F), Maintenance delay (M)
@@ -38,12 +38,12 @@
 #'   \item{foul}{1 if foul is part of the specification, 0 otherwise}
 #'   \item{fair}{1 if fair is part of the specification, 0 otherwise}
 #'   }
-#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "dlfm"
 #' 
 #' The Captain's Problem. \code{fw}: Relation between variables Forecast of the weather (F) and  Weather at sea (W)
 #' 
-#' This dataset is the \code{tt} matrix establishing the relation between the two variables. An accurate forecast is described by this subset of two events: {(Forecast = foul, Weather = foul) and (Forecast = fair, Weather = fair)}. We assign a mass value of 0.8 to this subset. The remaining mass of 0.2 is allotted to the frame. To construct the \code{tt} matrix, we put the variables F and W side by side, as in a truth table representation. Each pair of the subset is described by a row of the matrix as a vector of zeros and ones.
+#' This dataset is the \code{tt} matrix establishing the relation between the two variables. An accurate forecast is described by this subset of two event:  (Forecast = foul, Weather = foul) and (Forecast = fair, Weather = fair). We assign a mass value of 0.8 to this subset. The remaining mass of 0.2 is allotted to the frame. To construct the \code{tt} matrix, we put the variables F and W side by side, as in a truth table representation. Each pair of the subset is described by a row of the matrix as a vector of zeros and ones.
 #' 
 #' @author Claude Boivin
 #' @format An integer matrix with 4 rows and 6 columns.
@@ -55,7 +55,7 @@
 #'   \item{foul}{1 if foul is part of the specification, 0 otherwise}
 #'   \item{fair}{1 if fair is part of the specification, 0 otherwise}
 #'   }
-#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "fw"
 #' 
 #' The Captain's Problem. \code{mrf}: Relation between variables No Maintenance (M = false) and  Repairs at sea (R)
@@ -73,7 +73,7 @@
 #'   \item{true}{1 if true is part of the specification, 0 otherwise}
 #'   \item{false}{1 if false is part of the specification, 0 otherwise}
 #'   }
-#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "mrf"
 #' 
 #'The Captain's Problem. \code{mrt}: Relation between variables Maintenance done (M = true) and  Repairs at sea (R)
@@ -91,12 +91,12 @@
 #'   \item{true}{1 if true is part of the specification, 0 otherwise}
 #'   \item{false}{1 if false is part of the specification, 0 otherwise}
 #'   }
-#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "mrt"
 #' 
 #' The Captain's Problem. \code{swr}: Relation between variables Sailing delay (S), Weather at sea (W), and Repairs at sea (R)
 #' 
-#' This dataset is the \code{tt} matrix establishing a relation between S, W and R, where S = {0:3}, W = {foul, fair} and R = {true, false}. The goal of this relation is to account for other causes of sailing delay. All the elements (s,w,r) of (S x W x R) where W or R is true add one day of sailing delay. We put a mass value of 0.9 to this subset. The remaining mass of 0.1 is allotted to the frame.
+#' This dataset is the \code{tt} matrix establishing a relation between S, W and R, where S = 0:3, W = (foul, fair) and R = (true, false). The goal of this relation is to account for other causes of sailing delay. All the elements (s,w,r) of (S x W x R) where W or R is true add one day of sailing delay. We put a mass value of 0.9 to this subset. The remaining mass of 0.1 is allotted to the frame.
 #' 
 #' To construct the \code{tt} matrix, we put the variables S, W, R side by side, as in a truth table representation. Each triplet of the subset is described by a row of the matrix as a vector of zeros and ones.
 #' 
@@ -116,5 +116,5 @@
 #'   \item{true}{1 if true is part of the specification, 0 otherwise}
 #'   \item{false}{1 if false is part of the specification, 0 otherwise}
 #'   }
-#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "swr"

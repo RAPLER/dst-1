@@ -22,7 +22,7 @@
 * 2023-01-04. Check to input parameters added.
 
 ## dsrwon: 
-* Added parallel coomputing capability, using multiple cores.
+* Added parallel computing capability, using multiple cores.
 
 # dst 1.5.1
 
