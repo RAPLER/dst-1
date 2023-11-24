@@ -4,7 +4,7 @@
 \alias{belplauPlot}
 \title{Plot belplau matrix}
 \usage{
-belplauPlot(belplau_mat, xlab, color, y = "rplau")
+belplauPlot(belplau_mat, xlab, color, y = "rplau", x = "index")
 }
 \arguments{
 \item{belplau_mat:}{belplau matrix e.g. belplau(bpa)}
