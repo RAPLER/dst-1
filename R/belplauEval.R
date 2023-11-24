@@ -24,7 +24,7 @@ belplauEval<-function(bel_plau,true_order,var="rplau",err="type I",is_belplau=TR
   # 0 means both > or both <
   # -1 means rplau < but actually >=
   if (is_belplau) observed_order<-bel_plau[,var] else observed_order<-bel_plau
-  order_observed<-outer(bel_plau[,var],bel_plau[,var],">")
+  order_observed<-outer(observed_order,observed_order,">")
   order_true<-outer(true_order,true_order,">")
   validated<-order_observed-order_true
   if (err=="type I") {
