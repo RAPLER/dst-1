@@ -61,7 +61,7 @@ y1s <- y1
 y2s <- y2
 y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
-y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
+y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE, skpt_tt = TRUE)
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 dsrwon(vacuous, vacuous)
 }

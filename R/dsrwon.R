@@ -33,7 +33,7 @@
 #' y2s <- y2
 #' y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 #' y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
-#' y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
+#' y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE, skpt_tt = TRUE)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
@@ -108,7 +108,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
   #
   # Combine mass vectors
   V12<-outer(zx$spec[,2],zy$spec[,2], "*")
-  #
   # End Section 1
   #
   # Section 2 Calculations with tt matrices, default setup)
@@ -189,6 +188,10 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     else {
       MAC<-apply(I12*t(array(t(V12),dim(I12)[2:1]) ),1,sum)
     }
+    # Case where the result is vacuous, with mmass = 1
+    if (nrow(I12) == 0) {
+      MAC <- 1
+    }
   #
   # 2.5 Order the subsets to find if the empty subset among them.
   sort_order <-order(apply(W1,1,sum))
@@ -258,7 +261,11 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
   # 3.2 Obtain unique subsets resulting from the intersections  (W1 as character vector and list)
   #
   W1 <- cN12v[!duplicated(cN12v)]
-  W1_list <- cN12[!duplicated(cN12)]
+  # Test 2023-11-24
+  # Convert W1 to list
+  # W1_list <- cN12[!duplicated(cN12)]
+  W1_list <- as.list(W1)
+  # Endd test
   #
   # 3.3 identify contribution of cN12v to each subset of W1  
   # and compute the sum of masses
