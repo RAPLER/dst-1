@@ -175,7 +175,7 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
    mtkeep <- zmass1[in_ztokeep]
    for (i in 1:shape(ztokeep)) {
      len <- shape(znames)
-     znames[[1+len]] <- ztokeep[i]
+     znames[[1+len]] <- ztokeep[[i]]
    }
    znewmass <- c(znewmass, mtkeep)
    #
