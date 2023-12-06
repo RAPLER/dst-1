@@ -75,7 +75,7 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
   #
   # 2.2. find rows to merge and do union of these rows
   # Note: IF there is only one subset with mass < treshold, there will be nothing to merge. The bca will remain unchanged.
-  in_ztgo <- zdata1[,(1+ncol(zx))] < seuil # index of elements to group
+  in_ztgo <- zdata1[,(1+ncol(zx))] <= seuil # index of elements to group
   # subsetting rows to merge and mass to add
   ztgo <- zdata1[in_ztgo,]  
   # ensure ztgo is always matrix
@@ -170,7 +170,7 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
    }
    #
    # 3.2 Retain subsets with mass > seuil
-   in_ztokeep <- zmass1 >= seuil # index of elements to group
+   in_ztokeep <- zmass1 > seuil # index of elements to group
    ztokeep <- zdata1[in_ztokeep]
    mtkeep <- zmass1[in_ztokeep]
    for (i in 1:shape(ztokeep)) {
@@ -181,7 +181,7 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
    #
    # 3.3. find ssnames to merge and do union of these ssnames
    # Note: If there is only one subset with mass < treshold, there will be nothing to merge. The bca will remain unchanged.
-   in_ztgo <- zmass1 < seuil # index of elements to group
+   in_ztgo <- zmass1 <= seuil # index of elements to group
    # Union of ssnames
    ztgo <- Reduce("union", zdata1[in_ztgo] )
    # Check if if the new subset is the frame. If so ignore the subset and add its mass to the frame
