@@ -25,7 +25,7 @@ ttmatrix <- function(x, sparse="no", valuenames=NULL) {
     }
     rowIdx <- vector()
     colIdx <- vector()
-    for(i in (if(x[[1]]=="Empty") 2 else 1):length(x)) {
+    for(i in ifelse(length(x[[1]]) == 1, ifelse(x[[1]] == "Empty", 2, 1), 1):length(x)) {
       rowIdx<-c(rowIdx,rep(i,length(x[[i]])))
       colId <- match(x[[i]],valuenames)
       colIdx<-c(colIdx,colId)
