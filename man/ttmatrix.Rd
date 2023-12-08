@@ -4,10 +4,14 @@
 \alias{ttmatrix}
 \title{Construct a description matrix from a list of subsets names.}
 \usage{
-ttmatrix(x)
+ttmatrix(x, sparse = "no", valuenames = NULL)
 }
 \arguments{
 \item{x}{A list of names}
+
+\item{sparse=c("yes", "no")}{whether to use sparse matrix}
+
+\item{valuenames=NULL}{valuenames of bca}
 }
 \value{
 ttmat A corresponding logical description matrix
