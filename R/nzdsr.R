@@ -45,7 +45,11 @@ nzdsr<-function(x) {
   #
   # case of tt matrix missing
   if (is.null(x$tt) ) {
-    x$tt <- ttmatrix(x$ssnames)
+    if(is(x$tt, 'sparseMatrix')) {
+      x$tt <- ttmatrix(x$ssnames, "yes", x$valuenames)
+    } else {
+      x$tt <- ttmatrix(x$ssnames)
+    }
   }
   #
   # 3. Assign variables
