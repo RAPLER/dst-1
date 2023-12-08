@@ -25,9 +25,10 @@ ttmatrix <- function(x, sparse="no", valuenames=NULL) {
     }
     rowIdx <- vector()
     colIdx <- vector()
-    for(i in 1:length(x)) {
+    for(i in (if(x[[1]]=="Empty") 2 else 1):length(x)) {
       rowIdx<-c(rowIdx,rep(i,length(x[[i]])))
-      colIdx<-c(colIdx,match(x[[i]],valuenames))
+      colId <- match(x[[i]],valuenames)
+      colIdx<-c(colIdx,colId)
     }
     ttmat <- Matrix::sparseMatrix(
       i = rowIdx,
