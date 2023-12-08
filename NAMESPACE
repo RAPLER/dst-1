@@ -3,6 +3,7 @@
 export(DoSSnames)
 export(addTobca)
 export(bca)
+export(bcaNorm)
 export(bcaPrint)
 export(bcaPrintLarge)
 export(bcaRel)

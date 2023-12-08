@@ -17,7 +17,7 @@
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
 #' xy <- nzdsr(dsrwon(x,y))
-#' z<-belplau(xy)
+#' z<-belplau(xy,h=ttmatrixPartition(xy$infovar[2],xy$infovar[2]))
 #' belplauEval(z,c(0,1,0))
 belplauEval<-function(bel_plau,true_order,var="rplau",err="type I",is_belplau=TRUE) {
   # 1 means rplau > but actually <=

@@ -38,7 +38,7 @@ y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2,
 byrow = TRUE), m = c(0.6, 0.4),  
 cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
 xy <- nzdsr(dsrwon(x,y))
-z<-belplau(xy)
+z<-belplau(xy,h=ttmatrixPartition(xy$infovar[2],xy$infovar[2]))
 belplauEval(z,c(0,1,0))
 }
 \author{

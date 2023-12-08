@@ -40,33 +40,9 @@ Combining the two basic mass assignments we get the belief after conditioning. N
 bpa3 <- dsrwon(bpa1, bpa2)
 belplau(nzdsr(bpa3), h=Theta)
 ```
-```{r}
-bpa3 <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(1, 0, 0), cnames = c("d", "e", "f"), idvar = 3)
 
-tt <- matrix(c(1,0,0,1,0,0,
-               1,0,0,0,1,0,
-               1,0,0,0,0,1,
-               0,1,0,1,0,0,
-               0,1,0,0,1,0,
-               0,1,0,0,0,1,
-               0,0,1,1,0,0,
-               0,0,1,0,1,0,
-               0,0,1,0,0,1), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("d", "e", "f", "a", "b", "c")))
 
-spec <-  matrix(c(1,2,3,
-                  4,5,6,
-                  7,8,9,
-                  0.1,0.2,0.7,
-                  0.2,0.3,0.5,
-                  0.4,0.5,0.1), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
 
-inforvar <- matrix(c(1,3,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
-
-rel <- bcaRel(tt = tt, spec = spec, infovar = inforvar, varnames = c("v1", "v2"), relnb = 1)
-
-bpa3_extnd<-extmin(bpa3,rel)
-elim(rel,3)
-```
 
 
 
