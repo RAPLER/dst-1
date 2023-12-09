@@ -180,7 +180,7 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
       }
       znewmass <- c(znewmass, mtkeep)
     } else {
-      error("seuil need to be lower than the maximum mass")
+      stop("seuil need to be lower than the maximum mass")
     }
     #
     # 3.3. find ssnames to merge and do union of these ssnames
