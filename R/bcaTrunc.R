@@ -171,13 +171,17 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
     #
     # 3.2 Retain subsets with mass > seuil
     in_ztokeep <- zmass1 > seuil # index of elements to group
-    ztokeep <- zdata1[in_ztokeep]
-    mtkeep <- zmass1[in_ztokeep]
-    for (i in 1:shape(ztokeep)) {
-      len <- shape(znames)
-      znames[[1+len]] <- ztokeep[[i]]
+    if (any(in_ztokeep)) {
+      ztokeep <- zdata1[in_ztokeep]
+      mtkeep <- zmass1[in_ztokeep]
+      for (i in 1:shape(ztokeep)) {
+        len <- shape(znames)
+        znames[[1+len]] <- ztokeep[[i]]
+      }
+      znewmass <- c(znewmass, mtkeep)
+    } else {
+      error("seuil need to be lower than the maximum mass")
     }
-    znewmass <- c(znewmass, mtkeep)
     #
     # 3.3. find ssnames to merge and do union of these ssnames
     # Note: If there is only one subset with mass < treshold, there will be nothing to merge. The bca will remain unchanged.
