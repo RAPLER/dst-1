@@ -9,7 +9,8 @@ belplauEval(
   true_order,
   var = "rplau",
   err = "type I",
-  is_belplau = TRUE
+  is_belplau = TRUE,
+  strict = TRUE
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ belplauEval(
 \item{err="type}{I" type of error to be evaluated}
 
 \item{is_belplau=TRUE}{whether bel_plau is a belplau object}
+
+\item{strict=TRUE}{whether true_order distinguish elements > 0}
 }
 \value{
 Type I, II error by comparing two orderings
