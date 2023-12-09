@@ -162,7 +162,7 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
    znewmass <- vector()
    #
    # 3.1 Remove empty set temporarily if there (for the case where m(empty) < seuil)
-   if (zdata1[1] == "Empty") {
+   if (zdata1[[1]] == "Empty") {
      znames[[1+length(znames)]] <- zdata1[[1]]
      znewmass <- c(znewmass, zmass1[1])
      zdata1 <- zdata1[2:shape(zdata1)] 
