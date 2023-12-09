@@ -37,5 +37,5 @@ belplauEval<-function(bel_plau,true_order,var="rplau",err="type I",is_belplau=TR
     type_ii_v<-as.vector(type_ii)
     type_ii_err<-1-sum(type_ii_v==0)/length(type_ii_v)
     return(type_ii_err)
-  } else errorCondition("err can only be either type I or type II")
+  } else stop("err can only be either type I or type II")
 }
