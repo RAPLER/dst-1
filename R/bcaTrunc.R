@@ -182,26 +182,31 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
     # 3.3. find ssnames to merge and do union of these ssnames
     # Note: If there is only one subset with mass < treshold, there will be nothing to merge. The bca will remain unchanged.
     in_ztgo <- zmass1 <= seuil # index of elements to group
-    # Union of ssnames
-    ztgo <- Reduce("union", zdata1[in_ztgo] )
-    # Check if if the new subset is the frame. If so ignore the subset and add its mass to the frame
-    if (shape(ztgo) == shape(zframe)) {
-      znames[[1+length(znames)]] <- zframe
-      mtoadd <- sum(zmass1[in_ztgo])
-      znewmass <- c(znewmass, zmass[shape(zmass)] + mtoadd)
-    } else {
-      znames[[1+length(znames)]] <- ztgo
-      # Order elements 
-      # addition of masses
-      mtoadd <- sum(zmass1[in_ztgo])
-      znewmass <- c(znewmass, mtoadd)
-      znames[[1+length(znames)]] <- zframe
-      znewmass <- c(znewmass, zmass[shape(zmass)] )  
+    if (any(in_ztgo)) {
+      # Union of ssnames
+      ztgo <- Reduce("union", zdata1[in_ztgo] )
+      # Check if if the new subset is the frame. If so ignore the subset and add its mass to the frame
+      if (shape(ztgo) == shape(zframe)) {
+        znames[[1+length(znames)]] <- zframe
+        mtoadd <- sum(zmass1[in_ztgo])
+        znewmass <- c(znewmass, zmass[shape(zmass)] + mtoadd)
+      } else {
+        znames[[1+length(znames)]] <- ztgo
+        # Order elements 
+        # addition of masses
+        mtoadd <- sum(zmass1[in_ztgo])
+        znewmass <- c(znewmass, mtoadd)
+        znames[[1+length(znames)]] <- zframe
+        znewmass <- c(znewmass, zmass[shape(zmass)] )  
     }
     #
     # 3.4 define the new spec parameter
     zspec <- cbind(1:shape(znewmass), znewmass)
     colnames(zspec) <- c("specnb", "mass")
+    } else {
+      znames <- x$ssnames
+      zspec <- x$spec
+    }
     #
     # 3.5 Make the list of ssnames with their mass
     y<-list(con = x$con, tt = NULL, ssnames = znames, spec = zspec , infovar = x$infovar, varnames = x$varnames, valuenames = x$valuenames, inforel = x$inforel) 

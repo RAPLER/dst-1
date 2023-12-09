@@ -2,7 +2,6 @@
 #' 
 #' @param x A list of names
 #' @param sparse=c("yes","no") whether to use sparse matrix
-#' @param valuenames=NULL valuenames of bca
 #' @return ttmat A corresponding logical description matrix 
 #' @author Claude Boivin
 #' @examples 
@@ -10,7 +9,7 @@
 #' ttmatrix(subsets_names)
 #' @export
 #' 
-ttmatrix <- function(x, sparse="no", valuenames=NULL) {
+ttmatrix <- function(x, sparse="no") {
   # Obtain tt matrix from subsets names 
   #
   # Checks
@@ -20,23 +19,27 @@ ttmatrix <- function(x, sparse="no", valuenames=NULL) {
   }
   #
   if(sparse=="yes") {
-    if(is.null(valuenames)) {
-      stop("Need valuenames when sprase = \"yes\" ")
-    }
+    zframe <- x[[length(x)]]
+    zz1 <- lapply(X=1:length(x), FUN= function(X) {lapply(X=1:length(x[[X]]), FUN = function(Y) {which(zframe == (x[[X]])[Y])}) } )
+    #
+    # construct the corresponding sparse tt matrix of the resulting subset names
     rowIdx <- vector()
     colIdx <- vector()
-    for(i in ifelse(length(x[[1]]) == 1, ifelse(x[[1]] == "Empty", 2, 1), 1):length(x)) {
-      rowIdx<-c(rowIdx,rep(i,length(x[[i]])))
-      colId <- match(x[[i]],valuenames)
-      colIdx<-c(colIdx,colId)
+    for (i in 1:length(x) )  {
+      tempc <-  (unlist(zz1[[i]]) )
+      colIdx <- c(colIdx, tempc )
+      tempr <- rep(i,sum(tempc >0) )
+      rowIdx <- c(rowIdx, tempr)
     }
+    # Obtain sparse tt matrix of the result
     ttmat <- Matrix::sparseMatrix(
       i = rowIdx,
       j = colIdx, 
       x = 1, 
-      dims = c(length(x), length(valuenames) )
+      dims = c(length(x), length(zframe) )
     )
-    ttmat <- methods::as(ttmat, "RsparseMatrix")
+    colnames(ttmat) <- zframe
+    rownames(ttmat) <- nameRows(ttmat)
   } else if(sparse=="no") {
     z1l <- lapply(X = 1:length(x), FUN = function(X) {outer(x[[X]], x[[length(x)]], "==") } ) 
     ttmat <- t(mapply(FUN= function(X,Y) {unlist(lapply(X=1:ncol(z1l[[length(z1l)]]), FUN =  function(X) { reduction(z1l[[Y]][,X], f = "|")}) ) }, Y=1:length(x) ) )
