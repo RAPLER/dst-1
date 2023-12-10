@@ -7,6 +7,9 @@
 #' @examples 
 #' subsets_names <- list(c("b", "c"), "b", c("a", "b", "c"))
 #' ttmatrix(subsets_names)
+#' znames <- list("empty", "a", c("b", "c"), c("a", "b"), c("a", "b", "c") )
+#' print(ttmatrix(znames) )
+#' print(ttmatrix(znames, sparse = "yes") )
 #' @export
 #' 
 ttmatrix <- function(x, sparse="no") {
