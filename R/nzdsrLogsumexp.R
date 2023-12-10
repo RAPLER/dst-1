@@ -46,7 +46,7 @@ nzdsrLogsumexp<-function(x, sparse="no") {
   #
   # case of tt matrix missing
   if (is.null(x$tt) ) {
-    if(sparse) {
+    if(sparse=="yes") {
       x$tt <- ttmatrix(x$ssnames, "yes")
     } else {
       x$tt <- ttmatrix(x$ssnames)
