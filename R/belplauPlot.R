@@ -15,5 +15,5 @@
 #' belplauPlot(bel_plau)
 belplauPlot<-function(belplau_mat, xlab, color, y="rplau", x="index") {
   ggplot(as.data.frame(belplau_mat) %>% mutate(!!x:=xlab)) +
-    geom_point(aes(x=!!sym(x),y=!!sym(y),colour=as.factor(color))) + labs(color="") + theme_bw()
+    geom_point(aes(x=!!sym(x),y=!!sym(y),colour=factor(color, color))) + labs(color="") + theme_bw()
 }
