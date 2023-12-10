@@ -4,10 +4,12 @@
 \alias{nzdsrLogsumexp}
 \title{Normalization of a basic chance assignment with logsumexp}
 \usage{
-nzdsrLogsumexp(x)
+nzdsrLogsumexp(x, sparse = "no")
 }
 \arguments{
 \item{x}{A basic chance assignment, i.e. a object of class bcaspec.}
+
+\item{sparse="no"}{Whether to use sparse matrix}
 }
 \value{
 z The normalized basic chance assignment.
