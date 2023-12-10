@@ -4,7 +4,14 @@
 \alias{belplauPlot}
 \title{Plot belplau matrix}
 \usage{
-belplauPlot(belplau_mat, xlab, color, y = "rplau", x = "index")
+belplauPlot(
+  belplau_mat,
+  xlab,
+  color,
+  y = "rplau",
+  x = "index",
+  is_log_scale = TRUE
+)
 }
 \arguments{
 \item{belplau_mat:}{belplau matrix e.g. belplau(bpa)}
@@ -14,6 +21,8 @@ belplauPlot(belplau_mat, xlab, color, y = "rplau", x = "index")
 \item{color:}{color of xlab e.g. c(0,1,0)}
 
 \item{y="rplau":}{column name of belplau matrix}
+
+\item{is_log_scale=TRUE:}{whether to use log-scale}
 }
 \value{
 a plot of belplau matrix
