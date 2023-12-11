@@ -21,11 +21,11 @@ The theory of belief functions can be used to falsify possible hypotheses via co
 
 ```{r}
 a <- 1e-5
-fr <- 1
+fr <- 2
 qt <- 0.25
 v <- c("a","b","c","d")
-x<-bca(matrix(c(1,1,1,0,1,1,1,1), nrow=2, byrow=TRUE), m=c(a,1-a), cnames=v)
-y<-bca(matrix(c(0,1,1,0,1,1,1,1), nrow=2, byrow=TRUE), m=c(a*fr,1-a*fr), cnames=v)
+x<-bca(matrix(c(0,1,0,0,1,1,1,1), nrow=2, byrow=TRUE), m=c(a,1-a), cnames=v)
+y<-bca(matrix(c(0,1,0,0,1,1,1,1), nrow=2, byrow=TRUE), m=c(a,1-a), cnames=v)
 z<-bca(matrix(c(1,0,1,0,1,1,1,1), nrow=2, byrow=TRUE), m=c(a*fr,1-a*fr), cnames=v)
 w1<-dsrwonLogsumpexp(x, y, use_ssnames = TRUE)
 bcaPrint(w1)
