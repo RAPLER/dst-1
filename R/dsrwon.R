@@ -232,6 +232,13 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
       stop("One or more ssnames list is missing.")
     }
     #
+    if (length(zx$ssnames[[length(zx$ssnames)]]) !=zx$infovar[1,2] ) {
+      stop("Number of elements of frame differs from infovar parameter.")
+    }
+    if (length(zy$ssnames[[length(zy$ssnames)]]) !=zy$infovar[1,2] ) {
+        stop("Number of elements of frame differs from infovar parameter.")
+    }
+    #
     # 3.1.compute intersections (N12 table) and transform to appropriate format
     # Case with multiple cores = "yes"
     if  (mcores == "yes") {

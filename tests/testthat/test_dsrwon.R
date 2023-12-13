@@ -37,4 +37,12 @@ test_that("dsrwon", {
   zx2 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"),  varnames = "x2", idvar = 1)
   zx2$spec[,2] <- c(0.3, 0.5, 0.3)
   expect_error(dsrwon(x = zy1, y = zx2) , "Invalid data, sum of masses of one vector, or both, greater than one.")
+  #
+  # T6 Check that nb of elements of frame in last of ssnames equal parameter infovar[,2]
+  #
+  zy1 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), m=c(0.6, 0.4),  cnames = c("a", "b", "c"),  varnames = "y1", idvar = 1)
+  zx2 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, byrow = TRUE), m=c(0.2,0.5, 0.3), cnames =c("a", "b", "c"),  varnames = "x2", idvar = 1)
+  zx2$infovar[,2] <- 2
+  expect_error(dsrwon(x = zy1, y = zx2, use_ssnames = TRUE) , "Number of elements of frame differs from infovar parameter.")
+  #
 })
