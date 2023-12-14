@@ -19,7 +19,7 @@
 #' bel_plau <- belplau(bpa)
 #' belplauPlot(bel_plau)
 belplauPlot<-function(belplau_mat, xlab, color, y="rplau", x="index", levels=NULL, legend_title="", main_title="",is_log_scale=TRUE,is_negative=FALSE) {
-  ggplot(as.data.frame(cbind(belplau_mat,color)) %>% mutate(!!sym(y):=(if(is_log_scale) log(!!sym(y)) * (if(is_negative) -1 else 1) else !!sym(y))) %>% mutate(!!sym(x):=xlab) %>% arrange(color)) +
-    geom_point(aes(x=!!sym(x),y=!!sym(y),colour=factor(color, if (is.null(levels)) unique(color) else levels))) + 
+  ggplot(as.data.frame(cbind(belplau_mat,color)) %>% mutate(!!sym(y):=(if(is_log_scale) log(!!sym(y)) * (if(is_negative) -1 else 1) else !!sym(y))) %>% mutate(!!sym(x):=xlab) %>% mutate(color=factor(color, if (is.null(levels)) unique(color) else levels) )%>% arrange(desc(color))) +
+    geom_point(aes(x=!!sym(x),y=!!sym(y),colour=color)) + 
     labs(title=main_title,color=legend_title) + theme_bw() + ylab(if (is_log_scale) paste0(if(is_negative) "-","log(",y,")") else y) 
 }
