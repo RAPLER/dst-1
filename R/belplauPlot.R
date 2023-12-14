@@ -28,13 +28,13 @@ belplauPlot <- function(belplau_mat,
                         is_log_scale = TRUE,
                         is_negative = FALSE) {
   if (is.null(levels)) levels <- unique(color)
-  
-  dat <- as.data.frame(belplau_mat) |>
+
+  dat <- as.data.frame(belplau_mat) %>%
     mutate(
       !!sym(x) := xlab,
       color = factor(color, levels = levels)
     )
-  
+
   if (is_log_scale) {
     ylab <- paste0("log(", y, ")")
     .mult <- 1
@@ -42,13 +42,14 @@ belplauPlot <- function(belplau_mat,
       .mult <- -1
       ylab <- paste0("-", ylab)
     }
-    mutate(
-      dat, !!sym(y) := log(!!sym(y)) * .mult
-    )
+    dat <- dat %>%
+      mutate(
+        !!sym(y) := log(!!sym(y)) * .mult
+        )
   } else {
     ylab <- y
   }
-  
+
   dat$order <- reorder(dat$color, rep(1, nrow(dat)), FUN = length)
   
   dat <- dat[order(dat$order, decreasing = TRUE), ]
@@ -63,7 +64,8 @@ belplauPlot <- function(belplau_mat,
     ) +
     labs(
       title = main_title, color = legend_title,
-      ylab = ylab
     ) +
+    ylab(ylab) +
     theme_bw()
 }
+
