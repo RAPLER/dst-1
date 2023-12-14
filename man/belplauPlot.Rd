@@ -10,7 +10,11 @@ belplauPlot(
   color,
   y = "rplau",
   x = "index",
-  is_log_scale = TRUE
+  levels = NULL,
+  legend_title = "",
+  main_title = "",
+  is_log_scale = TRUE,
+  is_negative = FALSE
 )
 }
 \arguments{
@@ -22,7 +26,15 @@ belplauPlot(
 
 \item{y="rplau":}{column name of belplau matrix}
 
+\item{levels=NULL:}{levels of color in order}
+
+\item{main_title="":}{main title}
+
+\item{legend_title="":}{title of legend}
+
 \item{is_log_scale=TRUE:}{whether to use log-scale}
+
+\item{is_negative=TRUE:}{whether to multiple by -1}
 }
 \value{
 a plot of belplau matrix
