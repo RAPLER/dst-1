@@ -7,6 +7,7 @@
 #' @param main_title="": main title
 #' @param legend_title="": title of legend
 #' @param is_log_scale=TRUE: whether to use log-scale
+#' @param is_negative=TRUE: whether to multiple by -1
 #' @return a plot of belplau matrix
 #' @author Peiyuan Zhu
 #' @export
@@ -16,8 +17,8 @@
 #' cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 #' bel_plau <- belplau(bpa)
 #' belplauPlot(bel_plau)
-belplauPlot<-function(belplau_mat, xlab, color, y="rplau", x="index", legend_title="", main_title="",is_log_scale=TRUE) {
-  ggplot(as.data.frame(belplau_mat) %>% mutate(!!sym(y):=(if(is_log_scale) log(!!sym(y)) else !!sym(y))) %>% mutate(!!sym(x):=xlab)) +
+belplauPlot<-function(belplau_mat, xlab, color, y="rplau", x="index", legend_title="", main_title="",is_log_scale=TRUE,is_negative=FALSE) {
+  ggplot(as.data.frame(belplau_mat) %>% mutate(!!sym(y):=(if(is_log_scale) log(!!sym(y)) * (if(is_negative) -1 else 1) else !!sym(y))) %>% mutate(!!sym(x):=xlab)) +
     geom_point(aes(x=!!sym(x),y=!!sym(y),colour=factor(color, unique(color)))) + 
-    labs(title=main_title,color=legend_title) + theme_bw() + ylab(if (is_log_scale) paste0("log(",y,")") else y) 
+    labs(title=main_title,color=legend_title) + theme_bw() + ylab(if (is_log_scale) paste0(if(is_negative) "-","log(",y,")") else y) 
 }
