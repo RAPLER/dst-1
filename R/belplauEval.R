@@ -5,7 +5,7 @@
 #' @param var="rplau" variable name of the belplau to be used as ordering
 #' @param err="type I" type of error to be evaluated
 #' @param is_belplau=TRUE whether bel_plau is a belplau object
-#' @return Type I, II error by comparing two orderings
+#' @return Type I, II, III error by comparing two orderings
 #' @author Peiyuan Zhu
 #' @export
 #' @examples 
@@ -37,5 +37,9 @@ belplauEval<-function(bel_plau,true_order,var="rplau",err="type I",is_belplau=TR
     type_ii_v<-as.vector(type_ii)
     type_ii_err<-1-sum(type_ii_v==0)/length(type_ii_v)
     return(type_ii_err)
-  } else stop("err can only be either type I or type II")
+  } else if (err=="type III") {
+    type_iii_v<-as.vector(order_true)
+    type_iii_err<-1-sum(type_iii_v==0)/length(type_iii_v)
+    return(type_iii_err)
+  } else stop("err can only be either type I, II, or III")
 }
