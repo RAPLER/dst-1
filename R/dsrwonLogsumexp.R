@@ -289,28 +289,29 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     # 3.6. Construct the sparse tt matrix corresponding to ssnames
     #
     if (skpt_tt == FALSE) {
+      tt <- ttmatrix(W1s, sparse = "yes") # replacing lines 300-321 to be deleted further
       # determine the column indices of each subset
-      zframe <- W1s[[length(W1s)]]
-      zz1 <- lapply(X=1:length(W1s), FUN= function(X) {lapply(X=1:length(W1s[[X]]), FUN = function(Y) {which(zframe == (W1s[[X]])[Y])}) } )
-      # construct the corresponding sparse tt matrix of the resulting subset names
-      rowIdx <- vector()
-      colIdx <- vector()
-      for (i in 1:length(W1s) )  {
-        tempc <-  (unlist(zz1[[i]]) )
-        colIdx <- c(colIdx, tempc )
-        tempr <- rep(i,sum(tempc >0) )
-        rowIdx <- c(rowIdx, tempr)
-      }
-      # Obtain sparse tt matrix of the result
-      tt <- Matrix::sparseMatrix(
-        i = rowIdx,
-        j = colIdx, 
-        x = 1, 
-        dims = c(length(W1s), length(zframe) )
-      )
-      tt <- methods::as(tt, "RsparseMatrix")
-      colnames(tt) <- zframe
-      rownames(tt) <- nameRows(tt)
+      # zframe <- W1s[[length(W1s)]]
+      # zz1 <- lapply(X=1:length(W1s), FUN= function(X) {lapply(X=1:length(W1s[[X]]), FUN = function(Y) {which(zframe == (W1s[[X]])[Y])}) } )
+      # # construct the corresponding sparse tt matrix of the resulting subset names
+      # rowIdx <- vector()
+      # colIdx <- vector()
+      # for (i in 1:length(W1s) )  {
+      #   tempc <-  (unlist(zz1[[i]]) )
+      #   colIdx <- c(colIdx, tempc )
+      #   tempr <- rep(i,sum(tempc >0) )
+      #   rowIdx <- c(rowIdx, tempr)
+      # }
+      # # Obtain sparse tt matrix of the result
+      # tt <- Matrix::sparseMatrix(
+      #   i = rowIdx,
+      #   j = colIdx, 
+      #   x = 1, 
+      #   dims = c(length(W1s), length(zframe) )
+      # )
+      # tt <- methods::as(tt, "RsparseMatrix")
+      # colnames(tt) <- zframe
+      # rownames(tt) <- nameRows(tt)
     }
     else {
       tt <- NULL
@@ -320,7 +321,8 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     # Put masses in the same order as the ssnames list
     #
     z <- unlist(W1s[[1]])
-    if (rlang::is_empty(z) == TRUE) {
+    if(z == "Empty") { 
+      #  if (rlang::is_empty(z) == TRUE) {
       empty<-sort_order[1]  
       m_empty<-MAC[empty] 
     } 
