@@ -31,7 +31,7 @@ belplauPlot <- function(belplau_mat,
 
   dat <- as.data.frame(belplau_mat) %>%
     mutate(
-      !!sym(x) := xlab,
+      !!sym(x) := factor(xlab, levels = xlab),
       color = factor(color, levels = levels)
     )
 
