@@ -9,6 +9,7 @@
 #' @param legend_title="": title of legend
 #' @param is_log_scale=TRUE: whether to use log-scale
 #' @param is_negative=TRUE: whether to multiple by -1
+#' @param is_factor=FALSE: whether to plot all x labels
 #' @return a plot of belplau matrix
 #' @author Peiyuan Zhu
 #' @export
@@ -26,12 +27,13 @@ belplauPlot <- function(belplau_mat,
                         legend_title = "",
                         main_title = "",
                         is_log_scale = TRUE,
-                        is_negative = FALSE) {
+                        is_negative = FALSE,
+                        is_factor=FALSE) {
   if (is.null(levels)) levels <- unique(color)
 
   dat <- as.data.frame(belplau_mat) %>%
     mutate(
-      !!sym(x) := factor(xlab, levels = xlab),
+      !!sym(x) := ifelse(is_factor,factor(xlab, levels = xlab),xlab),
       color = factor(color, levels = levels)
     )
 
