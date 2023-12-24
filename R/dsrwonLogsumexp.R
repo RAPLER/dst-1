@@ -321,7 +321,7 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     # Put masses in the same order as the ssnames list
     #
     z <- unlist(W1s[[1]])
-    if(z == "Empty") { 
+    if(rlang::is_empty(z)) { 
       #  if (rlang::is_empty(z) == TRUE) {
       empty<-sort_order[1]  
       m_empty<-MAC[empty] 
