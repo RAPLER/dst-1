@@ -39,5 +39,5 @@ x6 <- bca(tt = matrix(c(1,0,1,0,1,1), ncol=2), m=c(0.3,0.5,0.2), cnames=c("true"
 
 y6 <- bcaRel(tt=matrix(c(1,0,1,0,1,1,1,0,1,0,1,1), ncol=4, dimnames = list(NULL, c("true", "false","true", "false"))), spec =   matrix(c(1,2,3,0.3,0.5,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))), infovar=matrix(c(4,5,2,2), ncol = 2, dimnames = list(NULL, c("varnb", "size"))), varnames = c("B", "C"), relnb=7)
 #
-expect_error(extmin(x6, y6), "Variables names and variabless numbers do not match. Check variables names, numbers and their position.")
+expect_error(extmin(x6, y6), "Variables names and variables numbers do not match. Check variables names, numbers and their position.")
 })
