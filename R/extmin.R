@@ -135,7 +135,7 @@ extmin <- function(rel1, relRef) {
   rtt <- marrayToMatrix(zc)
   # put columns in the order of tt matrix of relRef
   cn <- colnames( rtt)
-  cnref <- colnames(relRef$tt)
+  cnRef <- colnames(relRef$tt)
   zz1 <- outer(cn, cnRef, "==")
   zz2 <- zz1*(1:length(cn) )
   zorder <- apply(zz2,2,sum)
