@@ -45,4 +45,10 @@ test_that("dsrwon", {
   zx2$infovar[,2] <- 2
   expect_error(dsrwon(x = zy1, y = zx2, use_ssnames = TRUE) , "Number of elements of frame differs from infovar parameter.")
   #
+  # T7
+  # Check if the  column names of the two tt matrices are in the same order
+  X0 <- bca(tt = matrix(c(0,1,0,1, rep(1,4)), ncol = 4, byrow = TRUE), m = c(0.6,0.4), cnames = c("a", "b", "c", "d"), idvar = 1, varnames = "X0")
+  X1 <- bca(tt = matrix(c(1,1,0,0, rep(1,4)), ncol = 4, byrow = TRUE), m = c(0.2,0.8), cnames = c("c", "a", "b", "d"), idvar = 1, varnames = "X1")
+  #
+  expect_error(dsrwon(x = X0, y = X1) , "Value names of the two frames differ. Check value names of variables as well as their position.")
 })

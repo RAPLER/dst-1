@@ -38,7 +38,7 @@
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
-  # Local variables: m1, m2, zx, zy, x1, y1, z, zz1 ,W1_list, W1s, values1, values2, V12, N12, W1, I12, MAC, nMAC
+  # Local variables: m1, m2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
   # 0. Catch old parameters names, if any and replace by the new ones
@@ -84,7 +84,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     zy <- x
   }
   #
-  # Checks specific to the tt matrix, if there
+  # Checks specific to the tt matrix, if there is one
   if  ((!is.null(x$tt)) & (!is.null(y$tt) ) ) {
     # 
     # x and y must have same frame of discernment
@@ -98,12 +98,13 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     #
     # x1 and x2 must have the same columns names put in the same order
     #
-    values1 <- unlist(zx$valuenames)
-    values2 <- unlist(zy$valuenames)
-    nbval <- sum(values1 == values2)
-    if ((length(values1) != length(values2)) | (nbval != length(values1))) {
+    colx <- colnames(zx$tt)
+    coly <- colnames(zy$tt)
+    zorder_check <- sum(diag(outer(colx, coly, "==")))
+    if(zorder_check < ncol(zx$tt) ) {
       stop("Value names of the two frames differ. Check value names of variables as well as their position.")
     }
+    #
   }
   #
   # Combine mass vectors
