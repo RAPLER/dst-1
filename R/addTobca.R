@@ -99,5 +99,8 @@ addTobca <- function(x, tt, f) {
   #
   ## 2.7 2023-07-12 update sort_order
   x$sort_order <- sort_order
+  #
+  ## 2.8 Define ssnames
+  x$ssnames <- DoSSnames(x$tt)
   return(x)
 } 
