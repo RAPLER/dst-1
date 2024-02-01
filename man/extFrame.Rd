@@ -7,11 +7,11 @@
 extFrame(x, use_ssnames = FALSE, lab = NULL)
 }
 \arguments{
+\item{x}{An object of bca class, i.e. a basic chance assignment defined on one variable}
+
 \item{use_ssnames}{Default= FALSE. Put TRUE if use of subset names is wanted.}
 
 \item{lab}{A character vector containing the names of the elements to add to the frame of discernment.}
-
-\item{z}{An object of bca class, i.e. a basic chance assignment defined on one variable}
 }
 \value{
 zxtnd The bca with its frame extended
@@ -20,7 +20,8 @@ zxtnd The bca with its frame extended
 This function works on a basic chance assignment (bca) \code{x} defined on a single variable. Iy=t allows the addition of new values to the frame of discernment.
 }
 \examples{
-s1_e1 <- bca(tt = matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), m = c(0.6,0.4), cnames = c("S1","S2"), varnames = "v1", idvar = 1) 
+s1_e1 <- bca(tt = matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
+m = c(0.6,0.4), cnames = c("S1","S2"), varnames = "v1", idvar = 1) 
 s13_names <- extFrame(s1_1, lab = "S3", use_ssnames =TRUE)
 s13 <- extFrame(s1_1, lab = "S3")
 }
