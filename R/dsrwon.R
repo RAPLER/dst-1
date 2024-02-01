@@ -98,10 +98,10 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     #
     # x1 and x2 must have the same columns names put in the same order
     #
-    colx <- colnames(zx$tt)
-    coly <- colnames(zy$tt)
+    colx <- colnames(x1)
+    coly <- colnames(y1)
     zorder_check <- sum(diag(outer(colx, coly, "==")))
-    if(zorder_check < ncol(zx$tt) ) {
+    if(zorder_check < ncol(x1) ) {
       stop("Value names of the two frames differ. Check value names of variables as well as their position.")
     }
     #
@@ -218,12 +218,14 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     spec <- cbind(1:nrow(tt), mMAC)
     colnames(spec) <- c("specnb", "mass")
     #
-    # measure of contradiction (con).
+    ## 2.7 Measure of contradiction (con). Revised 2024-01-25
     #
-    con <- m_empty
-    if  (con == 1) {
-      warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
+    if (x$con == 0 ) {
+      con <- 0
+    } else {
+      con <- x$con
     }
+    #
   } 
   #
   # 3. Intersections made with subsets names
@@ -316,6 +318,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
       #   j = colIdx, 
       #   x = 1, 
       #   dims = c(length(W1s), length(zframe) )
+      
       # )
       # tt <- methods::as(tt, "RsparseMatrix")
       # colnames(tt) <- zframe
@@ -347,10 +350,15 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     #
     spec <- cbind(1:shape(W1), mMAC)
     colnames(spec) <- c("specnb", "mass")
-    con <- m_empty
-    if  (con == 1) { 
-      warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
+    #
+    ## Measure of contradiction (con). Revised 2024-01-25
+    #
+    if (x$con == 0 ) {
+      con <- 0
+    } else {
+      con <- x$con
     }
+    #
   }
   # 
   # End case with uuse of subsets names
