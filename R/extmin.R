@@ -138,6 +138,9 @@ extmin <- function(rel1, relRef) {
   cnRef <- colnames(relRef$tt)
   zz1 <- outer(cn, cnRef, "==")
   zz2 <- zz1*(1:length(cn) )
+  if (is.matrix(zz2) == FALSE) {
+    zz2 <- t(as.matrix(zz2) )
+  }
   zorder <- apply(zz2,2,sum)
   rtt <- rtt[,zorder]
   #
