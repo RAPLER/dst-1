@@ -27,6 +27,8 @@ bca(
 
 \item{con}{The measure of conflict can be provided. 0 by default.}
 
+\item{ssnames}{A list of subsets names which will be obtained from the column names of the tt matrix.}
+
 \item{idvar}{The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted.}
 
 \item{infovar}{A two-column matrix containing variable identification numbers and the number of elements of the variable. Generated if omitted.}
