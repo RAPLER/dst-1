@@ -1,7 +1,7 @@
 #' Construct a description matrix from a list of subsets names.
 #' 
 #' @param x A list of names
-#' @param sparse=c("yes","no") whether to use sparse matrix
+#' @param sparse = c("yes","no") whether to use sparse matrix. Default = "no".
 #' @return ttmat A corresponding logical description matrix 
 #' @author Claude Boivin
 #' @examples 
@@ -12,7 +12,7 @@
 #' print(ttmatrix(znames, sparse = "yes") )
 #' @export
 #' 
-ttmatrix <- function(x, sparse="no") {
+ttmatrix <- function(x, sparse = "no") {
   # Obtain tt matrix from subsets names 
   #
   # Checks

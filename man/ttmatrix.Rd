@@ -9,7 +9,7 @@ ttmatrix(x, sparse = "no")
 \arguments{
 \item{x}{A list of names}
 
-\item{sparse=c("yes", "no")}{whether to use sparse matrix}
+\item{sparse}{= c("yes","no") whether to use sparse matrix. Default = "no".}
 }
 \value{
 ttmat A corresponding logical description matrix
