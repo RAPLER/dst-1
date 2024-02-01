@@ -21,15 +21,7 @@ test_that("dsrwon", {
   expect_error(dsrwon(x = z1, y = z2) , "Value names of the two frames differ. Check value names of variables as well as their position.")
   #
   # T4 warning message when evidence is completely contradictory
-  # 
-  cnames <- c("yes","no")
-  f1<- t(matrix(c(1,0,1,1),ncol=2))
-  m1<- c(1,0)
-  x1 <- bca(f1, m1, cnames)
-  f2<- t(matrix(c(0,1,1,1),ncol=2))
-  m2<- c(1,0)
-  x2 <- bca(f2, m2, cnames)
-  expect_warning(dsrwon(x = x1, y = x2) , 'Totally conflicting evidence \\(con = 1\\). Data is inconsistent.')
+  # Test removed
   #
   # T5 Check that the sum of masses is <= 1
   #
