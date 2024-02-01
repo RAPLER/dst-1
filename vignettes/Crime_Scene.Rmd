@@ -12,6 +12,7 @@ vignette: >
 
 ```{r setup, include=FALSE}
 library(dst) 
+# devtools::load_all(".") # only used in place of dst when testing with R-devel
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -79,3 +80,21 @@ The belplau object can be computed from the basic chance assignment object by fo
 belplau3<-belplau(bpa3)
 belplau3
 ```
+
+In this example, there is no degree of support for Peter, no degree of support for Mary also. It would be interesting to know more about these two people, such as their degree of plausibility. To do that, we add the singletons {peter} and {Mary} to the bpa obtained. See what we get.
+
+```{r}
+bpa3_plus_singl <- addTobca(bpa3, tt = diag(3)) 
+belplau(bpa3_plus_singl)
+```
+### Which one is the most plausible murderer?
+
+John is a man and John is blond. Nothing contradicts the {John} hypothesis, so the belief for John is 0.48 and the plausibility is one. The belief for Peter or Mary is 0, since no piece of evidence points directly toward them individually.
+
+As we can see, Pl(Peter) is 0.4 and Pl(Mary) is only 0.2. We can say that there is only  a 20% chances (40% chances) that the evidence is not contradictory with Mary (Peter) as the murderer.
+
+As a decision rule, we can use the ratio of the plausibility of an hypothesis H versus its contrary.
+
+Pl(H)/( Pl(¬H)) = Pl(H)/(1-Bel(H)).
+
+Of the three suspects, we see from our table of results that John has the highest plausibility ratio (1.92), Peter scores 0.4 and Mary 0.2.
