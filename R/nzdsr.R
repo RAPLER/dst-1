@@ -2,7 +2,7 @@
 #'
 #' It may occur that the result of the combination of two basic chance assignments with Dempster's Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
 #' @param x A basic chance assignment, i.e. a object of class bcaspec.
-#' @param sparse="no" Whether to use sparse matrix
+#' @param sparse Put "yes" to use sparse matrix. Default = "no".
 #' @return z The normalized basic chance assignment.
 #' @author Claude Boivin
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
@@ -34,7 +34,7 @@
 #' nzdsr(y2)  
 #' @export
 #' 
-nzdsr<-function(x, sparse="no") {
+nzdsr<-function(x, sparse = "no") {
   #
   # Local variables: nc, vacuous, w1, w12, mac, MACC, empty, m_empty, tri, ind
   # Functions calls: nameRows
@@ -100,8 +100,12 @@ nzdsr<-function(x, sparse="no") {
   inforel <- matrix(c(relnb, nrow(infovar)), ncol = 2)
   colnames(inforel) <- c("relnb", "depth") 
   #
+  # Computation of the conflict indice
+  #
+  con <- 1-(1-x$con)*(1-m_empty)
+  #
   # construction of the result
-  z <- list(con = m_empty, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
+  z <- list(con = con, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
   class(z) <- append(class(z), "bcaspec")
   #
   return(z)
