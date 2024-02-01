@@ -491,7 +491,7 @@ rel_13_ext <- extmin(get(captain_rel_names5[rels_nb[2]]), relRef)
 #
 # 3: combine the relations
 # combine extended relations
-rel_1_13 <- nzdsr(dsrwon(ads_rel,rel_13_ext, relnb = 14, mcores = "yes") ) 
+rel_1_13 <- nzdsr(dsrwon(ads_rel,rel_13_ext, relnb = 14) ) 
 # 4 eliminate the variable "SAiling" (3)
 rel_14 <- elim(rel_1_13, xnb = order(elim_order)[6])
 #
@@ -549,13 +549,13 @@ infovar = init_info, varnames = names(infovalues), relnb = 15)
 #
 # 3: combine the relations
 # combine extended relations
-rel_comb <- nzdsr(dsrwon(rel_ext,rel_14_ext, relnb = 15, mcores = "yes") ) 
+rel_comb <- nzdsr(dsrwon(rel_ext,rel_14_ext, relnb = 15) ) 
 cat("Results")
 }
 # 4 eliminate the variable "Sailing" (3)
 rel_15 <- elim(rel_14, xnb = order(elim_order)[7]) 
 bcaPrint(rel_15)
-belplau(rel_15)
+round(belplau(rel_15), digits = 2)
 ```
 
 
