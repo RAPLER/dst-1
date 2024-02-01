@@ -11,8 +11,8 @@ vignette: >
 
 ```{r setup, include=FALSE}
 #
-# devtools::load_all(".") # only used in place of dst when testing with R-devel
-library(dst)  # attach package dst
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst)  # attach package dst
 #
 # knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(
@@ -155,7 +155,7 @@ meddiag <- list(meddiag_hgm, meddiag_var_names, meddiag_data_names)
 #
 ## The graph structure of the problem
 #
-meddiag_hg <- graph_from_incidence_matrix(incidence = meddiag_hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
+meddiag_hg <- graph_from_biadjacency_matrix(incidence = meddiag_hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
 V(meddiag_hg)
 # Show variables as circles, relations and evidence as rectangles
 V(meddiag_hg)$shape <- c("circle", "crectangle")[V(meddiag_hg)$type+1]
