@@ -12,8 +12,8 @@ vignette: >
 
 ```{r setup, include=FALSE}
 #
-# devtools::load_all(".") # only used in place of dst when testing with R-devel
-library(dst) 
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst) 
 #
 knitr::opts_knit$set(echo = TRUE, root.dir = "..")
 ```
@@ -64,7 +64,7 @@ bcaPrint(dlfm_rel)
 ```
 
 ###  R3: SWR
-R3 : S = sum of delays of 1 day for each condition in W (W = foul)  or R (R = true) or both, true 90 % of the time. $Ω_A$ = {0,1,2,3,4,5,6}; $Ω_W$= {foul, fair}; $Ω_R$ = {true, false}.
+R3 : S = sum of delays of 1 day for each condition in W (W = foul)  or R (R = true) or both, true 90 % of the time. $Ω_S$ = {0,1,2,3}; $Ω_W$= {foul, fair}; $Ω_R$ = {true, false}.
 
 m({0 fair false}, {1 foul false}, {1 fair true}, {2 foul true}) = 0.9; 
 m($Ω_S$ x $Ω_W$ x $Ω_R$) = 0.1.
