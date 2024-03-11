@@ -12,7 +12,7 @@ LazyData: true
 BugReports: https://github.com/RAPLER/dst-1/issues
 RoxygenNote: 7.2.3
 Depends:
-    R (>= 2.10)
+    R (>= 3.5.0)
 Imports: 
     methods,
     igraph,
