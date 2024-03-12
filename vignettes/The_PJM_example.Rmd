@@ -1,5 +1,5 @@
 ---
-title: "The original peter, Paul and Mary example from P. Smets (1994)"
+title: "The original peter, John and Mary example"
 author: Claude Boivin, Stat ASSQ
 date: 2019-04-09, extended 2024-02-09, revised 2024-03-05
 output: html_document
