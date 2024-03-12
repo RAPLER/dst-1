@@ -2,7 +2,11 @@
 title: "The original peter, John and Mary example"
 author: Claude Boivin, Stat ASSQ
 date: 2019-04-09, extended 2024-02-09, revised 2024-03-05
-output: html_document
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{The original peter, John and Mary example}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
 ```{r setup, include=FALSE}
