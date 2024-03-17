@@ -14,27 +14,32 @@ belplauPlot(
   legend_title = "",
   main_title = "",
   is_log_scale = TRUE,
-  is_negative = FALSE
+  is_negative = FALSE,
+  is_factor = FALSE
 )
 }
 \arguments{
-\item{belplau_mat:}{belplau matrix e.g. belplau(bpa)}
+\item{belplau_mat}{Belplau matrix e.g. belplau(bpa)}
 
-\item{xlab:}{x-axis labels e.g. c("1:34","35:68","69:101")}
+\item{xlab}{X-axis labels e.g. c("1:34","35:68","69:101")}
 
-\item{color:}{color of xlab e.g. c(0,1,0)}
+\item{color}{Color of xlab e.g. c(0,1,0)}
 
-\item{y="rplau":}{column name of belplau matrix}
+\item{y}{="rplau": column name of belplau matrix}
 
-\item{levels=NULL:}{levels of color in order}
+\item{x}{="index":TO BE DOCUMENTED}
 
-\item{main_title="":}{main title}
+\item{levels}{=NULL: levels of color in order}
 
-\item{legend_title="":}{title of legend}
+\item{legend_title}{="": title of legend}
 
-\item{is_log_scale=TRUE:}{whether to use log-scale}
+\item{main_title}{="": main title}
 
-\item{is_negative=TRUE:}{whether to multiple by -1}
+\item{is_log_scale}{=TRUE Whether to use log-scale}
+
+\item{is_negative}{=TRUE Whether to multiple by -1}
+
+\item{is_factor}{=FALSE Whether to plot all x labels}
 }
 \value{
 a plot of belplau matrix

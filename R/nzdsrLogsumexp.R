@@ -2,7 +2,7 @@
 #'
 #' It may occur that the result of the combination of two basic chance assignments with Dempster's Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
 #' @param x A basic chance assignment, i.e. a object of class bcaspec.
-#' @param sparse="no" Whether to use sparse matrix
+#' @param sparse ="no" Whether to use sparse matrix
 #' @return z The normalized basic chance assignment.
 #' @author Claude Boivin, Peiyuan Zhu
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.

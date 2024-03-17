@@ -7,11 +7,12 @@
 belplauH(MACC, W2, h)
 }
 \arguments{
-\item{MACC:}{vector of masses e.g. x$spec[,2]}
+\item{MACC}{Vector of masses e.g. x$spec[,2]}
 
-\item{W2:}{description matrix e.g. x$tt}
+\item{W2}{Description matrix e.g. x$tt}
 
-\item{h:}{hypotheses to be tested, same format as x$tt}
+\item{h}{H
+ypotheses to be tested, same format as x$tt}
 }
 \value{
 A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{

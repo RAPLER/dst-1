@@ -15,13 +15,13 @@ ttmatrixFromMarginal(
 \arguments{
 \item{marg_probs}{marginal probabilities}
 
-\item{from_above=TRUE}{whether to cut marginal probabilities from above}
+\item{from_above}{=TRUE whether to cut marginal probabilities from above}
 
-\item{simple=TRUE}{whether to use simple support function}
+\item{simple}{=TRUE whether to use simple support function}
 
-\item{min_prob=0}{lower bound on marginal probabilities}
+\item{min_prob}{=0 lower bound on marginal probabilities}
 
-\item{max_prob=2}{upper bound on marginal probabilities}
+\item{max_prob}{=2 upper bound on marginal probabilities}
 }
 \value{
 matrix of possible subsets obtained from the cuts

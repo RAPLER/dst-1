@@ -15,13 +15,7 @@ bcaPrintLarge(
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
 
-\item{num_top_mass}{= 10 number of top masses to be printed}
-
-\item{cut_width_size}{width of a cut among subset sizes}
-
-\item{cut_width_m}{width of a cut among masses}
-
-\item{info_list="all"}{statistics to be printed in a vector of characters
+\item{info_list}{="all" statistics to be printed in a vector of characters
 \itemize{
   \item "all": everything
   \item "basic_subset_stat": basic statistics of subsets
@@ -31,6 +25,12 @@ bcaPrintLarge(
   \item "basic_joint_stat": basic statistics of masses vs subsets
   \item "comp_joint_stat": more comprehensive statistics of masses vs subsets
 }}
+
+\item{num_top_mass}{= 10 number of top masses to be printed}
+
+\item{cut_width_size}{width of a cut among subset sizes}
+
+\item{cut_width_m}{width of a cut among masses}
 }
 \value{
 \itemize{

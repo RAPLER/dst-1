@@ -1,7 +1,7 @@
 #' Print summary statistics of large mass functions
 #' 
 #' @param x A basic chance assignment (see \code{\link{bca}}).
-#' @param info_list="all" statistics to be printed in a vector of characters
+#' @param info_list ="all" statistics to be printed in a vector of characters
 #' \itemize{
 #'   \item "all": everything
 #'   \item "basic_subset_stat": basic statistics of subsets
@@ -21,6 +21,11 @@
 #'   \item table of basic and more comprehensive statistics of masses vs subsets
 #' }
 #' @author Peiyuan Zhu
+#' @importFrom dplyr mutate %>%  group_by   summarise
+#' @importFrom ggplot2 cut_width
+#' @importFrom stats ftable 
+#' @importFrom stats quantile
+#' @importFrom utils object.size
 #' @export
 #' @examples
 #' library(tidyverse)

@@ -1,10 +1,10 @@
 #' Construct tt matrix of a bca from marginal probabilities
 #' 
 #' @param marg_probs marginal probabilities
-#' @param from_above=TRUE whether to cut marginal probabilities from above
-#' @param simple=TRUE whether to use simple support function
-#' @param min_prob=0 lower bound on marginal probabilities
-#' @param max_prob=2 upper bound on marginal probabilities
+#' @param from_above =TRUE whether to cut marginal probabilities from above
+#' @param simple =TRUE whether to use simple support function
+#' @param min_prob =0 lower bound on marginal probabilities
+#' @param max_prob =2 upper bound on marginal probabilities
 #' @return matrix of possible subsets obtained from the cuts
 #' @author Peiyuan Zhu
 #' @export

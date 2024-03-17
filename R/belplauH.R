@@ -1,7 +1,8 @@
 #' Calculate belief, disbelief, unkown, plausibility, plausibility ratio
-#' @param MACC: vector of masses e.g. x$spec[,2]
-#' @param W2: description matrix e.g. x$tt
-#' @param h: hypotheses to be tested, same format as x$tt
+#' @param MACC Vector of masses e.g. x$spec[,2]
+#' @param W2 Description matrix e.g. x$tt
+#' @param h H
+#' ypotheses to be tested, same format as x$tt
 #' @return A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{
 #'  \item Column 1: the degree of Belief \code{bel};
 #'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};

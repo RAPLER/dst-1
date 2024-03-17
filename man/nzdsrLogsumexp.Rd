@@ -9,7 +9,7 @@ nzdsrLogsumexp(x, sparse = "no")
 \arguments{
 \item{x}{A basic chance assignment, i.e. a object of class bcaspec.}
 
-\item{sparse="no"}{Whether to use sparse matrix}
+\item{sparse}{="no" Whether to use sparse matrix}
 }
 \value{
 z The normalized basic chance assignment.

@@ -17,14 +17,14 @@ belplauEval(
 
 \item{true_order}{a vector representing the true ordering}
 
-\item{var="rplau"}{variable name of the belplau to be used as ordering}
+\item{var}{="rplau" variable name of the belplau to be used as ordering}
 
-\item{err="type}{I" type of error to be evaluated}
+\item{err}{="type I" type of error to be evaluated}
 
-\item{is_belplau=TRUE}{whether bel_plau is a belplau object}
+\item{is_belplau}{=TRUE whether bel_plau is a belplau object}
 }
 \value{
-Type I, II error by comparing two orderings
+Type I, II, III error by comparing two orderings
 }
 \description{
 Evaluate type I, II errors

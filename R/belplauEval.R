@@ -2,9 +2,9 @@
 #' 
 #' @param bel_plau belplau object or a vector whose ordering is compared
 #' @param true_order a vector representing the true ordering
-#' @param var="rplau" variable name of the belplau to be used as ordering
-#' @param err="type I" type of error to be evaluated
-#' @param is_belplau=TRUE whether bel_plau is a belplau object
+#' @param var ="rplau" variable name of the belplau to be used as ordering
+#' @param err ="type I" type of error to be evaluated
+#' @param is_belplau =TRUE whether bel_plau is a belplau object
 #' @return Type I, II, III error by comparing two orderings
 #' @author Peiyuan Zhu
 #' @export
