@@ -10,6 +10,5 @@
 #'  \item marginalization of a bca. 
 #'  }
 #' @keywords internal
-#' @import rlang
 "_PACKAGE"
 NULL

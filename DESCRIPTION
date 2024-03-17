@@ -14,13 +14,14 @@ RoxygenNote: 7.2.3
 Depends:
     R (>= 3.5.0)
 Imports: 
-    methods,
+    dplyr,
+    ggplot2,
     igraph,
     Matrix,
+    methods,
     parallel,
     rlang,
-    tidyverse,
-    matrixStats
+    utils
 Suggests: 
     knitr,
     rmarkdown,
