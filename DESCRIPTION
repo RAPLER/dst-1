@@ -21,6 +21,7 @@ Imports:
     methods,
     parallel,
     rlang,
+    tidyverse,
     utils
 Suggests: 
     knitr,
