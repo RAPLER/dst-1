@@ -35,6 +35,8 @@
 
 bcaPrintLarge <- function(x, info_list="all", num_top_mass=10, cut_width_size=10, cut_width_m=1e-5) {
   # Local variables: conf, labs, n, a, size, m, df, df_by_size, df_by_m
+  size_bins <- NULL
+  m_bins <- NULL
   conf <- x$con
   labs <- x$ssnames
   n <- min(length(x$ssnames), num_top_mass)
