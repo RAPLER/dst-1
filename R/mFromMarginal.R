@@ -10,7 +10,7 @@
 #' @export
 #' @examples
 #' x <- c(2,2,1.5,1.2,1,0,0)
-#' mFromMarginal(x, FALSE)
+#' mFromMarginal(x, simple=FALSE)
 mFromMarginal <- function(marg_probs, a=1e-5, simple=FALSE, min_prob=0, max_prob=2) {
   x <- a * (if(simple) 1 else diff(sort(unique(marg_probs))) / (max_prob - min_prob))
   return(c(x, 1 - sum(x))) 

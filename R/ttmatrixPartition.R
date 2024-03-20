@@ -8,7 +8,7 @@
 #' @examples 
 #' # test singleton hypotheses
 #' x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))
-#' pa <- ttmatrixPar(x$infovar[2], x$infovar[2])
+#' pa <- ttmatrixPartition(x$infovar[2], x$infovar[2])
 #' belplau(x, h=pa)
 ttmatrixPartition <- function(n, m) {
   # create block diagonal matrix

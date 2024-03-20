@@ -31,7 +31,7 @@ Construct m vector of a bca from marginal probabilities
 }
 \examples{
 x <- c(2,2,1.5,1.2,1,0,0)
-mFromMarginal(x, FALSE)
+mFromMarginal(x, simple=FALSE)
 }
 \author{
 Peiyuan Zhu

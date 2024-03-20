@@ -23,6 +23,7 @@
 #' @author Peiyuan Zhu
 #' @importFrom dplyr mutate %>%  group_by   summarise
 #' @importFrom ggplot2 cut_width
+#' @importFrom tidyr unnest_wider
 #' @importFrom stats ftable 
 #' @importFrom stats quantile
 #' @importFrom utils object.size

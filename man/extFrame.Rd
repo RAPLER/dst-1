@@ -22,8 +22,8 @@ This function works on a basic chance assignment (bca) \code{x} defined on a sin
 \examples{
 s1_e1 <- bca(tt = matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
 m = c(0.6,0.4), cnames = c("S1","S2"), varnames = "v1", idvar = 1) 
-s13_names <- extFrame(s1_1, lab = "S3", use_ssnames =TRUE)
-s13 <- extFrame(s1_1, lab = "S3")
+s13_names <- extFrame(s1_e1, lab = "S3", use_ssnames =TRUE)
+s13 <- extFrame(s1_e1, lab = "S3")
 }
 \author{
 Claude Boivin

@@ -13,15 +13,16 @@
 #' @param is_factor =FALSE Whether to plot all x labels
 #' @return a plot of belplau matrix
 #' @author Peiyuan Zhu
+#' @importFrom rlang := sym
 #' @importFrom stats reorder quantile
-#' @importFrom ggplot2 ggplot geom_point aes labs theme_bw
+#' @importFrom ggplot2 ggplot geom_point aes labs theme_bw ylab
 #' @export
 #' @examples
 #' bpa <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 #' bel_plau <- belplau(bpa)
-#' belplauPlot(bel_plau)
+#' belplauPlot(bel_plau, c("a","b","c"), c(1,3,2))
 belplauPlot <- function(belplau_mat,
                         xlab,
                         color,

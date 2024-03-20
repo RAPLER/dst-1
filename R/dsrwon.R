@@ -17,6 +17,8 @@
 #'   \item Sort_order Sort order of subsets.
 #'   }
 #' @author Claude Boivin, Peiyuan Zhu
+#' @import methods
+#' @importClassesFrom Matrix RsparseMatrix
 #' @export
 #' @examples 
 #' y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 

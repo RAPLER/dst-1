@@ -17,6 +17,8 @@
 #'   \item Sort_order Sort order of subsets.
 #'   }
 #' @author Claude Boivin, Peiyuan Zhu
+#' @import methods
+#' @importClassesFrom Matrix RsparseMatrix
 #' @export
 #' @examples 
 #' y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
@@ -38,7 +40,7 @@
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
-  # Local variables: m1, m2, zx, zy, x1, y1, z, zz1 ,W1_list, W1s, values1, values2, V12, N12, W1, I12, MAC, nMAC
+  # Local variables: m1, m2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
   # 0. Catch old parameters names, if any and replace by the new ones
@@ -84,7 +86,7 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     zy <- x
   }
   #
-  # Checks specific to the tt matrix, if there
+  # Checks specific to the tt matrix, if there is one
   if  ((!is.null(x$tt)) & (!is.null(y$tt) ) ) {
     # 
     # x and y must have same frame of discernment
@@ -98,10 +100,10 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     #
     # x1 and x2 must have the same columns names put in the same order
     #
-    values1 <- unlist(zx$valuenames)
-    values2 <- unlist(zy$valuenames)
-    nbval <- sum(values1 == values2)
-    if ((length(values1) != length(values2)) | (nbval != length(values1))) {
+    colx <- colnames(x1)
+    coly <- colnames(y1)
+    zorder_check <- sum(diag(outer(colx, coly, "==")))
+    if(zorder_check < ncol(x1) ) {
       stop("Value names of the two frames differ. Check value names of variables as well as their position.")
     }
   }
@@ -217,11 +219,12 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     spec <- cbind(1:nrow(tt), mMAC)
     colnames(spec) <- c("specnb", "mass")
     #
-    # measure of contradiction (con).
+    ## 2.7 Measure of contradiction (con). Revised 2024-01-25
     #
-    con <- m_empty
-    if  (con == 1) {
-      warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
+    if (x$con == 0 ) {
+      con <- 0
+    } else {
+      con <- x$con
     }
   } 
   #
@@ -339,9 +342,13 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     #
     spec <- cbind(1:shape(W1), mMAC)
     colnames(spec) <- c("specnb", "mass")
-    con <- m_empty
-    if  (con == 1) { 
-      warning('Totally conflicting evidence (con = 1). Data is inconsistent.')
+    #
+    ## Measure of contradiction (con). Revised 2024-01-25
+    #
+    if (x$con == 0 ) {
+      con <- 0
+    } else {
+      con <- x$con
     }
   }
   # 
