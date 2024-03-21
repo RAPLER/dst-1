@@ -1,3 +1,17 @@
+# dst 1.6.0
+
+* New function: ttmatrixPartition: construct partition matrix 
+
+* New functions: ttmatrixFromMarginal, mFromMarginal: construct bca parameters from a vector of probabilities
+
+* New functions: nzdsrLogsumexp, dsrwonLogsumexp, belplauLogsumexp, belplauHLogsumexp, logsum: using logsumexp for nzdsr, dsrwon, belplau, improving numerical stability
+
+* New function: belplauEval: evaluate type I, II, III error
+
+* New function: bcaNorm: evaluate Lp norm between two bcas
+
+* New function: bcaPrintLarge: print bca statistics with a large number of subsets
+
 # dst 1.5.1.9011
 
 * Function bcaTrunc: Parameter "use_ssnames" added to allow use of subsets names to do truncation instead of description (tt) matrix. Default al FALSE.
@@ -11,7 +25,7 @@
 ## Changes and additions
 * Function nzdsr: Call to function ttmatrix to reconstruct description matrix from subsets names
 
-* new function: ttmatrix: Construct a description matrix from a list of subsets names.
+* New function: ttmatrix: Construct a description matrix from a list of subsets names.
 
 * New function: belplauH:  Efficient computation of the measures of belief, disbelief and plausibility.
 
