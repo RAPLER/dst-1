@@ -1,3 +1,6 @@
+# dst 1.6.0
+
+
 # dst 1.5.1.9011
 
 * Function bcaTrunc: Parameter "use_ssnames" added to allow use of subsets names to do truncation instead of description (tt) matrix. Default al FALSE.
