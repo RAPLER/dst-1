@@ -1,5 +1,7 @@
 # dst 1.6.0
 
+This version contains many improvements on earlier versions, namely functions to help construct bca parameters, partition of description (tt) matrices, improve numerical stability and other functions to help work with large mass functions.
+
 * New function: ttmatrixPartition: construct partition matrix 
 
 * New functions: ttmatrixFromMarginal, mFromMarginal: construct bca parameters from a vector of probabilities
@@ -14,7 +16,7 @@
 
 # dst 1.5.1.9011
 
-* Function bcaTrunc: Parameter "use_ssnames" added to allow use of subsets names to do truncation instead of description (tt) matrix. Default al FALSE.
+* Function bcaTrunc: Parameter "use_ssnames" added to allow use of subsets names to do truncation instead of description (tt) matrix.
 
 * Function bca: parameter ssnames is reinstalled in the function call
 
@@ -76,6 +78,10 @@
 * dsrwon. New version allowing the use of sparse matrices. use of subset names to do intetrsections.
 
 * dotprod, inters nameRows. Update of functions to allow the use of sparse matrices
+
+# dst 1.5.2
+
+Version 1.5.1.9004 published 2023-11-16 on CRAN tagged 1.5.2
 
 # dst 1.5.1.9004
 
