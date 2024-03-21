@@ -11,8 +11,8 @@ vignette: >
 
 ```{r setup, include=FALSE}
 #
-devtools::load_all(".") # only used in place of dst when testing with R-devel
-# library(dst)  # attach package dst
+# devtools::load_all(".") # only used in place of dst when testing with R-devel
+library(dst)  # attach package dst
 #
 # knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(
