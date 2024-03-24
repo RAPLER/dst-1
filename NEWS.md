@@ -12,6 +12,8 @@ This version contains many improvements on earlier versions, namely functions to
 
 * New function: bcaNorm: evaluate Lp norm between two bcas
 
+* new function: intersBySSName: Intersect two vectors of subsets names. Utility function called when using subsets names instead of intersecting description mmatrices to obtain combinations.
+
 * New function: bcaPrintLarge: print bca statistics with a large number of subsets
 
 # dst 1.5.1.9011
