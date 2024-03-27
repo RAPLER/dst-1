@@ -4,24 +4,27 @@ output: github_document
 ---
 
 ## Test environments
-* local OS X install: R-devel (2020-02-23 r77849): OK 
-* win-builder: R Under development (unstable) (2021-12-22 r81408): OK
-* win-builder: R version 4.1.2 (2021-11-01): OK
-* check_win_release: OK
+* local  macOS Sonoma 14.1.1
+* system   aarch64, darwin20
+* R install:R version 4.3.2 (2023-10-31) OK 
+* win-builder:R Under development (unstable) (2023-11-13 r85520 ucrt): OK
+* check_win_release: R version 4.3.2 (2023-10-31 ucrt): OK
 * R CMD check results
 0 errors | 0 warnings | 0 notes 
 
 * R-hub builder  
-  R Under development (unstable) (2021-12-22 r81408 ucrt)
-  Windows Server 2022, R-devel, 64 bit: OK
-  Ubuntu Linux 20.04.1 LTS, R-release, GCC: OK
-  Fedora Linux, R-devel, clang, gfortran: OK
+  R R Under development (unstable) (2023-10-14 r85331 ucrt)
+  Windows Server 2022 x64 (build 20348): OK
+  Ubuntu Linux 20.04.1 LTS, R-release, GCC OK
+  Fedora Linux, R-devel, clang, gfortran OK
   
 ## Additional checks for dst ────────────────────────────────────
-Checking version number has three components... OK
-Checking dependencies don't rely on dev versions... OK
-Checking vignette titles are not placeholders... OK
-Checking DESCRIPTION doesn't have Remotes field... OK
+  Checking version number has three components... OK
+  Checking dependencies don't rely on dev versions... OK
+  Checking vignette titles are not placeholders... OK
+  Checking NEWS.md is not ignored... OK
+  Checking NEWS.Rd does not exist... OK
+  Checking DESCRIPTION doesn't have Remotes field... OK
 
 ## Downstream dependencies 
 No reverse dependencies found.

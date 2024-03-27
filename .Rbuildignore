@@ -2,4 +2,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 ^cran-comments\.md$
-^Rprof\.out$
+^.Rd2pdf*\*
+^CRAN-SUBMISSION$
