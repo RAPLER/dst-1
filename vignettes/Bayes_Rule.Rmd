@@ -1,6 +1,6 @@
 ---
 title: "Bayes_Rule"
-author: "Peiyuan Zhu"
+author: "Peiyuan Zhu, Claude Boivin"
 date: "2023-11-02"
 output: rmarkdown::html_vignette
 # output: word_document
@@ -11,7 +11,8 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-library(dst) 
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst) 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -23,22 +24,161 @@ In Mathematical Theory of Evidence Glenn Shafer talked about how Dempster's rule
 
 In particular, the Bayesian belief functions concentrates their masses on the singletons only, unlike more general basic mass assignment functions. For instance, in a frame $\Theta=\{a,b,c\}$, basic mass assignment $m(\{a\})=0.2$, $m(\{b\})=0.3$ and $m(\{c\})=0.5$ defines a Bayesian belief function. 
 
-```{r}
+```{r bpa1 definition}
 Theta<-matrix(c(1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,1,0,1,1,1,1), nrow = 7, byrow = TRUE)
 bpa1 <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), cnames = c("a", "b", "c"), idvar = 1)
-belplau(bpa1, h=Theta)
+round(belplau(bpa1, h=Theta), digits = 3)
 ```
 The law of conditional probability is a special case of Dempster's rule of combination that all the masses focus on the event is conditioned. For instance, basic mass assignment focuses all the masses on subset $\{b,c\}$ so that $m(\{b,c\})=1$. 
 
-```{r}
+```{r bpa2 definition}
 bpa2 <- bca(tt=matrix(c(0,1,1), nrow = 1, byrow = TRUE), m = c(1), cnames = c("a", "b", "c"), idvar = 2)
 belplau(bpa2, h=Theta)
 ```
 Combining the two basic mass assignments we get the belief after conditioning. Notice here prior and likelihood are symmetric.
 
-```{r}
+```{r bpa3 definition}
 bpa3 <- dsrwon(bpa1, bpa2)
-belplau(nzdsr(bpa3), h=Theta)
+round(belplau(nzdsr(bpa3), h=Theta), digits = 3)
+```
+
+```{r rellations}
+bpa2 <- bca(tt=matrix(c(0,1,1), nrow = 1, byrow = TRUE), m = c(1), cnames = c("a", "b", "c"), idvar = 2, varnames = "X")
+bpa4 <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(1, 0, 0), cnames = c("d", "e", "f"), idvar = 4, varnames = "Y")
+# 
+# construction of a the first conditional probability distributions P(Y =d | X )
+# P(Y = d | X = a) = 0.1
+# P(Y = d | X = b) = 0.2
+# P(Y = d | X = c) = 0.7
+
+tt_d <- matrix(c(1,0,0,1,0,0,
+               0,1,0,1,0,0,
+               0,1,0,0,1,0,
+               0,1,0,0,0,1,
+               0,0,1,1,0,0,
+               0,0,1,0,1,0,
+               0,0,1,0,0,1,
+               0,1,0,1,0,0,
+               1,0,0,1,0,0,
+               1,0,0,0,1,0,
+               1,0,0,0,0,1,
+               0,0,1,1,0,0,
+               0,0,1,0,1,0,
+               0,0,1,0,0,1,
+               0,0,1,1,0,0,
+               1,0,0,1,0,0,
+               1,0,0,0,1,0,
+               1,0,0,0,0,1,
+               0,1,0,1,0,0,
+               0,1,0,0,1,0,
+               0,1,0,0,0,1,
+               1,1,1,1,1,1
+               ), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "d", "e", "f")))
+rownames(tt_d) <- nameRows(tt_d)
+spec_d <-  matrix(c(rep(1,7), rep(2,7), rep(3,7), 4, rep(0.1,7), rep(0.2,7), rep(0.7,7),0),
+ ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+
+inforvar_d <- matrix(c(2,4,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
+
+rel_d <- bcaRel(tt = tt_d, spec = spec_d, infovar = inforvar_d, varnames = c("X", "Y"), relnb = 1)
+bcaPrint(rel_d)
+#
+# 
+# construction of a the second conditional probability distributions P(Y =e | X )
+# P(Y = e | X = a) = 0.2
+# P(Y = e | X = b) = 0.3
+# P(Y = e | X = c) = 0.5
+
+tt_e <- matrix(c(1,0,0,0,1,0,
+               0,1,0,1,0,0,
+               0,1,0,0,1,0,
+               0,1,0,0,0,1,
+               0,0,1,1,0,0,
+               0,0,1,0,1,0,
+               0,0,1,0,0,1,
+               0,1,0,0,1,0,
+               1,0,0,1,0,0,
+               1,0,0,0,1,0,
+               1,0,0,0,0,1,
+               0,0,1,1,0,0,
+               0,0,1,0,1,0,
+               0,0,1,0,0,1,
+               0,0,1,0,1,0,
+               1,0,0,1,0,0,
+               1,0,0,0,1,0,
+               1,0,0,0,0,1,
+               0,1,0,1,0,0,
+               0,1,0,0,1,0,
+               0,1,0,0,0,1,
+               1,1,1,1,1,1
+               ), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "d", "e", "f")))
+rownames(tt_e) <- nameRows(tt_e)
+spec_e <-  matrix(c(rep(1,7), rep(2,7), rep(3,7), 4, rep(0.2,7), rep(0.3,7), rep(0.5,7),0),
+ ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+
+inforvar_e <- matrix(c(2,4,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
+
+rel_e <- bcaRel(tt = tt_e, spec = spec_e, infovar = inforvar_e, varnames = c("X", "Y"), relnb = 2)
+bcaPrint(rel_e)
+#
+# construction of a the third conditional probability distributions P(Y =f | X )
+# P(Y = f | X = a) = 0.4
+# P(Y = f | X = b) = 0.5
+# P(Y = f | X = c) = 0.1
+
+tt_f <- matrix(c(1,0,0,0,0,1,
+               0,1,0,1,0,0,
+               0,1,0,0,1,0,
+               0,1,0,0,0,1,
+               0,0,1,1,0,0,
+               0,0,1,0,1,0,
+               0,0,1,0,0,1,
+               0,1,0,0,0,1,
+               1,0,0,1,0,0,
+               1,0,0,0,1,0,
+               1,0,0,0,0,1,
+               0,0,1,1,0,0,
+               0,0,1,0,1,0,
+               0,0,1,0,0,1,
+               0,0,1,0,0,1,
+               1,0,0,1,0,0,
+               1,0,0,0,1,0,
+               1,0,0,0,0,1,
+               0,1,0,1,0,0,
+               0,1,0,0,1,0,
+               0,1,0,0,0,1,
+               1,1,1,1,1,1
+               ), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "d", "e", "f")))
+rownames(tt_f) <- nameRows(tt_f)
+spec_f <-  matrix(c(rep(1,7), rep(2,7), rep(3,7), 4, rep(0.4,7), rep(0.5,7), rep(0.1,7),0),
+ ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+
+inforvar_f <- matrix(c(2,4,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
+
+rel_f <- bcaRel(tt = tt_f, spec = spec_f, infovar = inforvar_f, varnames = c("X", "Y"), relnb = 2)
+bcaPrint(rel_f)
+#
+# Combine the three relations
+comb1_rels_de <- dsrwon(rel_d, rel_e)
+comb_rel_def <- dsrwon(comb1_rels_de, rel_f)
+bcaPrint(comb_rel_def)
+X_margin <- elim(comb_rel_def, xnb = 4)
+bcaPrint(X_margin)
+Y_margin <- elim(comb_rel_def, xnb = 2)
+bcaPrint(Y_margin)
+#
+# Inference
+bcaPrint(bpa4)
+bpa4_extnd<-extmin(bpa4,comb_rel_def)
+bcaPrint(bpa4_extnd)
+comb_rels_def_bpa4 <- dsrwon(bpa4_extnd, comb_rel_def )
+comb_rels_def_bpa4$con
+# 0
+bcaPrint(comb_rels_def_bpa4)
+X_if_d <- elim(comb_rels_def_bpa4, xnb = 4)
+bcaPrint(X_if_d)
+round(belplau(X_if_d), digits=2)
+
 ```
 
 
