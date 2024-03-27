@@ -19,5 +19,9 @@ test_that("belplau", {
   frame <- bca(matrix(c(1,1,1), nrow=1), m=1, cnames = c("a","b","c"))
   result <- belplau(frame)
   target <- c(1,1,Inf)
-  expect_equal(dim(result), c(1,3))
+  expect_equal(dim(result), c(1,5))
+  ## T5 test hypotheses 
+  x5 <- bca(matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), c(0.8, 0.2), c(1,2,3))
+  result <- belplau(x5, h=matrix(c(1,1,0,1,1,1), nrow=2, byrow = TRUE))
+  expect_equal(unname(x5$spec[1,1]), unname(result[2,1]))
 })

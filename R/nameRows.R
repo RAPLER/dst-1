@@ -30,7 +30,7 @@ nameRows<-function(tt, f) {
   # 2. Parameter checks
   #
   # Input is matrix?
-  if (is.matrix(tt) == FALSE) {
+  if ((is.matrix(tt) == FALSE) & (isS4(tt) == FALSE) ) {
     stop("Input is not a matrix.")
   }
   if ( sum((tt >1) > 0) > 0) {
@@ -41,7 +41,8 @@ nameRows<-function(tt, f) {
   # find non zero positions (identification of hypothesis)
   names<-colnames(tt)
   if (is.null(names) == TRUE) {
-    stop("No column names supplied.")
+    warning("No column names supplied. Column names are generated.")
+    names <- colnames(tt, do.NULL = FALSE, prefix = "col")
   }
   #
   # 3. Calculations

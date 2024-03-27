@@ -4,7 +4,16 @@
 \alias{dsrwon}
 \title{Combination of two mass functions}
 \usage{
-dsrwon(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarnames)
+dsrwon(
+  x,
+  y,
+  mcores = "no",
+  use_ssnames = FALSE,
+  varnames = NULL,
+  relnb = NULL,
+  skpt_tt = FALSE,
+  infovarnames
+)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
@@ -13,9 +22,13 @@ dsrwon(x, y, mcores = "no", varnames = NULL, relnb = NULL, infovarnames)
 
 \item{mcores}{Make use of multiple cores ("yes") or not ("no"). Default = "no".}
 
+\item{use_ssnames}{= TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE}
+
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
 \item{relnb}{Identification number of the relation. Can be omitted.}
+
+\item{skpt_tt}{Skip reconstruction of tt matrix. Default = FALSE.}
 
 \item{infovarnames}{Deprecated. Old name for \code{varnames}.}
 }
@@ -34,21 +47,27 @@ The calculations make use of multiple cores available.
 The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.
 }
 \examples{
-x1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 byrow = TRUE), m = c(0.2,0.5, 0.3), 
 cnames = c("a", "b", "c"),  
-varnames = "x", idvar = 1)
-x2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+varnames = "x", idvar = 1) 
+y2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6, 0.4),  
 cnames = c("a", "b", "c"),  
 varnames = "x", idvar = 1)
-dsrwon(x1,x2)
-frame <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-dsrwon(frame, frame)
+dsrwon(y1,y2)
+# Sparse matrices
+y1s <- y1
+y2s <- y2
+y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
+y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
+y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
+vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+dsrwon(vacuous, vacuous)
 }
 \references{
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 }
 \author{
-Claude Boivin
+Claude Boivin, Peiyuan Zhu
 }

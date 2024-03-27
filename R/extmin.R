@@ -40,7 +40,7 @@ extmin <- function(rel1, relRef) {
   # infovar, varnb_ps, nbvar, varnb_rel1, lvars, ind_lvars, lvman, 
   # values1, values2, values_ck, nbval, values1_nb, values2_nb, values_nb_ck, nb_ck,
   # ind_lvman, cardrelRef, sizeToAdd, rev_sizeToAdd, 
-  # zinit, za, zb,  names_zb, zorder, zzb1, zzb2, zc, rtt
+  # zinit, za, zb,  names_zb, zorder, zzb1, zzb2, zc, rtt, cn, cnRef, zz1, zz2, zorder
   #
   # Functions calls: None
   #
@@ -84,7 +84,7 @@ extmin <- function(rel1, relRef) {
   values1 <- names(rel1$valuenames)
   values2 <- names(relRef$valuenames)
   values_ck <- outer(values1, values2, FUN="==")
-  nbval=as.integer(sum(rowSums(values_ck, dims = 1)))
+  nbval<- as.integer(sum(rowSums(values_ck, dims = 1)))
   if (nbval < length(values1)) {
     stop("Variables names of rel not in relRef. Check variables names.")
   }
@@ -93,9 +93,9 @@ extmin <- function(rel1, relRef) {
   values1_nb <- rel1$infovar[,1]
   values2_nb <- relRef$infovar[,1]
   values_nb_ck <- outer(values1_nb, values2_nb, FUN="==")
-  nb_ck = values_nb_ck == values_ck
+  nb_ck <- values_nb_ck == values_ck
   if (sum(nb_ck) < prod(dim(nb_ck))) {  
-    stop("Variables names and variabless numbers do not match. Check variables names, numbers and their position.")
+    stop("Variables names and variables numbers do not match. Check variables names, numbers and their position.")
   }
   #
   # B. Calculations
@@ -109,8 +109,8 @@ extmin <- function(rel1, relRef) {
   #
   # 1: initialize data array
   #  
-  zinit=array(1,rev_sizeToAdd) 
-  dimnames(zinit)=relRef$valuenames[ind_lvman[nbvar:1]] 
+  zinit <- array(1,rev_sizeToAdd) 
+  dimnames(zinit) <- relRef$valuenames[ind_lvman[nbvar:1]] 
   # end initialize
   #  
   # 2. restructure tt matrix of rel1 in product space form
@@ -123,16 +123,26 @@ extmin <- function(rel1, relRef) {
   #  
   # 4: reorder the variables
   #  
-  names_zb=names(dimnames(zb))[1:nbvar]
-  zorder=names(relRef$valuenames)
-  zzb1=outer(names_zb, zorder, FUN = "==")
-  zzb2=apply(zzb1*1:length(zorder), 2, sum)
+  names_zb <- names(dimnames(zb))[1:nbvar]
+  zorder <- names(relRef$valuenames)
+  zzb1 <- outer(names_zb, zorder, FUN = "==")
+  zzb2 <- apply(zzb1*1:length(zorder), 2, sum)
   zc <-aperm(zb, c(zzb2, 1+nbvar)) # OK 
   # end reorder
   #  
   # 4: obtain final tt matrix
   #  
   rtt <- marrayToMatrix(zc)
+  # put columns in the order of tt matrix of relRef
+  cn <- colnames( rtt)
+  cnRef <- colnames(relRef$tt)
+  zz1 <- outer(cn, cnRef, "==")
+  zz2 <- zz1*(1:length(cn) )
+  if (is.matrix(zz2) == FALSE) {
+    zz2 <- t(as.matrix(zz2) )
+  }
+  zorder <- apply(zz2,2,sum)
+  rtt <- rtt[,zorder]
   #
   # result  
   zr <-list(con = rel1$con, tt = rtt, spec = rel1$spec, infovar = infovar, varnames = relRef$varnames, valuenames= relRef$valuenames, inforel = relRef$inforel)

@@ -8,12 +8,15 @@
 #' The plausibility ratio of a focal element \code{A} versus its contrary \code{not A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.
+#' @param h = NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}
 #' @return A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
-#'  \item Column 1: the degree of belief \code{Bel};
-#'  \item Column 2: the degree of Plausibility \code{Pl};
-#'  \item Column 3: the Plausibility ratio
+#'  \item Column 1: the degree of Belief \code{bel};
+#'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
+#'  \item Column 3: the degree of Epistemic uncertainty \code{unc};
+#'  \item Column 4: the degree of Plausibility \code{plau};
+#'  \item Column 5: the Plausibility ratio \code{rplau}.
 #'    }
-#' @author Claude Boivin
+#' @author Claude Boivin, Peiyuan Zhu
 #' @export
 #' @references \itemize{
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 39-43.
@@ -32,22 +35,39 @@
 #' print("compare all elementary events")
 #' xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' belplau(xy1) 
+#' belplau(xy1, remove = TRUE) 
+#' belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
 #' 
-belplau<-function (x, remove=FALSE) {
+belplau<-function (x, remove = FALSE, h = NULL) {
   #
-  # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC1, W2a, IBEL, BEL, IPLAU, PLAU, rplau
-  # Functions calls: dotprod, nameRows
+  # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC, W2)
+  # Functions calls: belplauH, nameRows, ttmatrix
   #
   # 1. Checking input data 
   #
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
-  # check if matrix of only one row
-  xtest <- x$tt
-  if (is.matrix(xtest) == FALSE) { 
-    xtest <- t(as.matrix(xtest)) 
+  # computation using description matrix tt
+  #
+  # use ssnames to reconstruct tt if null
+  #
+  if (is.null(x$tt) ) {
+    if (is.null(x$ssnames) == FALSE) {
+      z <- x$ssnames
+      x$tt <- ttmatrix(z)
+    }
+    else {
+      stop("No description matrix and no subsets names found. ")
+    }
   }
+  #
+  # check if only one row, then convert to matrix
+  xtest <- x$tt
+  if (shape(shape(xtest)) < 2 ) {
+    xtest <- matrix(xtest, nrow = 1)
+  }
+  #
   # check if m_empty present and if not 0
   if (sum((apply(xtest, 1, sum)) == 0) > 0) {
     row_m_empty <- match(1:nrow(xtest), rownames(xtest) == "\u00f8")
@@ -59,41 +79,42 @@ belplau<-function (x, remove=FALSE) {
     }
   }
   #
+  # End checks and preparation
+  #
   # 2. Prepare data for calculations of bel and pl functions
   #
-  MACC<-x$spec[,2] # vector of masses
-  W2 <- rbind(x$tt)
+  # vector of masses and description matrix tt needed for these calculations
+  #
+  MACC<-x$spec[,2]  # vector of masses
+  W2 <- rbind(x$tt) # description matrix
+  #
+  # Case where user do not want subsets with zero mass (remove = TRUE)
   # Remove subsets with zero mass, but the frame
+  #
   INUL<-c(MACC[-length(MACC)]>0,TRUE)
-  if (remove == TRUE) {
-    MACC1<-MACC[INUL]
-#    W2a<-matrix(W2[INUL,],ncol=ncol(W2))
-    W2a <- rbind(W2[INUL,])
-  } else {
-    MACC1<-MACC
-    W2a<-W2
+  if (remove != FALSE) {
+    MACC<-MACC[INUL]
+    W2 <- rbind(W2[INUL,])
+  } 
+  #
+  # 2.5 Check if there's hypothesis to be tested
+  if (!is.null(h)) {
+    # check that h is like x$tt
+    if ((is.matrix(h) == FALSE) ) {
+      stop("h parameter must be a (0,1) or logical matrix.")
+    }
+    if (ncol(h) != ncol(x$tt)) {
+      stop("Error in input arguments: number of columns of h not equal to ncol(x$tt)") 
+    }
+    if (is.null(colnames(h)) ) {
+      colnames(h) <- colnames(x$tt)
+      rownames(h) <- nameRows(h)
+    }  
+    resul <- belplauH(MACC,W2,h) 
   }
-  #
-  # 3. Indices for the calculation of the measure of belief
-  #
-  IBEL<-dotprod(W2a,t(W2a),g="&",f="<=") 
-  ## Calculation of Bel
-  BEL<-apply(IBEL*MACC1,2,sum)
-  #
-  # 4. Indices to calculate the measure of plausibility
-  #
-  IPLAU<-dotprod(W2a,t(W2a),g="|",f="&")
-  ## Calculation of Plau
-  PLAU<-apply(IPLAU*MACC1,2,sum)
-  #
-  # 4. Calculation of the plausibility ratio
-  rplau<-PLAU/(1-BEL)
-  #
-  # 5. Final results  
-  #
-  resul<-cbind(BEL,PLAU, rplau)
-  rownames(resul) <- nameRows(W2a)
-  colnames(resul)<-c("Belief","Plausibility", "Plty Ratio")
+  else {
+    resul <- belplauH(MACC, W2, h = W2) 
+  }
   return(resul)
 }
 

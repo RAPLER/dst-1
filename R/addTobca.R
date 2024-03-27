@@ -17,7 +17,8 @@
 #' xy <- dsrwon(x,y)
 #' xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' xy1
-#' addTobca(x, tt = diag(1,  ncol(x$tt) ) ) # add all singletons
+#' # add all singletons to a bca
+#' addTobca(x, tt = diag(rep(1, ncol(x$tt) ) )  ) 
 #' 
 addTobca <- function(x, tt, f) {
   #
@@ -27,11 +28,11 @@ addTobca <- function(x, tt, f) {
   # 0. Catch old parameters names, if any and replace by the new ones
   #
   # catch old parameter f and replace by tt if used instead of tt
-  calls <- names(sapply(match.call(), deparse))[-1]
-  if(any("f" %in% calls) & missing(tt)) {
-    warning("Parameter name 'f' is deprecated. Use 'tt' instead.")
-    tt <- f
-  }
+  # calls <- names(sapply(match.call(), deparse))[-1]
+  # if(any("f" %in% calls) & missing(tt)) {
+  #   warning("Parameter name 'f' is deprecated. Use 'tt' instead.")
+  #   tt <- f
+  # }
   #
   # 1. Parameter checks
   #
@@ -51,12 +52,55 @@ addTobca <- function(x, tt, f) {
   zt1 <- dotprod(tt, t(x$tt), g = "&", f = "==")
   zt2 <- apply(zt1, MARGIN = 1, FUN = "reduction", f = "|")
   tt1 <- tt[!zt2,]
+  if (is.matrix(tt1) == FALSE) {
+    tt1 <- matrix(tt1,ncol = length(tt1), dimnames = list(NULL, names(tt1)))
+  }
+  if (nrow(tt1) == 0) {
+    # No new subset submitted 
+    return(x)  
+  } 
   #
-  # 2.2 transform tt matrix of x
-  x$tt <- rbind(tt1,x$tt)
-  rownames(x$tt) <- nameRows(x$tt)
-  specnb <- 1:nrow(x$tt)
+  # 2.2 transform tt matrix of x and retain status of rows (old and new)
+  x1 <- cbind(x$tt,0)
+  tt1 <- cbind(tt1,1)
+  ztt <- rbind(tt1,x1)
+ # rownames(ztt) <- nameRows(ztt)
+  ## 2.3 Order the subsets to find if the empty subset is there. Put empty set in first position of tt matrix
+  sort_order<-order(apply(ztt,1,sum))
+  ztt <- ztt[sort_order,]
+  x$tt <- ztt[,-ncol(ztt)]
+  if (is.matrix(x$tt) == FALSE) {
+    x$tt <- matrix(x$tt,ncol = length(x$tt), dimnames = list(NULL, names(x$tt)))
+  }
+ rownames(x$tt) <- nameRows(x$tt)
+  status <- ztt[,ncol(ztt)]
+  ## 2.4 Identify if the empty set is present and define m_empty accordingly with it mass
+  #
   mass <- c(rep(0, sum(!zt2)), x$spec[,2])
-  x$spec <- cbind(specnb, mass)
+  z<- sum(x$tt[sort_order[1],])
+  if (z==0) {
+    empty<-sort_order[1]  
+    m_empty<-mass[empty] 
+  } else {
+    empty<-0
+    m_empty<-0
+  }
+  #
+  # 2.5 Put masses in the same order as the tt matrix
+  mass <- mass[sort_order]
+  mMAC <-matrix(mass,ncol=1, dimnames =list(NULL, "mass"))
+  #
+  ## 2.6 Redefine spec matrix
+  #
+  spec <- cbind(1:nrow(x$tt), mMAC, status)
+  colnames(spec) <- c("specnb", "mass", "status")
+  rownames(spec) <- rownames(x$tt)
+  x$spec <- spec
+  #
+  ## 2.7 2023-07-12 update sort_order
+  x$sort_order <- sort_order
+  #
+  ## 2.8 Define ssnames
+  x$ssnames <- DoSSnames(x$tt)
   return(x)
 } 

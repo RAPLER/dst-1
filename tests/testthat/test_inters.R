@@ -6,8 +6,7 @@ test_that("inters_1", {
   names(mx) <-  c("a", "b", "c")
   my <-c(0,1,0)
   names(my) <-  c("a", "b", "c")
-  result <- inters(mx,my)
-  expect_error(result, regexp = NA) 
+  expect_error(inters(mx,my), "Input error. Check your input data")
 })
 test_that("inters_2", {
   # test fn with matrices
@@ -21,9 +20,7 @@ test_that("inters_3", {
   mx<-matrix(c(0,1,0,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c")))
   my<-matrix(c(0,0,1,1,1,1),nrow=2, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c")))
   result <- inters(mx,my)
-  expect_equal(dim(result),c(3,3,2))
-  expect_equivalent(result[,,1], matrix(c(0,0,0,0,0,1,0,0,1), ncol = 3, byrow = TRUE))
-  expect_equivalent(result[,,2], matrix(c(0,1,0,0,1,1,1,1,1), ncol = 3, byrow = TRUE))
+  expect_equal(dim(result),c(3*2,3))
 })
   test_that("inters_error", {
     mx<-matrix(c(0,1,0,0,1,1,1,1,1),nrow=3, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c")))

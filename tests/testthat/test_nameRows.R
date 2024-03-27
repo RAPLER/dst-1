@@ -10,7 +10,7 @@ test_that("nameRows", {
   expect_error(object = nameRows(f), c("Input is not a logical or \\(0,1\\) matrix."))
   # T3: test with no column names
   f1 <- matrix(c(0,0,0,1,0,0,0,0,1,1,0,1,1,1,1),ncol=3, byrow = TRUE)
-  expect_error(nameRows(f1), "No column names supplied.")
+  expect_warning(nameRows(f1), "No column names supplied. Column names are generated.")
   # T4: check matrix of one row
   f2= matrix(c(1,0,1), ncol=3)
   colnames(f2)=c("a", "b", "c")

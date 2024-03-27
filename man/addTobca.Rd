@@ -30,7 +30,8 @@ cnames = c("a", "b", "c"), idvar = 1)
 xy <- dsrwon(x,y)
 xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 xy1
-addTobca(x, tt = diag(1,  ncol(x$tt) ) ) # add all singletons
+# add all singletons to a bca
+addTobca(x, tt = diag(rep(1, ncol(x$tt) ) )  ) 
 
 }
 \author{

@@ -118,3 +118,12 @@
 #'   }
 #' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "swr"
+#' 
+#' The Captain's Problem. \code{swr}: Result of the evaluation of the Hypergraph at node Arrival (A)
+#' 
+#' This dataset is the \code{tt} bca resulting from the combination of the relations of the hypergraph and marginalization at node Arrival (A).
+#'
+#' @author Claude Boivin, Stat.ASSQ
+#' @format A list of 8 elements, of class bcaspec.
+#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+"captain_result"

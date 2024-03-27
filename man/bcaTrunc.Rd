@@ -4,12 +4,14 @@
 \alias{bcaTrunc}
 \title{Truncation of a basic chance assignment mass function}
 \usage{
-bcaTrunc(x, seuil)
+bcaTrunc(x, seuil, use_ssnames = FALSE)
 }
 \arguments{
 \item{x}{A bca to truncate.}
 
 \item{seuil}{A treshold value}
+
+\item{use_ssnames}{Put TRUE to use ssnames parameteer instead of description matrix. Default = FALSE.}
 }
 \value{
 tr_x The bca object truncated.
