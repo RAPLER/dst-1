@@ -16,13 +16,13 @@ An integer matrix with 4 rows and 6 columns.
   }
 }
 \source{
-\url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+{Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 }
 \usage{
 fw
 }
 \description{
-This dataset is the \code{tt} matrix establishing the relation between the two variables. An accurate forecast is described by this subset of two events: {(Forecast = foul, Weather = foul) and (Forecast = fair, Weather = fair)}. We assign a mass value of 0.8 to this subset. The remaining mass of 0.2 is allotted to the frame. To construct the \code{tt} matrix, we put the variables F and W side by side, as in a truth table representation. Each pair of the subset is described by a row of the matrix as a vector of zeros and ones.
+This dataset is the \code{tt} matrix establishing the relation between the two variables. An accurate forecast is described by this subset of two event:  (Forecast = foul, Weather = foul) and (Forecast = fair, Weather = fair). We assign a mass value of 0.8 to this subset. The remaining mass of 0.2 is allotted to the frame. To construct the \code{tt} matrix, we put the variables F and W side by side, as in a truth table representation. Each pair of the subset is described by a row of the matrix as a vector of zeros and ones.
 }
 \author{
 Claude Boivin

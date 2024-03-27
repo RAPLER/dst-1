@@ -1,4 +1,5 @@
 inst/docs
+.Rd2pdf*/
 
 # History files
 .Rhistory
