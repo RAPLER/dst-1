@@ -82,6 +82,11 @@
   if (missing(varnames)) { 
     stop("varnames argument missing.") 
   }
+  if (!is.null(varnames)) {
+    if (is.numeric(varnames)) {
+      stop("Names of variables must start with a letter.")
+    }
+  }
   # End checks
   #
   # 3. Transform mass vector
