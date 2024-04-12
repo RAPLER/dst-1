@@ -1,6 +1,6 @@
 ---
 title: "Bayes_Rule"
-author: "Peiyuan Zhu, Claude Boivin"
+author: "Peiyuan Zhu"
 date: "2023-11-02"
 output: rmarkdown::html_vignette
 # output: word_document
@@ -156,8 +156,7 @@ dist_XgE <- elim(norm_comb_X_EX, xnb = 4)
 cat("The posterior distribution P(X|E) for (a,d), (b,d), (c,d), after eliminating variable E","\n")
 bcaPrint(dist_XgE)
 ```
-Can you explain this, Gary?
-(Notice here prior and likelihood are symmetric).
+
   
 
 
