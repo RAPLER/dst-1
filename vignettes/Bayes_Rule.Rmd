@@ -94,9 +94,9 @@ let's add a second variable E with three outcomes $\Lambda =\{d, e, f\}$ .
 
 $P(\{d|a\})=0.1$, $P(\{d|b\})=0.2$ and $P(\{d|c\})=0.7$. 
 
-This distribution will be encoded in the product space $\Theta \cdot \Lambda$ by setting 
+This distribution will be encoded in the product space $\Theta \times \Lambda$ by setting 
 
-$m(\{a,d\} = 0.1$; $m(\{b,d\} = 0.2$; $m(\{c,d\} = 0.7$
+$m(\{a,d\}) = 0.1$; $m(\{b,d\}) = 0.2$; $m(\{c,d\}) = 0.7$
 
 We now do this using function *bcaRel*.
 
@@ -127,14 +127,14 @@ cat("The relation between Evidence E and X","\n")
 bcaPrint(rel_EX)
 ```
 
-Now we combine Prior $P(X)$ with rel_EX. But first, we need to extent *X* to the space $\Theta \cdot \Lambda$.
+Now we combine Prior $P(X)$ with rel_EX. But first, we need to extent *X* to the space $\Theta \times \Lambda$.
 
 ```{r X_xtnd,  echo = FALSE, warning=FALSE}
 X_xtnd <- extmin(X, relRef = rel_EX)
 cat("Prior X extended in product space of (X,E","\n")
 bcaPrint(X_xtnd)
 ```
-Combine X extended and E_X in the product space $\Theta \cdot \Lambda$.
+Combine X extended and E_X in the product space $\Theta \times \Lambda$.
 ```{r relation2,  echo = FALSE, warning=FALSE}
 comb_X_EX <- dsrwon(X_xtnd, rel_EX)
 cat("Mass distribution of the combination of X extended and E_X","\n")
@@ -142,7 +142,7 @@ bcaPrint(comb_X_EX)
 ```
 As we can see, we have
 
-1. the distribution of the product $P(H) \cdot P(E|H)$ on $\Theta \cdot \Lambda$;
+1. the distribution of the product $P(H) \cdot P(E|H)$ on $\Theta \times \Lambda$;
 
 2. a mass allotted to the empty set $m(\varnothing)$, which is $1 - P(E)$.
 
@@ -156,9 +156,6 @@ dist_XgE <- elim(norm_comb_X_EX, xnb = 4)
 cat("The posterior distribution P(X|E) for (a,d), (b,d), (c,d), after eliminating variable E","\n")
 bcaPrint(dist_XgE)
 ```
-
-  
-
 
 
 
