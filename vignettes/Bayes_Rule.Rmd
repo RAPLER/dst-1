@@ -1,6 +1,6 @@
 ---
 title: "Bayes_Rule"
-author: "Peiyuan Zhu, Claude Boivin"
+author: "Peiyuan Zhu"
 date: "2023-11-02"
 output: rmarkdown::html_vignette
 # output: word_document
@@ -20,167 +20,142 @@ knitr::opts_chunk$set(echo = TRUE)
 
 In Mathematical Theory of Evidence Glenn Shafer talked about how Dempster's rule of combination generalizes Bayesian conditioning. In this document we investigate numerically how a simple Bayesian model can be encoded into the language of belief function. 
 
-# Example
+Recall the Bayes Rule of conditioning in simple terms:
+
+$$P(H|E) = \dfrac{P(H) \cdot P(E|H)} {P(E)}$$
+Let's see how this is translated in the belief functions setup.
+
+#  1. Simple Bayes Example
 
 In particular, the Bayesian belief functions concentrates their masses on the singletons only, unlike more general basic mass assignment functions. For instance, in a frame $\Theta=\{a,b,c\}$, basic mass assignment $m(\{a\})=0.2$, $m(\{b\})=0.3$ and $m(\{c\})=0.5$ defines a Bayesian belief function. 
 
-```{r bpa1 definition}
-Theta<-matrix(c(1,0,0,0,1,0,0,0,1,1,1,0,0,1,1,1,0,1,1,1,1), nrow = 7, byrow = TRUE)
-bpa1 <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), cnames = c("a", "b", "c"), idvar = 1)
-round(belplau(bpa1, h=Theta), digits = 3)
-```
-The law of conditional probability is a special case of Dempster's rule of combination that all the masses focus on the event is conditioned. For instance, basic mass assignment focuses all the masses on subset $\{b,c\}$ so that $m(\{b,c\})=1$. 
+In the Bayesian language, this is the prior distribution $P(H)$. Function *bca* is used to set the distribution of *H*.
 
-```{r bpa2 definition}
-bpa2 <- bca(tt=matrix(c(0,1,1), nrow = 1, byrow = TRUE), m = c(1), cnames = c("a", "b", "c"), idvar = 2)
-belplau(bpa2, h=Theta)
+```{r bpa1 definition,  echo = FALSE, warning=FALSE}
+Theta<-matrix(c(1,0,0,0,1,0,0,0,1,1,1,1), nrow = 4, byrow = TRUE)
+H <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), cnames = c("a", "b", "c"), idvar = 1)
+cat("The prior distribution H","\n")
+bcaPrint(H)
+# round(belplau(H, h=Theta), digits = 3)
 ```
-Combining the two basic mass assignments we get the belief after conditioning. Notice here prior and likelihood are symmetric.
+The law of conditional probability is a special case of Dempster's rule of combination that all the masses focus on the event is conditioned. For instance, basic mass assignment focuses all the masses on subset $E =\{b,c\}$. Hence, using function *bca*, we set $m(\{b,c\})=1$. 
 
-```{r bpa3 definition}
-bpa3 <- dsrwon(bpa1, bpa2)
-round(belplau(nzdsr(bpa3), h=Theta), digits = 3)
+```{r bpa2 definition,  echo = FALSE, warning=FALSE}
+bpa2 <- bca(tt=rbind(diag(x=1, nrow=3), matrix(c(0,1,1,1,1,1), nrow=2, byrow = TRUE)), m = c(0,0,0,1,0), cnames = c("a", "b", "c"), idvar = 1)
+Event <-  addTobca(bpa2, tt = diag(x=1, nrow = 3))
+cat("Setting an Event E = {b,c} with mass = 1","\n")
+bcaPrint(Event)
 ```
 
-```{r rellations}
-bpa2 <- bca(tt=matrix(c(0,1,1), nrow = 1, byrow = TRUE), m = c(1), cnames = c("a", "b", "c"), idvar = 2, varnames = "X")
-bpa4 <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(1, 0, 0), cnames = c("d", "e", "f"), idvar = 4, varnames = "Y")
+Now we set the computation of Bayes's Theorem in motion. 
+
+In a first step, we use function *dsrwon* to combine our two basic mass assignments H and Event. The non-normalized Dempster Rule of combination gives a mass distribution *H_Event* composed of two parts:
+
+1. the distribution of the product $P(H) \cdot P(E|H)$ on $\Theta$;
+2. a mass allotted to the empty set $m(\varnothing)$.
+
+```{r H_Event Dempster_rule1,  echo = FALSE, warning=FALSE}
+H_Event <- dsrwon(H, bpa2)
+cat("The combination of H and Event E","\n")
+bcaPrint(H_Event)
+```
+It turns out that we can obtain the marginal $P(E)$ from $m(\varnothing)$:
+$$P(E) = 1 - m(\varnothing)$$.
+
+Hence, $P(E)$ is nothing else than the normalization constant of Dempster's rule of combination. 
+
+In our second step of computation we us function *nzdsr*, to apply the normalization constant to distribution *H_Event*, which gives the posterior distribution $P(H|E)$
+ 
+```{r H_Event Dempster_rule2,  echo = FALSE, warning=FALSE}
+H_given_E <- nzdsr(H_Event)
+cat("The posterior distribution P(H|E)","\n")
+bcaPrint(H_given_E)
+```
+
+Note that since *H_given_E* is defined only on singletons and the mass allocated to $\Theta$ is zero. Hence $bel(\cdot) = P(\cdot) = Pl(\cdot)$, as shown by the following table.
+
+ 
+```{r H_Event Dempster_rule3,  echo = FALSE, warning=FALSE}
+round(belplau(H_given_E, h=Theta), digits = 3)
+```
+
+# 2. Example with  two variables
+
+In the first example, the conditioning event was a subset of the frame $\Theta$ of variable *H*. We now show the computation of Bayes's rule of conditioning by Dempster's Rule in the case of two variables. 
+
+Let's say we have the variable H defined on $\Theta = \{a, b, c\}$ as before.
+```{r bpa1_copy,  echo = FALSE, warning=FALSE}
+Theta<-matrix(c(1,0,0,0,1,0,0,0,1,1,1,1), nrow = 4, byrow = TRUE)
+X <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), cnames = c("a", "b", "c"), idvar = 1, varnames = "x")
+cat("The prior distribution","\n")
+bcaPrint(X)
+```
+let's add a second variable E with three outcomes $\Lambda =\{d, e, f\}$ .
+
+$P(\{d|a\})=0.1$, $P(\{d|b\})=0.2$ and $P(\{d|c\})=0.7$. 
+
+This distribution will be encoded in the product space $\Theta \times \Lambda$ by setting 
+
+$m(\{a,d\}) = 0.1$; $m(\{b,d\}) = 0.2$; $m(\{c,d\}) = 0.7$
+
+We now do this using function *bcaRel*.
+
+```{r relation,  echo = FALSE, warning=FALSE}
+# bpa4 <- bca(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(1, 0, 0), cnames = c("d", "e", "f"), idvar = 4, varnames = "y")
+# bcaPrint(bpa4)
+#
+cat("Specify information on variables, description matrix and mass vector","\n")
+inforvar_EX <- matrix(c(1,4,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
+cat("Identifying variables and frames","\n")
+inforvar_EX
+cat("Note that variables numbers must be in increasing order","\n")
 # 
-# construction of a the first conditional probability distributions P(Y =d | X )
-# P(Y = d | X = a) = 0.1
-# P(Y = d | X = b) = 0.2
-# P(Y = d | X = c) = 0.7
-
-tt_d <- matrix(c(1,0,0,1,0,0,
-               0,1,0,1,0,0,
-               0,1,0,0,1,0,
-               0,1,0,0,0,1,
-               0,0,1,1,0,0,
-               0,0,1,0,1,0,
-               0,0,1,0,0,1,
-               0,1,0,1,0,0,
-               1,0,0,1,0,0,
-               1,0,0,0,1,0,
-               1,0,0,0,0,1,
-               0,0,1,1,0,0,
-               0,0,1,0,1,0,
-               0,0,1,0,0,1,
-               0,0,1,1,0,0,
-               1,0,0,1,0,0,
-               1,0,0,0,1,0,
-               1,0,0,0,0,1,
-               0,1,0,1,0,0,
-               0,1,0,0,1,0,
-               0,1,0,0,0,1,
-               1,1,1,1,1,1
-               ), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "d", "e", "f")))
-rownames(tt_d) <- nameRows(tt_d)
-spec_d <-  matrix(c(rep(1,7), rep(2,7), rep(3,7), 4, rep(0.1,7), rep(0.2,7), rep(0.7,7),0),
- ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-
-inforvar_d <- matrix(c(2,4,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
-
-rel_d <- bcaRel(tt = tt_d, spec = spec_d, infovar = inforvar_d, varnames = c("X", "Y"), relnb = 1)
-bcaPrint(rel_d)
+tt_EX <- matrix(c(1,0,0,1,0,0,
+                   0,1,0,1,0,0,
+                   0,0,1,1,0,0,
+                   1,1,1,1,1,1), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "d", "e", "f")))
+cat("The description matrix of the relation between X and E","\n")
+tt_EX
+cat("Note Columns of matrix must follow variables ordering. ","\n")
 #
+spec_EX <-  matrix(c(1:4, 0.1, 0.2, 0.7, 0 ), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+cat("Mass specifications","\n")
+spec_EX
 # 
-# construction of a the second conditional probability distributions P(Y =e | X )
-# P(Y = e | X = a) = 0.2
-# P(Y = e | X = b) = 0.3
-# P(Y = e | X = c) = 0.5
-
-tt_e <- matrix(c(1,0,0,0,1,0,
-               0,1,0,1,0,0,
-               0,1,0,0,1,0,
-               0,1,0,0,0,1,
-               0,0,1,1,0,0,
-               0,0,1,0,1,0,
-               0,0,1,0,0,1,
-               0,1,0,0,1,0,
-               1,0,0,1,0,0,
-               1,0,0,0,1,0,
-               1,0,0,0,0,1,
-               0,0,1,1,0,0,
-               0,0,1,0,1,0,
-               0,0,1,0,0,1,
-               0,0,1,0,1,0,
-               1,0,0,1,0,0,
-               1,0,0,0,1,0,
-               1,0,0,0,0,1,
-               0,1,0,1,0,0,
-               0,1,0,0,1,0,
-               0,1,0,0,0,1,
-               1,1,1,1,1,1
-               ), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "d", "e", "f")))
-rownames(tt_e) <- nameRows(tt_e)
-spec_e <-  matrix(c(rep(1,7), rep(2,7), rep(3,7), 4, rep(0.2,7), rep(0.3,7), rep(0.5,7),0),
- ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-
-inforvar_e <- matrix(c(2,4,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
-
-rel_e <- bcaRel(tt = tt_e, spec = spec_e, infovar = inforvar_e, varnames = c("X", "Y"), relnb = 2)
-bcaPrint(rel_e)
-#
-# construction of a the third conditional probability distributions P(Y =f | X )
-# P(Y = f | X = a) = 0.4
-# P(Y = f | X = b) = 0.5
-# P(Y = f | X = c) = 0.1
-
-tt_f <- matrix(c(1,0,0,0,0,1,
-               0,1,0,1,0,0,
-               0,1,0,0,1,0,
-               0,1,0,0,0,1,
-               0,0,1,1,0,0,
-               0,0,1,0,1,0,
-               0,0,1,0,0,1,
-               0,1,0,0,0,1,
-               1,0,0,1,0,0,
-               1,0,0,0,1,0,
-               1,0,0,0,0,1,
-               0,0,1,1,0,0,
-               0,0,1,0,1,0,
-               0,0,1,0,0,1,
-               0,0,1,0,0,1,
-               1,0,0,1,0,0,
-               1,0,0,0,1,0,
-               1,0,0,0,0,1,
-               0,1,0,1,0,0,
-               0,1,0,0,1,0,
-               0,1,0,0,0,1,
-               1,1,1,1,1,1
-               ), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "d", "e", "f")))
-rownames(tt_f) <- nameRows(tt_f)
-spec_f <-  matrix(c(rep(1,7), rep(2,7), rep(3,7), 4, rep(0.4,7), rep(0.5,7), rep(0.1,7),0),
- ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-
-inforvar_f <- matrix(c(2,4,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
-
-rel_f <- bcaRel(tt = tt_f, spec = spec_f, infovar = inforvar_f, varnames = c("X", "Y"), relnb = 2)
-bcaPrint(rel_f)
-#
-# Combine the three relations
-comb1_rels_de <- dsrwon(rel_d, rel_e)
-comb_rel_def <- dsrwon(comb1_rels_de, rel_f)
-bcaPrint(comb_rel_def)
-X_margin <- elim(comb_rel_def, xnb = 4)
-bcaPrint(X_margin)
-Y_margin <- elim(comb_rel_def, xnb = 2)
-bcaPrint(Y_margin)
-#
-# Inference
-bcaPrint(bpa4)
-bpa4_extnd<-extmin(bpa4,comb_rel_def)
-bcaPrint(bpa4_extnd)
-comb_rels_def_bpa4 <- dsrwon(bpa4_extnd, comb_rel_def )
-comb_rels_def_bpa4$con
-# 0
-bcaPrint(comb_rels_def_bpa4)
-X_if_d <- elim(comb_rels_def_bpa4, xnb = 4)
-bcaPrint(X_if_d)
-round(belplau(X_if_d), digits=2)
-
+rel_EX <- bcaRel(tt = tt_EX, spec = spec_EX, infovar = inforvar_EX, varnames = c("x", "y"), relnb = 1)
+cat("The relation between Evidence E and X","\n")
+bcaPrint(rel_EX)
 ```
 
+Now we combine Prior $P(X)$ with rel_EX. But first, we need to extent *X* to the space $\Theta \times \Lambda$.
+
+```{r X_xtnd,  echo = FALSE, warning=FALSE}
+X_xtnd <- extmin(X, relRef = rel_EX)
+cat("Prior X extended in product space of (X,E","\n")
+bcaPrint(X_xtnd)
+```
+Combine X extended and E_X in the product space $\Theta \times \Lambda$.
+```{r relation2,  echo = FALSE, warning=FALSE}
+comb_X_EX <- dsrwon(X_xtnd, rel_EX)
+cat("Mass distribution of the combination of X extended and E_X","\n")
+bcaPrint(comb_X_EX)
+```
+As we can see, we have
+
+1. the distribution of the product $P(H) \cdot P(E|H)$ on $\Theta \times \Lambda$;
+
+2. a mass allotted to the empty set $m(\varnothing)$, which is $1 - P(E)$.
+
+Using function *nzdsr*, we apply the normalization constant to obtain the desired result. Then, using  function  *elim*, we obtain the marginal of X, which turns out to be $P(X | E = d)$
+
+```{r relation3,  echo = FALSE, warning=FALSE}
+norm_comb_X_EX <- nzdsr(comb_X_EX)
+cat("The normalized mass distribution of the combination of X extended and E_X","\n")
+bcaPrint(norm_comb_X_EX)
+dist_XgE <- elim(norm_comb_X_EX, xnb = 4)
+cat("The posterior distribution P(X|E) for (a,d), (b,d), (c,d), after eliminating variable E","\n")
+bcaPrint(dist_XgE)
+```
 
 
 
