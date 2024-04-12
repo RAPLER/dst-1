@@ -1,0 +1,142 @@
+---
+title: "Reliability_Proof_Machinery"
+author: "Peiyuan Zhu"
+date: "2024-03-28"
+output: rmarkdown::html_vignette
+# output: word_document
+vignette: >
+  %\VignetteIndexEntry{Reliability_Proof_Machinery}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Here's an example given in section 1.1 of Mathematical Theory of Hints by Jurg Kohlas and Paul-Andre Monney. Suppose we have implication a1 or a2 => b while a1, a2 are not known to be true for certain. Let p1=0.3 be the probability that a1 is true and p2=0.4 the probability that a2 is true. This is an example of combining "pure arguments" by Jacob Bernoulli in Ars Conjectandi.
+
+First, we define the implication relation in its disjunctive form b or (not a1 and not a2). This can also be obtained from https://web.stanford.edu/class/cs103/tools/truth-table-tool/.
+
+```{r}
+tt <- matrix(c(0,1,0,1,0,1,
+               1,0,1,0,1,0,
+               1,0,1,0,0,1,
+               0,1,1,0,0,1,
+               1,0,0,1,0,1,
+               1,1,1,1,1,1), nrow = 2 + 3 + 1, ncol = 6, byrow = TRUE, dimnames = list(NULL,c("a1 no", "a1 yes", "a2 no", "a2 yes", "b no", "b yes")))
+spec <- matrix(c(1,1,1,1,1,2,1,1,1,1,1,0), nrow = 5 + 1, ncol = 2)
+infovar <- matrix(c(1,2,3,2,2,2), nrow = 3, ncol = 2)
+varnames <- c("a1","a2","b")
+bcaRel1<-bcaRel(tt,spec,infovar,varnames)
+bcaPrint(bcaRel1)
+```
+Second, we define the probabilities such that each of the assumptions are true. For a1 is true, probability 0.3 is given to "a1 is true" and 0.7 given to the whole first frame.
+
+```{r}
+tt <- matrix(c(0,1,1,1), nrow = 2, ncol = 2, dimnames = list(NULL, c("a1 no", "a1 yes")))
+m <- c(0.3,0.7)
+varnames <- "a1"
+idvar <- 1
+bca1 <- bca(tt, m, idvar=idvar, varnames=varnames)
+bcaPrint(bca1)
+```
+For a2 is true, probability 0.4 is given to "a1 is true" and 0.6 given to the whole second frame.
+```{r}
+tt <- matrix(c(0,1,1,1), nrow = 2, ncol = 2, dimnames = list(NULL, c("a2 no", "a2 yes")))
+m <- c(0.4,0.6)
+varnames <- "a2"
+idvar <- 2
+bca2 <- bca(tt, m, idvar=idvar, varnames=varnames)
+bcaPrint(bca2)
+```
+Now we combine the two bcas. To do that we need to first extend the two bcas are they're defined on the marginal frames. bca1 can be extended to the whole frame as:
+
+```{r}
+bca1_extmin <- extmin(bca1,bcaRel1)
+bcaPrint(bca1_extmin)
+```
+Likewise, bca2 can be extended to the whole frame as:
+```{r}
+bca2_extmin <- extmin(bca2,bcaRel1)
+bcaPrint(bca2_extmin)
+```
+Having extended the marginal bcas to the whole frame, we can perform Dempster's rule of combination over the whole frame. 
+
+```{r}
+bca12_extmin <- dsrwon(bca1_extmin,bca2_extmin)
+bcaPrint(bca12_extmin)
+```
+```{r}
+bca12_extmin_dsrwon_bcaRel1 <- dsrwon(bca12_extmin,bcaRel1)
+bcaPrint(bca12_extmin_dsrwon_bcaRel1)
+```
+
+To get bcas over margin 3, we need to eliminate the dimensions that we have extended. First, we eliminate dimension 1. 
+```{r}
+bca12_extmin_elim1 <- elim(bca12_extmin_dsrwon_bcaRel1,1)
+bcaPrint(bca12_extmin_elim1)
+```
+Likewise, we eliminate dimension 2. 
+```{r}
+bca12_extmin_elim12 <- elim(bca12_extmin_elim1,2)
+bcaPrint(bca12_extmin_elim12)
+```
+Having obtained the marginal bca, we can now evaluate belief and plausibility. But we're not getting anything like equation (1.3).  
+```{r}
+belplau(bca12_extmin_elim12)
+```
+
+Alternatively, instead of using the OR gate, one can build up the graph by defining the two implications separately. First, we define the first implication.
+```{r}
+tt <- matrix(c(0,1,0,1,
+               1,0,0,1,
+               1,0,1,0,
+               1,1,1,1), nrow = 4, ncol = 4, byrow = TRUE, dimnames = list(NULL,c("a1 no", "a1 yes", "b no", "b yes")))
+spec <- matrix(c(1,1,1,2,1,1,1,0), nrow = 4, ncol = 2)
+infovar <- matrix(c(1,3,2,2), nrow = 2, ncol = 2)
+varnames <- c("a1","b")
+bcaRel1<-bcaRel(tt,spec,infovar,varnames)
+bcaPrint(bcaRel1)
+```
+
+Similarly, we can define the second implication as follows.
+```{r}
+tt <- matrix(c(0,1,0,1,
+               1,0,0,1,
+               1,0,1,0,
+               1,1,1,1), nrow = 4, ncol = 4, byrow = TRUE, dimnames = list(NULL,c("a2 no", "a2 yes", "b no", "b yes")))
+spec <- matrix(c(1,1,1,2,1,1,1,0), nrow = 4, ncol = 2)
+infovar <- matrix(c(2,3,2,2), nrow = 2, ncol = 2)
+varnames <- c("a2","b")
+bcaRel2<-bcaRel(tt,spec,infovar,varnames)
+bcaPrint(bcaRel2)
+```
+
+Then we extend, combine, and eliminate variables. For the first variable and the first implication, we have:
+```{r}
+bca1_extmin <- extmin(bca1,bcaRel1)
+bca1_extmin_bcaRel1_dsrwon <- dsrwon(bca1_extmin, bcaRel1)
+bca1_extmin_bcaRel1_dsrwon_elim <- elim(bca1_extmin_bcaRel1_dsrwon, 1)
+bcaPrint(bca1_extmin_bcaRel1_dsrwon_elim)
+```
+Similarly for another variable and the first implication, we have:
+```{r}
+bca2_extmin <- extmin(bca2,bcaRel2)
+bca2_extmin_bcaRel2_dsrwon <- dsrwon(bca2_extmin, bcaRel2)
+bca2_extmin_bcaRel2_dsrwon_elim <- elim(bca2_extmin_bcaRel2_dsrwon, 2)
+bcaPrint(bca2_extmin_bcaRel2_dsrwon_elim)
+```
+
+Now, we combine the two variables. 
+```{r}
+bca12_extmin_bcaRel12_dsrwon_elim <- dsrwon(bca1_extmin_bcaRel1_dsrwon_elim,bca2_extmin_bcaRel2_dsrwon_elim)
+bcaPrint(bca12_extmin_bcaRel12_dsrwon_elim)
+```
+
+Next, evaluate belief and plausibility.
+```{r}
+belplau(bca12_extmin_bcaRel12_dsrwon_elim)
+```
