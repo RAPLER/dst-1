@@ -11,7 +11,7 @@ bcaTrunc(x, seuil, use_ssnames = FALSE)
 
 \item{seuil}{A treshold value}
 
-\item{use_ssnames}{Put TRUE to use ssnames parameteer instead of description matrix. Default = FALSE.}
+\item{use_ssnames}{Put TRUE to use ssnames parameter instead of description matrix. Default = FALSE.}
 }
 \value{
 tr_x The bca object truncated.
