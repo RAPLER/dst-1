@@ -17,15 +17,15 @@ Imports:
     dplyr,
     ggplot2,
     tidyr,
-    igraph,
     Matrix,
     methods,
     parallel,
     rlang,
-    tidyverse,
     utils
 Suggests: 
+    igraph,
     knitr,
     rmarkdown,
+    tidyverse,
     testthat
 VignetteBuilder: knitr
