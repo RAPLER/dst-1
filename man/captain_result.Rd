@@ -8,7 +8,7 @@
 A list of 8 elements, of class bcaspec.
 }
 \source{
-\url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+\url{researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
 }
 \usage{
 captain_result

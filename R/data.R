@@ -125,5 +125,5 @@
 #'
 #' @author Claude Boivin, Stat.ASSQ
 #' @format A list of 8 elements, of class bcaspec.
-#' @source \url{https://www.researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source \url{researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
 "captain_result"
