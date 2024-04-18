@@ -125,5 +125,5 @@
 #'
 #' @author Claude Boivin, Stat.ASSQ
 #' @format A list of 8 elements, of class bcaspec.
-#' @source \url{researchgate.net/publication/265993533_Fusion_and_Propagation_in_Graphical_Belief_Models}
+#' @source {Almond, R.G. [1988] Fusion and Propagation in Graphical Belief Models. Computing Science and Statistics: Proceedings of the 20th Symposium on the Interface. Wegman, Edward J., Gantz, Donald T. and Miller, John J. (ed.). American Statistical Association, Alexandria, Virginia. pp 365--370.}
 "captain_result"
