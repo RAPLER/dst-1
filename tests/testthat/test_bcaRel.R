@@ -33,4 +33,25 @@ test_that("bcaRel", {
     # T8: check for column names
   tt3 <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),nrow=4, byrow = TRUE )
   expect_error(bcaRel(tt = tt3, spec = spec1, infovar = info1), "Column names of tt matrix are missing.")
+  #
+  # T9: check for last row of tt matrix
+  tt <- matrix(c(0,1,0,1,0,1,
+                 0,1,0,1,1,0,
+                 1,0,1,0,0,1,
+                 0,1,1,0,0,1,
+                 1,0,0,1,0,1), nrow = 2 + 3, ncol = 6, dimnames = list(NULL,c("a1 no", "a1 yes", "a2 no", "a2 yes", "b no", "b yes")))
+  spec <- matrix(c(1,1,1,1,1,1,1,1,1,1), nrow = 5, ncol = 2)
+  infovar <- matrix(c(1,2,3,2,2,2), nrow = 3, ncol = 2)
+  varnames <- c("a1","a2","b")
+  expect_error( bcaRel(tt,spec,infovar,varnames), "The last row of parameter tt must be a row of ones.")
+  #
+  # T10. Variables names must start with a letter
+  tt <- matrix(c(1,0,0,1,0,0,
+                 0,1,0,0,1,0,
+                 0,0,1,0,0,1,
+                 rep(1,6)), ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a", "b", "c", "x", "y", "z")))
+  spec <-  matrix(c(1,2,3,4,0.2,0.3,0.5,0), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+  inforvar <- matrix(c(1,3,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
+  expect_error(bcaRel(tt = tt, spec = spec, infovar = inforvar, varnames = c(1, 3), relnb = 1), "Names of variables must start with a letter." ) 
+  #
 })

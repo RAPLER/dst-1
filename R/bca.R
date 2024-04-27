@@ -103,6 +103,9 @@ bca<-function(tt = NULL, m, cnames = NULL, con = NULL, ssnames = NULL, idvar = N
     valuenames <- split(colnames(tt), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
     }
     if (!is.null(varnames)) {
+      if (is.numeric(varnames)) {
+        stop("Names of variables must start with a letter.")
+        }
       if (length(varnames) != (nrow(infovar)) ) {
         stop("number of variable names  not equal to number of variables") }
       names(valuenames) <- varnames
