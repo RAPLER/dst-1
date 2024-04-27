@@ -3,14 +3,14 @@ Type: Package
 Title: Using the Theory of Belief Functions 
 Encoding: UTF-8
 Version: 1.6.0.9000
-Date: 2024-04-19
+Date: 2024-04-27
 Author: Claude Boivin <webapp.cb@gmail.com> Peiyuan Zhu <garyzhubc@gmail.com>
 Maintainer: Claude Boivin <webapp.cb@gmail.com>
 Description: Using the Theory of Belief Functions for evidence calculus. Basic probability assignments, or mass functions, can be defined on the subsets of a set of possible values and combined. A mass function can be extended to a larger frame. Marginalization, i.e. reduction to a smaller frame can also be done. These features can be combined to analyze small belief networks and take into account situations where information cannot be satisfactorily described by probability distributions.
 License: GPL (>= 2)
 LazyData: true
 BugReports: https://github.com/RAPLER/dst-1/issues
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Depends:
     R (>= 3.5.0)
 Imports: 
