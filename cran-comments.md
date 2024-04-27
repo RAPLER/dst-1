@@ -4,19 +4,23 @@ output: github_document
 ---
 
 ## Test environments
-* local  macOS Sonoma 14.1.1
+* local  macOS-arm64 Sonoma 14.4.1
 * system   aarch64, darwin20
-* R install:R version 4.3.2 (2023-10-31) OK 
-* win-builder:R Under development (unstable) (2023-11-13 r85520 ucrt): OK
-* check_win_release: R version 4.3.2 (2023-10-31 ucrt): OK
+* R install:R version 4.3.2: OK 
 * R CMD check results
 0 errors | 0 warnings | 0 notes 
 
+* win-builder:R Under development (unstable) (2024-04-14 r86421 ucrt): OK
+* check_win_release: R version 4.3.3 (2024-02-29 ucrt): OK
+
+
 * R-hub builder  
-  R R Under development (unstable) (2023-10-14 r85331 ucrt)
-  Windows Server 2022 x64 (build 20348): OK
-  Ubuntu Linux 20.04.1 LTS, R-release, GCC OK
-  Fedora Linux, R-devel, clang, gfortran OK
+  windows-latest on GitHub: OK
+  linux ubuntu-latest on GitHub: OK
+  macos  macos-latest on GitHub: OK
+  ubuntu-clang. Ubuntu 22.04.4 LTS. OK
+  ubuntu-gcc12. Ubuntu 22.04.4 LTS. OK
+  ubuntu-release. Ubuntu 22.04.4 LTS. OK
   
 ## Additional checks for dst ────────────────────────────────────
   Checking version number has three components... OK

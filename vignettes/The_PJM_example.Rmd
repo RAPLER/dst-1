@@ -346,7 +346,7 @@ bcaPrint(m_M)
 
 ### Computation of the belief function of the variable of interest, using the peeling algorithm
 
-Our variable of interest is one of the three suspects. We have to choose an order of elimination of the variabes manually, since we don't have an algorithm at our disposal yet, and call the peeling three times For example, we can choose to eliminate Peter first, then Johnmto know about Mary.
+Our variable of interest is one of the three suspects. We have to choose an order of elimination of the variables manually, since we don't have an algorithm at our disposal yet, and call the peeling three times For example, we can choose to eliminate Peter first, then John to know about Mary.
 
 Hence, the peeling is not very useful here, We can answer all our questions in the  product space $F_{PJM} = \prod(P, J, M)$.
 

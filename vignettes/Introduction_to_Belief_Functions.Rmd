@@ -87,27 +87,27 @@ rownames(ttrwt) <- nameRows(ttrwt)
 ttrwt
 inforwt <- matrix(c(4,5,2,2), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
 specrwt <-  matrix(c(1,1,1,2,
-                     1,1,1,0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+                     0.9,0.9,0.9,0.1), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
 # The relation
 noW_if_R <- bcaRel(tt = ttrwt, spec = specrwt, infovar = inforwt, varnames = c("RdWorks", "Rain"), relnb = 1)
  noW_if_R
 ```
 
-Suppose I didn't see Rdwork.  We now change the distribution of the bcaspec *rdworks* in order to reflect this condition.
+It is cloudy on my day of departure. Forecast are 60 % chances of rain today.  We now change the distribution of the bcaspec *rdworks* in order to reflect this condition.
 ```{r}
 # Evidence of rain on the day of departure
-rdworks$spec[,2] <- c(1, 0, 0)
-bcaPrint(rdworks)
+rain$spec[,2] <- c(0.6, 0, 0.4)
+bcaPrint(rain)
 ```
-Finally, I would like to combine this piece of evidence with the relation between Rain and roadworks in order to evaluate the chances of raining on the day of my trip. I proceed in three steps to achieve that:
-Firstly extend the Evidence (variable rdworks) to the product space Rain x Roadworks.
+Finally, I would like to combine this piece of evidence with the relation between Rain and roadworks in order to evaluate the chances of roadworks on the day of my trip. I proceed in three steps to achieve that:
+Firstly extend the Evidence (variable Rain) to the product space Rain x Roadworks.
 Secondly, combine the two relations.
 Thirdly, marginalize to the variable Roadworks.
 
 First step is done using the function *extmin*.
 ```{r}
 # Evidence of rain extended to the space W x R
-rain_xtnd <- extmin(rdworks, noW_if_R)
+rain_xtnd <- extmin(rain, noW_if_R)
 bcaPrint(rain_xtnd)
 ```
 Second step is done using functions *dsrwon* and *nzdsr*).
