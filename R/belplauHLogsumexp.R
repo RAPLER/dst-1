@@ -1,4 +1,4 @@
-#' Calculate belief, disbelief, unkown, plausibility, plausibility ratio with logsumexp
+#' Calculate belief, disbelief, unknown, plausibility, plausibility ratio with logsumexp
 #' @param MACC Vector of masses e.g. x$spec[,2]
 #' @param W2 Description matrix e.g. x$tt
 #' @param h Hypotheses to be tested, same format as x$tt

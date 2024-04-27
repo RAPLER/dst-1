@@ -12,7 +12,7 @@ This version contains many improvements on earlier versions, namely functions to
 
 * New function: bcaNorm: evaluate Lp norm between two bcas
 
-* new function: intersBySSName: Intersect two vectors of subsets names. Utility function called when using subsets names instead of intersecting description mmatrices to obtain combinations.
+* new function: intersBySSName: Intersect two vectors of subsets names. Utility function called when using subsets names instead of intersecting description matrices to obtain combinations.
 
 * New function: bcaPrintLarge: print bca statistics with a large number of subsets
 
@@ -22,7 +22,7 @@ This version contains many improvements on earlier versions, namely functions to
 
 * Function bca: parameter ssnames is reinstalled in the function call
 
-* Name of function ssnnames changed for DoSSnames to avoid confusion with parameter ssnames oof bca object.
+* Name of function ssnames changed for DoSSnames to avoid confusion with parameter ssnames of bca object.
 
 * Added a `NEWS.md` file to track changes to the package.
 
@@ -36,9 +36,9 @@ This version contains many improvements on earlier versions, namely functions to
 * Function belplau: Modified to call belplauH (computation more efficient).
 
 ## Changes to function dsrwon :
-* Parameter sparseM removed. Not necessary to specify this. Replaced byy parametter use_ssnames.
+* Parameter sparseM removed. Not necessary to specify this. Replaced by parameter use_ssnames.
 
-* New parameter: use_ssnames = c(TRUE, FALSE). Default = FALSE. use "TRUE" when you want to work specifically with subsets names to do the intersections. Work only with the univariate frame of discernment. Does'nt work yet with product spaces.
+* New parameter: use_ssnames = c(TRUE, FALSE). Default = FALSE. use "TRUE" when you want to work specifically with subsets names to do the intersections. Work only with the univariate frame of discernment. Doesn't work yet with product spaces.
 
 * New parameter: skpt_tt = c(FALSE, TRUE). Default = FALSE". Choose TRUE if you don't want to save this table. Useful if you apply the function repeatedly, and you want to save the last result only.
 
@@ -60,16 +60,16 @@ This version contains many improvements on earlier versions, namely functions to
 
 * addTobca: A parameter "status" has been added to the "spec" of the bca in order to distinguish the new subsets added from the ones already present (documentation to be updated with an example).
 
-* bca: parametetrs ssnames and sfod removed. It is not necessary to supply subsets names. They are obtained from the columns names of tt (0,1) matrix. See the new function "ssnames" designed for that.
+* bca: parameters ssnames and sfod removed. It is not necessary to supply subsets names. They are obtained from the columns names of tt (0,1) matrix. See the new function "ssnames" designed for that.
 
 * dsrwon: correction to call to dst package for parallel processing.
 
 * nameRows: Allow sparse matrix as input. Removed stopping the function if there is no column names.Generate column names instead.
 
 ## nzdsr:  
-*  A call to function "dsrwon" has been removed to speed up the function. If the empty set is in first position in the matrix of subsets, as it should be, the normalization wil be done correctly.
+*  A call to function "dsrwon" has been removed to speed up the function. If the empty set is in first position in the matrix of subsets, as it should be, the normalization will be done correctly.
 
-*  Removed the test with the conflict indice. This test would stop the function. The conflict indice does not play a role in the combination by Dempster's rule. This is only a decision aid in the analysis of conflicting evidence
+*  Removed the test with the conflict index. This test would stop the function. The conflict indice does not play a role in the combination by Dempster's rule. This is only a decision aid in the analysis of conflicting evidence
 
 * Added the possibility of using subsets label (parameter ssnames) instead of a description matrix (parameter tt).
 
@@ -77,7 +77,7 @@ This version contains many improvements on earlier versions, namely functions to
 
 * ssnames: New function. Construct subsets names from the columns names of tt matrix. Subsets names will be used to do intersections instead of (0,1) matrices.
 
-* dsrwon. New version allowing the use of sparse matrices. use of subset names to do intetrsections.
+* dsrwon. New version allowing the use of sparse matrices. use of subset names to do intersections.
 
 * dotprod, inters nameRows. Update of functions to allow the use of sparse matrices
 
@@ -182,7 +182,7 @@ dst v1.1.0.9000
 * 2018-05-01. 
 
 * Correction to fn belplau: added a check for the case of the empty set present with m_empty = 0
-- Re-writed the referencing of source code taken on Rpubs
+- Re-written the referencing of source code taken on Rpubs
 
 # dst v1.0.0 (Release date on CRAN: 2018-04-25)
 

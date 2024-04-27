@@ -2,7 +2,7 @@
 % Please edit documentation in R/belplauHLogsumexp.R
 \name{belplauHLogsumexp}
 \alias{belplauHLogsumexp}
-\title{Calculate belief, disbelief, unkown, plausibility, plausibility ratio with logsumexp}
+\title{Calculate belief, disbelief, unknown, plausibility, plausibility ratio with logsumexp}
 \usage{
 belplauHLogsumexp(MACC, W2, h)
 }
@@ -23,7 +23,7 @@ A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number
    }
 }
 \description{
-Calculate belief, disbelief, unkown, plausibility, plausibility ratio with logsumexp
+Calculate belief, disbelief, unknown, plausibility, plausibility ratio with logsumexp
 }
 \examples{
 x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))

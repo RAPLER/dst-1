@@ -5,3 +5,4 @@
 ^Rprof.out$
 ^.Rd2pdf*\*
 ^CRAN-SUBMISSION$
+^.github$
