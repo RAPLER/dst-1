@@ -1,0 +1,192 @@
+---
+title: "Kohlas_examples"
+author: "CB"
+date: "2024-03-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Examples from Kolas's book
+
+## Example 1 The burglary
+See Kolas, p 13
+
+Defining variables and relaltions
+
+```{r ex1 Burglary, echo = FALSE, warning=FALSE}
+cat("Evidence for variable  a1: Reliability of the system","\n")
+aOne <- bca(tt = matrix(c(1,0,1,1), ncol = 2, byrow = TRUE), m = c(0.95, 0.05),cnames = c("Reliable", "Not_reliable"), idvar = 1, varnames = "a1")
+bcaPrint(aOne)
+cat("Evidence for variable a2: Over sensitivity (false alarm) of the system","\n")
+aTwo <- bca(tt = matrix(c(0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.01, 0.99),cnames = c("True", "False"), idvar = 2, varnames = "a2")
+bcaPrint(aTwo)
+cat("Adding vvariables burglary and alarm at this point","\n")
+cat("I give idvar = 3 to the variable burglary:{yes, no]","\n")
+cat("I give idvar = 4 to the variable alarm:{yes, no]","\n")
+cat("Rule R1: if burglary and a1 then alarm","\n")
+#
+# 1. tt matrix
+tt_R1 <- ttHelper(cnames = c("yes", "no", "Reliable", "Not_reliable", "yes", "no" ), nvar = 3, binary = TRUE, formula = "!(burglary & aOne) | alarm")
+cat("Put variables in order of their idvar","\n")
+tt_R1 <- tt_R1[,c(3,4,1,2,5,6)]
+rownames(tt_R1) <- nameRows(tt_R1)
+# 2. The mass distribution
+spec_R1 <-  matrix(c(rep(1,7),2,rep(1,7),0), ncol = 2, 
+  dimnames = list(NULL, c("specnb", "mass")))
+# 3. Variables numbers and sizes
+info_R1 <- matrix(c(1,3,4,2,2,2), ncol = 2, 
+  dimnames = list(NULL, c("varnb", "size")) )
+# 
+rule_R1 <- bcaRel(tt = tt_R1, spec = spec_R1, infovar = info_R1,
+  varnames = c( "a1", "burglary", "alarm"), relnb = 1)
+bcaPrint(rule_R1)
+#
+cat("Rule R2: if a2 then alarm","\n")
+#
+# 1. tt matrix
+tt_R2 <- ttHelper(cnames = c("True", "False", "yes", "no" ), nvar = 2, binary = TRUE, formula = "!aTwo | alarm")
+# 2. The mass distribution
+spec_R2 <-  matrix(c(rep(1,3),2,rep(1,3),0), ncol = 2, 
+  dimnames = list(NULL, c("specnb", "mass")))
+# 3. Variables numbers and sizes
+info_R2 <- matrix(c(2,4,2,2), ncol = 2, 
+  dimnames = list(NULL, c("varnb", "size")) )
+# 
+rule_R2 <- bcaRel(tt = tt_R2, spec = spec_R2, infovar = info_R2,
+  varnames = c("a2", "alarm"), relnb = 2)
+bcaPrint(rule_R2)
+#
+cat("Rule R3: if ¬burglary and ¬a2 then ¬alarm","\n")
+cat("Which is equivalent to write","\n")
+cat("burglary or a2 or ¬alarm","\n")
+#
+# 1. tt matrix
+tt_R3 <- ttHelper(cnames = c("yes", "no", "True", "False", "yes", "no" ), nvar = 3, binary = TRUE, formula = "burglary | aTwo | alarm")
+cat("Put variables in order of their idvar","\n")
+tt_R3 <- tt_R3[,c(3,4,1,2,5,6)]
+rownames(tt_R3) <- nameRows(tt_R3)
+# 2. The mass distribution
+spec_R3 <-  matrix(c(rep(1,7),2,rep(1,7),0), ncol = 2, 
+  dimnames = list(NULL, c("specnb", "mass")))
+# 3. Variables numbers and sizes
+info_R3 <- matrix(c(2,3,4,2,2,2), ncol = 2, 
+  dimnames = list(NULL, c("varnb", "size")) )
+# 
+rule_R3 <- bcaRel(tt = tt_R3, spec = spec_R3, infovar = info_R3,
+  varnames = c( "a2", "burglary", "alarm"), relnb = 3)
+bcaPrint(rule_R3)
+
+```
+
+## The hypergraph of the burglary problem
+```{r, fig.show='hold', fig_caption: yes}
+# The network
+if (requireNamespace("igraph", quietly = TRUE) ) {
+library(igraph)
+  nvar <- 4
+# Encode pieces of evidence and relations with an incidence matrix
+R1 <- 1*1:nvar %in% rule_R1$infovar[,1]
+R2 <- 1*1:nvar %in% rule_R2$infovar[,1]
+R3 <- 1*1:nvar %in% rule_R3$infovar[,1]
+cat("Alarm is triggered","\n")
+al <- bca(tt = matrix(c(1,0,1,1), ncol = 2, byrow = TRUE), m = c(1, 0),cnames = c("yes", "no"), idvar = 4, varnames = "alarm")
+bcaPrint(al)
+E1 <- 1*1:nvar %in% al$infovar[,1]
+cat("parameters of the system","\n")
+E2 <- 1*1:nvar %in% aOne$infovar[,1]
+E3 <- 1*1:nvar %in% aTwo$infovar[,1]
+bcaPrint(aOne)
+bcaPrint(aTwo)
+
+# information on variables
+burglar_vars1 <- c( aOne$valuenames,  rule_R3$valuenames)
+burglar_vars <- rbind( aOne$infovar,  rule_R3$infovar)
+burglar_var_names <-names(burglar_vars1)
+rownames(burglar_vars) <- burglar_var_names
+# infos on relations
+burglar_rel_names <- c("rule_R1", "rule_R2", "rule_R3", "al", "aOne", "aTwo")
+# the incidence matrix
+burglar_hgm <- matrix(c(R1,R2,R3,E1,E2,E3), ncol=6, dimnames = list(c("a1", "a2", "burglary", "alarm"), c("R1", "R2", "R3","E1", "E2", "E3")))
+burglar <- list(burglar_hgm, burglar_var_names, burglar_rel_names)
+#
+## The graph structure of the problem
+#
+burglar_hg <- graph_from_biadjacency_matrix(incidence = burglar_hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
+V(burglar_hg)
+# Show variables as circles, relations and evidence as rectangles
+V(burglar_hg)$shape <- c("circle", "crectangle")[V(burglar_hg)$type+1]
+V(burglar_hg)$label.cex <- 0.6
+V(burglar_hg)$label.font <- 2
+# render graph
+plot(burglar_hg, vertex.label = V(burglar_hg)$name, vertex.size=(3+6*V(burglar_hg)$type)*6)
+}
+```
+### The peeling
+
+The variable of interest is burglary:{yes, no}
+
+The alarm is sounding...
+```{r burglary,echo = FALSE, warning=FALSE}
+cat("Eliminate a1 by extending E2 on R1, combining R1 and E2_xtnd and marginalizing on burglary X alarm","\n")
+cat("Name the resulting relation rule_R4","\n")
+cat("first extend E2 to the space of R1","\n")
+aOne_xtnd <- extmin(aOne, relRef = rule_R1)
+bcaPrint(aOne_xtnd)
+cat("Combine aOne_xtnd and rule_R1","\n")
+relcomb <- dsrwon(aOne_xtnd, rule_R1)
+rule_R4 <- elim(rule_R1, xnb = 1)
+bcaPrint(rule_R4)
+#
+#
+
+cat("Eliminate a2","\n")
+cat("first extend R2 to the space of R3","\n")
+rule_R2_xtnd <- extmin(rule_R2, relRef = rule_R3)
+bcaPrint(rule_R2_xtnd)
+cat("Combine rule_R2_xtnd and rule_R3","\n")
+relcomb <- dsrwon(rule_R2_xtnd, rule_R3)
+bcaPrint(relcomb)
+cat("Eliminate a2 by marginalizing relcomb on burglary X alarm","\n")
+cat("Name the resulting relation rule_R5","\n")
+rule_R5 <- elim(relcomb, xnb = 2)
+bcaPrint(rule_R5)
+
+```
+
+```{r Peeling, echo = FALSE, warning=FALSE}
+Bur <- peeling(vars_def = burglar_vars1, hgm = burglar_hgm, hg_rel_names = burglar_rel_names, elim_order = c(1,2,4,3), verbose = TRUE )
+bcaPrint(Bur)
+round(belplau(Bur), digits = 2)
+```
+
+### Example 2 The Gas Gauge
+
+```{r ex2 Gas Gauge, echo = FALSE, warning=FALSE}
+cat("Gas gauge working properly?","\n")
+tank_empty <- bca(tt = matrix(c(1,0,1,1), ncol = 2, byrow = TRUE), m = c(0.99, 0.01),cnames = c("empty", "full"), idvar = 1)
+cat("Counter reset at tank filling?","\n")
+reset_counter<- bca(tt = matrix(c(1,0,1,1), ncol = 2, byrow = TRUE), m = c(0.7, 0.3),cnames = c("empty", "full"), idvar = 1)
+bcaPrint(reset_counter)
+cat("Combination of hints","\n")
+state_of_tank <- dsrwon(tank_empty, reset_counter)
+bcaPrint(state_of_tank)
+state_of_tank_all <- addTobca(state_of_tank, tt = diag(x=1, nrow = 2, ncol = 2))
+belplau(state_of_tank_all)
+#
+cat("adding a third hint","\n")
+distance_counter <- bca(tt = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m = c(0.5, 0.5, 0),cnames = c("empty", "full"), idvar = 1)
+bcaPrint(distance_counter)
+cat("combining state of tank with third hint","\n")
+state_of_tank2 <- dsrwon(state_of_tank_all, distance_counter)
+bcaPrint(state_of_tank2)
+cat(" Normalizing,","\n")
+norm_state_of_tank2 <- nzdsr(state_of_tank2)
+bcaPrint(norm_state_of_tank2)
+round(belplau(norm_state_of_tank2), digits = 5 )
+```
+
