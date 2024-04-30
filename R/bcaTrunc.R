@@ -3,7 +3,7 @@
 #'When working with large frames of discernment, the bca resulting of repeated application of Dempster's Rule of Combination can become big. One way to handle this situation could be to group subsets whose mass is less than a small treshold value. The function \code{bcaTrunc} serves this purpose to reduce a large bca to its main elements.\cr
 #' @param x A bca to truncate.
 #' @param seuil A treshold value
-#' @param use_ssnames Put TRUE to use ssnames parameter instead of description matrix. Default = FALSE.
+#' @param use_ssnames Put TRUE to use ssnames parameteer instead of description matrix. Default = FALSE.
 #' @return tr_x The bca object truncated.
 #' @author Claude Boivin
 #' @export
