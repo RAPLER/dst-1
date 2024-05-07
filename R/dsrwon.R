@@ -158,6 +158,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     if (is.matrix(W1) == FALSE) {
       W1 <- t(as.matrix(W1))
     }
+    rownames(W1) <- rownames(as.matrix(!duplicated(N12)==TRUE))
     #
     # 2.3 Identify contributions to each subset and compute the sum of masses
     #

@@ -1,0 +1,20 @@
+---
+title: "Holmes_Burglary"
+author: "Peiyuan Zhu"
+date: "2024-04-16"
+output: rmarkdown::html_vignette
+# output: word_document
+vignette: >
+  %\VignetteIndexEntry{Holmes_Burglary}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
