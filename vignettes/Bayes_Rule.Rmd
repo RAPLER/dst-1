@@ -1,6 +1,6 @@
 ---
 title: "Bayes_Rule"
-author: "Peiyuan Zhu, Claude Boivin"
+author: "Peiyuan Zhu"
 date: "2023-11-02"
 output: rmarkdown::html_vignette
 # output: word_document

@@ -17,7 +17,7 @@ extFrame(x, use_ssnames = FALSE, lab = NULL)
 zxtnd The bca with its frame extended
 }
 \description{
-This function works on a basic chance assignment (bca) \code{x} defined on a single variable. Iy=t allows the addition of new values to the frame of discernment.
+This function works on a basic chance assignment (bca) \code{x} defined on a single variable. Iy= t Allows the addition of new values to the frame of discernment.
 }
 \examples{
 s1_e1 <- bca(tt = matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 

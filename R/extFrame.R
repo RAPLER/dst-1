@@ -1,6 +1,6 @@
 #' Extension of the frame of discernment of a variable
 #' 
-#' This function works on a basic chance assignment (bca) \code{x} defined on a single variable. Iy=t allows the addition of new values to the frame of discernment. 
+#' This function works on a basic chance assignment (bca) \code{x} defined on a single variable. Iy= t Allows the addition of new values to the frame of discernment. 
 #' 
 #' @param x An object of bca class, i.e. a basic chance assignment defined on one variable
 #' @param use_ssnames Default= FALSE. Put TRUE if use of subset names is wanted.

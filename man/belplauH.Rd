@@ -2,7 +2,7 @@
 % Please edit documentation in R/belplauH.R
 \name{belplauH}
 \alias{belplauH}
-\title{Calculate belief, disbelief, unkown, plausibility, plausibility ratio}
+\title{Calculate belief, disbelief, unknown, plausibility, plausibility ratio}
 \usage{
 belplauH(MACC, W2, h)
 }
@@ -12,7 +12,7 @@ belplauH(MACC, W2, h)
 \item{W2}{Description matrix e.g. x$tt}
 
 \item{h}{H
-ypotheses to be tested, same format as x$tt}
+Hypotheses to be tested, same format as x$tt}
 }
 \value{
 A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{
@@ -24,7 +24,7 @@ A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number
    }
 }
 \description{
-Calculate belief, disbelief, unkown, plausibility, plausibility ratio
+Calculate belief, disbelief, unknown, plausibility, plausibility ratio
 }
 \examples{
 x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))

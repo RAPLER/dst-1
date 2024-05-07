@@ -56,4 +56,8 @@ test_that("bcaspec_1", {
   #
   # T8 tt matrix mising
   expect_error(bca(m = c(0.2,0.5, 0.3), varnames = "x", idvar = 1), "Error in input arguments: description matrix tt is missing.")
+  #
+  # T9 Names of variables must start with a letter
+  expect_error(bca(tt=matrix(c(0,1,1), nrow = 1, byrow = TRUE), m = c(1), cnames = c("a", "b", "c"), idvar = 2, varnames = 1 ) )
+  #
 })
