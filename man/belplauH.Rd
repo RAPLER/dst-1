@@ -12,7 +12,7 @@ belplauH(MACC, W2, h)
 \item{W2}{Description matrix e.g. x$tt}
 
 \item{h}{H
-Hypotheses to be tested, same format as x$tt}
+Hypotheses to be tested, same format as x$tt.}
 }
 \value{
 A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{
