@@ -17,6 +17,7 @@
 #' @param inforel Not used here. Defined within function \code{\link{bcaRel}}.
 #' @return y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
 #'   \item tt  The table of focal elements. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
+#'   \item qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
 #'   \item spec  A two column matrix. First column contains numbers given to the subsets, 1 to  \code{nrow(tt)}. Second column contains the mass values of the subsets. 
 #'   \item con  The measure of conflict.
 #'   \item infovar  The number of the variable and the size of the frame of discernment.
@@ -48,7 +49,7 @@
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt = NULL, m, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
+bca<-function(tt = NULL, m, qq = NULL, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
   # Local variables: ztable, zdup, zframe, znames
   # Functions calls: nameRows, DoSSnames
@@ -134,6 +135,12 @@ bca<-function(tt = NULL, m, cnames = NULL, con = NULL, ssnames = NULL, idvar = N
     else {
       znames <- ssnames
     }
+    
+    # 7.1 build qq
+    if (is.null(qq) == TRUE ) {
+      znames <- commonality(tt)
+    }
+    
     #
     # 8. Construction of the result
     #

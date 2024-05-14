@@ -8,6 +8,7 @@
 #' @param y A basic chance assignment (see \code{\link{bca}}).
 #' @param mcores Make use of multiple cores ("yes") or not ("no"). Default = "no".
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
+#' @param use_qq = TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
 #' @param skpt_tt Skip reconstruction of tt matrix. Default = FALSE.
 #' @param infovarnames Deprecated. Old name for \code{varnames}.
@@ -39,7 +40,7 @@
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
   # Local variables: m1, m2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
@@ -158,7 +159,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     if (is.matrix(W1) == FALSE) {
       W1 <- t(as.matrix(W1))
     }
-    rownames(W1) <- rownames(as.matrix(!duplicated(N12)==TRUE))
     #
     # 2.3 Identify contributions to each subset and compute the sum of masses
     #
@@ -343,6 +343,10 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
   # 
   # End case with uuse of subsets names
   #
+  
+  if (use_qq == TRUE) {
+    z$qq <- y$qq * x$qq
+  }
   # 4. The result
   #
   ## 4.1 Naming the resulting variables and fix some parameters
