@@ -11,7 +11,8 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-library(dst) 
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst) 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -22,30 +23,30 @@ Suppose a cause h of an effect e is necessary but insufficient. Let a be all tha
 First, we define the margins:
 
 ```{r}
-tt_DSMa <- matrix(c(1,0,0,1), nrow = 2, ncol = 2, byrow = TRUE)
-m_DSMa <- matrix(c(0.3,0.7), nrow = 2, ncol = 1)
+tt_DSMa <- matrix(c(1,0,0,1,1,1), nrow = 2 + 1, ncol = 2, byrow = TRUE)
+m_DSMa <- matrix(c(0.3,0.7,0), nrow = 2 + 1, ncol = 1)
 cnames_DSMa <- c("a is T", "a is F") 
 varnames_DSMa <- "a"
 idvar_DSMa <- 1
-DSMa <- bca(tt_DSMa, m_DSMa, cnames_DSMa, idvar = idvar_DSMa, varnames = varnames_DSMa)
+DSMa <- bca(tt_DSMa, m_DSMa, cnames = cnames_DSMa, idvar = idvar_DSMa, varnames = varnames_DSMa)
 ```
 
 ```{r}
-tt_DSMh <- matrix(c(1,0), nrow = 1, ncol = 2, byrow = TRUE)
-m_DSMh <- matrix(c(1), nrow = 1, ncol = 1)
+tt_DSMh <- matrix(c(1,0,1,1), nrow = 1 + 1, ncol = 2, byrow = TRUE)
+m_DSMh <- matrix(c(1,0), nrow = 1 + 1, ncol = 1)
 cnames_DSMh <- c("h is T", "h is F") 
 varnames_DSMh <- "h"
 idvar_DSMh <- 2
-DSMh <- bca(tt_DSMh, m_DSMh, cnames_DSMh, idvar = idvar_DSMh, varnames = varnames_DSMh)
+DSMh <- bca(tt_DSMh, m_DSMh, cnames = cnames_DSMh, idvar = idvar_DSMh, varnames = varnames_DSMh)
 ```
 
 ```{r}
-tt_DSMe <- matrix(c(1,0), nrow = 1, ncol = 2, byrow = TRUE)
-m_DSMe <- matrix(c(1), nrow = 1, ncol = 1)
+tt_DSMe <- matrix(c(1,0,1,1), nrow = 1 + 1, ncol = 2, byrow = TRUE)
+m_DSMe <- matrix(c(1,0), nrow = 1 + 1, ncol = 1)
 cnames_DSMe <- c("e is T", "e is F")
 varnames_DSMe <- "e"
 idvar_DSMe <- 3
-DSMe <- bca(tt_DSMe, m_DSMe, cnames_DSMe, idvar = idvar_DSMe, varnames = varnames_DSMe)
+DSMe <- bca(tt_DSMe, m_DSMe, cnames = cnames_DSMe, idvar = idvar_DSMe, varnames = varnames_DSMe)
 ```
 
 A truth table can be generated from https://web.stanford.edu/class/cs103/tools/truth-table-tool/ with argument "h && a -> e" and collecting only the rows where the implication is "true".
@@ -57,8 +58,10 @@ tt_DSM1 <- matrix(c(0,1,0,1,0,1,
                     0,1,1,0,1,0,
                     1,0,0,1,0,1,
                     1,0,0,1,1,0,
-                    1,0,1,0,1,0), nrow = 7, ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a is T", "a is F", "h is T", "h is F", "e is T", "e is F")))
-spec_DSM1 <- matrix(c(1,1,1,1,1,1,1,1,1,1,1,1,1,1), nrow = 7, ncol = 2)
+                    1,0,1,0,1,0,
+                    1,1,1,1,1,1), nrow = 7 + 1, ncol = 6, byrow = TRUE, dimnames = list(NULL, c("a is T", "a is F", "h is T", "h is F", "e is T", "e is F")))
+spec_DSM1 <- matrix(c(1,1,1,1,1,1,1,2,
+                      1,1,1,1,1,1,1,0), nrow = 7 + 1, ncol = 2)
 infovar_DSM1 <- matrix(c(1,2,3,2,2,2), nrow = 3, ncol = 2)
 varnames_DSM1 <- c("a", "h", "e")
 relnb_DSM1 <- 1
@@ -70,8 +73,10 @@ Now with the argument "not h -> not e", collecting the values where the implicat
 ```{r}
 tt_DSM2 <- matrix(c(0,1,0,1,
                     1,0,0,1,
-                    1,0,1,0), nrow = 3, ncol = 4, byrow = TRUE, dimnames = list(NULL, c("h is T", "h is F", "e is T", "e is F")))
-spec_DSM2 <- matrix(c(1,1,1,1,1,1), nrow = 3, ncol = 2)
+                    1,0,1,0,
+                    1,1,1,1), nrow = 3 + 1, ncol = 4, byrow = TRUE, dimnames = list(NULL, c("h is T", "h is F", "e is T", "e is F")))
+spec_DSM2 <- matrix(c(1,1,1,2,
+                      1,1,1,0), nrow = 3 + 1, ncol = 2)
 infovar_DSM2 <- matrix(c(2,3,2,2), nrow = 2, ncol = 2)
 varnames_DSM2 <- c("h","e")
 relnb_DSM2 <- 2

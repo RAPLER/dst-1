@@ -19,23 +19,23 @@ knitr::opts_chunk$set(echo = TRUE)
 This is a template of bca.
 
 ```{r}
-tt_DSMx <- matrix(c(), nrow = n, ncol = m, byrow = TRUE)
+tt_SSMx <- matrix(c(), nrow = n, ncol = m, byrow = TRUE)
 m_DSMx <- matrix(c(), nrow = n, ncol = 1)
-cnames_DSMx <- c() 
-varnames_DSMx <- ""
-idvar_DSMx <- i
-DSMx <- bca(tt_DSMx, m_DSMx, cnames_DSMx, idvar = idvar_DSMx, varnames = varnames_DSMx)
+cnames_SSMx <- c("", "") 
+varnames_SSMx <- ""
+idvar_SSMx <- i
+DSMx <- bca(tt_SSMx, m_DSMx, cnames = cnames_SSMx, idvar = idvar_SSMx, varnames = varnames_SSMx)
 ```
 
 This is a template of bcaRel.
 
 ```{r}
-tt_DSMy <- matrix(c(), nrow = n, ncol = m, byrow = TRUE, dimnames = list(NULL, c()))
+tt_SSMy <- matrix(c(), nrow = n, ncol = m, byrow = TRUE, dimnames = list(NULL, c("","")))
 spec_DSMy <- matrix(c(), nrow = n, ncol = 2)
-infovar_DSMy <- matrix(c(), nrow = k, ncol = 2)
-varnames_DSMy <- c("","")
-relnb_DSMy <- j
-DSMy <- bcaRel(tt_DSMy, spec_DSMy, infovar_DSMy, varnames_DSMy, valuenames_DSMy, relnb_DSMy)
+infovar_SSMy <- matrix(c(), nrow = k, ncol = 2)
+varnames_SSMy <- c("", "")
+relnb_SSMy <- j
+DSMy <- bcaRel(tt_SSMy, spec_DSMy, infovar_SSMy, varnames_SSMy, relnb_SSMy)
 ```
 
 This is a template of extmin.
@@ -44,13 +44,13 @@ This is a template of extmin.
 DSMx_uproj <- extmin(DSMx, DSM1)
 ```
 
-This is a template of dsrwon
+This is a template of dsrwon.
 
 ```{r}
 DSMx_uproj_xDSCn_DSMy <- dsrwon(DSMx_uproj, DSM1)
 ```
 
-This is a template of elim
+This is a template of elim.
 
 ```{r}
 DSMx_uproj_xDSCn_DSMy_dproj <- elim(DSMx_uproj_xDSCn_DSMy, i)

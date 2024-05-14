@@ -18,12 +18,12 @@ knitr::opts_chunk$set(echo = TRUE)
 We use a simple implication relation to familiar ourselves with the DS-ECP syntax. Suppose we are sure about an implication and with a certain probability the premise is true and we don't know the rest. There are two SSMs. One is the premise and the other the conclusion. There are two DSMs. One is the probability on the first SSM and the other is the structural equation between the two SSMs. Besides the ttmatrix, m vector, it's necessary to give it varnames and idvar or else the extension would've failed. For the premise in the syntax of DS-ECP, we have $\text{SSM1}: A=\{a\text{ is }T, a\text{ is }F\}$ and $\text{DSM1}: P(A) \rightarrow [0,1]$ where $$P(A) = \{\emptyset, \{a\text{ is }T\}, \{a\text{ is }F\}, \{a\text{ is }T\text{ or }a\text{ is }F\}\}$$ and $$\text{DSM1}(\{a\text{ is }T\}) = p$$ and $$\text{DSM1}(\{a\text{ is }T\text{ or }a\text{ is }F\}) = 1 - p$$ This can be written in the syntax of dst as:
 
 ```{r}
-DSM1_tt <- matrix(c(1,0,1,1), nrow = 2, ncol = 2, byrow = TRUE)
-DSM1_m <- matrix(c(0.3,0.7), nrow = 2, ncol = 1)
+DSM1_tt <- matrix(c(1,0,0,1,1,1), nrow = 2 + 1, ncol = 2, byrow = TRUE)
+DSM1_m <- matrix(c(0.3,0.7,0), nrow = 2 + 1, ncol = 1)
 DSM1_cnames <- c("a is True", "a is False")
 DSM1_varnames <- c("a")
 DSM1_idvar <- 1
-DSM1 <- bca(DSM1_tt, DSM1_m, DSM1_cnames, idvar = DSM1_idvar, varnames = DSM1_varnames)
+DSM1 <- bca(DSM1_tt, DSM1_m, cnames = DSM1_cnames, idvar = DSM1_idvar, varnames = DSM1_varnames)
 bcaPrint(DSM1)
 ```
 
@@ -35,7 +35,7 @@ DSM3_m <- matrix(c(1), nrow = 1, ncol = 1)
 DSM3_cnames <- c("b is True", "b is False")
 DSM3_varnames <- c("b")
 DSM3_idvar <- 3
-DSM3 <- bca(DSM3_tt, DSM3_m, DSM3_cnames, idvar = DSM3_idvar, varnames = DSM1_varnames)
+DSM3 <- bca(DSM3_tt, DSM3_m, cnames = DSM3_cnames, idvar = DSM3_idvar, varnames = DSM3_varnames)
 bcaPrint(DSM3)
 ```
 
@@ -44,9 +44,10 @@ For the structural relation we can obtain the implication relation from https://
 ```{r}
 DSM2_tt <- matrix(c(0,1,0,1,
                     0,1,1,0,
-                    1,0,1,0), nrow = 3, ncol = 4, byrow = TRUE, dimnames = list(NULL, c("a is True", "a is False", "b is True", "b is False")))
-DSM2_m <- matrix(c(1,1,1,
-                   1,1,1), nrow = 3, ncol = 2)
+                    1,0,1,0,
+                    1,1,1,1), nrow = 3 + 1, ncol = 4, byrow = TRUE, dimnames = list(NULL, c("a is True", "a is False", "b is True", "b is False")))
+DSM2_m <- matrix(c(1,1,1,2,
+                   1,1,1,0), nrow = 3 + 1, ncol = 2)
 DSM2_infovar <- matrix(c(1,3,2,2), nrow = 2, ncol = 2)
 DSM2_varnames <- c("a","b")
 DSM2 <- bcaRel(DSM2_tt, DSM2_m, DSM2_infovar, DSM2_varnames)
@@ -80,5 +81,6 @@ Now we can evaluate the belief and plausibility of this DSM. Here the $\text{DSA
 DSA <- belplau(uporj_DSM1_xDSC_DSM2_dproj)
 DSA
 ```
+
 
 
