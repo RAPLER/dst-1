@@ -158,7 +158,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     if (is.matrix(W1) == FALSE) {
       W1 <- t(as.matrix(W1))
     }
-    rownames(W1) <- rownames(as.matrix(!duplicated(N12)==TRUE))
     #
     # 2.3 Identify contributions to each subset and compute the sum of masses
     #
@@ -242,7 +241,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
       stop("Number of elements of frame differs from infovar parameter.")
     }
     if (length(zy$ssnames[[length(zy$ssnames)]]) !=zy$infovar[1,2] ) {
-        stop("Number of elements of frame differs from infovar parameter.")
+      stop("Number of elements of frame differs from infovar parameter.")
     }
     #
     # 3.1.compute intersections (N12 table) and transform to appropriate format
@@ -313,7 +312,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, reln
     #
     z <- unlist(W1s[[1]])
     if(z == "Empty") { 
-  #  if (rlang::is_empty(z) == TRUE) {
+      #  if (rlang::is_empty(z) == TRUE) {
       empty<-sort_order[1]  
       m_empty<-MAC[empty] 
     } 
