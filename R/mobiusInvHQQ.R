@@ -1,13 +1,15 @@
 #' Mobius inversion of commonality function
-#' @details
-#' @param
-#' @return
-#' @author
-#' @import 
-#' @importClassesFrom 
+#' 
+#' @param qq Commonality function
+#' @param h Hypothesis to be evaluated
+#' @return m Mass of the hypothesis
+#' @author Peiyuan Zhu
 #' @export
 #' @examples 
-#' 
+#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, byrow = TRUE),
+#' m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
+#' qq <- commonality(x$tt,x$spec[,2])
+#' mobiusInvHQQ(qq, matrix(c(0,1,0,1,1,0), nrow = 2, byrow = TRUE))
 mobiusInvHQQ<-function(qq,h){
   m <- 0
   # go through all supersets as h union a combination of elements from the complement

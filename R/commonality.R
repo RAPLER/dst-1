@@ -1,13 +1,15 @@
-# Compute qq from tt
-#' @details
-#' @param
-#' @return
-#' @author
-#' @import 
-#' @importClassesFrom 
+#' Compute qq from tt
+#' 
+#' @param tt Mass assignment set matrix
+#' @param m Mass assignment
+#' @return f Commonality function as a set function from the subsets of the frame to \code{[0,1]} 
+#' @author Peiyuan Zhu
 #' @export
 #' @examples 
-#' 
+#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, byrow = TRUE),
+#' m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
+#' qq <- commonality(x$tt,x$spec[,2])
+#' qq(c(1,0,0))
 commonality <- function(tt,m){
   f <- function(x) {
     q <- 0
