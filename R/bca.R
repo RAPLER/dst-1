@@ -138,7 +138,7 @@ bca<-function(tt = NULL, m, qq = NULL, cnames = NULL, con = NULL, ssnames = NULL
     
     # 7.1 build qq
     if (is.null(qq) == TRUE ) {
-      znames <- commonality(tt)
+      qq <- commonality(tt,m)
     }
     
     #
@@ -146,7 +146,7 @@ bca<-function(tt = NULL, m, qq = NULL, cnames = NULL, con = NULL, ssnames = NULL
     #
     rownames(tt) <- nameRows(tt)
     #
-    y<-list(con = con, tt = tt, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
+    y<-list(con = con, tt = tt, qq=qq, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
     # end test
     #
     class(y) <- append(class(y), "bcaspec")
