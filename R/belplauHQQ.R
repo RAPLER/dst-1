@@ -1,4 +1,4 @@
-#' Compute belief, disbelief, unkown, plausibility, plausibility ratio based on commonality function
+#' Compute belief, disbelief, unknown, plausibility, plausibility ratio based on commonality function
 #' @details
 #' @param
 #' @return

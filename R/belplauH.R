@@ -1,4 +1,4 @@
-#' Calculate belief, disbelief, unkown, plausibility, plausibility ratio
+#' Calculate belief, disbelief, unknown, plausibility, plausibility ratio
 #' @param MACC Vector of masses e.g. x$spec[,2]
 #' @param W2 Description matrix e.g. x$tt
 #' @param h H
