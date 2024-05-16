@@ -19,5 +19,8 @@ test_that("belplauHQQ", {
   expect_equal(belplauH(z$spec[,2], z$tt, matrix(c(0,1,1), nrow = 1)), belplauHQQ(w$qq, matrix(c(0,1,1), nrow = 1)))
   expect_equal(belplauH(z$spec[,2], z$tt, matrix(c(1,1,0), nrow = 1)), belplauHQQ(w$qq, matrix(c(1,1,0), nrow = 1)))
   expect_equal(belplauH(z$spec[,2], z$tt, matrix(c(0,1,0,1,1,0), nrow = 2, byrow = TRUE)), belplauHQQ(w$qq, matrix(c(0,1,0,1,1,0), nrow = 2, byrow = TRUE)))
-  # expect_equal(belplauH(z$spec[,2], z$tt, matrix(c(1,1,1), nrow = 1)), belplauHQQ(w$qq, matrix(c(1,1,1), nrow = 1)))
+  # test normalization with commonality functions
+  w1 <- nzdsr(w, comm = "yes")
+  z1 <- nzdsr(z)
+  expect_equal(belplauH(z1$spec[,2], z1$tt, matrix(c(1,1,1), nrow = 1)), belplauHQQ(w1$qq, matrix(c(1,1,1), nrow = 1)))
 })
