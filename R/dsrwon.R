@@ -78,7 +78,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
   #
   # 1.4 prepare data for parallel processing 
   # Put the bca with the largest number of subsets in second
-  if  ( nrow(x$spec) <= nrow(y$spec) ) {
+  if  ( nrow(x$spec) <= nrow(y$spec) && use_qq == FALSE) {
     zx <- x
     zy <-y
   } 
