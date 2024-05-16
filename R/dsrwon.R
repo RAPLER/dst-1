@@ -391,7 +391,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
     class(z) <- append(class(z), "bcaspec") 
   }
   if (use_qq == TRUE) {
-    z <- list(con = con, tt = tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order=1:nrow(x$tt))
+    z <- list(con = con, tt = tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
     class(z) <- append(class(z), "bcaspec") 
   }
   return(z)
