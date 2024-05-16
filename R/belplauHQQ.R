@@ -19,7 +19,8 @@
 belplauHQQ<-function(qq, h){
   plau <- rep(0, nrow(h))
   one_minus_bel <- rep(0, nrow(h))
-  for (i in 0:(2**length(h) - 1)) {
+  i <- 0
+  while (i <= (2**length(h) - 1)) {
     x <- encode(rep(2, length(h)), i)
     for (j in 1:nrow(h)) {
       # if x is contained in h[j,]
@@ -31,6 +32,7 @@ belplauHQQ<-function(qq, h){
         one_minus_bel[j] <- one_minus_bel[j] + (-1) ** (sum(x) + 1) * qq(x)
       }
     }
+    i <- i + 1
   }
   bel <- 1 - one_minus_bel
   disbel <- 1 - plau
