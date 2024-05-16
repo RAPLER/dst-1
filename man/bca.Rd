@@ -8,6 +8,7 @@
 bca(
   tt = NULL,
   m,
+  qq = NULL,
   cnames = NULL,
   con = NULL,
   ssnames = NULL,
@@ -42,6 +43,7 @@ bca(
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
   \item tt  The table of focal elements. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
+  \item qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
   \item spec  A two column matrix. First column contains numbers given to the subsets, 1 to  \code{nrow(tt)}. Second column contains the mass values of the subsets. 
   \item con  The measure of conflict.
   \item infovar  The number of the variable and the size of the frame of discernment.

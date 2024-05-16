@@ -9,6 +9,7 @@ dsrwon(
   y,
   mcores = "no",
   use_ssnames = FALSE,
+  use_qq = FALSE,
   varnames = NULL,
   relnb = NULL,
   skpt_tt = FALSE,
@@ -23,6 +24,8 @@ dsrwon(
 \item{mcores}{Make use of multiple cores ("yes") or not ("no"). Default = "no".}
 
 \item{use_ssnames}{= TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE}
+
+\item{use_qq}{= TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
