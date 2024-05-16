@@ -69,7 +69,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
   # 1.3.  Check mass vector
   m1 <- x$spec[,2]
   m2 <- y$spec[,2]
-  if ( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) {
+  if (( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) && use_qq == FALSE) {
     print(m1)
     print(m2)
     stop("Invalid data, sum of masses of one vector, or both, greater than one.")
@@ -77,7 +77,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
   # End input checks
   #
   # 1.4 prepare data for parallel processing 
-  # Put the bca with the largegst number of subsets in second
+  # Put the bca with the largest number of subsets in second
   if  ( nrow(x$spec) <= nrow(y$spec) ) {
     zx <- x
     zy <-y
