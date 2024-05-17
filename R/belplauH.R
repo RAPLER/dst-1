@@ -28,7 +28,7 @@ belplauH <-function(MACC, W2, h) {
       if (all(h[j,]-W2[i,] >= 0)) {
         bel[j] <- bel[j] + MACC[i]
       }
-      # if complement of bpa$tt[i,] is contained in h[j,]
+      # if bpa$tt[i,] is contained in the complement of h[j,]
       if (all(+(!h[j,])-W2[i,] >= 0)) {
         disbel[j] <- disbel[j] + MACC[i]
       }
