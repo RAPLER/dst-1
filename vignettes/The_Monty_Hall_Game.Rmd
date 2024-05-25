@@ -71,13 +71,14 @@ MHABC_tt <- matrix(c(1,0,0,0,1,0,0,0,1,
                      0,1,0,1,0,0,0,0,1,
                      0,1,0,0,0,1,1,0,0,
                      0,0,1,1,0,0,0,1,0,
-                     0,0,1,0,1,0,1,0,0), ncol=9, byrow=TRUE)
+                     0,0,1,0,1,0,1,0,0,
+                     rep(1,9)), ncol=9, byrow=TRUE)
 colnames(MHABC_tt) <- rep(c("car", "goat1", "goat2"), 3)
 #
 # 2. define the spec matrix. 
 # Here we have one subset of six elements
 # 
-MHABC_spec = matrix(rep(1,12), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+MHABC_spec = matrix(c(rep(1,6),2,rep(1,6),0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
 # 
 # 3. define the info matrix. 
 # for each variable, we attribute a number and give the size of the frame
