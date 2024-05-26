@@ -23,6 +23,7 @@ bcaPrint <- function(x) {
   }
   y <- as.data.frame(cbind(rownames(x$tt), x$spec))
   colnames(y)[1] <- deparse(substitute(x))
+  y <- y[y[,ncol(y)] > 0,]
   rownames(y) <- NULL
   print(y)
   }
