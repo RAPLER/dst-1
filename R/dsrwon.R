@@ -37,11 +37,17 @@
 #' y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 #' y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
 #' y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
+#' 
+#' # using commonalities
+#' bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
+#' m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"))
+#' bma2 <- dsrwon(bma, bma, use_qq = TRUE)
+#' 
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
-  # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, V12, N12, W1, I12, MAC, nMAC
+  # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
   # 0. Catch old parameters names, if any and replace by the new ones
@@ -313,10 +319,12 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
     # 3.7 Identify if the empty set is present and define m_empty  with its mass accordingly.
     # Put masses in the same order as the ssnames list
     #
-    z <- unlist(W1s[[1]])
+    # test 20240526
+    W1cs <- W1[sort_order] # vector of ordered resulting subset names 
+    z <- W1cs[1]
+    # end test
     if(z == "Empty") { 
-      #  if (rlang::is_empty(z) == TRUE) {
-      empty<-sort_order[1]  
+       empty<-sort_order[1]  
       m_empty<-MAC[empty] 
     } 
     else  {
@@ -343,7 +351,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
     #
   }
   # 
-  # End case with uuse of subsets names
+  # End case with use of subsets names
   #
   
   if (use_qq == TRUE) {
