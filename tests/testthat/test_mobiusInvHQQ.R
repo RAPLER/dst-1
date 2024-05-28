@@ -1,4 +1,4 @@
-# Tests "mobiusInv" function
+# Tests "mobiusInvHQQ" function
 context("Compute tt matrix from qq function")
 library(dst)
 test_that("mobiusInvHQQ", {

@@ -184,7 +184,7 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
       }
     }
     #
-    # 2.4 Compute mmass vector
+    # 2.4 Compute mass vector
     if (mcores == "yes") {
       MAC<-apply(I12+t(array(V12,dim(I12)[2:1]) ),1,function(x) exp(Reduce(logsum, x)))
     }
