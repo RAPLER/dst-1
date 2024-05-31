@@ -1,6 +1,6 @@
 #' Compute qq from tt
 #' 
-#' qq is the commonality function as a set function from the subsets of the frame to \code{[0,1]}. To evaluate it, input a set encoded in binary vector, so the commonality number at that set can be returned.
+#' qq is the commonality function as a set function from the subsets of the frame to \eqn{[0,1]}. To evaluate it, input a set encoded in binary vector, so the commonality number at that set can be returned.
 #' 
 #' @param tt Mass assignment set matrix
 #' @param m Mass assignment

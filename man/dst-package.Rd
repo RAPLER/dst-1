@@ -25,6 +25,6 @@ Useful links:
 
 }
 \author{
-Claude Boivin <webapp.cb@gmail.com>
+Claude Boivin <webapp.cb@gmail.com> Peiyuan Zhu <garyzhubc@gmail.com>
 }
 \keyword{internal}
