@@ -96,7 +96,7 @@ Pl(H)/( Pl(¬H)) = Pl(H)/(1-Bel(H)).
 
 Of the three suspects, we see from our table of results that John has the highest plausibility ratio (1.92), Peter scores 0.4 and Mary 0.2.
 
-## Using commonlality function
+## Combination with commonlality functions
 
 Alternatively, we can perform combination with commonality functions. After combination, we perform convert commonality functions directly to belief and plausibility. 
 
