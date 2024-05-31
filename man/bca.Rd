@@ -24,6 +24,8 @@ bca(
 
 \item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.}
 
+\item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
+
 \item{cnames}{A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
 
 \item{con}{The measure of conflict can be provided. 0 by default.}
