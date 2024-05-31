@@ -1,0 +1,103 @@
+---
+title: "Crime_Scene_Commonality"
+author: "Peiyuan Zhu"
+date: "2024-05-29"
+output: rmarkdown::html_vignette
+# output: word_document
+vignette: >
+  %\VignetteIndexEntry{Crime_Scene_Commonality}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+ devtools::load_all(".") # only used in place of dst when testing with R-devel
+#library(dst) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+
+This is an example taken from Geometry of Uncertainty by Fabio Cuzzolin (2021). Suppose we're a detector investigating a crime scene. There are two witnesses who testified on a murder trial. Three suspects are called into question: Mary, Peter, and John. Mary and John are blonde. From the first witness's testimony, the suspect was a male. However, as a detective we're don't trust the witness fully, because the witness was drunk that day and cannot be completely held accountable for his testimony. Another witness found a blond hair on the floor, but the floor might have been cleaned before the crime scene was controlled, so in that case the hair doesn't help us narrowing down the suspects.
+
+## Belief combination
+
+Now let's put the above example in the language of belief functions. We start by conceptualizing a frame of discernment $\Theta=\{\text{Peter}, \text{John}, \text{Mary}\}$ for the outcome of the murder trial. Here we use the word "frame of discernment" to distinguish it from "sample space" in probability theory but they're mathematically the same. Then we define basic chance assignment as a mapping $2^\Theta\rightarrow[0,1]$.
+
+With the above representation of the crime scene, two basic chance assignment objects can be created from the two witnesses. The first basic chance assignment assigns 0.8 to $\{\text{Peter}, \text{John}\}$ and 0.2 to $\Theta$. This means that the detective imagine that out of all possible situations that could've happened, 80% of those have the property such that the witness was not drunk, and out of all possible situations that could've happened, 20% of those have the property such that the witness was drunk.
+
+```{r}
+bpa1 <- bca(matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), c(0.8, 0.2), cnames=c("Peter", "John", "Mary"))
+bpa1$tt
+bpa1$spec
+```
+
+The number 0.8 is given out of a subjective judgment by the observer, which seems like it come from nowhere but the philosophy of the belief function is founded upon the view that value judgments e.g. a vote, as relational properties between a system and an observer at the metaphysical level, are as real as (or even more real as) objects e.g. atoms from the traditional, substance-based metaphysical level. In the theory of belief functions, the relation is modeled as an uncertain relation, that is, a mathematical relation between a probability algebra and a frame of discernment.
+
+Using the basic chance assignment object, we can calculate the belplau object, which includes five parameters: belief, disbelief, epistemic uncertainty, plausibility, and plausibility ratio. Here we use the word "belief" "disbelief" instead of "p-value" / "a-value" to distinguish it from upper / lower confidence interval containing objective probabilities as a stochastic variable while assuming it is not a stochastic variable from frequentist hypothesis testing or upper / lower credible interval containing high posterior beliefs from Bayesian hypothesis testing, and "epistemic uncertainty" to distinguish it from length of confidence interval of objective probabilities after controlling for false discovery rate or credible sets. 
+
+(1) The belief of a hypothesis is justified via summing over basic chance assignments that implies that hypothesis.
+(2) The disbelief of a hypothesis is justified via summing over basic chance assignments that implies the negation of that hypothesis.
+(3) The epistemic uncertainty is calculated via the remaining masses that are neither attributed to belief, nor attributed to disbelief.
+(4) The plausibility is calculated via the remaining masses that are not attributed to disbelief.
+(5) The plausibility ratio is calculated via the ratio between the remaining masses that are not attributed to disbelief and the remaining masses that are not attributed to belief.
+
+```{r}
+belplau1<-belplau(bpa1)
+belplau1
+```
+
+In the language of bett
+
+Notice since both belief and basic mass assignment take the same values as both are defined via the summation operation. No belief on any suspect more specific than the entire group, can solemnly justify the entire crime scene. The second chance assignment assigns 0.6 to $\{\text{Peter}, \text{John}\}$ and 0.4 to $\Theta$ following the same logic as the first basic chance assignment. Its basic chance assignment object can be created likewise.
+
+```{r}
+bpa2 <- bca(matrix(c(0,1,1,1,1,1), nrow = 2, byrow = TRUE), c(0.6, 0.4), cnames=c("Peter", "John", "Mary"))
+bpa2$tt
+bpa2$spec
+```
+
+The belplau object can be computed from the basic chance assignment object by following the same logic as how the first belplau object is created via the first basic chance assignment object.
+
+```{r}
+belplau2<-belplau(bpa2)
+belplau2
+```
+
+Having computed two basic chance assignment objects, we can use dsrwon to combine them and obtain a new basic chance assignment object. We cannot combine belplau objects as it is known that there's no close form solution to the combined result in general. Here we use the word "combination" to distinguish up-projecting marginal masses into the product space and then down-project onto the marginal space from the masses on the product space in Dempster-Shafer theroy aside from constructing probability measure on the product space, usually done via Kolmogorov extension theorem among the frequentist methods, or random measure from de Finetti theorem among the Bayesian methods. 
+
+More precisely, the combination rule constructs a new basic chance assignment object by summing over multiplies of masses over intersections from the two input basic chance assignment objects and normalizing over probabilities non-conflicting items. There are several ways to interpret this process. 
+
+```{r}
+bpa3<-dsrwon(bpa1, bpa2, use_qq = TRUE)
+bpa3_<-dsrwon(bpa1, bpa2)
+```
+
+The belplau object can be computed from the basic chance assignment object by following the same logic as how the first belplau object is created via the first basic chance assignment object. Notice the belief on the new set of intersection is multiplied while the belief of the existing two evidences stays put.
+
+```{r}
+bpa3<-nzdsr(bpa3, comm="yes")
+bpa3$tt<-ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames))
+bpa3$spec <- matrix(c(1:nrow(bpa3$tt),mFromQQ(bpa3$qq,bpa3$tt)), ncol = 2, byrow = FALSE, dimnames = list(NULL, c("specnb","mass")))
+belplau3<-belplau(bpa3)
+belplau3
+belplau(bpa3_)
+```
+
+In this example, there is no degree of support for Peter, no degree of support for Mary also. It would be interesting to know more about these two people, such as their degree of plausibility. To do that, we add the singletons {peter} and {Mary} to the bpa obtained. See what we get.
+
+```{r}
+bpa3_plus_singl <- addTobca(bpa3, tt = diag(3)) 
+belplau(nzdsr(bpa3))
+```
+### Which one is the most plausible murderer?
+
+John is a man and John is blond. Nothing contradicts the {John} hypothesis, so the belief for John is 0.48 and the plausibility is one. The belief for Peter or Mary is 0, since no piece of evidence points directly toward them individually.
+
+As we can see, Pl(Peter) is 0.4 and Pl(Mary) is only 0.2. We can say that there is only  a 20% chances (40% chances) that the evidence is not contradictory with Mary (Peter) as the murderer.
+
+As a decision rule, we can use the ratio of the plausibility of an hypothesis H versus its contrary.
+
+Pl(H)/( Pl(¬H)) = Pl(H)/(1-Bel(H)).
+
+Of the three suspects, we see from our table of results that John has the highest plausibility ratio (1.92), Peter scores 0.4 and Mary 0.2.

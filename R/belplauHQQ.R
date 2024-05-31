@@ -1,7 +1,7 @@
 #' Compute belief, disbelief, unknown, plausibility, plausibility ratio based on commonality function
 #' 
 #' @param qq Commonality function
-#' @param h Hypothesis to be evaluated
+#' @param h = NULL Hypothesis to be evaluated
 #' @return z A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{
 #'  \item Column 1: the degree of Belief \code{bel};
 #'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
@@ -15,8 +15,12 @@
 #' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, byrow = TRUE),
 #' m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 #' qq <- commonality(x$tt,x$spec[,2])
-#' mobiusInvHQQ(qq, matrix(c(0,1,0,1,1,0), nrow = 2, byrow = TRUE))
-belplauHQQ<-function(qq, h){
+#' belplauHQQ(qq,h=matrix(c(0,1,0), nrow=1, byrow=TRUE))
+belplauHQQ<-function(qq, h=NULL){
+  # check h
+  if(is.null(h)) {
+    stop("Must input h")
+  }
   plau <- rep(0, nrow(h))
   one_minus_bel <- rep(0, nrow(h))
   i <- 0

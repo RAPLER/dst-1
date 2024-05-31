@@ -21,6 +21,10 @@ bcaPrint <- function(x) {
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
   }
+  # x must have tt and spec
+  if (is.null(x$tt) || is.null(x$spec)) {
+    stop("Missing tt or spec")
+  }
   y <- as.data.frame(cbind(rownames(x$tt), x$spec))
   colnames(y)[1] <- deparse(substitute(x))
   y <- y[y[,ncol(y)] > 0,]

@@ -12,10 +12,10 @@ commonality(tt, m)
 \item{m}{Mass assignment}
 }
 \value{
-f Commonality function as a set function from the subsets of the frame to \code{[0,1]}
+f Commonality function
 }
 \description{
-Compute qq from tt
+qq is the commonality function as a set function from the subsets of the frame to \code{[0,1]}. To evaluate it, input a set encoded in binary vector, so the commonality number at that set can be returned.
 }
 \examples{
 x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, byrow = TRUE),

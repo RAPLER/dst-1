@@ -52,6 +52,9 @@ belplau<-function (x, remove = FALSE, h = NULL) {
   #
   # use ssnames to reconstruct tt if null
   #
+  if (is.null(x$spec)) {
+    stop("Missing spec")
+  } 
   if (is.null(x$tt) ) {
     if (is.null(x$ssnames) == FALSE) {
       z <- x$ssnames

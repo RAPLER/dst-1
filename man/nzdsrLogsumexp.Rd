@@ -4,12 +4,14 @@
 \alias{nzdsrLogsumexp}
 \title{Normalization of a basic chance assignment with logsumexp}
 \usage{
-nzdsrLogsumexp(x, sparse = "no")
+nzdsrLogsumexp(x, sparse = "no", comm = "no")
 }
 \arguments{
 \item{x}{A basic chance assignment, i.e. a object of class bcaspec.}
 
-\item{sparse}{="no" Whether to use sparse matrix}
+\item{sparse}{Put "yes" to use sparse matrix. Default = "no".}
+
+\item{comm}{Put "yes" to use commonality function. Default = "no".}
 }
 \value{
 z The normalized basic chance assignment.

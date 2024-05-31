@@ -79,7 +79,7 @@ nzdsr<-function(x, sparse = "no", comm = "no") {
   #
   ## 2023-06-26 test reconstruct sort_order if missing
   if (is.null(x$sort_order)) {
-  x$sort_order<-order(apply(x$tt,1,sum))
+    x$sort_order<-order(apply(x$tt,1,sum))
   }
   # End 2023-06-26 Test
   #
@@ -113,8 +113,7 @@ nzdsr<-function(x, sparse = "no", comm = "no") {
   #
   # Computation of the conflict indice
   #
-
-    con <- 1-(1-x$con)*(1-m_empty)
+  con <- 1-(1-x$con)*(1-m_empty)
   }
   #
   # infovar, varnames, valuenames, inforel parameters
@@ -127,11 +126,11 @@ nzdsr<-function(x, sparse = "no", comm = "no") {
   #
   # construction of the result
   if (comm=="no") {
-  z <- list(con = con, tt = tt, qq = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
-  class(z) <- append(class(z), "bcaspec")
+    z <- list(con = con, tt = tt, qq = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
+    class(z) <- append(class(z), "bcaspec")
   } else {
     z <- list(con = 0, tt = NULL, qq = x$qq, spec = NULL, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
   }
   #
   return(z)
-    }
+}

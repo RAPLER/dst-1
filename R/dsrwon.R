@@ -75,7 +75,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
   # 1.3.  Check mass vector
   m1 <- x$spec[,2]
   m2 <- y$spec[,2]
-  if (( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) && use_qq == FALSE) {
+  if ( ((abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) && use_qq == FALSE) {
     print(m1)
     print(m2)
     stop("Invalid data, sum of masses of one vector, or both, greater than one.")
@@ -324,7 +324,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
     z <- W1cs[1]
     # end test
     if(z == "Empty") { 
-       empty<-sort_order[1]  
+      empty<-sort_order[1]  
       m_empty<-MAC[empty] 
     } 
     else  {

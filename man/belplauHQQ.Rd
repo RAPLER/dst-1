@@ -4,12 +4,12 @@
 \alias{belplauHQQ}
 \title{Compute belief, disbelief, unknown, plausibility, plausibility ratio based on commonality function}
 \usage{
-belplauHQQ(qq, h)
+belplauHQQ(qq, h = NULL)
 }
 \arguments{
 \item{qq}{Commonality function}
 
-\item{h}{Hypothesis to be evaluated}
+\item{h}{= NULL Hypothesis to be evaluated}
 }
 \value{
 z A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{
@@ -27,7 +27,7 @@ Compute belief, disbelief, unknown, plausibility, plausibility ratio based on co
 x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, byrow = TRUE),
 m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 qq <- commonality(x$tt,x$spec[,2])
-mobiusInvHQQ(qq, matrix(c(0,1,0,1,1,0), nrow = 2, byrow = TRUE))
+belplauHQQ(qq,h=matrix(c(0,1,0), nrow=1, byrow=TRUE))
 }
 \author{
 Peiyuan Zhu
