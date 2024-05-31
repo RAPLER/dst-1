@@ -11,8 +11,8 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
- devtools::load_all(".") # only used in place of dst when testing with R-devel
-#library(dst) 
+#devtools::load_all(".") # only used in place of dst when testing with R-devel
+library(dst) 
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -69,21 +69,15 @@ Having computed two basic chance assignment objects, we can use dsrwon to combin
 More precisely, the combination rule constructs a new basic chance assignment object by summing over multiplies of masses over intersections from the two input basic chance assignment objects and normalizing over probabilities non-conflicting items. There are several ways to interpret this process. 
 
 ```{r}
-bpa3<-dsrwon(bpa1, bpa2, use_qq = TRUE)
-bpa3_<-dsrwon(bpa1, bpa2)
+bpa3<-dsrwon(bpa1, bpa2)
 ```
 
 The belplau object can be computed from the basic chance assignment object by following the same logic as how the first belplau object is created via the first basic chance assignment object. Notice the belief on the new set of intersection is multiplied while the belief of the existing two evidences stays put.
 
 ```{r}
-bpa3<-nzdsr(bpa3, comm="yes")
-bpa3$tt<-ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames))
-bpa3$spec <- matrix(c(1:nrow(bpa3$tt),mFromQQ(bpa3$qq,bpa3$tt)), ncol = 2, byrow = FALSE, dimnames = list(NULL, c("specnb","mass")))
 belplau3<-belplau(bpa3)
 belplau3
-belplau(bpa3_)
 ```
-
 In this example, there is no degree of support for Peter, no degree of support for Mary also. It would be interesting to know more about these two people, such as their degree of plausibility. To do that, we add the singletons {peter} and {Mary} to the bpa obtained. See what we get.
 
 ```{r}
@@ -101,3 +95,21 @@ As a decision rule, we can use the ratio of the plausibility of an hypothesis H 
 Pl(H)/( Pl(¬H)) = Pl(H)/(1-Bel(H)).
 
 Of the three suspects, we see from our table of results that John has the highest plausibility ratio (1.92), Peter scores 0.4 and Mary 0.2.
+
+## Using commonlality function
+
+Alternatively, we can perform combination with commonality functions. After combination, we perform convert commonality functions directly to belief and plausibility. 
+
+```{r}
+bpa3<-dsrwonLogsumexp(bpa1, bpa2, use_qq = TRUE)
+belplauHQQ(bpa3$qq,ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames)))
+```
+
+We can also convert commonality functions back to mass function first and then calculate belief and plausibility as before. 
+
+```{r}
+bpa3$tt<-ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames))
+bpa3$spec <- matrix(c(1:nrow(bpa3$tt),mFromQQ(bpa3$qq,bpa3$tt)), ncol = 2, byrow = FALSE, dimnames = list(NULL, c("specnb","mass")))
+belplau3<-belplau(bpa3)
+belplau3
+```

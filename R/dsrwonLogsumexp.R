@@ -369,7 +369,7 @@ dsrwonLogsumexp<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FAL
   if (use_qq == TRUE) {
     q1 <- x$qq
     q2 <- y$qq
-    qq <- function(X) q1(X) * q2(X)
+    qq <- function(X) exp(log(q1(X)) + log(q2(X)))
     con <- 0
     tt <- NULL
     spec <- NULL

@@ -17,9 +17,16 @@
 #' qq <- commonality(x$tt,x$spec[,2])
 #' belplauHQQ(qq,h=matrix(c(0,1,0), nrow=1, byrow=TRUE))
 belplauHQQ<-function(qq, h=NULL){
+  # check qq
+  if(!is.function(qq)) {
+    stop("qq must be a function")
+  }
   # check h
   if(is.null(h)) {
     stop("Must input h")
+  }
+  if(!is.matrix(h)) {
+    stop("h must be a matrix")
   }
   plau <- rep(0, nrow(h))
   one_minus_bel <- rep(0, nrow(h))
