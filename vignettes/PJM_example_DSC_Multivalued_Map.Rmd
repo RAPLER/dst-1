@@ -129,6 +129,3 @@ DSM3 <- dsrwon(DSM1_dproj,DSM2_dproj)
 bcaPrint(DSM3)
 ```
 
-
-
-
