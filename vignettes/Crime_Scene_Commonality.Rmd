@@ -82,7 +82,7 @@ In this example, there is no degree of support for Peter, no degree of support f
 
 ```{r}
 bpa3_plus_singl <- addTobca(bpa3, tt = diag(3)) 
-belplau(bpa3)
+belplau(bpa3_plus_singl)
 ```
 ### Which one is the most plausible murderer?
 
@@ -113,4 +113,10 @@ bpa3$tt<-ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuen
 bpa3$spec <- matrix(c(1:nrow(bpa3$tt),mFromQQ(bpa3$qq,bpa3$tt)), ncol = 2, byrow = FALSE, dimnames = list(NULL, c("specnb","mass")))
 belplau3<-belplau(bpa3)
 round(belplau3, 5)
+```
+Now add singletons to see belief and plausibility for each person.
+
+```{r}
+bpa3_plus_singl <- addTobca(bpa3, tt = diag(3)) 
+round(belplau(bpa3_plus_singl), 5)
 ```
