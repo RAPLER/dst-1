@@ -169,3 +169,6 @@ Now, we can marginalize $DSM3$ to $C$ to get $DSM3_{dproj_{SSM_C}}$ where $DSM3_
 DSM3_dprojSSMC <- elim(elim(DSM3, 3), 5)
 bcaPrint(DSM3_dprojSSMC)
 ```
+
+
+
