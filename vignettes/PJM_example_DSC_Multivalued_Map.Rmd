@@ -1,11 +1,11 @@
 ---
-title: "PJM_example_DSC"
+title: "PJM_example_DSC_Multivalued_Map"
 author: "Peiyuan Zhu"
 date: "2024-06-01"
 output: rmarkdown::html_vignette
 # output: word_document
 vignette: >
-  %\VignetteIndexEntry{PJM_example_DSC}
+  %\VignetteIndexEntry{PJM_example_DSC_Multivalued_Map}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
