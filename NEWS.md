@@ -1,4 +1,4 @@
-# dst 1.6.1
+# dst 1.7.0
 
 This version enables new option to compute combination with commonality functions and convert it back to mass, belplau objects used in earlier versions. 
 
