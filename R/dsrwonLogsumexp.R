@@ -8,6 +8,7 @@
 #' @param y A basic chance assignment (see \code{\link{bca}}).
 #' @param mcores Make use of multiple cores ("yes") or not ("no"). Default = "no".
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
+#' @param use_qq = TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
 #' @param skpt_tt Skip reconstruction of tt matrix. Default = FALSE.
 #' @param infovarnames Deprecated. Old name for \code{varnames}.
@@ -29,18 +30,18 @@
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  
 #' varnames = "x", idvar = 1)
-#' dsrwon(y1,y2)
+#' dsrwonLogsumexp(y1,y2)
 #' # Sparse matrices
 #' y1s <- y1
 #' y2s <- y2
 #' y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 #' y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
-#' y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
+#' y1y2s <- dsrwonLogsumexp(y1s, y2s, use_ssnames = TRUE)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-#' dsrwon(vacuous, vacuous)
+#' dsrwonLogsumexp(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
-  # Local variables: m1, m2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, V12, N12, W1, I12, MAC, nMAC
+dsrwonLogsumexp<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+  # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
   # 0. Catch old parameters names, if any and replace by the new ones
@@ -68,7 +69,7 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
   # 1.3.  Check mass vector
   m1 <- x$spec[,2]
   m2 <- y$spec[,2]
-  if ( (abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) {
+  if ( ((abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) && use_qq == FALSE) {
     print(m1)
     print(m2)
     stop("Invalid data, sum of masses of one vector, or both, greater than one.")
@@ -76,8 +77,8 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
   # End input checks
   #
   # 1.4 prepare data for parallel processing 
-  # Put the bca with the largegst number of subsets in second
-  if  ( nrow(x$spec) <= nrow(y$spec) ) {
+  # Put the bca with the largest number of subsets in second
+  if  ( nrow(x$spec) <= nrow(y$spec) && use_qq == FALSE) {
     zx <- x
     zy <-y
   } 
@@ -87,7 +88,7 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
   }
   #
   # Checks specific to the tt matrix, if there is one
-  if  ((!is.null(x$tt)) & (!is.null(y$tt) ) ) {
+  if  ((!is.null(x$tt)) & (!is.null(y$tt) ) && use_qq == FALSE) {
     # 
     # x and y must have same frame of discernment
     #  and same number of elements
@@ -109,14 +110,16 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
   }
   #
   # Combine mass vectors
-  V12<-outer(zx$spec[,2],zy$spec[,2], function(x,y) log(x)+log(y))
+  if (use_qq == FALSE) {
+    V12<-outer(zx$spec[,2],zy$spec[,2], function(x,y) log(x)+log(y))
+  }
   #
   # End Section 1
   #
   # Section 2 Calculations with tt matrices, default setup)
   #
   #
-  if (use_ssnames == FALSE ) {
+  if (use_ssnames == FALSE && use_qq == FALSE) {
     if ((is.null(zx$tt)) | (is.null(zy$tt) ) ) {
       stop("One or more description matrix missing.")
     }
@@ -184,7 +187,7 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
       }
     }
     #
-    # 2.4 Compute mmass vector
+    # 2.4 Compute mass vector
     if (mcores == "yes") {
       MAC<-apply(I12+t(array(V12,dim(I12)[2:1]) ),1,function(x) exp(Reduce(logsum, x)))
     }
@@ -230,9 +233,16 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
   #
   # 3. Intersections made with subsets names
   #
-  if (use_ssnames == TRUE ) {
+  if (use_ssnames == TRUE && use_qq == FALSE) {
     if ((is.null(zx$ssnames)) | (is.null(zy$ssnames) ) ) {
       stop("One or more ssnames list is missing.")
+    }
+    #
+    if (length(zx$ssnames[[length(zx$ssnames)]]) !=zx$infovar[1,2] ) {
+      stop("Number of elements of frame differs from infovar parameter.")
+    }
+    if (length(zy$ssnames[[length(zy$ssnames)]]) !=zy$infovar[1,2] ) {
+      stop("Number of elements of frame differs from infovar parameter.")
     }
     #
     # 3.1.compute intersections (N12 table) and transform to appropriate format
@@ -323,9 +333,11 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     # 3.7 Identify if the empty set is present and define m_empty  with its mass accordingly.
     # Put masses in the same order as the ssnames list
     #
-    z <- unlist(W1s[[1]])
-    if(rlang::is_empty(z)) { 
-      #  if (rlang::is_empty(z) == TRUE) {
+    # test 20240526
+    W1cs <- W1[sort_order] # vector of ordered resulting subset names 
+    z <- W1cs[1]
+    # end test
+    if(z == "Empty") { 
       empty<-sort_order[1]  
       m_empty<-MAC[empty] 
     } 
@@ -352,8 +364,18 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
     }
   }
   # 
-  # End case with uuse of subsets names
+  # End case with use of subsets names
   #
+  if (use_qq == TRUE) {
+    q1 <- x$qq
+    q2 <- y$qq
+    qq <- function(X) exp(log(q1(X)) + log(q2(X)))
+    con <- 0
+    tt <- NULL
+    spec <- NULL
+  } else {
+    qq <- NULL
+  }
   # 4. The result
   #
   ## 4.1 Naming the resulting variables and fix some parameters
@@ -377,15 +399,19 @@ dsrwonLogsumpexp<-function(x, y, mcores = "no", use_ssnames = FALSE, varnames = 
   #
   # 4.2. construction of the result
   #
-  if (use_ssnames == FALSE) {
-    z <- list(con = con, tt=tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order=1:nrow(tt))
+  if (use_ssnames == FALSE && use_qq == FALSE) {
+    z <- list(con = con, tt=tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order=1:nrow(tt))
     class(z) <- append(class(z), "bcaspec") 
   } 
   #
-  if (use_ssnames == TRUE) {
+  if (use_ssnames == TRUE && use_qq == FALSE) {
     znames <- W1_list[sort_order]
     znames <- lapply(X=1:length(znames), FUN = function(X) {if (length(znames[[X]]) == 0){ znames[[X]] <- "Empty"} else znames[[X]] })
-    z <- list(con = con, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order = sort_order, ssnames = znames, sfod = zx$sfod)
+    z <- list(con = con, tt = tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order = sort_order, ssnames = znames, sfod = zx$sfod)
+    class(z) <- append(class(z), "bcaspec") 
+  }
+  if (use_qq == TRUE) {
+    z <- list(con = con, tt = tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
     class(z) <- append(class(z), "bcaspec") 
   }
   return(z)

@@ -1,0 +1,131 @@
+---
+title: "PJM_example_DSC_Multivalued_Map"
+author: "Peiyuan Zhu"
+date: "2024-06-01"
+output: rmarkdown::html_vignette
+# output: word_document
+vignette: >
+  %\VignetteIndexEntry{PJM_example_DSC_Multivalued_Map}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+#devtools::load_all(".") # only used in place of dst when testing with R-devel
+library(dst) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Now we code the PJM (using ACP here) example in DS-ECP. 
+
+On $SSM_{W_1}:\{w_1\text{ is T},w_1\text{ is F}\}$, we define $DSM_{W_1}:\mathcal{P}(SSM_{W_1})\rightarrow[0,1]$ where $DSM_{W_1}(\{w_1\text{ is T}\})=0.4$ and $DSM_{W_1}(\{w_1\text{ is F}\})=0.6$ and $DSM_{W_2}(X)=0$ for all other $X=\emptyset,\{w_2\text{ is T},w_2\text{ is F}\}$.
+
+```{r}
+tt_SSMw1 <- matrix(c(1,0,0,1,1,1), nrow = 3, ncol = 2, byrow = TRUE)
+m_DSMw1 <- matrix(c(0.4,0.6,0), nrow = 3, ncol = 1)
+cnames_SSMw1 <- c("w1y", "w1n") 
+varnames_SSMw1 <- "w1"
+idvar_SSMw1 <- 1
+DSMw1 <- bca(tt_SSMw1, m_DSMw1, cnames = cnames_SSMw1, idvar = idvar_SSMw1, varnames = varnames_SSMw1)
+bcaPrint(DSMw1)
+```
+
+Similarly, on $SSM_{W_2}:\{w_2\text{ is T},w_2\text{ is F}\}$, we define $DSM_{W_2}(\mathcal{P})SSM_{W_2}\rightarrow[0,1]$ where $DSM_{W_2}(\{w_2\text{ is T}\})=0.3$ and $DSM_{W_2}(\{w_2\text{ is F}\})=0.7$ and $DSM_{W_2}(X)=0$ for all other $X=\emptyset,\{w_2\text{ is T},w_2\text{ is F}\}$.
+
+```{r}
+tt_SSMw2 <- matrix(c(1,0,0,1,1,1), nrow = 3, ncol = 2, byrow = TRUE)
+m_DSMw2 <- matrix(c(0.3,0.7,0), nrow = 3, ncol = 1)
+cnames_SSMw2 <- c("w2y", "w2n") 
+varnames_SSMw2 <- "w2"
+idvar_SSMw2 <- 2
+DSMw2 <- bca(tt_SSMw2, m_DSMw2, cnames = cnames_SSMw2, idvar = idvar_SSMw2, varnames = varnames_SSMw2)
+bcaPrint(DSMw2)
+```
+
+We also need three placeholder $SSM_{ACP}$, $DSMs_{ACP}$ on $\{A,C,P\}$. 
+
+```{r}
+tt_SSMacp <- matrix(c(1,1,1), nrow = 1, ncol = 3, byrow = TRUE)
+m_DSMacp <- matrix(c(1), nrow = 1, ncol = 1)
+cnames_SSMacp <- c("A", "C", "P") 
+varnames_SSMacp <- "ACP"
+idvar_SSMacp <- 3
+DSMacp <- bca(tt_SSMacp, m_DSMacp, cnames = cnames_SSMacp, idvar = idvar_SSMacp, varnames = varnames_SSMacp)
+bcaPrint(DSMacp)
+```
+
+On $SSM_{R1}:W1\times\{A,C,P\}$, we define multivalued mapping $DSM_{R1}:\mathcal{P}(SSM_{R1})\rightarrow[0,1]$ where $DSM_{R1}(\{(w1y,A),(w1y,C)\})=0.3$ and $DSM_{R1}(\{(w1n,A),(w1n,C),(w1n,P)\})=0.7$ and $DSM_{R1}(X)=0$ for all other $X$. 
+
+```{r}
+tt_SSMR_1 <- matrix(c(1,0,0,1,0,
+                     1,0,1,0,0,
+                     
+                     0,1,1,0,0,
+                     0,1,0,1,0,
+                     0,1,0,0,1,
+                     
+                     1,1,1,1,1), nrow = 2 + 3 + 1, ncol = 2 + 3, byrow = TRUE, dimnames = list(NULL, c("w1y","w1n","A","C","P")))
+spec_DSMR_1 <- matrix(c(1,1,1,1,1,2,1,1,1,1,1,0), nrow = 2 + 3 + 1, ncol = 2)
+infovar_SSMR_1 <- matrix(c(1,3,2,3), nrow = 2, ncol = 2)
+varnames_SSMR_1 <- c("w1", "ACP")
+relnb_SSMR_1 <- 1
+DSMR_1 <- bcaRel(tt_SSMR_1, spec_DSMR_1, infovar_SSMR_1, varnames_SSMR_1, relnb_SSMR_1)
+bcaPrint(DSMR_1)
+```
+
+Similarly, we define multivalued mapping $SSM_{R2}$ and $DSMR2$.
+
+```{r}
+tt_SSMR_2 <- matrix(c(1,0,0,1,0,
+                     1,0,0,0,1,
+
+                     0,1,1,0,0,
+                     0,1,0,1,0,
+                     0,1,0,0,1,
+                     
+                     1,1,1,1,1), nrow = 2 + 3 + 1, ncol = 2 + 3, byrow = TRUE, dimnames = list(NULL, c("w2y","w2n","A","C","P")))
+spec_DSMR_2 <- matrix(c(1,1,1,1,1,2,1,1,1,1,1,0), nrow = 2 + 3 + 1, ncol = 2)
+infovar_SSMR_2 <- matrix(c(2,3,2,3), nrow = 2, ncol = 2)
+varnames_SSMR_2 <- c("w2", "ACP")
+relnb_SSMR_2 <- 2
+DSMR_2 <- bcaRel(tt_SSMR_2, spec_DSMR_2, infovar_SSMR_2, varnames_SSMR_2, relnb_SSMR_2)
+bcaPrint(DSMR_2)
+```
+
+Now we apply Dempster-Shafer calculus. First, we up-project $DSM_{W_1}$ onto $SSM_{R_1}$ to get $DSM1_{uproj_{SSM_{R_1}}}=(\{w_1\text{ is T}\}\times SSM_{ACP})=0.4$ and $DSM1_{uproj_{SSM_{R_2}}}(\{w_1\text{ is F}\}\times SSM_{ACP})=0.6$ and $DSM1_{uproj_{SSM_{R_1}}}(X)=0$ for all other $X$. 
+
+```{r}
+DSMw1_uproj <- extmin(DSMw1,DSMR_1)
+bcaPrint(DSMw1_uproj)
+```
+
+Combining $DSM_{W_1}$ with $DSM_{R_1}$ to get $DSM1$ where $DSM1(\{w_1\text{ is T}\}\times\{A,C\})=0.4$ and $DSM1(\{w_1\text{ is F}\}\times(\{A,C,P\}))=0.6$ and $DSM1(X)=0$ for all other $X$.
+
+```{r}
+DSM1 <- dsrwon(DSMw1_uproj,DSMR_1)
+bcaPrint(DSM1)
+```
+
+Then, down-project $DSM1$ to $SSM_{ACP}$ to get $DSM1_{dproj_{SSM_{ACP}}}$ where $DSM1_{dproj_{SSM_{ACP}}}(\{A,C\})=\sum_{X|_{SSM_{W_1}} \in SSM_{W_1}}DSM1(X)=0.4$ and $DSM1_{dproj_{SSM_{ACP}}}(\{A,C,P\})=\sum_{X|_{SSM_{W_1}} \in SSM_{W_1}}DSM1(X)=0.6$ and  $DSM1_{dproj_{SSM_{ACP}}}(X)=0$ for all other $X$.
+
+```{r}
+DSM1_dproj <- elim(DSM1,1)
+bcaPrint(DSM1_dproj)
+```
+
+Similarly, we up-project $DSM_{W_2}$ onto $SSM_{R_2}$ to get $DSM2_{uproj_{SSM_{R_2}}}$. Combining $DSM_{W_2}$ with $DSM_{R_2}$ to get $DSM2$. Then, down-project $DSM2$ to $SSM_{ACP}$ to get $DSM2_{dproj_{SSM_{ACP}}}$.
+
+```{r}
+DSMw2_uproj <- extmin(DSMw2,DSMR_2)
+DSM2 <- dsrwon(DSMw2_uproj,DSMR_2)
+DSM2_dproj <- elim(DSM2,2)
+bcaPrint(DSM2_dproj)
+```
+
+Now we can combine $DSM1_{dproj_{SSM_{ACP}}}$ and $DSM2_{dproj_{SSM_{ACP}}}$ on $SSM_{ACP}$ to get $DSM3$ where $DSM3(\{C\})=0.12$ and $DSM3(\{A,C\})=0.12$ and $DSM3(\{T,P\})=0.28$ and $DSM3(\{A,C,P\})=0.42$.
+
+```{r}
+DSM3 <- dsrwon(DSM1_dproj,DSM2_dproj)
+bcaPrint(DSM3)
+```
+

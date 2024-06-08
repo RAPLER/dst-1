@@ -9,6 +9,7 @@ dsrwon(
   y,
   mcores = "no",
   use_ssnames = FALSE,
+  use_qq = FALSE,
   varnames = NULL,
   relnb = NULL,
   skpt_tt = FALSE,
@@ -23,6 +24,8 @@ dsrwon(
 \item{mcores}{Make use of multiple cores ("yes") or not ("no"). Default = "no".}
 
 \item{use_ssnames}{= TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE}
+
+\item{use_qq}{= TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
@@ -62,6 +65,12 @@ y2s <- y2
 y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
 y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
+
+# using commonalities
+bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
+m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"))
+bma2 <- dsrwon(bma, bma, use_qq = TRUE)
+
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 dsrwon(vacuous, vacuous)
 }

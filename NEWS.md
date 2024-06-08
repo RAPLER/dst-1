@@ -1,3 +1,15 @@
+# dst 1.7.0
+
+This version enables new option to compute combination with commonality functions and convert it back to mass, belplau objects used in earlier versions. 
+
+* New function commonality: Compute commonality functions
+
+* New functions: belplauHQQ, mFromQQ, mobiusInvHQQ, mFromQQ, ttmatrixFromQQ: Convert commonality functions back to mass functions, belief, and plausibility functions
+
+* Function bca: Enable bca constructed with commonality functions
+
+* Function dsrwon, dsrwonLogsumexp, nzdsr, nzdsrLogsumexp: Enable combination, normalization with commonality function
+
 # dst 1.6.0
 
 This version contains many improvements on earlier versions, namely functions to help construct bca parameters, partition of description (tt) matrices, improve numerical stability and other functions to help work with large mass functions.

@@ -4,12 +4,14 @@
 \alias{nzdsr}
 \title{Normalization of a basic chance assignment}
 \usage{
-nzdsr(x, sparse = "no")
+nzdsr(x, sparse = "no", comm = "no")
 }
 \arguments{
 \item{x}{A basic chance assignment, i.e. a object of class bcaspec.}
 
 \item{sparse}{Put "yes" to use sparse matrix. Default = "no".}
+
+\item{comm}{Put "yes" to use commonality function. Default = "no".}
 }
 \value{
 z The normalized basic chance assignment.
@@ -48,5 +50,5 @@ nzdsr(y2)
 Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
 }
 \author{
-Claude Boivin
+Claude Boivin, Peiyuan Zhu
 }

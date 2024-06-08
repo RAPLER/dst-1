@@ -1,8 +1,8 @@
-#' Calculate belief, disbelief, unkown, plausibility, plausibility ratio
+#' Calculate belief, disbelief, unknown, plausibility, plausibility ratio
 #' @param MACC Vector of masses e.g. x$spec[,2]
 #' @param W2 Description matrix e.g. x$tt
 #' @param h H
-#' ypotheses to be tested, same format as x$tt
+#' hypotheses to be tested, same format as x$tt
 #' @return A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{
 #'  \item Column 1: the degree of Belief \code{bel};
 #'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
@@ -28,7 +28,7 @@ belplauH <-function(MACC, W2, h) {
       if (all(h[j,]-W2[i,] >= 0)) {
         bel[j] <- bel[j] + MACC[i]
       }
-      # if complement of bpa$tt[i,] is contained in h[j,]
+      # if bpa$tt[i,] is contained in the complement of h[j,]
       if (all(+(!h[j,])-W2[i,] >= 0)) {
         disbel[j] <- disbel[j] + MACC[i]
       }

@@ -1,0 +1,60 @@
+---
+title: "Template"
+author: "Peiyuan Zhu"
+date: "2024-05-06"
+output: rmarkdown::html_vignette
+# output: word_document
+vignette: >
+  %\VignetteIndexEntry{Template}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+#devtools::load_all(".") # only used in place of dst when testing with R-devel
+library(dst) 
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is a template of bca.
+
+#```{r}
+tt_SSMx <- matrix(c(), nrow = n, ncol = m, byrow = TRUE)
+m_DSMx <- matrix(c(), nrow = n, ncol = 1)
+cnames_SSMx <- c("", "") 
+varnames_SSMx <- ""
+idvar_SSMx <- i
+DSMx <- bca(tt_SSMx, m_DSMx, cnames = cnames_SSMx, idvar = idvar_SSMx, varnames = varnames_SSMx)
+#```
+
+This is a template of bcaRel.
+
+#```{r}
+tt_SSMy <- matrix(c(), nrow = n, ncol = m, byrow = TRUE, dimnames = list(NULL, c("","")))
+spec_DSMy <- matrix(c(), nrow = n, ncol = 2)
+infovar_SSMy <- matrix(c(), nrow = k, ncol = 2)
+varnames_SSMy <- c("", "")
+relnb_SSMy <- j
+DSMy <- bcaRel(tt_SSMy, spec_DSMy, infovar_SSMy, varnames_SSMy, relnb_SSMy)
+#```
+
+This is a template of extmin.
+
+#```{r}
+DSMx_uproj <- extmin(DSMx, DSM1)
+#```
+
+This is a template of dsrwon.
+
+#```{r}
+DSMx_uproj_xDSCn_DSMy <- dsrwon(DSMx_uproj, DSM1)
+#```
+
+This is a template of elim.
+
+#```{r}
+DSMx_uproj_xDSCn_DSMy_dproj <- elim(DSMx_uproj_xDSCn_DSMy, i)
+#```
+
+
+

@@ -8,6 +8,7 @@
 bca(
   tt = NULL,
   m,
+  qq = NULL,
   cnames = NULL,
   con = NULL,
   ssnames = NULL,
@@ -22,6 +23,8 @@ bca(
 \item{tt}{Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
 
 \item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.}
+
+\item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
 
 \item{cnames}{A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
 
@@ -42,6 +45,7 @@ bca(
 \value{
 y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
   \item tt  The table of focal elements. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
+  \item qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
   \item spec  A two column matrix. First column contains numbers given to the subsets, 1 to  \code{nrow(tt)}. Second column contains the mass values of the subsets. 
   \item con  The measure of conflict.
   \item infovar  The number of the variable and the size of the frame of discernment.

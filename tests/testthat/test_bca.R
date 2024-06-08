@@ -51,7 +51,7 @@ test_that("bcaspec_1", {
   infovar=matrix(c(4,5,2,2), ncol=2, dimnames =list(NULL, c("varnb", "size")))
   varnames = c("RdWorks", "Rain")
   valuenames <- list(Rain= c("Ry", "Rn"), RdWorks=c("rWdy", "rWdn") )
-  result <- bca(tt = tt1, m, cnames, infovar = infovar, varnames = varnames, valuenames = valuenames)
+  result <- bca(tt = tt1, m = m, cnames = cnames, infovar = infovar, varnames = varnames, valuenames = valuenames)
   expect_equal(colnames(result$tt), c("rWdy Ry", "rWdy Rn", "rWdn Ry", "rWdn Rn"))
   #
   # T8 tt matrix mising

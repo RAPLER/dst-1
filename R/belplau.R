@@ -52,6 +52,9 @@ belplau<-function (x, remove = FALSE, h = NULL) {
   #
   # use ssnames to reconstruct tt if null
   #
+  if (is.null(x$spec)) {
+    stop("Missing spec")
+  } 
   if (is.null(x$tt) ) {
     if (is.null(x$ssnames) == FALSE) {
       z <- x$ssnames
@@ -73,7 +76,7 @@ belplau<-function (x, remove = FALSE, h = NULL) {
     row_m_empty <- match(1:nrow(xtest), rownames(xtest) == "\u00f8")
     row_m_empty <- row_m_empty[1]
     if (!is.na(row_m_empty)) {
-      if (x$spec[row_m_empty,2] > 0) {
+      if (x$spec[row_m_empty,2] > 0.000001) {
     stop("Invalid data: Empty set among the focal elements. Normalization necessary. Apply function nzdsr to your bca to normalize your result.")
       }
     }

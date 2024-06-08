@@ -35,6 +35,19 @@
 
 bcaPrintLarge <- function(x, info_list="all", num_top_mass=10, cut_width_size=10, cut_width_m=1e-5) {
   # Local variables: conf, labs, n, a, size, m, df, df_by_size, df_by_m
+  #
+  # Input check. 
+  # x must be a bca specification
+  if ( inherits(x, "bcaspec") == FALSE) {
+    stop("Input argument not of class bcaspec.")
+  }
+  # x must have tt and spec
+  if (is.null(x$spec)) {
+    stop("Missing spec")
+  }
+  if (is.null(x$ssnames)) {
+    stop("Missing ssnames")
+  }
   size_bins <- NULL
   m_bins <- NULL
   conf <- x$con
