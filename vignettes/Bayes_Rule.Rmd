@@ -72,7 +72,7 @@ cat("The posterior distribution P(H|E)","\n")
 bcaPrint(H_given_E)
 ```
 
-Note that since *H_given_E* is defined only on singletons and the mass allocated to $\Theta$ is zero. Hence $bel(\cdot) = P(\cdot) = Pl(\cdot)$, as shown by the following table.
+Note that *H_given_E* is defined only on singletons and the mass allocated to $\Theta$ is zero. Hence $bel(\cdot) = P(\cdot) = Pl(\cdot)$, as shown by the following table.
 
  
 ```{r H_Event Dempster_rule3,  echo = FALSE, warning=FALSE}
