@@ -49,7 +49,7 @@ belplau1
 
 In the language of bett
 
-Notice since both belief and basic mass assignment take the same values as both are defined via the summation operation. No belief on any suspect more specific than the entire group, can solemnly justify the entire crime scene. The second chance assignment assigns 0.6 to $\{\text{Peter}, \text{John}\}$ and 0.4 to $\Theta$ following the same logic as the first basic chance assignment. Its basic chance assignment object can be created likewise.
+Notice since both belief and basic mass assignment take the same values as both are defined via the summation operation. No belief on any suspect more specific than the entire group, can solemnly justify the entire crime scene. The second chance assignment assigns 0.6 to $\{\text{John}, \text{Mary}\}$ and 0.4 to $\Theta$ following the same logic as the first basic chance assignment. Its basic chance assignment object can be created likewise.
 
 ```{r}
 bpa2 <- bca(matrix(c(0,1,1,1,1,1), nrow = 2, byrow = TRUE), c(0.6, 0.4), cnames=c("Peter", "John", "Mary"))
@@ -98,7 +98,7 @@ Of the three suspects, we see from our table of results that John has the highes
 
 ## Combination with commonlality functions
 
-Alternatively, we can perform combination with commonality functions. After combination, we perform convert commonality functions directly to belief and plausibility. 
+Alternatively, we can perform combination with commonality functions. After combination, we convert commonality functions directly to belief and plausibility. 
 
 ```{r}
 bpa3<-dsrwonLogsumexp(bpa1, bpa2, use_qq = TRUE)
