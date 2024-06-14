@@ -1,7 +1,7 @@
-#' Construct a mass vector from qq function.
+#' Construct a mass vector from qq function and ttmatrix of focal elements recursively.
 #' 
 #' @param qq Commonality function
-#' @param tt logical description matrix from ttmatrixFromQQ
+#' @param tt logical description matrix of focal elements from ttmatrixFromTT
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
 #' @export
@@ -11,7 +11,7 @@
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames)
 #' mFromQQ(x$qq, x$tt)
-mFromQQ <- function(qq, tt) {
+mFromQQRecursive <- function(qq, tt) {
   # Obtain tt matrix from commonality function
   #
   # Checks
@@ -25,13 +25,19 @@ mFromQQ <- function(qq, tt) {
     stop("Input tt must be a matrix")
   }
   
-  m <- vector()
+  # Calculate cardinality for each row of tt
+  n <- rowSums(tt)
   
+  # Calculate commonality function for each row of tt
+  q <- rep(0,nrow(tt))
   for (i in 1:nrow(tt)) {
-    m0 <- mobiusInvHQQ(qq,tt[i,])
-    if (m0 > 0) {
-      m <- c(m, m0)
-    }
+    q[i] <- qq(tt[i,])
+  }
+  
+  # Calculate mass function
+  m <- rep(0,nrow(tt))
+  for (i in nrow(tt):1) {
+    m[i] <- q[i] + sum((-1) ** (n[n > n[i]] - n[i]) * q[n > n[i]])
   }
   
   return(m)
