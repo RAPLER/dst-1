@@ -8,6 +8,6 @@ test_that("ttmatrixFromTT", {
                        byrow = TRUE), m = c(0.6, 0.4),  
            cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
   z <- dsrwon(x,y)
-  tt <- ttmatrixFromTT(list(x$tt,y$tt))
+  tt <- ttmatrixFromTT(list(x$tt,y$tt),c("a", "b", "c"))
   expect_equal(z$tt,tt)
 })

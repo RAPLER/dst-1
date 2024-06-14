@@ -4,10 +4,12 @@
 \alias{ttmatrixFromTT}
 \title{Construct a tt matrix of focal elements from a list of tt matrices}
 \usage{
-ttmatrixFromTT(TT)
+ttmatrixFromTT(TT, valuenames)
 }
 \arguments{
 \item{TT}{List of tt matrices}
+
+\item{valuenames}{Vector of valuenames}
 }
 \value{
 tt A corresponding logical description matrix of the focal elements
