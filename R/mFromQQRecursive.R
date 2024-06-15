@@ -41,7 +41,7 @@ mFromQQRecursive <- function(qq, tt) {
   m <- rep(0,nrow(tt))
   for (i in nrow(tt):1) {
     selected <- is_subset[i,]
-    m[i] <- q[i] + sum((-1) ** (n[selected] - n[i]) * q[selected])
+    m[i] <- sum((-1) ** (n[selected] - n[i]) * q[selected])
   }
   
   return(m)
