@@ -34,10 +34,14 @@ mFromQQRecursive <- function(qq, tt) {
     q[i] <- qq(tt[i,])
   }
   
+  # Calculate subset relation
+  is_subset <- dotprod(tt,t(tt),"&","<=")
+  
   # Calculate mass function
   m <- rep(0,nrow(tt))
   for (i in nrow(tt):1) {
-    m[i] <- q[i] + sum((-1) ** (n[n > n[i]] - n[i]) * q[n > n[i]])
+    selected <- is_subset[i,]
+    m[i] <- q[i] + sum((-1) ** (n[selected] - n[i]) * q[selected])
   }
   
   return(m)
