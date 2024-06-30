@@ -1,3 +1,7 @@
+# dst 1.7.1
+
+Removed the useless and problematic "load("data/..") command in the Captain's vignette. 
+
 # dst 1.7.0
 
 This version enables new option to compute combination with commonality functions and convert it back to mass, belplau objects used in earlier versions. 
