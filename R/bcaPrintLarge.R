@@ -21,7 +21,7 @@
 #'   \item table of basic and more comprehensive statistics of masses vs subsets
 #' }
 #' @author Peiyuan Zhu
-#' @importFrom dplyr mutate %>%  group_by   summarise
+#' @importFrom dplyr mutate %>%  group_by   summarise n
 #' @importFrom ggplot2 cut_width
 #' @importFrom tidyr unnest_wider
 #' @importFrom stats ftable 
