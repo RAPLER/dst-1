@@ -29,9 +29,11 @@
 #' @importFrom utils object.size
 #' @export
 #' @examples
-#' library(tidyverse)
+#'  if (requireNamespace("tidyverse", quietly = TRUE) ) { 
+#'  ## library(tidyverse)
 #' x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))
 #' bcaPrintLarge(x)
+#' }
 
 bcaPrintLarge <- function(x, info_list="all", num_top_mass=10, cut_width_size=10, cut_width_m=1e-5) {
   # Local variables: conf, labs, n, a, size, m, df, df_by_size, df_by_m
