@@ -28,4 +28,4 @@ Suggests:
     rmarkdown,
     tidyverse,
     testthat
-VignetteBuilder: knitr
+VignetteBuilder: knitr, rmarkdown
