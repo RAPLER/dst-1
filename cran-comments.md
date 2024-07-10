@@ -6,7 +6,7 @@ output: github_document
 ## Test environments
 * local  macOS-arm64 Sonoma 14.4.1
 * system   aarch64, darwin20
-* R install:R version 4.3.2: OK 
+* R install:R version 4.4.1: OK 
 * R CMD check results
 0 errors | 0 warnings | 0 notes 
 
