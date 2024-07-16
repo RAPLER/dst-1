@@ -17,11 +17,11 @@ belplauEval(
 
 \item{true_order}{a binary vector representing the truth. 1 means relevant and 0 means not relevant.}
 
-\item{var}{="rplau" variable name of the belplau object to be used as ordering.}
+\item{var}{="rplau" column name of the belplau matrix to be used as ordering.}
 
 \item{err}{="first kind" kind of error to be evaluated. Can also take value "second kind" or "total".}
 
-\item{is_belplau=TRUE}{whether bel_plau is indeed a belplau object or just a numerical vector quantifying order of importance of elements.}
+\item{is_belplau=TRUE}{whether bel_plau is indeed a belplau matrix or just a numerical vector quantifying order of importance of elements.}
 }
 \value{
 A number of first, second kind, or total error.
