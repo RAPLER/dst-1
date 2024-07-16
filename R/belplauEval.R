@@ -1,16 +1,18 @@
 #' Evaluate type I, II errors
 #' 
-#' Calculate first kind, second kind, total error by comparing two vectors. One vector represents the truth and the other represents a numerical quantity of importance. 
-#' Error of the first kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
-#' Error of the second kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
-#' Total error: the sum of error of the first kind and the error of the second kind
+#' Calculate error of the first kind, error of the second kind, and total error by comparing two vectors. One vector represents the truth and the other represents a numerical quantity of importance. The definition of the three types of errors is as follows:
+#' \itemize{
+#'  \item Error of the first kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
+#'  \item Error of the second kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
+#'  \item Total error: the sum of error of the first kind and the error of the second kind
+#' }
 #' 
-#' @param bel_plau belplau object or a vector whose ordering is compared
-#' @param true_order a vector representing the true ordering
-#' @param var ="rplau" variable name of the belplau to be used as ordering
-#' @param err ="first kind" type of error to be evaluated
-#' @param is_belplau =TRUE whether bel_plau is a belplau object or just a numerical vector
-#' @return first kind, second kind, or total error
+#' @param bel_plau belplau matrix or a numerical vector quantifying order of importance of the elements of the frame.
+#' @param true_order a binary vector representing the truth. 1 means relevant and 0 means not relevant.
+#' @param var ="rplau" variable name of the belplau object to be used as ordering.
+#' @param err ="first kind" kind of error to be evaluated. Can also take value "second kind" or "total".
+#' @param is_belplau=TRUE whether bel_plau is indeed a belplau object or just a numerical vector quantifying order of importance of elements.
+#' @return A number of first, second kind, or total error.
 #' @author Peiyuan Zhu
 #' @export
 #' @examples 
