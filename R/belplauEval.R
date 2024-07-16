@@ -1,11 +1,16 @@
 #' Evaluate type I, II errors
 #' 
+#' Calculate first kind, second kind, total error by comparing two vectors. One vector represents the truth and the other represents a numerical quantity of importance. 
+#' Error of the first kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
+#' Error of the second kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
+#' Total error: the sum of error of the first kind and the error of the second kind
+#' 
 #' @param bel_plau belplau object or a vector whose ordering is compared
 #' @param true_order a vector representing the true ordering
 #' @param var ="rplau" variable name of the belplau to be used as ordering
-#' @param err ="type I" type of error to be evaluated
-#' @param is_belplau =TRUE whether bel_plau is a belplau object
-#' @return Type I, II, III error by comparing two orderings
+#' @param err ="first kind" type of error to be evaluated
+#' @param is_belplau =TRUE whether bel_plau is a belplau object or just a numerical vector
+#' @return first kind, second kind, or total error
 #' @author Peiyuan Zhu
 #' @export
 #' @examples 
@@ -19,27 +24,24 @@
 #' xy <- nzdsr(dsrwon(x,y))
 #' z<-belplau(xy,h=ttmatrixPartition(xy$infovar[2],xy$infovar[2]))
 #' belplauEval(z,c(0,1,0))
-belplauEval<-function(bel_plau,true_order,var="rplau",err="type I",is_belplau=TRUE) {
+belplauEval<-function(bel_plau,true_order,var="rplau",err="first kind",is_belplau=TRUE) {
+  if (is_belplau) observed_order<-bel_plau[,var] else observed_order<-bel_plau
+  order_observed <- outer(observed_order,observed_order,">")
+  order_true <- outer(true_order,true_order,">")
+  validated <- order_observed-order_true
+  validated <- validated[true_order>0,true_order==0]
+  # In this matrix:
   # 1 means rplau > but actually <=
   # 0 means both > or both <
   # -1 means rplau < but actually >=
-  if (is_belplau) observed_order<-bel_plau[,var] else observed_order<-bel_plau
-  order_observed<-outer(observed_order,observed_order,">")
-  order_true<-outer(true_order,true_order,">")
-  validated<-order_observed-order_true
-  if (err=="type I") {
-    type_i<-validated[true_order>0,true_order==0]
-    type_i_v<-as.vector(type_i)
-    type_i_err<-1-sum(type_i_v==0)/length(type_i_v)
-    return(type_i_err)
-  } else if (err=="type II") {
-    type_ii<-validated[true_order==0,true_order>0]
-    type_ii_v<-as.vector(type_ii)
-    type_ii_err<-1-sum(type_ii_v==0)/length(type_ii_v)
-    return(type_ii_err)
-  } else if (err=="type III") {
-    type_iii_v<-as.vector(order_true)
-    type_iii_err<-1-sum(type_iii_v==0)/length(type_iii_v)
-    return(type_iii_err)
-  } else stop("err can only be either type I, II, or III")
+  err_i <- sum(validated==-1) / (sum(true_order>0) * sum(true_order==0))
+  err_ii <- sum(validated==1) / (sum(true_order>0) * sum(true_order==0))
+  total_err <- err_i + err_ii
+  if (err=="first kind") {
+    return(err_i)
+  } else if (err=="second kind") {
+    return(err_ii)
+  } else if (err=="total") {
+    return(total_err)
+  } else stop("err can only be either first kind, second kind, or total")
 }

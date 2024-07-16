@@ -8,7 +8,7 @@ belplauEval(
   bel_plau,
   true_order,
   var = "rplau",
-  err = "type I",
+  err = "first kind",
   is_belplau = TRUE
 )
 }
@@ -19,15 +19,18 @@ belplauEval(
 
 \item{var}{="rplau" variable name of the belplau to be used as ordering}
 
-\item{err}{="type I" type of error to be evaluated}
+\item{err}{="first kind" type of error to be evaluated}
 
-\item{is_belplau}{=TRUE whether bel_plau is a belplau object}
+\item{is_belplau}{=TRUE whether bel_plau is a belplau object or just a numerical vector}
 }
 \value{
-Type I, II, III error by comparing two orderings
+first kind, second kind, or total error
 }
 \description{
-Evaluate type I, II errors
+Calculate first kind, second kind, total error by comparing two vectors. One vector represents the truth and the other represents a numerical quantity of importance. 
+Error of the first kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
+Error of the second kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
+Total error: the sum of error of the first kind and the error of the second kind
 }
 \examples{
 x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
