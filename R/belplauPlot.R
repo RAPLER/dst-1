@@ -3,7 +3,7 @@
 #' @param belplau_mat Belplau matrix e.g. belplau(bpa) or a numerical vector quantifying order of importance of the elements of the frame
 #' @param xlab X-axis labels e.g. c("1:34","35:68","69:101")
 #' @param color Color of xlab e.g. c(0,1,0)
-#' @param y = "rplau": column name of belplau matrix
+#' @param y = "rplau": column name of belplau matrix. Ignore if it's not belplau matrix.
 #' @param x = "index": x-axis name
 #' @param levels = NULL: levels of color in order
 #' @param main_title = "": main title
