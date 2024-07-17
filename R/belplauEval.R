@@ -36,8 +36,8 @@ belplauEval<-function(belplau_mat,true_order,var="rplau",err="first kind",is_bel
   # 1 means rplau > but actually <=
   # 0 means both > or both <
   # -1 means rplau < but actually >=
-  err_i <- sum(validated==-1) / (sum(true_order>0) * sum(true_order==0))
-  err_ii <- sum(validated==1) / (sum(true_order>0) * sum(true_order==0))
+  err_i <- sum(validated==-1) / length(validated)
+  err_ii <- sum(validated==1) / length(validated)
   total_err <- err_i + err_ii
   if (err=="first kind") {
     return(err_i)
