@@ -2,8 +2,8 @@
 #' 
 #' Calculate error of the first kind, error of the second kind, and total error by comparing two vectors. One vector represents the truth and the other represents a numerical quantity of importance. The definition of the three types of errors is as follows:
 #' \itemize{
-#'  \item Error of the first kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
-#'  \item Error of the second kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
+#'  \item Error of the first kind: out of all the comparisons between two elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
+#'  \item Error of the second kind: out of all the comparisons between two elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
 #'  \item Total error: the sum of error of the first kind and the error of the second kind
 #' }
 #' 
@@ -31,7 +31,6 @@ belplauEval<-function(belplau_mat,true_order,var="rplau",err="first kind",is_bel
   order_observed <- outer(observed_order,observed_order,">")
   order_true <- outer(true_order,true_order,">")
   validated <- order_observed-order_true
-  validated <- validated[true_order>0,true_order==0]
   # In this matrix:
   # 1 means rplau > but actually <=
   # 0 means both > or both <
