@@ -1,18 +1,18 @@
 #' Evaluate type I, II errors
 #' 
-#' Calculate error of the first kind, error of the second kind, and total error by comparing two vectors. One vector represents the truth and the other represents a numerical quantity of importance. The definition of the three types of errors is as follows:
+#' Calculate error A, B, and total error A+B by comparing two vectors as defined below. One vector represents the truth and the other represents a numerical quantity of importance.
 #' \itemize{
-#'  \item Error of the first kind: out of all the comparisons between two elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
-#'  \item Error of the second kind: out of all the comparisons between two elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
-#'  \item Total error: the sum of error of the first kind and the error of the second kind
+#'  \item Error A: out of all the comparisons between two elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
+#'  \item Error B: out of all the comparisons between two elements, what proportion of errors are due to indicating a relevant element as less important than an irrelevant element
+#'  \item Total error A+B: the sum of quantity A and quantity B
 #' }
 #' 
 #' @param belplau_mat belplau matrix e.g. belplau(bca) or a numerical vector quantifying order of importance of the elements of the frame.
 #' @param true_order a binary vector representing the truth. 1 means relevant and 0 means not relevant.
 #' @param var = "rplau" column name of the belplau matrix to be used as ordering.
-#' @param err = "first kind" kind of error to be evaluated. Can also take value "second kind" or "total".
+#' @param err = "A" kind of error to be evaluated. Can also take value "B" or "A+B".
 #' @param is_belplau = TRUE whether bel_plau is indeed a belplau matrix or just a numerical vector quantifying order of importance of elements.
-#' @return A number of first, second kind, or total error.
+#' @return A number in \eqn{[0,1]} of error A, B, or total error A+B.
 #' @author Peiyuan Zhu
 #' @export
 #' @examples 
@@ -26,7 +26,7 @@
 #' xy <- nzdsr(dsrwon(x,y))
 #' z<-belplau(xy,h=ttmatrixPartition(xy$infovar[2],xy$infovar[2]))
 #' belplauEval(z,c(0,1,0))
-belplauEval<-function(belplau_mat,true_order,var="rplau",err="first kind",is_belplau=TRUE) {
+belplauEval<-function(belplau_mat,true_order,var="rplau",err="A",is_belplau=TRUE) {
   if (is_belplau) observed_order<-belplau_mat[,var] else observed_order<-belplau_mat
   order_observed <- outer(observed_order,observed_order,">")
   order_true <- outer(true_order,true_order,">")
@@ -38,11 +38,11 @@ belplauEval<-function(belplau_mat,true_order,var="rplau",err="first kind",is_bel
   err_i <- sum(validated==-1) / length(validated)
   err_ii <- sum(validated==1) / length(validated)
   total_err <- err_i + err_ii
-  if (err=="first kind") {
+  if (err=="A") {
     return(err_i)
-  } else if (err=="second kind") {
+  } else if (err=="B") {
     return(err_ii)
-  } else if (err=="total") {
+  } else if (err=="A+B") {
     return(total_err)
-  } else stop("err can only be either first kind, second kind, or total")
+  } else stop("err can only be either A, B, or A+B")
 }

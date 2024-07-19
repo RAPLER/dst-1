@@ -2,6 +2,10 @@
 
 Removed the useless and problematic "load("data/..") command in the Captain's vignette. 
 
+* Function belplauEval: Fix bugs
+
+* New function composition: Compute composition of two relations
+
 # dst 1.7.0
 
 This version enables new option to compute combination with commonality functions and convert it back to mass, belplau objects used in earlier versions. 

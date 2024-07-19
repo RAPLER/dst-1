@@ -19,30 +19,30 @@ belplauPlot(
 )
 }
 \arguments{
-\item{belplau_mat}{Belplau matrix e.g. belplau(bpa)}
+\item{belplau_mat}{Belplau matrix e.g. belplau(bpa) or a numerical vector quantifying order of importance of the elements of the frame}
 
 \item{xlab}{X-axis labels e.g. c("1:34","35:68","69:101")}
 
 \item{color}{Color of xlab e.g. c(0,1,0)}
 
-\item{y}{="rplau": column name of belplau matrix}
+\item{y}{= "rplau": column name of belplau matrix. Ignore if it's not belplau matrix.}
 
-\item{x}{="index":TO BE DOCUMENTED}
+\item{x}{= "index": x-axis name}
 
-\item{levels}{=NULL: levels of color in order}
+\item{levels}{= NULL: levels of color in order}
 
-\item{legend_title}{="": title of legend}
+\item{legend_title}{= "": title of legend}
 
-\item{main_title}{="": main title}
+\item{main_title}{= "": main title}
 
-\item{is_log_scale}{=TRUE Whether to use log-scale}
+\item{is_log_scale}{= TRUE Whether to use log-scale}
 
-\item{is_negative}{=TRUE Whether to multiple by -1}
+\item{is_negative}{= TRUE Whether to multiple by -1}
 
-\item{is_factor}{=FALSE Whether to plot all x labels}
+\item{is_factor}{= FALSE Whether to plot all x labels}
 }
 \value{
-a plot of belplau matrix
+a plot of a column of the belplau matrix or a numerical vector quantifying order of importance of the elements of the frame
 }
 \description{
 Plot belplau matrix

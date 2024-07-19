@@ -5,33 +5,33 @@
 \title{Evaluate type I, II errors}
 \usage{
 belplauEval(
-  bel_plau,
+  belplau_mat,
   true_order,
   var = "rplau",
-  err = "first kind",
+  err = "A",
   is_belplau = TRUE
 )
 }
 \arguments{
-\item{bel_plau}{belplau matrix or a numerical vector quantifying order of importance of the elements of the frame.}
+\item{belplau_mat}{belplau matrix e.g. belplau(bca) or a numerical vector quantifying order of importance of the elements of the frame.}
 
 \item{true_order}{a binary vector representing the truth. 1 means relevant and 0 means not relevant.}
 
-\item{var}{="rplau" column name of the belplau matrix to be used as ordering.}
+\item{var}{= "rplau" column name of the belplau matrix to be used as ordering.}
 
-\item{err}{="first kind" kind of error to be evaluated. Can also take value "second kind" or "total".}
+\item{err}{= "A" kind of error to be evaluated. Can also take value "B" or "A+B".}
 
-\item{is_belplau=TRUE}{whether bel_plau is indeed a belplau matrix or just a numerical vector quantifying order of importance of elements.}
+\item{is_belplau}{= TRUE whether bel_plau is indeed a belplau matrix or just a numerical vector quantifying order of importance of elements.}
 }
 \value{
-A number of first, second kind, or total error.
+A number in \eqn{[0,1]} of error A, B, or total error A+B.
 }
 \description{
-Calculate error of the first kind, error of the second kind, and total error by comparing two vectors. One vector represents the truth and the other represents a numerical quantity of importance. The definition of the three types of errors is as follows:
+Calculate error A, B, and total error A+B by comparing two vectors as defined below. One vector represents the truth and the other represents a numerical quantity of importance.
 \itemize{
- \item Error of the first kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
- \item Error of the second kind: out of all the comparisons between relevant and irrelevant elements, what proportion of errors are due to indicating an relevant element as less important than an irrelevant element
- \item Total error: the sum of error of the first kind and the error of the second kind
+ \item Error A: out of all the comparisons between two elements, what proportion of errors are due to indicating an irrelevant element as more important than a relevant element
+ \item Error B: out of all the comparisons between two elements, what proportion of errors are due to indicating a relevant element as less important than an irrelevant element
+ \item Total error A+B: the sum of quantity A and quantity B
 }
 }
 \examples{
