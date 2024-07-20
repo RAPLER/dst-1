@@ -2,7 +2,7 @@
 % Please edit documentation in R/belplauEval.R
 \name{belplauEval}
 \alias{belplauEval}
-\title{Evaluate type I, II errors}
+\title{Evaluate A, B errors}
 \usage{
 belplauEval(
   belplau_mat,

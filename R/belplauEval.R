@@ -1,4 +1,4 @@
-#' Evaluate type I, II errors
+#' Evaluate A, B errors
 #' 
 #' Calculate error A, B, and total error A+B by comparing two vectors as defined below. One vector represents the truth and the other represents a numerical quantity of importance.
 #' \itemize{
