@@ -1,4 +1,4 @@
-# dst 1.7.1
+# dst 1.8.0
 
 Removed the useless and problematic "load("data/..") command in the Captain's vignette. 
 

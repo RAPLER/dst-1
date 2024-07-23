@@ -19,7 +19,7 @@ Calculate Schöder's composition of two relations
 }
 \examples{
 R1 <- matrix(c(1,1,0,0,1,1,0,0,1), nrow=3, byrow = TRUE)
-composition(R1,R2)
+composition(R1,R1)
 }
 \author{
 Peiyuan Zhu
