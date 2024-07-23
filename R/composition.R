@@ -11,6 +11,12 @@
 #' R1 <- matrix(c(1,1,0,0,1,1,0,0,1), nrow=3, byrow = TRUE)
 #' composition(R1,R1)
 composition<-function(R,S){
+  if (!is.matrix(R) || !is.matrix(S)) {
+    stop("R, S must be of type matrix")
+  }
+  if (!all(R %in% c(0,1)) || !all(S %in% c(0,1))) {
+    stop("R, S must be binary")
+  }
   J<-dotprod(R,S,max,min)
   return(J)
 }
