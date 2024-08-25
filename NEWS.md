@@ -1,10 +1,8 @@
-# dst 1.8.0
+# dst 1.7.1
 
 Removed the useless and problematic "load("data/..") command in the Captain's vignette. 
 
 * Function belplauEval: Fix bugs
-
-* New function composition: Compute composition of two relations
 
 # dst 1.7.0
 
