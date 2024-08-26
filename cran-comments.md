@@ -2,6 +2,10 @@
 title: "cran-comments"
 output: github_document
 ---
+## Resubmission
+This is a resubmission. In this version I have:
+
+* Updated the Authors@R field of the description file 
 
 ## Test environments
 * local  macOS-arm64 Sonoma 14.4.1

@@ -4,15 +4,15 @@ Title: Using the Theory of Belief Functions
 Encoding: UTF-8
 Version: 1.7.1
 Date: 2024-08-24
-Author: Claude Boivin <webapp.cb@gmail.com> Peiyuan Zhu <garyzhubc@gmail.com>
-Authors@R: c(person(given = "Claude",
-                      family = "Boivin",
-                      role = c("aut"),
-                      email = "webapp.cb@gmail.com"),
-               person(given = "Peiyuan",
+Author: Peiyuan Zhu <garyzhubc@gmail.com> Claude Boivin <webapp.cb@gmail.com>
+Authors@R: c(person(given = "Peiyuan",
                       family = "Zhu",
                       role = c("aut","cre"),
-                      email = "garyzhubc@gmail.com"))
+                      email = "garyzhubc@gmail.com"),
+             person(given = "Claude",
+                      family = "Boivin",
+                      role = c("aut"),
+                      email = "webapp.cb@gmail.com"))
 Maintainer: Peiyuan Zhu <garyzhubc@gmail.com>
 Description: Using the Theory of Belief Functions for evidence calculus. Basic probability assignments, or mass functions, can be defined on the subsets of a set of possible values and combined. A mass function can be extended to a larger frame. Marginalization, i.e. reduction to a smaller frame can also be done. These features can be combined to analyze small belief networks and take into account situations where information cannot be satisfactorily described by probability distributions.
 License: GPL (>= 2)
