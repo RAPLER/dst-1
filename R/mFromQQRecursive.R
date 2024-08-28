@@ -25,23 +25,28 @@ mFromQQRecursive <- function(qq, tt) {
     stop("Input tt must be a matrix")
   }
   
-  # Calculate cardinality for each row of tt
-  n <- rowSums(tt)
-  
-  # Calculate commonality function for each row of tt
-  q <- rep(0,nrow(tt))
-  for (i in 1:nrow(tt)) {
-    q[i] <- qq(tt[i,])
+  # Fast Mobius Transform
+  m_seq <- rep(0, 2**ncol(tt))
+  for (j in 1:2**ncol(tt)) {
+    z <- encode(rep(2, ncol(tt)), j - 1)
+    m_seq[j] <- qq(z)
   }
   
-  # Calculate subset relation
-  is_subset <- dotprod(tt,t(tt),"&","<=")
+  for (i in 1:ncol(tt)) {
+    x <- encode(rep(2, ncol(tt)), i - 1)
+    for (j in 1:2**ncol(tt)) {
+      y <- encode(rep(2, ncol(tt)), j - 1)
+      if (!all(pmax(x,y)==x)) {
+        m_seq[j] <- m_seq[j] + qq(y)
+      }
+    }
+  }
   
   # Calculate mass function
   m <- rep(0,nrow(tt))
-  for (i in nrow(tt):1) {
-    selected <- is_subset[i,]
-    m[i] <- sum((-1) ** (n[selected] - n[i]) * q[selected])
+  for (i in 1:nrow(tt)) {
+    w <- decode(rep(2, ncol(tt)),tt[i,])
+    m[i] <- m_seq[w]
   }
   
   return(m)

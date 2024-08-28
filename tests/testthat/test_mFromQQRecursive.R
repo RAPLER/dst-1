@@ -13,5 +13,6 @@ test_that("mFromQQ", {
   # expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))),
   # mFromQQRecursive(w$qq,ttmatrixFromTT(list(x$tt,y$tt))))
   # test combination
-  expect_equal(z$spec[,2],mFromQQRecursive(w$qq,ttmatrixFromTT(list(x$tt,y$tt), unlist(w$valuenames))))
+  w$tt<-ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))
+  expect_equal(z$spec[,2],mFromQQRecursive(w$qq,w$tt))
 })
