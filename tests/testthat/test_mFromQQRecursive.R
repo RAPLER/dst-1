@@ -10,8 +10,8 @@ test_that("mFromQQ", {
   z <- dsrwon(x,y)
   w <- dsrwon(x,y,use_qq = TRUE)
   # test mFromQQ and mFromQQRecursive gives the same result
-  # expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))),
-  # mFromQQRecursive(w$qq,ttmatrixFromTT(list(x$tt,y$tt))))
+  expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))),
+               mFromQQRecursive(w$qq,w$tt))
   # test combination
   w$tt<-ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))
   expect_equal(z$spec[,2],mFromQQRecursive(w$qq,w$tt))

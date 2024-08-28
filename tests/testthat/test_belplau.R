@@ -24,4 +24,16 @@ test_that("belplau", {
   x5 <- bca(matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), c(0.8, 0.2), c(1,2,3))
   result <- belplau(x5, h=matrix(c(1,1,0,1,1,1), nrow=2, byrow = TRUE))
   expect_equal(unname(x5$spec[1,1]), unname(result[2,1]))
+  ## T6 test Fast Zeta Transform
+  x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+                       byrow = TRUE), m = c(0.2,0.5, 0.3), 
+           cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
+  y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+                       byrow = TRUE), m = c(0.6, 0.4),  
+           cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
+  z <- dsrwon(x,y)
+  expect_equal(belplau(nzdsr(z))["a",], belplau(nzdsr(z), fzt=TRUE)["a",])
+  expect_equal(belplau(nzdsr(z))["b + c",], belplau(nzdsr(z), fzt=TRUE)["b + c",])
+  expect_equal(belplau(nzdsr(z))["a + b",], belplau(nzdsr(z), fzt=TRUE)["a + b",])
+  expect_equal(belplau(nzdsr(z))["frame",], belplau(nzdsr(z), fzt=TRUE)["frame",])
 })

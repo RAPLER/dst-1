@@ -37,7 +37,7 @@ mFromQQRecursive <- function(qq, tt) {
     for (j in 1:2**ncol(tt)) {
       y <- encode(rep(2, ncol(tt)), j - 1)
       if (!all(pmax(x,y)==x)) {
-        m_seq[j] <- m_seq[j] + qq(y)
+        m_seq[j] <- m_seq[j] + (sum(y)-sum(x)) * qq(y)
       }
     }
   }
