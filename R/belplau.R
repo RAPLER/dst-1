@@ -106,11 +106,9 @@ belplau<-function (x, remove = FALSE, h = NULL, fzt = FALSE) {
   if(fzt == TRUE) {
     
     bel <- rep(0, 2**ncol(W2))
-    bel0 <- rep(0, 2**ncol(W2))
     for (i in 1:nrow(W2)) {
       w <- decode(rep(2, ncol(W2)), W2[i,])
       bel[w + 1] <- MACC[i]
-      bel0[w + 1] <- MACC[i]
     }
 
     for (i in 1:ncol(W2)) {
@@ -121,7 +119,7 @@ belplau<-function (x, remove = FALSE, h = NULL, fzt = FALSE) {
         z <- pmax(xx,y)
         w <- decode(rep(2, ncol(W2)), z)
         if (!all(z==y)) {
-          bel[w + 1] <- bel0[j] + bel[w + 1]
+          bel[w + 1] <- bel[j] + bel[w + 1]
         }
       }
     }

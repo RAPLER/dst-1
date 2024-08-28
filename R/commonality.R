@@ -27,19 +27,17 @@ commonality <- function(tt,m,fzt=FALSE){
   } else {
     # Fast Zeta Transform
     m_seq <- rep(0, 2**ncol(tt))
-    m_seq0 <- rep(0, 2**ncol(tt))
     for (i in 1:nrow(tt)) {
       w <- decode(rep(2, ncol(tt)), tt[i,])
       m_seq[w + 1] <- m[i]
-      m_seq0[w + 1] <- m[i]
     }
 
     for (i in 1:ncol(tt)) {
-      x <- rep(0,ncol(tt))
-      x[i] <- 1
+      x <- rep(1,ncol(tt))
+      x[i] <- 0
       for (j in 1:2**ncol(tt)) {
         y <- encode(rep(2, ncol(tt)), j - 1)
-        z <- pmax(x,y)
+        z <- pmin(x,y)
         w <- decode(rep(2, ncol(tt)), z)
         if (!all(z==y)) {
           m_seq[w + 1] <- m_seq[j] + m_seq[w + 1]
