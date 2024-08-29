@@ -136,8 +136,8 @@ belplau<-function (x, remove = FALSE, h = NULL, fzt = FALSE) {
     unc <- plau - bel
     resul <- cbind(bel,disbel,unc,plau,rplau)
     
-    ltt <- lapply(X=0:7, FUN = function(X) {encode(rep(2,3), X)})
-    tt_abc <- matrix(unlist(ltt), ncol=3, byrow = TRUE)
+    ltt <- lapply(X=0:(2**ncol(W2)-1), FUN = function(X) {encode(rep(2,ncol(W2)), X)})
+    tt_abc <- matrix(unlist(ltt), ncol=ncol(W2), byrow = TRUE)
     colnames(tt_abc) <- unlist(x$valuenames)
     
     rownames(resul) <- nameRows(tt_abc)

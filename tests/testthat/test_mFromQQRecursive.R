@@ -10,9 +10,18 @@ test_that("mFromQQ", {
   z <- dsrwon(x,y)
   w <- dsrwon(x,y,use_qq = TRUE)
   # test mFromQQ and mFromQQRecursive gives the same result
-  expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))),
-               mFromQQRecursive(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))))
+  expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames)))[1],
+               mFromQQRecursive(w$qq,3)[3])
+  expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames)))[2],
+               mFromQQRecursive(w$qq,3)[4])
+  expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames)))[3],
+               mFromQQRecursive(w$qq,3)[7])
+  expect_equal(mFromQQ(w$qq,ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames)))[4],
+               mFromQQRecursive(w$qq,3)[8])
   # test combination
   w$tt<-ttmatrixFromQQ(w$qq,as.integer(w$infovar[1,2]),unlist(w$valuenames))
-  expect_equal(z$spec[,2],mFromQQRecursive(w$qq,w$tt))
+  expect_equal(z$spec[,2][1],mFromQQRecursive(w$qq,3)[3])
+  expect_equal(z$spec[,2][2],mFromQQRecursive(w$qq,3)[7])
+  expect_equal(z$spec[,2][3],mFromQQRecursive(w$qq,3)[4])
+  expect_equal(z$spec[,2][4],mFromQQRecursive(w$qq,3)[8])
 })
