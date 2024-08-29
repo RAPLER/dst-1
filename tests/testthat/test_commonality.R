@@ -20,4 +20,14 @@ test_that("commonality", {
   expect_equal(q(c(1,0,1)),w$qq(c(1,0,1)))
   expect_equal(q(c(0,1,1)),w$qq(c(0,1,1)))
   expect_equal(q(c(1,1,1)),w$qq(c(1,1,1)))
+  
+  # with Fast Zeta Transform
+  q <- commonality(z$tt,z$spec[,2],fzt=TRUE)
+  expect_equal(q(c(1,0,0)),w$qq(c(1,0,0)))
+  expect_equal(q(c(0,1,0)),w$qq(c(0,1,0)))
+  expect_equal(q(c(0,0,1)),w$qq(c(0,0,1)))
+  expect_equal(q(c(1,1,0)),w$qq(c(1,1,0)))
+  expect_equal(q(c(1,0,1)),w$qq(c(1,0,1)))
+  expect_equal(q(c(0,1,1)),w$qq(c(0,1,1)))
+  expect_equal(q(c(1,1,1)),w$qq(c(1,1,1)))
 })

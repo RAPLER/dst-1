@@ -26,13 +26,12 @@ mFromQQ <- function(qq, tt) {
   }
   
   m <- vector()
-  i <- 0
+  
   for (i in 1:nrow(tt)) {
     m0 <- mobiusInvHQQ(qq,tt[i,])
     if (m0 > 0) {
       m <- c(m, m0)
     }
-    i <- i + 1
   }
   
   return(m)

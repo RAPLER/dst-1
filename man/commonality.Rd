@@ -4,12 +4,14 @@
 \alias{commonality}
 \title{Compute qq from tt}
 \usage{
-commonality(tt, m)
+commonality(tt, m, fzt = FALSE)
 }
 \arguments{
 \item{tt}{Mass assignment set matrix}
 
 \item{m}{Mass assignment}
+
+\item{fzt=FALSE}{Whether to use Fast Zeta Transform}
 }
 \value{
 f Commonality function
