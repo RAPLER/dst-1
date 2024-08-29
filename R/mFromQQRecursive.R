@@ -27,17 +27,20 @@ mFromQQRecursive <- function(qq, tt) {
   
   # Fast Mobius Transform
   m_seq <- rep(0, 2**ncol(tt))
-  for (j in 1:2**ncol(tt)) {
-    z <- encode(rep(2, ncol(tt)), j - 1)
-    m_seq[j] <- qq(z)
+  for (i in 1:nrow(tt)) {
+    w <- encode(rep(2, ncol(tt)), i)
+    m_seq[i] <- qq(w)
   }
   
   for (i in 1:ncol(tt)) {
-    x <- encode(rep(2, ncol(tt)), i - 1)
+    x <- rep(1,ncol(tt))
+    x[i] <- 0
     for (j in 1:2**ncol(tt)) {
       y <- encode(rep(2, ncol(tt)), j - 1)
-      if (!all(pmax(x,y)==x)) {
-        m_seq[j] <- m_seq[j] + (sum(y)-sum(x)) * qq(y)
+      z <- pmin(x,y)
+      w <- decode(rep(2, ncol(tt)), z)
+      if (!all(z==y)) {
+        m_seq[w + 1] <- m_seq[w + 1] - m_seq[j]
       }
     }
   }
