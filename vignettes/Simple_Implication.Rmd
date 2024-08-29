@@ -83,4 +83,3 @@ DSA <- belplau(uporj_DSM1_xDSC_DSM2_dproj)
 DSA
 ```
 
-Now, we can use commonality functions. 

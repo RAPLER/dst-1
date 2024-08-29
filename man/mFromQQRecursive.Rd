@@ -4,10 +4,12 @@
 \alias{mFromQQRecursive}
 \title{Construct a mass vector from qq function and ttmatrix of focal elements recursively.}
 \usage{
-mFromQQRecursive(qq)
+mFromQQRecursive(qq, n)
 }
 \arguments{
 \item{qq}{Commonality function}
+
+\item{n}{Frame dimension}
 }
 \value{
 m A corresponding mass vector

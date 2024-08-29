@@ -9,6 +9,7 @@
 #' @param ssnames A list of subsets names which will be obtained from the column names of the tt matrix.
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
 #' @param qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
+#' @param fzt = FALSE Whether to use Fast Zeta Transform to construct commonality functions
 #' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
 #' @param idvar The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted. 
@@ -50,7 +51,7 @@
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt = NULL, m, qq = NULL, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
+bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
   # Local variables: ztable, zdup, zframe, znames
   # Functions calls: nameRows, DoSSnames
@@ -139,7 +140,7 @@ bca<-function(tt = NULL, m, qq = NULL, cnames = NULL, con = NULL, ssnames = NULL
     
     # 7.1 build qq
     if (is.null(qq) == TRUE ) {
-      qq <- commonality(tt,m)
+      qq <- commonality(tt,m,fzt)
     }
     
     #

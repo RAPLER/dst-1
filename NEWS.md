@@ -1,5 +1,13 @@
 # dst 1.7.1
 
+Intorudced Fast Zeta Transform to compute commonality functions and Fast Mobius Transform to compute 
+
+* New Function mFromQQRecursive: perform Fast Mobius Transform on commonality functions to get mass function
+
+* Function bca, dsrwon, belplau, commonality: add Fast Zeta Transform option
+
+# dst 1.7.1
+
 Removed the useless and problematic "load("data/..") command in the Captain's vignette. 
 
 * Function belplauEval: Fix bugs

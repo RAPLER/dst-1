@@ -2,7 +2,7 @@ Package: dst
 Type: Package
 Title: Using the Theory of Belief Functions 
 Encoding: UTF-8
-Version: 1.7.1
+Version: 1.8.0
 Date: 2024-08-24
 Authors@R: c(person(given = "Peiyuan",
                       family = "Zhu",
