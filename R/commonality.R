@@ -4,7 +4,7 @@
 #' 
 #' @param tt Mass assignment set matrix
 #' @param m Mass assignment
-#' @param fzt=FALSE Whether to use Fast Zeta Transform
+#' @param fzt = FALSE Whether to use Fast Zeta Transform
 #' @return f Commonality function
 #' @author Peiyuan Zhu
 #' @export
