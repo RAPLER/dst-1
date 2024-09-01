@@ -9,6 +9,7 @@
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.
 #' @param h = NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}
+#' @param fzt = FALSE: Whether to use Fast Zeta Transform
 #' @return A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
 #'  \item Column 1: the degree of Belief \code{bel};
 #'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
@@ -38,7 +39,7 @@
 #' belplau(xy1, remove = TRUE) 
 #' belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
 #' 
-belplauLogsumexp<-function (x, remove = FALSE, h = NULL) {
+belplauLogsumexp<-function (x, remove = FALSE, h = NULL, fzt = FALSE) {
   #
   # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC, W2)
   # Functions calls: belplauH, nameRows, ttmatrix
@@ -96,6 +97,49 @@ belplauLogsumexp<-function (x, remove = FALSE, h = NULL) {
     MACC<-MACC[INUL]
     W2 <- rbind(W2[INUL,])
   } 
+  #
+  # Use Fast Zeta Transform
+  #
+  if(fzt == TRUE) {
+    
+    bel <- rep(0, 2**ncol(W2))
+    for (i in 1:nrow(W2)) {
+      w <- decode(rep(2, ncol(W2)), W2[i,])
+      bel[w + 1] <- MACC[i]
+    }
+    
+    for (i in 1:ncol(W2)) {
+      xx <- rep(0,ncol(W2))
+      xx[i] <- 1
+      for (j in 1:2**ncol(W2)) {
+        y <- encode(rep(2, ncol(W2)), j - 1)
+        z <- pmax(xx,y)
+        w <- decode(rep(2, ncol(W2)), z)
+        if (!all(z==y)) {
+          bel[w + 1] <- bel[j] + bel[w + 1]
+        }
+      }
+    }
+    
+    disbel <- rep(0, 2**ncol(W2))
+    for (j in 1:2**ncol(W2)) {
+      y <- encode(rep(2, ncol(W2)), j - 1)
+      z <- decode(rep(2, ncol(W2)), 1 - y)
+      disbel[z + 1] <- bel[j]
+    }
+    
+    plau <- 1 - disbel
+    rplau <- plau / (1 - bel)
+    unc <- plau - bel
+    resul <- cbind(bel,disbel,unc,plau,rplau)
+    
+    ltt <- lapply(X=0:(2**ncol(W2)-1), FUN = function(X) {encode(rep(2,ncol(W2)), X)})
+    tt_abc <- matrix(unlist(ltt), ncol=ncol(W2), byrow = TRUE)
+    colnames(tt_abc) <- unlist(x$valuenames)
+    
+    rownames(resul) <- nameRows(tt_abc)
+    return(resul)
+  }
   #
   # 2.5 Check if there's hypothesis to be tested
   if (!is.null(h)) {
