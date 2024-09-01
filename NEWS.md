@@ -4,7 +4,7 @@ Intorudced Fast Zeta Transform to compute commonality functions and Fast Mobius 
 
 * New Function mFromQQRecursive: perform Fast Mobius Transform on commonality functions to get mass function
 
-* Function bca, dsrwon, belplau, commonality: add Fast Zeta Transform option
+* Function bca, dsrwon, dsrwonLogsumexp, belplau, belplauLogsumexp, commonality: add Fast Zeta Transform option
 
 # dst 1.7.1
 
