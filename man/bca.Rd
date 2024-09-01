@@ -10,6 +10,7 @@ bca(
   m,
   qq = NULL,
   fzt = FALSE,
+  include_all = FALSE,
   cnames = NULL,
   con = NULL,
   ssnames = NULL,
@@ -28,6 +29,8 @@ bca(
 \item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
 
 \item{fzt}{= FALSE Whether to use Fast Zeta Transform to construct commonality functions}
+
+\item{include_all}{= FALSE Put TRUE to include all elements with 0 mass in the bca.}
 
 \item{cnames}{A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
 
@@ -76,7 +79,7 @@ colnames(tt1) <- c("yes", "no")
 m <- c(.9, .1)
 bca(tt=tt1, m, idvar = 1)
 x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
-byrow = TRUE), m = c(0.2,0.5, 0.3), 
+byrow = TRUE), m = c(0.2,0.5, 0.3), include_all = TRUE,
 cnames = c("a", "b", "c"), idvar = 1)
 y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6,0.4), 

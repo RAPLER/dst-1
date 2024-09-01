@@ -10,6 +10,7 @@
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
 #' @param qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
 #' @param fzt = FALSE Whether to use Fast Zeta Transform to construct commonality functions
+#' @param include_all = FALSE Put TRUE to include all elements with 0 mass in the bca.
 #' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
 #' @param idvar The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted. 
@@ -41,7 +42,7 @@
 #' m <- c(.9, .1)
 #' bca(tt=tt1, m, idvar = 1)
 #' x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
-#' byrow = TRUE), m = c(0.2,0.5, 0.3), 
+#' byrow = TRUE), m = c(0.2,0.5, 0.3), include_all = TRUE,
 #' cnames = c("a", "b", "c"), idvar = 1)
 #' y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6,0.4), 
@@ -51,14 +52,14 @@
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
+bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, include_all = FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
-  # Local variables: ztable, zdup, zframe, znames
+  # Local variables: ztable, zdup, zframe, znames, str1, str2, tt_all, m_all
   # Functions calls: nameRows, DoSSnames
   #
   # 1, Empty section
   #
-  # 2. Choose between tt or ssnames and Determine names of columns of tt matrix and fix some parameters
+  # 2. Determine names of columns of tt matrix and fix some parameters
   #
   # 2 Check inputs: bca constructed with a (0,1) description matrix
   # Check on tt
@@ -67,9 +68,6 @@ bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, cnames = NULL, con = NULL, ss
  }
   #
   # Check column names
-  if (is.null(cnames)) { 
-    cnames = colnames (tt) # cnames stay null if no column names present
-  } 
   if (is.null(cnames)) {    
     cnames <- colnames(tt, do.NULL = FALSE, prefix = "col") 
   } 
@@ -88,8 +86,19 @@ bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, cnames = NULL, con = NULL, ss
     }
   else {
     colnames(tt) <- cnames # for the case where tt matrix had no column names
+    rownames(tt) <- nameRows(tt)
     if (is.null(con)) { con <- 0 }
     if (is.null(idvar)) { idvar <- 0 }
+    #
+    # including all elements of the frame in the bca
+    # encode the complete tt matrix
+    #
+    if (include_all == TRUE) {
+      n_frame <- ncol(tt)
+      tt_all <- t(sapply(1:2^n_frame,FUN = function(x) {encode(rep(2,n_frame), x-1)}) )
+      colnames(tt_all) <- colnames(tt)
+      rownames(tt_all) <- nameRows(tt_all)
+    }
   #
   # 3. Build infovar parameter
   #
@@ -102,8 +111,15 @@ bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, cnames = NULL, con = NULL, ss
     # 4. Build varnames and valuenames (former = infovaluenames)
     #
     # check and use varnames if provided
+    if (include_all == TRUE) {
     if (is.null(valuenames) | missing(valuenames)) {
-    valuenames <- split(colnames(tt), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
+      valuenames <- split(colnames(tt_all), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
+      }
+    }
+    else {
+      if (is.null(valuenames) | missing(valuenames)) {
+        valuenames <- split(colnames(tt), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
+      }
     }
     if (!is.null(varnames)) {
       if (is.numeric(varnames)) {
@@ -121,7 +137,31 @@ bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, cnames = NULL, con = NULL, ss
     #
     spec <- cbind((1:nrow(tt)), m)
     colnames(spec) <- c("specnb", "mass")
+    rownames(spec) <- rownames(tt)
     #  
+    # mass vector and spec matriix of all elements of the frame
+    if (include_all == TRUE) {
+      # 2. add elements with 0 mass to the bca
+      # masses
+      m_mat <- matrix(spec[,2])
+      rownames(m_mat) <- rownames(tt)
+      # compute expanded vector of masses
+      str1 <- rownames(tt_all)
+      str2 <-rownames(m_mat)
+      m_mat_pos <- outer(str1, str2, "==")
+      m_all <- m_mat_pos %*% m_mat
+      m <- m_all
+      spec <- cbind((1:nrow(tt_all)), m)
+      colnames(spec) <- c("specnb", "mass")
+      rownames(spec) <- rownames(tt_all)
+    }
+  #
+    # Update tt
+    #
+    if (include_all == TRUE) {
+      tt <- tt_all
+    }
+    #
     # 6. inforel parameter
     #
     if (missing(inforel) | is.null(inforel)) { 
@@ -145,8 +185,6 @@ bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, cnames = NULL, con = NULL, ss
     
     #
     # 8. Construction of the result
-    #
-    rownames(tt) <- nameRows(tt)
     #
     y<-list(con = con, tt = tt, qq=qq, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
     # end test
