@@ -11,7 +11,7 @@ commonality(tt, m, fzt = FALSE)
 
 \item{m}{Mass assignment}
 
-\item{fzt=FALSE}{Whether to use Fast Zeta Transform}
+\item{fzt}{= FALSE Whether to use Fast Zeta Transform}
 }
 \value{
 f Commonality function
