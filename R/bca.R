@@ -139,7 +139,7 @@ bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, include_all = FALSE, cnames =
     colnames(spec) <- c("specnb", "mass")
     rownames(spec) <- rownames(tt)
     #  
-    # mass vector and spec matriix of all elements of the frame
+    # mass vector and spec matrix of all elements of the frame
     if (include_all == TRUE) {
       # 2. add elements with 0 mass to the bca
       # masses
@@ -155,7 +155,7 @@ bca<-function(tt = NULL, m, qq = NULL, fzt= FALSE, include_all = FALSE, cnames =
       colnames(spec) <- c("specnb", "mass")
       rownames(spec) <- rownames(tt_all)
     }
-  #
+    #
     # Update tt
     #
     if (include_all == TRUE) {
