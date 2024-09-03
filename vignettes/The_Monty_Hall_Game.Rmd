@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 
 # The Monty Hall Game
 
-Let us recall the Monty Hall Game from its statement in the Wikipedia article ^[https://en.wikipedia.org/w/index.php?title=Monty_Hall_problem&oldid=829292640] on the subject:
+Let us recall the Monty Hall Game from its statement in the Wikipedia article ^[https://en.wikipedia.org/wiki/Monty_Hall_problem] on the subject:
 
     "Suppose you're on a game show. Three doors *A*, *B* and *C* are in front of you. Behind one door is a brand new car, and behind the two others, a goat. You are asked to pick one of the three doors. Then the host of the game, who knows what's behind the doors, opens one of the two remaining doors and shows a goat. He then asks you: "Do you want to switch doors or keep your initial choice?" 
 
