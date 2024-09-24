@@ -4,7 +4,7 @@
 #' 
 #' @param tt Mass assignment set matrix
 #' @param m Mass assignment
-#' @param fzt = FALSE Whether to use Fast Zeta Transform
+#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
 #' @return f Commonality function
 #' @author Peiyuan Zhu
 #' @export
@@ -13,8 +13,8 @@
 #' m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 #' qq <- commonality(x$tt,x$spec[,2])
 #' qq(c(1,0,0))
-commonality <- function(tt,m,fzt=FALSE){
-  if (fzt==FALSE) {
+commonality <- function(tt, m, method = NULL){
+  if (is.null(method)) {
     f <- function(x) {
       q <- 0
       for (i in 1:nrow(tt)) {
@@ -24,7 +24,7 @@ commonality <- function(tt,m,fzt=FALSE){
       }
       return(q)
     }
-  } else {
+  } else if (method=="fzt") {
     # Fast Zeta Transform
     m_seq <- rep(0, 2**ncol(tt))
     for (i in 1:nrow(tt)) {
@@ -50,6 +50,9 @@ commonality <- function(tt,m,fzt=FALSE){
       q <- m_seq[w + 1]
       return(q)
     }
+    return(f)
+  } else if (method=="ezt") {
+    # TODO: finish this
+    
   }
-  return(f)
 }

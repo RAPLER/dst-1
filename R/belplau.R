@@ -9,7 +9,7 @@
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.
 #' @param h = NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}
-#' @param fzt = FALSE: Whether to use Fast Zeta Transform
+#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
 #' @return A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
 #'  \item Column 1: the degree of Belief \code{bel};
 #'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
@@ -39,7 +39,7 @@
 #' belplau(xy1, remove = TRUE) 
 #' belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
 #' 
-belplau<-function (x, remove = FALSE, h = NULL, fzt = FALSE) {
+belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
   #
   # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC, W2)
   # Functions calls: belplauH, nameRows, ttmatrix
@@ -103,7 +103,9 @@ belplau<-function (x, remove = FALSE, h = NULL, fzt = FALSE) {
   #
   # Use Fast Zeta Transform
   #
-  if(fzt == TRUE) {
+  if(is.null(method)) {
+    
+  } else if(method == "fzt") {
     
     bel <- rep(0, 2**ncol(W2))
     for (i in 1:nrow(W2)) {
@@ -141,6 +143,56 @@ belplau<-function (x, remove = FALSE, h = NULL, fzt = FALSE) {
     colnames(tt_abc) <- unlist(x$valuenames)
     
     rownames(resul) <- nameRows(tt_abc)
+    return(resul)
+    
+  } else if (method=="ezt") {
+    # TODO: finish this
+    
+    # Stpe 0: Sort W2
+    
+    # Step 1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
+    rho <- rowSums(W2)
+    jir <- rep(0,nrow(W2))
+    l <- 1
+    for (i in 1:nrow(W2)) {
+      stop <- FALSE
+      for (j in 1:i) {
+        for (k in 1:i) {
+          if (all(pmax(W2[j,],W2[k,])==W2[i,]) && rho[j] < rho[i] && rho[k] < rho[i]) {
+            stop <- TRUE
+            break
+          }
+        }
+        if (stop) break
+      }
+      if (stop) next
+      jir[l] <- i
+      l <- l + 1
+    }
+    W3 <- W2[jir[1:(l-1)],]
+    MACC1 <- MACC[jir[1:(l-1)]]
+    
+    # Step 2: Sort the join-irreducible elements by cardinality
+    
+    # Step 3: Compute the graph
+    bel <- MACC
+    
+    for (i in nrow(W3):1) {
+      xx <- W3[i,]
+      for (j in 1:nrow(W2)) {
+        y <- W2[j,]
+        z <- pmax(xx,y)
+        # Find w, the position of z on the list W2
+        w <- which(apply(W2, 1, function(x) return(all(x == z))))
+        if (!all(z==y)) {
+          bel[w] <- bel[j] + bel[w]
+        }
+      }
+    }
+    
+    # Step 4: Compute the belplau table and output
+    resul <- bel
+    
     return(resul)
   }
   

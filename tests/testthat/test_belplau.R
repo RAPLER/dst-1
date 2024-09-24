@@ -32,8 +32,31 @@ test_that("belplau", {
                        byrow = TRUE), m = c(0.6, 0.4),  
            cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
   z <- dsrwon(x,y)
-  expect_equal(belplau(nzdsr(z))["a",], belplau(nzdsr(z), fzt=TRUE)["a",])
-  expect_equal(belplau(nzdsr(z))["b + c",], belplau(nzdsr(z), fzt=TRUE)["b + c",])
-  expect_equal(belplau(nzdsr(z))["a + b",], belplau(nzdsr(z), fzt=TRUE)["a + b",])
-  expect_equal(belplau(nzdsr(z))["frame",], belplau(nzdsr(z), fzt=TRUE)["frame",])
+  expect_equal(belplau(nzdsr(z))["a",], belplau(nzdsr(z), method="fzt")["a",])
+  expect_equal(belplau(nzdsr(z))["b + c",], belplau(nzdsr(z), method="fzt")["b + c",])
+  expect_equal(belplau(nzdsr(z))["a + b",], belplau(nzdsr(z), method="fzt")["a + b",])
+  expect_equal(belplau(nzdsr(z))["frame",], belplau(nzdsr(z), method="fzt")["frame",])
+  ## T7 test Efficient Zeta Transform
+  #expect_equal(belplau(nzdsr(z))["a",], belplau(nzdsr(z), method="ezt")["a",])
+  #expect_equal(belplau(nzdsr(z))["b + c",], belplau(nzdsr(z), method="ezt")["b + c",])
+  #expect_equal(belplau(nzdsr(z))["a + b",], belplau(nzdsr(z), method="ezt")["a + b",])
+  #expect_equal(belplau(nzdsr(z))["frame",], belplau(nzdsr(z), method="ezt")["frame",])
+  ## T8 test Efficient Zeta Transform on a small problem
+  tt6 <- matrix(c(0,0,0,0,0,0,
+                  1,0,0,0,0,0,
+                  0,0,0,1,0,0,
+                  1,0,0,1,0,0,
+                  0,0,1,1,0,1,
+                  1,0,1,1,0,1,
+                  1,1,1,1,1,1), nrow = 7, byrow = TRUE)
+  cnames6 <- c("a","b","c","d","e","f")
+  m6 <- c(0.1,0.1,0.1,0.1,0.1,0.1,0.4)
+  x6 <- bca(tt6,m6,cnames=cnames6)
+  x6n <- nzdsr(x6)
+  expect_equal(belplau(x6n, method="fzt")["a",1], unname(belplau(x6n, method="ezt")["a"]))
+  expect_equal(belplau(x6n, method="fzt")["d",1], unname(belplau(x6n, method="ezt")["d"]))
+  expect_equal(belplau(x6n, method="fzt")["a + d",1], unname(belplau(x6n, method="ezt")["a + d"]))
+  expect_equal(belplau(x6n, method="fzt")["c + d + f",1], unname(belplau(x6n, method="ezt")["c + d + f"]))
+  expect_equal(belplau(x6n, method="fzt")["a + c + d + f",1], unname(belplau(x6n, method="ezt")["a + c + d + f"]))
+  expect_equal(belplau(x6n, method="fzt")["frame",1], unname(belplau(x6n, method="ezt")["frame"]))
 })
