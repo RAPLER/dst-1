@@ -150,6 +150,8 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     
     # Stpe 0: Sort W2
     
+    # TODO: insert complements of W2 into W2 (which doesn't affect asymptotic performance)
+    
     # Step 1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
     rho <- rowSums(W2)
     jir <- rep(0,nrow(W2))
@@ -191,6 +193,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     }
     
     # Step 4: Compute the belplau table and output
+
     resul <- bel
     
     return(resul)
