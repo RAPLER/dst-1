@@ -146,21 +146,36 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     return(resul)
     
   } else if (method=="ezt") {
-    # TODO: finish this
+    #
+    # Use Efficient Zeta Transform
+    #
+    # Step 0.1 Insert complements of W2 into W2
+    W2c <- 1-W2
+    rownames(W2c) <- nameRows(1-W2)
+    W21 <- rbind(W2,W2c)
     
-    # Stpe 0: Sort W2
+    MACCc <- rep(0,nrow(W2c))
+    names(MACCc) <- nameRows(1-W2)
+    MACC1 <- c(MACC,MACCc)
     
-    # TODO: insert complements of W2 into W2 (which doesn't affect asymptotic performance)
+    # Step 0.2 Remove duplicates
+    MACC2 <- MACC1[!duplicated(W21)]
+    W22 <- W21[!duplicated(W21),]
+      
+    # Stpe 1.0: Sort W2, MACC
+    sort_order <-order(apply(W22,1,sum))
+    W23 <- W22[sort_order,]
+    MACC3 <- MACC2[sort_order]
     
-    # Step 1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
-    rho <- rowSums(W2)
-    jir <- rep(0,nrow(W2))
+    # Step 1.1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
+    rho <- rowSums(W23)
+    jir <- rep(0,nrow(W23))
     l <- 1
-    for (i in 1:nrow(W2)) {
+    for (i in 1:nrow(W23)) {
       stop <- FALSE
       for (j in 1:i) {
         for (k in 1:i) {
-          if (all(pmax(W2[j,],W2[k,])==W2[i,]) && rho[j] < rho[i] && rho[k] < rho[i]) {
+          if (all(pmax(W23[j,],W23[k,])==W23[i,]) && rho[j] < rho[i] && rho[k] < rho[i]) {
             stop <- TRUE
             break
           }
@@ -171,30 +186,42 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
       jir[l] <- i
       l <- l + 1
     }
-    W3 <- W2[jir[1:(l-1)],]
-    MACC1 <- MACC[jir[1:(l-1)]]
+    W24 <- W23[jir[1:(l-1)],]
+
+    # Step 1.2: Sort the join-irreducible elements by cardinality (skip because it's already sorted)
     
-    # Step 2: Sort the join-irreducible elements by cardinality
+    # Step 1.3: Compute the graph
+    bel0 <- MACC3
     
-    # Step 3: Compute the graph
-    bel <- MACC
-    
-    for (i in nrow(W3):1) {
-      xx <- W3[i,]
-      for (j in 1:nrow(W2)) {
-        y <- W2[j,]
+    for (i in nrow(W24):1) {
+      xx <- W24[i,]
+      for (j in 1:nrow(W23)) {
+        y <- W23[j,]
         z <- pmax(xx,y)
         # Find w, the position of z on the list W2
-        w <- which(apply(W2, 1, function(x) return(all(x == z))))
+        w <- which(apply(W23, 1, function(x) return(all(x == z))))
         if (!all(z==y)) {
-          bel[w] <- bel[j] + bel[w]
+          bel0[w] <- bel0[j] + bel0[w]
         }
       }
     }
     
-    # Step 4: Compute the belplau table and output
-
-    resul <- bel
+    # Step 1.4: Compute the belplau table and output
+    bel <- rep(0, length(MACC))
+    disbel <- rep(0, length(MACC))
+    for (j in 1:length(MACC)) {
+      x <- which(apply(W23, 1, function(x) return(all(x == W2[j,]))))
+      y <- which(apply(W23, 1, function(x) return(all(x == 1 - W2[j,]))))
+      bel[j] <- bel0[x]
+      disbel[j] <- bel0[y]
+    }
+    
+    plau <- 1 - disbel
+    rplau <- plau / (1 - bel)
+    unc <- plau - bel
+    resul <- cbind(bel,disbel,unc,plau,rplau)
+    
+    rownames(resul) <- nameRows(W2)
     
     return(resul)
   }

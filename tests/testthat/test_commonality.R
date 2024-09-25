@@ -30,4 +30,6 @@ test_that("commonality", {
   expect_equal(q(c(1,0,1)),w$qq(c(1,0,1)))
   expect_equal(q(c(0,1,1)),w$qq(c(0,1,1)))
   expect_equal(q(c(1,1,1)),w$qq(c(1,1,1)))
+  
+  # with Efficient Zeta Transform
 })
