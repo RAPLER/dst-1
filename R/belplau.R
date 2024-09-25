@@ -150,6 +150,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     # Use Efficient Zeta Transform
     #
     # Step 0.1 Insert complements of W2 into W2
+    # TODO: insert closure elements
     W2c <- 1-W2
     rownames(W2c) <- nameRows(1-W2)
     W21 <- rbind(W2,W2c)
@@ -166,6 +167,10 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     sort_order <-order(apply(W22,1,sum))
     W23 <- W22[sort_order,]
     MACC3 <- MACC2[sort_order]
+    
+    #W23 <- W2 # test without adding complements
+    #MACC3 <- MACC # test without adding complements
+    # Without adding complements the result is correct. Hypothesis: The issue is that L has to be closed under union
     
     # Step 1.1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
     rho <- rowSums(W23)
@@ -193,8 +198,13 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     # Step 1.3: Compute the graph
     bel0 <- MACC3
     
+    #print(W23) # L union complement of L
+    #print(W24) # i union the emptyset
+    #print(bel0)
+    
     for (i in nrow(W24):1) {
       xx <- W24[i,]
+      if (all(xx==0)) next 
       for (j in 1:nrow(W23)) {
         y <- W23[j,]
         z <- pmax(xx,y)
@@ -204,7 +214,9 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
           bel0[w] <- bel0[j] + bel0[w]
         }
       }
+      #print(bel0)
     }
+    #print(bel0) this is wrong, problem occurred from the above
     
     # Step 1.4: Compute the belplau table and output
     bel <- rep(0, length(MACC))
@@ -213,7 +225,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
       x <- which(apply(W23, 1, function(x) return(all(x == W2[j,]))))
       y <- which(apply(W23, 1, function(x) return(all(x == 1 - W2[j,]))))
       bel[j] <- bel0[x]
-      disbel[j] <- bel0[y]
+      if (length(y) > 0) disbel[j] <- bel0[y]
     }
     
     plau <- 1 - disbel
@@ -241,8 +253,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
       rownames(h) <- nameRows(h)
     }  
     resul <- belplauH(MACC,W2,h) 
-  }
-  else {
+  } else {
     resul <- belplauH(MACC, W2, h = W2) 
   }
   return(resul)
