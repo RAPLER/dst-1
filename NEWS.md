@@ -1,6 +1,16 @@
+# dst 1.8.0
+
+Introduced Efficient Zeta Transform and Efficient Mobius Transform to existing function
+
+* Function belplau: add ezt, eezt options
+
+* Function commonality: add ezt, eezt options
+
+* Function mFromQQRecursive: add emt, eemt options
+
 # dst 1.7.1
 
-Intorudced Fast Zeta Transform to compute commonality functions and Fast Mobius Transform to compute 
+Introduced Fast Zeta Transform to compute commonality functions and Fast Mobius Transform to compute mass functions
 
 * New Function mFromQQRecursive: perform Fast Mobius Transform on commonality functions to get mass function
 
