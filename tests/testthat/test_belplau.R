@@ -53,8 +53,6 @@ test_that("belplau", {
   m6 <- c(0.01,0.02,0.03,0.04,0.05,0.06,0.79)
   x6 <- bca(tt6,m6,cnames=cnames6)
   x6n <- nzdsr(x6)
-  expect_equal(belplau(x6n, method="fzt")[c("a","d","a + d","c + d + f","a + c + d + f","frame"),],
-               belplau(x6n, method="ezt"))
   expect_equal(belplau(x6n, method="fzt")["a",], belplau(x6n, method="ezt")["a",])
   expect_equal(belplau(x6n, method="fzt")["d",], belplau(x6n, method="ezt")["d",])
   expect_equal(belplau(x6n, method="fzt")["a + d",], belplau(x6n, method="ezt")["a + d",])

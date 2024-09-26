@@ -155,14 +155,37 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     rownames(W2c) <- nameRows(1-W2)
     W21 <- rbind(W2,W2c)
     
-    MACCc <- rep(0,nrow(W2c))
-    names(MACCc) <- nameRows(1-W2)
+    # Step 0.1.1 insert closure elements
+    W2x <- W21
+    for (i in 1:nrow(W21)) {
+      for (j in i:nrow(W21)) {
+        z <- pmax(W21[i,],W21[j,])
+        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
+        if (length(x) == 0) {
+          z <- t(as.matrix(z))
+          rownames(z) <- nameRows(z)
+          W2x <- rbind(W2x,z)
+        }
+        
+        z <- pmin(W21[i,],W21[j,])
+        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
+        if (length(x) == 0) {
+          z <- t(as.matrix(z))
+          rownames(z) <- nameRows(z)
+          W2x <- rbind(W2x,z)
+        }
+      }
+    }
+    W21 <- W2x
+    
+    MACCc <- rep(0,nrow(W21)-nrow(W2))
+    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
     MACC1 <- c(MACC,MACCc)
     
     # Step 0.2 Remove duplicates
     MACC2 <- MACC1[!duplicated(W21)]
     W22 <- W21[!duplicated(W21),]
-      
+    
     # Stpe 1.0: Sort W2, MACC
     sort_order <-order(apply(W22,1,sum))
     W23 <- W22[sort_order,]
