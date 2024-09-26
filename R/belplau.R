@@ -150,8 +150,8 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     # Use Efficient Zeta Transform
     #
     # Step 0.1 Insert complements of W2 into W2
-    # TODO: insert closure elements
     W2c <- 1-W2
+    
     rownames(W2c) <- nameRows(1-W2)
     W21 <- rbind(W2,W2c)
     
