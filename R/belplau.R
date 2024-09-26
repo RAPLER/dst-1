@@ -191,10 +191,6 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     W23 <- W22[sort_order,]
     MACC3 <- MACC2[sort_order]
     
-    #W23 <- W2 # test without adding complements
-    #MACC3 <- MACC # test without adding complements
-    # Without adding complements the result is correct. Hypothesis: The issue is that L has to be closed under union
-    
     # Step 1.1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
     rho <- rowSums(W23)
     jir <- rep(0,nrow(W23))
@@ -221,10 +217,6 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     # Step 1.3: Compute the graph
     bel0 <- MACC3
     
-    #print(W23) # L union complement of L
-    #print(W24) # i union the emptyset
-    #print(bel0)
-    
     for (i in nrow(W24):1) {
       xx <- W24[i,]
       if (all(xx==0)) next 
@@ -237,10 +229,8 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
           bel0[w] <- bel0[j] + bel0[w]
         }
       }
-      #print(bel0)
     }
-    #print(bel0) this is wrong, problem occurred from the above
-    
+
     # Step 1.4: Compute the belplau table and output
     bel <- rep(0, length(MACC))
     disbel <- rep(0, length(MACC))
