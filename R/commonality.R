@@ -52,7 +52,104 @@ commonality <- function(tt, m, method = NULL){
     }
     return(f)
   } else if (method=="ezt") {
-    # TODO: finish this
+    #
+    # Use Efficient Zeta Transform
+    #
+    W2 <- tt
+    MACC <- m
+    # Step 0.1 Insert complements of W2 into W2
+    W2c <- 1-W2
     
+    rownames(W2c) <- nameRows(1-W2)
+    W21 <- rbind(W2,W2c)
+    
+    # Step 0.1.1 insert closure elements
+    W2x <- W21
+    for (i in 1:nrow(W21)) {
+      for (j in i:nrow(W21)) {
+        z <- pmax(W21[i,],W21[j,])
+        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
+        if (length(x) == 0) {
+          z <- t(as.matrix(z))
+          rownames(z) <- nameRows(z)
+          W2x <- rbind(W2x,z)
+        }
+        
+        z <- pmin(W21[i,],W21[j,])
+        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
+        if (length(x) == 0) {
+          z <- t(as.matrix(z))
+          rownames(z) <- nameRows(z)
+          W2x <- rbind(W2x,z)
+        }
+      }
+    }
+    W21 <- W2x
+    
+    MACCc <- rep(0,nrow(W21)-nrow(W2))
+    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    MACC1 <- c(MACC,MACCc)
+    
+    # Step 0.2 Remove duplicates
+    MACC2 <- MACC1[!duplicated(W21)]
+    W22 <- W21[!duplicated(W21),]
+    
+    # Step 1.0: Sort W2, MACC
+    sort_order <- order(apply(W22,1,sum))
+    W23 <- W22[sort_order,]
+    MACC3 <- MACC2[sort_order]
+    
+    # Step 1.1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
+    rho <- rowSums(W23)
+    jir <- rep(0,nrow(W23))
+    l <- 1
+    for (i in 1:nrow(W23)) {
+      stop <- FALSE
+      for (j in 1:i) {
+        for (k in 1:i) {
+          if (all(pmax(W23[j,],W23[k,])==W23[i,]) && rho[j] < rho[i] && rho[k] < rho[i]) {
+            stop <- TRUE
+            break
+          }
+        }
+        if (stop) break
+      }
+      if (stop) next
+      jir[l] <- i
+      l <- l + 1
+    }
+    W24 <- W23[jir[1:(l-1)],]
+    
+    # Step 1.2: Sort the join-irreducible elements by cardinality (skip because it's already sorted)
+    
+    # Step 1.3: Compute the graph
+    Q0 <- MACC3
+    
+    for (i in 1:nrow(W24)) {
+      xx <- W24[i,]
+      if (all(xx==0)) next 
+      for (j in 1:nrow(W23)) {
+        y <- W23[j,]
+        z <- pmax(y - xx,0)
+        # Find w, the position of z on the list W2
+        w <- which(apply(W23, 1, function(x) return(all(x == z))))
+        if (!all(z==y)) {
+          Q0[w] <- Q0[j] + Q0[w]
+        }
+      }
+    }
+    
+    f <- function(x) {
+      z <- t(as.matrix(x))
+      colnames(z) <- colnames(W2)
+      nz <- nameRows(z)
+      w <- Q0[nz]
+      if(is.na(w)) {
+        return(0)
+      } else {
+        return(unname(w))
+      }
+    }
+    return(f)
   }
 }

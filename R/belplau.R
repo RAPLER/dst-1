@@ -186,7 +186,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     MACC2 <- MACC1[!duplicated(W21)]
     W22 <- W21[!duplicated(W21),]
     
-    # Stpe 1.0: Sort W2, MACC
+    # Step 1.0: Sort W2, MACC
     sort_order <-order(apply(W22,1,sum))
     W23 <- W22[sort_order,]
     MACC3 <- MACC2[sort_order]

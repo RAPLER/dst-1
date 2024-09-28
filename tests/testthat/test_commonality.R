@@ -22,7 +22,7 @@ test_that("commonality", {
   expect_equal(q(c(1,1,1)),w$qq(c(1,1,1)))
   
   # with Fast Zeta Transform
-  q <- commonality(z$tt,z$spec[,2],fzt=TRUE)
+  q <- commonality(z$tt,z$spec[,2],method="fzt")
   expect_equal(q(c(1,0,0)),w$qq(c(1,0,0)))
   expect_equal(q(c(0,1,0)),w$qq(c(0,1,0)))
   expect_equal(q(c(0,0,1)),w$qq(c(0,0,1)))
@@ -32,4 +32,27 @@ test_that("commonality", {
   expect_equal(q(c(1,1,1)),w$qq(c(1,1,1)))
   
   # with Efficient Zeta Transform
+  tt6 <- matrix(c(0,0,0,0,0,0,
+                  1,0,0,0,0,0,
+                  0,0,0,1,0,0,
+                  1,0,0,1,0,0,
+                  0,0,1,1,0,1,
+                  1,0,1,1,0,1,
+                  1,1,1,1,1,1), nrow = 7, byrow = TRUE)
+  cnames6 <- c("a","b","c","d","e","f")
+  m6 <- c(0.01,0.02,0.03,0.04,0.05,0.06,0.79)
+  x6 <- bca(tt6,m6,cnames=cnames6)
+  x6n <- nzdsr(x6)
+  
+  q1 <- commonality(x6n$tt,x6n$spec[,2], method="fzt")
+  q2 <- commonality(x6n$tt,x6n$spec[,2], method="ezt")
+  
+  expect_equal(q1(c(0,0,0,0,0,0)),q2(c(0,0,0,0,0,0)))
+  expect_equal(q1(c(1,0,0,0,0,0)),q2(c(1,0,0,0,0,0)))
+  expect_equal(q1(c(0,0,0,1,0,0)),q2(c(0,0,0,1,0,0)))
+  expect_equal(q1(c(1,0,0,1,0,0)),q2(c(1,0,0,1,0,0)))
+  expect_equal(q1(c(0,0,1,1,0,1)),q2(c(0,0,1,1,0,1)))
+  expect_equal(q1(c(1,0,1,1,0,1)),q2(c(1,0,1,1,0,1)))
+  expect_equal(q1(c(1,1,1,1,1,1)),q2(c(1,1,1,1,1,1)))
+  
 })
