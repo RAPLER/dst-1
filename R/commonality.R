@@ -46,8 +46,10 @@ commonality <- function(tt, m, method = NULL){
     }
     
     f <- function(x) {
+      print(m_seq)
       w <- decode(rep(2, ncol(tt)), x)
       q <- m_seq[w + 1]
+      print(q)
       return(q)
     }
     return(f)
@@ -57,6 +59,7 @@ commonality <- function(tt, m, method = NULL){
     #
     W2 <- tt
     MACC <- m
+    names(MACC) <- rownames(W2)
     # Step 0.1 Insert complements of W2 into W2
     W2c <- 1-W2
     
@@ -140,10 +143,12 @@ commonality <- function(tt, m, method = NULL){
     }
     
     f <- function(x) {
+      print(Q0)
       z <- t(as.matrix(x))
       colnames(z) <- colnames(W2)
       nz <- nameRows(z)
       w <- Q0[nz]
+      print(w)
       if(is.na(w)) {
         return(0)
       } else {
@@ -151,5 +156,7 @@ commonality <- function(tt, m, method = NULL){
       }
     }
     return(f)
+  } else {
+    stop("method must be one of NULL, fzt, ezt")
   }
 }

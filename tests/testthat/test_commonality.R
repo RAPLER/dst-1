@@ -55,4 +55,45 @@ test_that("commonality", {
   expect_equal(q1(c(1,0,1,1,0,1)),q2(c(1,0,1,1,0,1)))
   expect_equal(q1(c(1,1,1,1,1,1)),q2(c(1,1,1,1,1,1)))
   
+  # with EZT
+  x61 <- bca(tt6, m6, cnames=cnames6, method="fzt")
+  x62 <- bca(tt6, m6, cnames=cnames6, method="ezt")
+  
+  expect_equal(x61$qq(c(0,0,0,0,0,0)),x62$qq(c(0,0,0,0,0,0)))
+  expect_equal(x61$qq(c(1,0,0,0,0,0)),x62$qq(c(1,0,0,0,0,0)))
+  expect_equal(x61$qq(c(0,0,0,1,0,0)),x62$qq(c(0,0,0,1,0,0)))
+  expect_equal(x61$qq(c(1,0,0,1,0,0)),x62$qq(c(1,0,0,1,0,0)))
+  expect_equal(x61$qq(c(0,0,1,1,0,1)),x62$qq(c(0,0,1,1,0,1)))
+  expect_equal(x61$qq(c(1,0,1,1,0,1)),x62$qq(c(1,0,1,1,0,1)))
+  expect_equal(x61$qq(c(1,1,1,1,1,1)),x62$qq(c(1,1,1,1,1,1)))
+  
+  
+  # with EZT
+  x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, 
+                       byrow = TRUE), m = c(0.4, 0.6), method="fzt",
+           cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
+  y <- bca(tt = matrix(c(0,1,1,1,1,1), nrow = 2, 
+                       byrow = TRUE), m = c(0.3, 0.7), method="fzt",  
+           cnames = c("a", "b", "c"),  varnames = "y", idvar = 2)
+  w <- dsrwon(x,y,use_qq = TRUE)
+  
+  x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, 
+                       byrow = TRUE), m = c(0.4, 0.6), method="ezt",
+           cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
+  y <- bca(tt = matrix(c(0,1,1,1,1,1), nrow = 2, 
+                       byrow = TRUE), m = c(0.3, 0.7), method="ezt",  
+           cnames = c("a", "b", "c"),  varnames = "y", idvar = 2)
+  z <- dsrwon(x,y,use_qq = TRUE)
+  
+  # TODO: the results don't match. What is the issue? To find out, I print all elements at evaluation of commonality functions
+  # TODO: how to treat elements outside of the closure?
+  expect_equal(w$qq(c(0,0,0)),z$qq(c(0,0,0)))
+  expect_equal(w$qq(c(1,0,0)),z$qq(c(1,0,0)))
+  expect_equal(w$qq(c(0,1,0)),z$qq(c(0,1,0)))
+  expect_equal(w$qq(c(0,0,1)),z$qq(c(0,0,1)))
+  expect_equal(w$qq(c(1,1,0)),z$qq(c(1,1,0)))
+  expect_equal(w$qq(c(1,0,1)),z$qq(c(1,0,1)))
+  expect_equal(w$qq(c(0,1,1)),z$qq(c(0,1,1)))
+  expect_equal(w$qq(c(1,1,1)),z$qq(c(1,1,1)))
+  
 })
