@@ -2,9 +2,10 @@
 #' 
 #' qq is the commonality function as a set function from the subsets of the frame to \eqn{[0,1]}. To evaluate it, input a set encoded in binary vector, so the commonality number at that set can be returned.
 #' 
-#' @param tt Mass assignment set matrix
-#' @param m Mass assignment
+#' @param tt Bolean description matrix
+#' @param m Mass assignment vector of probabilities
 #' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
+#' @param W2c = NULL: A binary matrix of support. Defaults to the complement of tt matrix
 #' @return f Commonality function
 #' @author Peiyuan Zhu
 #' @export
@@ -13,7 +14,7 @@
 #' m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 #' qq <- commonality(x$tt,x$spec[,2])
 #' qq(c(1,0,0))
-commonality <- function(tt, m, method = NULL){
+commonality <- function(tt, m, method = NULL, W2c = NULL){
   if (is.null(method)) {
     f <- function(x) {
       q <- 0
@@ -46,10 +47,10 @@ commonality <- function(tt, m, method = NULL){
     }
     
     f <- function(x) {
-      print(m_seq)
+      # print(m_seq)
       w <- decode(rep(2, ncol(tt)), x)
       q <- m_seq[w + 1]
-      print(q)
+      # print(q)
       return(q)
     }
     return(f)
@@ -61,9 +62,14 @@ commonality <- function(tt, m, method = NULL){
     MACC <- m
     names(MACC) <- rownames(W2)
     # Step 0.1 Insert complements of W2 into W2
-    W2c <- 1-W2
+    if (is.null(W2c)) {
+      W2c <- 1-W2
+      rownames(W2c) <- nameRows(1-W2)
+    } else {
+      colnames(W2c) <- colnames(W2)
+      rownames(W2c) <- nameRows(W2c)
+    }
     
-    rownames(W2c) <- nameRows(1-W2)
     W21 <- rbind(W2,W2c)
     
     # Step 0.1.1 insert closure elements
@@ -132,23 +138,29 @@ commonality <- function(tt, m, method = NULL){
       xx <- W24[i,]
       if (all(xx==0)) next 
       for (j in 1:nrow(W23)) {
+        # print(i)
+        # print(j)
         y <- W23[j,]
-        z <- pmax(y - xx,0)
+        z <- pmax(y,xx)
         # Find w, the position of z on the list W2
         w <- which(apply(W23, 1, function(x) return(all(x == z))))
-        if (!all(z==y)) {
-          Q0[w] <- Q0[j] + Q0[w]
+        # print(xx)
+        # print(y)
+        # print(z)
+        if (!all(z==y) && length(w) != 0) {
+          # print("update")
+          Q0[j] <- Q0[j] + Q0[w]
         }
       }
     }
     
     f <- function(x) {
-      print(Q0)
+      # print(Q0)
       z <- t(as.matrix(x))
       colnames(z) <- colnames(W2)
       nz <- nameRows(z)
       w <- Q0[nz]
-      print(w)
+      # print(w)
       if(is.na(w)) {
         return(0)
       } else {
