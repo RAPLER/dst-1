@@ -3,6 +3,7 @@
 #' @param qq Commonality function
 #' @param n Frame dimension
 #' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
+#' @param tt = NULL: 
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
 #' @export
@@ -12,7 +13,7 @@
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames)
 #' mFromQQ(x$qq, x$tt)
-mFromQQRecursive <- function(qq,n,method = NULL) {
+mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
   # Obtain tt matrix from commonality function
   #
   # 1. Check that the input qq is a function
@@ -49,18 +50,12 @@ mFromQQRecursive <- function(qq,n,method = NULL) {
     return(m_seq)
   } else if (method == "emt") {
     # Load tt, qq
-    
-    W2 <- 0
-    MACC <- 0
+    W2 <- tt
+    W21 <- W2
+    MACC <- apply(tt, 1, qq)
     #
     # Use Efficient Zeta Transform
     #
-    # Step 0.1 Insert complements of W2 into W2
-    W2c <- 1-W2
-    
-    rownames(W2c) <- nameRows(1-W2)
-    W21 <- rbind(W2,W2c)
-    
     # Step 0.1.1 insert closure elements
     W2x <- W21
     for (i in 1:nrow(W21)) {
@@ -85,7 +80,7 @@ mFromQQRecursive <- function(qq,n,method = NULL) {
     W21 <- W2x
     
     MACCc <- rep(0,nrow(W21)-nrow(W2))
-    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    if (length(MACCc) > 0) { names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)] }
     MACC1 <- c(MACC,MACCc)
     
     # Step 0.2 Remove duplicates
@@ -123,16 +118,16 @@ mFromQQRecursive <- function(qq,n,method = NULL) {
     # Step 1.3: Compute the graph
     m0 <- MACC3
     
-    for (i in nrow(W24):1) {
+    for (i in 1:nrow(W24)) {
       xx <- W24[i,]
       if (all(xx==0)) next 
       for (j in 1:nrow(W23)) {
         y <- W23[j,]
-        z <- pmax(y - xx,0)
+        z <- pmax(y,xx)
         # Find w, the position of z on the list W2
         w <- which(apply(W23, 1, function(x) return(all(x == z))))
-        if (!all(z==y)) {
-          m0[w] <- m0[j] + m0[w]
+        if (!all(z==y) && length(w) != 0) {
+          m0[j] <- m0[j] - m0[w]
         }
       }
     }
