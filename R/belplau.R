@@ -9,7 +9,7 @@
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.
 #' @param h = NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}
-#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
+#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m")
 #' @return A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
 #'  \item Column 1: the degree of Belief \code{bel};
 #'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
@@ -104,7 +104,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
   # Use Fast Zeta Transform
   #
   if(is.null(method)) {
-    
+    stop("Input method cannot be NULL")
   } else if(method == "fzt") {
     
     bel <- rep(0, 2**ncol(W2))
@@ -249,6 +249,14 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     rownames(resul) <- nameRows(W2)
     
     return(resul)
+  } else if (method=="ezt-m") {
+    #
+    # Efficient Zeta Transform on a meet-closed subset
+    #
+    # TODO:
+    
+  } else {
+    stop("Input method must be one of fzt, ezt, ezt-m")
   }
   
   #

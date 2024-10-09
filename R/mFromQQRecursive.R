@@ -2,7 +2,7 @@
 #' 
 #' @param qq Commonality function
 #' @param n Frame dimension
-#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
+#' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a join-closed subset ("emt-j") 
 #' @param tt = NULL: 
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
@@ -23,7 +23,7 @@ mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
   
   # 2. Check that the input method is not NULL
   if (is.null(method) == TRUE) {
-    stop("Input method must be either fmt or emt")
+    stop("Input method cannot be NULL")
   }
   
   if (method=="fmt") {
@@ -54,7 +54,7 @@ mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
     W21 <- W2
     MACC <- apply(tt, 1, qq)
     #
-    # Use Efficient Zeta Transform
+    # Efficient Mobius Transform
     #
     # Step 0.1.1 insert closure elements
     W2x <- W21
@@ -133,5 +133,12 @@ mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
     }
     
     return(m0)
+  } else if (method=="emt-j") {
+    #
+    # Efficient Mobius Transform on a join-closed subset
+    #
+    # TODO:
+  }  else {
+    stop("Input method must be one of fmt, emt, emt-j, emt-m")
   }
 }

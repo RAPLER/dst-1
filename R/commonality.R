@@ -4,7 +4,7 @@
 #' 
 #' @param tt Bolean description matrix
 #' @param m Mass assignment vector of probabilities
-#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
+#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a join-closed subset ("ezt-j")
 #' @param W2c = NULL: A binary matrix of support. Defaults to the complement of tt matrix
 #' @return f Commonality function
 #' @author Peiyuan Zhu
@@ -168,7 +168,13 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
       }
     }
     return(f)
+  }else if (method=="ezt-j") {
+    #
+    # Efficient Zeta Transform on a join-closed subset
+    #
+    # TODO:
+    
   } else {
-    stop("method must be one of NULL, fzt, ezt")
+    stop("Input method must be one of NULL, fzt, ezt, ezt-j, ezt-m")
   }
 }
