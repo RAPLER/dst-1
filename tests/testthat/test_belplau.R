@@ -82,5 +82,4 @@ test_that("belplau", {
   expect_equal(belplau(x9n, method="fzt")["b + c + d",], belplau(x9n, method="ezt-m")["b + c + d",])
   expect_equal(belplau(x9n, method="fzt")["frame",], belplau(x9n, method="ezt-m")["frame",])
   
-  
 })

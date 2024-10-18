@@ -256,10 +256,11 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     # Efficient Zeta Transform on a meet-closed subset
     #
     # Step 2.0.1 Insert complements of W2 into W2
-    W2c <- 1-W2
-    
-    rownames(W2c) <- nameRows(1-W2)
-    W21 <- rbind(W2,W2c)
+    #W2c <- 1-W2
+
+    #rownames(W2c) <- nameRows(1-W2)
+    #W21 <- rbind(W2,W2c)
+    W21 <- W2
     
     # Step 2.0.2 Insert closure elements
     W2x <- W21
@@ -299,7 +300,11 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
       ZZ <- rep(0,ncol(W23))
       ZZ[i] <- 1
       uZZ <- arrow(ZZ,W23,"up")
-      if(!is.null(uZZ)) { inf_uZZ <- bound(uZZ,"inf") } else { inf_uZZ <- NULL }
+      if(!is.null(uZZ)) { 
+        inf_uZZ <- bound(if (is.null(nrow(uZZ))) t(as.matrix(uZZ)) else uZZ,"inf") 
+      } else { 
+        inf_uZZ <- NULL
+      }
       iota <- rbind(iota, inf_uZZ)
     }
     W24 <- iota[!duplicated(iota),]
@@ -309,6 +314,10 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
     bel0 <- MACC3
+    #print("M")
+    #print(W23)
+    #print("iota(M)")
+    #print(W24)
     
     for (i in 1:nrow(W24)) {
       xx <- W24[i,]
@@ -318,10 +327,22 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
         z0 <- arrow(pmax(xx,y), W23, "up")
         z <- bound(as.matrix(z0), "inf")
         # Find w, the position of z on the list W2
-        w <- which(apply(W23, 1, function(x) return(all(x == z)))) 
+        w <- which(apply(W23, 1, function(s) return(all(s == z)))) 
+        # if (i==2) browser()
         k0 <- W24[1:i,]
-        if (!all(z==y) && all((pmax(y,bound(as.matrix(k0), "sup")) - z) > 0)) {
-          bel0[w] <- bel0[j] + bel0[w]
+        #print("iota(M)_k")
+        #print(k0)
+        if ((length(w) > 0) && (!all(z==y)) && 
+            all((pmax(y,bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")) - z) >= 0)) {
+          # print(y)
+          # print(bound(t(as.matrix(k0)), "sup"))
+          #print("add edge")
+          #print(bel0[j])
+          #print(bel0[w])
+          bel0[j] <- bel0[j] + bel0[w]
+          #print("after adding")
+          #print(bel0[j])
+          #print(bel0[w])
         }
       }
     }
@@ -342,7 +363,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     resul <- cbind(bel,disbel,unc,plau,rplau)
     
     rownames(resul) <- nameRows(W2)
-    
+    # TODO: find bug
     return(resul)
   } else {
     stop("Input method must be one of fzt, ezt, ezt-m")
