@@ -1,0 +1,21 @@
+#' Find inf, sup of a lattice
+#' 
+#' @param tt  Binary matrix encoding the lattice from which the supremum or infimum is found
+#' @param method Return supremum or infimum
+#' @return b Binary vector of sup or inf
+#' @author Peiyuan Zhu
+#' @export
+#' @examples 
+bound<-function(x, method=NULL) {
+  if(!is.matrix(x)) {
+    stop("x must be a matrix")
+  }
+  if(method=="inf") {
+    b <- apply(x, 2, min)
+  } else if (method=="sup") {
+    b <- apply(x, 2, max)
+  } else {
+    stop("method must be one of inf, sup")
+  }
+  return(b)
+}

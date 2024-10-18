@@ -159,6 +159,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     W2x <- W21
     for (i in 1:nrow(W21)) {
       for (j in i:nrow(W21)) {
+        # Step 0.1.1.1 insert join-closure
         z <- pmax(W21[i,],W21[j,])
         x <- which(apply(W2x, 1, function(x) return(all(x == z))))
         if (length(x) == 0) {
@@ -167,6 +168,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
           W2x <- rbind(W2x,z)
         }
         
+        # Step 0.1.1.2 insert meet-closure
         z <- pmin(W21[i,],W21[j,])
         x <- which(apply(W2x, 1, function(x) return(all(x == z))))
         if (length(x) == 0) {
@@ -253,14 +255,101 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     #
     # Efficient Zeta Transform on a meet-closed subset
     #
-    # TODO:
+    # Step 2.0.1 Insert complements of W2 into W2
+    W2c <- 1-W2
     
+    rownames(W2c) <- nameRows(1-W2)
+    W21 <- rbind(W2,W2c)
+    
+    # Step 2.0.2 Insert closure elements
+    W2x <- W21
+    for (i in 1:nrow(W21)) {
+      for (j in i:nrow(W21)) {
+        # Step 2.0.2.1 insert meet-closure
+        z <- pmin(W21[i,],W21[j,])
+        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
+        if (length(x) == 0) {
+          z <- t(as.matrix(z))
+          rownames(z) <- nameRows(z)
+          W2x <- rbind(W2x,z)
+        }
+      }
+    }
+    W21 <- W2x
+    
+    MACCc <- rep(0,nrow(W21)-nrow(W2))
+    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    MACC1 <- c(MACC,MACCc)
+    
+    # Step 2.0.3 Remove duplicates
+    MACC2 <- MACC1[!duplicated(W21)]
+    W22 <- W21[!duplicated(W21),]
+    
+    # Step 2.0.4 Sort W2, MACC
+    sort_order <-order(apply(W22,1,sum))
+    W23 <- W22[sort_order,]
+    MACC3 <- MACC2[sort_order]
+    
+    # Step 2.1: Find iota elements
+    # Step 2.1.1: Find upsets of each singleton in W23
+    # Step 2.1.2: Filter those that are non-empty
+    # Step 2.1.3: Find infimum of each upset
+    iota <- NULL
+    for (i in 1:ncol(W23)) {
+      ZZ <- rep(0,ncol(W23))
+      ZZ[i] <- 1
+      uZZ <- arrow(ZZ,W23,"up")
+      if(!is.null(uZZ)) { inf_uZZ <- bound(uZZ,"inf") } else { inf_uZZ <- NULL }
+      iota <- rbind(iota, inf_uZZ)
+    }
+    W24 <- iota[!duplicated(iota),]
+    
+    # Step 2.2: Compute the graph
+    
+    # Step 2.2.1: Check if the first condition is satisfied
+    # Step 2.2.1: Check if the second condition is satisfied
+    bel0 <- MACC3
+    
+    for (i in 1:nrow(W24)) {
+      xx <- W24[i,]
+      if (all(xx==0)) next 
+      for (j in 1:nrow(W23)) {
+        y <- W23[j,]
+        z0 <- arrow(pmax(xx,y), W23, "up")
+        z <- bound(as.matrix(z0), "inf")
+        # Find w, the position of z on the list W2
+        w <- which(apply(W23, 1, function(x) return(all(x == z)))) 
+        k0 <- W24[1:i,]
+        if (!all(z==y) && all((pmax(y,bound(as.matrix(k0), "sup")) - z) > 0)) {
+          bel0[w] <- bel0[j] + bel0[w]
+        }
+      }
+    }
+    
+    # Step 2.3: Compute belplau table
+    bel <- rep(0, length(MACC))
+    disbel <- rep(0, length(MACC))
+    for (j in 1:length(MACC)) {
+      x <- which(apply(W23, 1, function(x) return(all(x == W2[j,]))))
+      y <- which(apply(W23, 1, function(x) return(all(x == 1 - W2[j,]))))
+      bel[j] <- bel0[x]
+      if (length(y) > 0) disbel[j] <- bel0[y]
+    }
+    
+    plau <- 1 - disbel
+    rplau <- plau / (1 - bel)
+    unc <- plau - bel
+    resul <- cbind(bel,disbel,unc,plau,rplau)
+    
+    rownames(resul) <- nameRows(W2)
+    
+    return(resul)
   } else {
     stop("Input method must be one of fzt, ezt, ezt-m")
   }
   
   #
-  # 2.5 Check if there's hypothesis to be tested
+  # 3.1 Check if there's hypothesis to be tested
   if (!is.null(h)) {
     # check that h is like x$tt
     if ((is.matrix(h) == FALSE) ) {

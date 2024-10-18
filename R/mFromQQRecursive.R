@@ -138,6 +138,7 @@ mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
     # Efficient Mobius Transform on a join-closed subset
     #
     # TODO:
+    
   }  else {
     stop("Input method must be one of fmt, emt, emt-j, emt-m")
   }
