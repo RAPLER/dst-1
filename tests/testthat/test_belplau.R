@@ -60,26 +60,26 @@ test_that("belplau", {
   expect_equal(belplau(x6n, method="fzt")["a + c + d + f",], belplau(x6n, method="ezt")["a + c + d + f",])
   expect_equal(belplau(x6n, method="fzt")["frame",], belplau(x6n, method="ezt")["frame",])
   
-  ## T9 Test EZT on a meet-closed subset
+  ## T9 Test EZT on a join-closed subset
   tt9 <- matrix(c(0,0,0,0,0,0,
-                  1,0,0,0,0,0,
-                  0,1,0,0,0,0,
-                  1,1,0,0,0,0,
-                  0,0,1,0,0,0,
-                  0,0,0,1,0,0,
-                  0,1,1,1,0,0,
+                  1,0,0,0,1,1,
+                  0,0,1,1,1,1,
+                  1,0,1,1,1,1,
+                  1,1,1,0,1,1,
+                  1,1,0,1,1,1,
+                  0,1,1,1,1,1,
                   1,1,1,1,1,1), nrow = 8, byrow = TRUE)
   cnames9 <- c("a","b","c","d","e","f")
   m9 <- c(0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.72)
   x9 <- bca(tt9,m9,cnames=cnames9)
   x9n <- nzdsr(x9)
   
-  expect_equal(belplau(x9n, method="fzt")["a",], belplau(x9n, method="ezt-m")["a",])
-  expect_equal(belplau(x9n, method="fzt")["b",], belplau(x9n, method="ezt-m")["b",])
-  expect_equal(belplau(x9n, method="fzt")["a + b",], belplau(x9n, method="ezt-m")["a + b",])
-  expect_equal(belplau(x9n, method="fzt")["c",], belplau(x9n, method="ezt-m")["c",])
-  expect_equal(belplau(x9n, method="fzt")["d",], belplau(x9n, method="ezt-m")["d",])
-  expect_equal(belplau(x9n, method="fzt")["b + c + d",], belplau(x9n, method="ezt-m")["b + c + d",])
+  expect_equal(belplau(x9n, method="fzt")["a + e + f",], belplau(x9n, method="ezt-m")["a + e + f",])
+  expect_equal(belplau(x9n, method="fzt")["c + d + e + f",], belplau(x9n, method="ezt-m")["c + d + e + f",])
+  expect_equal(belplau(x9n, method="fzt")["a + c + d + e + f",], belplau(x9n, method="ezt-m")["a + c + d + e + f",])
+  expect_equal(belplau(x9n, method="fzt")["a + b + c + e + f",], belplau(x9n, method="ezt-m")["a + b + c + e + f",])
+  expect_equal(belplau(x9n, method="fzt")["a + b + d + e + f",], belplau(x9n, method="ezt-m")["a + b + d + e + f",])
+  expect_equal(belplau(x9n, method="fzt")["b + c + d + e + f",], belplau(x9n, method="ezt-m")["b + c + d + e + f",])
   expect_equal(belplau(x9n, method="fzt")["frame",], belplau(x9n, method="ezt-m")["frame",])
   
 })

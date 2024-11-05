@@ -168,12 +168,105 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
       }
     }
     return(f)
-  }else if (method=="ezt-j") {
+  } else if (method=="ezt-j") {
     #
     # Efficient Zeta Transform on a join-closed subset
     #
-    # TODO:
+    W2 <- tt
+    MACC <- m
+    names(MACC) <- rownames(W2)
+    # Step 0.1 Insert complements of W2 into W2
+    if (is.null(W2c)) {
+      W2c <- 1-W2
+      rownames(W2c) <- nameRows(1-W2)
+    } else {
+      colnames(W2c) <- colnames(W2)
+      rownames(W2c) <- nameRows(W2c)
+    }
     
+    W21 <- rbind(W2,W2c)
+    
+    # Step 2.0.2 Insert closure elements
+    W2x <- W21
+    for (i in 1:nrow(W21)) {
+      for (j in i:nrow(W21)) {
+        # Step 2.0.2.1 insert meet-closure
+        z <- pmin(W21[i,],W21[j,])
+        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
+        if (length(x) == 0) {
+          z <- t(as.matrix(z))
+          rownames(z) <- nameRows(z)
+          W2x <- rbind(W2x,z)
+        }
+      }
+    }
+    W21 <- W2x
+    
+    MACCc <- rep(0,nrow(W21)-nrow(W2))
+    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    MACC1 <- c(MACC,MACCc)
+    
+    # Step 2.0.3 Remove duplicates
+    MACC2 <- MACC1[!duplicated(W21)]
+    W22 <- W21[!duplicated(W21),]
+    
+    # Step 2.0.4 Sort W2, MACC
+    sort_order <- order(apply(W22,1,sum))
+    W23 <- W22[sort_order,]
+    MACC3 <- MACC2[sort_order]
+    
+    # Step 2.1: Find iota elements
+    # Step 2.1.1: Find upsets of each singleton in W23
+    # Step 2.1.2: Filter those that are non-empty
+    # Step 2.1.3: Find infimum of each upset
+    iota <- NULL
+    for (i in 1:ncol(W23)) {
+      ZZ <- rep(0,ncol(W23))
+      ZZ[i] <- 1
+      uZZ <- arrow(ZZ,W23,"up")
+      if(nrow(uZZ) > 0) { 
+        inf_uZZ <- bound(if (is.null(nrow(uZZ))) t(as.matrix(uZZ)) else uZZ,"inf") 
+      } else { 
+        inf_uZZ <- NULL
+      }
+      iota <- rbind(iota, inf_uZZ)
+    }
+    W24 <- iota[!duplicated(iota),]
+    
+    # Step 2.2: Compute the graph
+    
+    # Step 2.2.1: Check if the first condition is satisfied
+    # Step 2.2.1: Check if the second condition is satisfied
+    Q0 <- MACC3
+    
+    for (i in 1:nrow(W24)) {
+      xx <- W24[i,]
+      for (j in 1:nrow(W23)) {
+        y <- W23[j,]
+        z0 <- arrow(pmax(xx,y), W23, "up")
+        z <- bound(as.matrix(z0), "inf")
+        # Find w, the position of z on the list W2
+        w <- which(apply(W23, 1, function(s) return(all(s == z)))) 
+        k0 <- W24[1:i,]
+        if ((length(w) > 0) && (!all(z==y)) && 
+            all((pmax(y,bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")) - z) >= 0)) {
+          Q0[j] <- Q0[j] + Q0[w]
+        }
+      }
+    }
+    
+    f <- function(x) {
+      z <- t(as.matrix(x))
+      colnames(z) <- colnames(W2)
+      nz <- nameRows(z)
+      w <- Q0[nz]
+      if(is.na(w)) {
+        return(0)
+      } else {
+        return(unname(w))
+      }
+    }
+    return(f)
   } else {
     stop("Input method must be one of NULL, fzt, ezt, ezt-j, ezt-m")
   }

@@ -97,4 +97,15 @@ test_that("commonality", {
   expect_equal(w$qq(c(0,1,1)),z$qq(c(0,1,1)))
   expect_equal(w$qq(c(1,1,1)),z$qq(c(1,1,1)))
   
+  # with EZT-J
+  x61 <- bca(tt6, m6, cnames=cnames6, method="fzt")
+  x62 <- bca(tt6, m6, cnames=cnames6, method="ezt-j")
+  
+  expect_equal(x61$qq(c(0,0,0,0,0,0)),x62$qq(c(0,0,0,0,0,0)))
+  expect_equal(x61$qq(c(1,0,0,0,0,0)),x62$qq(c(1,0,0,0,0,0)))
+  expect_equal(x61$qq(c(0,0,0,1,0,0)),x62$qq(c(0,0,0,1,0,0)))
+  expect_equal(x61$qq(c(1,0,0,1,0,0)),x62$qq(c(1,0,0,1,0,0)))
+  expect_equal(x61$qq(c(0,0,1,1,0,1)),x62$qq(c(0,0,1,1,0,1)))
+  expect_equal(x61$qq(c(1,0,1,1,0,1)),x62$qq(c(1,0,1,1,0,1)))
+  expect_equal(x61$qq(c(1,1,1,1,1,1)),x62$qq(c(1,1,1,1,1,1)))
 })
