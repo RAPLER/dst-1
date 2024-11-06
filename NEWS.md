@@ -2,11 +2,11 @@
 
 Introduced Efficient Zeta Transform and Efficient Mobius Transform to existing function
 
-* Function belplau: add ezt, eezt options
+* Function belplau: add ezt, ezt-m options
 
-* Function commonality: add ezt, eezt options
+* Function commonality: add ezt, ezt-j options
 
-* Function mFromQQRecursive: add emt, eemt options
+* Function mFromQQRecursive: add emt, emt-j options
 
 # dst 1.7.1
 

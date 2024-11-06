@@ -99,4 +99,6 @@ test_that("mFromQQRecursive", {
                unname(mFromQQRecursive(w$qq,3,method="emt",tt=z$tt)[3]))
   expect_equal(mFromQQRecursive(w$qq,3,method="fmt")[8],
                unname(mFromQQRecursive(w$qq,3,method="emt",tt=z$tt)[4]))
+  
+  
 })
