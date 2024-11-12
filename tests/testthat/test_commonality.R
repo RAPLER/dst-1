@@ -21,7 +21,7 @@ test_that("commonality", {
   expect_equal(q(c(0,1,1)),w$qq(c(0,1,1)))
   expect_equal(q(c(1,1,1)),w$qq(c(1,1,1)))
   
-  # with Fast Zeta Transform
+  # test agreement with fzt
   q <- commonality(z$tt,z$spec[,2],method="fzt")
   expect_equal(q(c(1,0,0)),w$qq(c(1,0,0)))
   expect_equal(q(c(0,1,0)),w$qq(c(0,1,0)))
@@ -31,7 +31,7 @@ test_that("commonality", {
   expect_equal(q(c(0,1,1)),w$qq(c(0,1,1)))
   expect_equal(q(c(1,1,1)),w$qq(c(1,1,1)))
   
-  # with Efficient Zeta Transform
+  # test fzt vs ezt
   tt6 <- matrix(c(0,0,0,0,0,0,
                   1,0,0,0,0,0,
                   0,0,0,1,0,0,
@@ -55,7 +55,7 @@ test_that("commonality", {
   expect_equal(q1(c(1,0,1,1,0,1)),q2(c(1,0,1,1,0,1)))
   expect_equal(q1(c(1,1,1,1,1,1)),q2(c(1,1,1,1,1,1)))
   
-  # with EZT
+  # Test fzt vs ezt
   x61 <- bca(tt6, m6, cnames=cnames6, method="fzt")
   x62 <- bca(tt6, m6, cnames=cnames6, method="ezt")
   
@@ -67,8 +67,7 @@ test_that("commonality", {
   expect_equal(x61$qq(c(1,0,1,1,0,1)),x62$qq(c(1,0,1,1,0,1)))
   expect_equal(x61$qq(c(1,1,1,1,1,1)),x62$qq(c(1,1,1,1,1,1)))
   
-  
-  # with EZT
+  # Test ezt on comnbination
   x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, 
                        byrow = TRUE), m = c(0.4, 0.6), method="fzt",
            cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
@@ -97,7 +96,7 @@ test_that("commonality", {
   expect_equal(w$qq(c(0,1,1)),z$qq(c(0,1,1)))
   expect_equal(w$qq(c(1,1,1)),z$qq(c(1,1,1)))
   
-  # with EZT-J
+  # Test ezt-j with figure 7
   x61 <- bca(tt6, m6, cnames=cnames6, method="fzt")
   x62 <- bca(tt6, m6, cnames=cnames6, method="ezt-j")
   

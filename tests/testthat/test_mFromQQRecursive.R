@@ -21,7 +21,7 @@ test_that("mFromQQRecursive", {
   expect_equal(mFromQQ(w1$qq,ttmatrixFromQQ(w1$qq,as.integer(w1$infovar[1,2]),unlist(w1$valuenames)))[4],
                mFromQQRecursive(w1$qq,3,method="fmt")[8])
   
-  # test combination
+  # Test 1.0.3 combination
   w1$tt<-ttmatrixFromQQ(w1$qq,as.integer(w1$infovar[1,2]),unlist(w1$valuenames))
   expect_equal(z1$spec[,2][1], mFromQQRecursive(w1$qq,3,method="fmt")[3])
   expect_equal(z1$spec[,2][2], mFromQQRecursive(w1$qq,3,method="fmt")[7])
@@ -47,7 +47,8 @@ test_that("mFromQQRecursive", {
                mFromQQRecursive(w1$qq,3,method="fmt")[7])
   expect_equal(mFromQQ(w1$qq,ttmatrixFromQQ(w1$qq,as.integer(w1$infovar[1,2]),unlist(w1$valuenames)))[4],
                mFromQQRecursive(w1$qq,3,method="fmt")[8])
-  # test combination
+  
+  # Test 1.1.3 combination
   w1$tt<-ttmatrixFromQQ(w1$qq,as.integer(w1$infovar[1,2]),unlist(w1$valuenames))
   expect_equal(z1$spec[,2][1], mFromQQRecursive(w1$qq,3,method="fmt")[3])
   expect_equal(z1$spec[,2][2], mFromQQRecursive(w1$qq,3,method="fmt")[7])
@@ -117,6 +118,7 @@ test_that("mFromQQRecursive", {
   x6 <- bca(tt6,m6,cnames=cnames6)
   x6n <- nzdsr(x6)
   mFromQQRecursive(x6$qq,6,method="emt",tt6)
+  # TODO: testing algorithm from figure 6 with the data from figure 8 failed
   #mFromQQRecursive(x6$qq,6,method="emt-m",tt6)
   mFromQQRecursive(x6$qq,6,method="fmt",tt6)
   
@@ -145,6 +147,7 @@ test_that("mFromQQRecursive", {
   m8 <- c(0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.72)
   x8 <- bca(tt8,m8,cnames=cnames8)
   x8n <- nzdsr(x8)
+  # TODO: testing algorithm from figure 8 with the data from figure 6 failed
   #mFromQQRecursive(x8$qq,6,method="emt",tt8)
   mFromQQRecursive(x8$qq,6,method="emt-m",tt8)
   mFromQQRecursive(x8$qq,6,method="fmt",tt8)

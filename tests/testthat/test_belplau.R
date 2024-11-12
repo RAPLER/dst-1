@@ -24,7 +24,8 @@ test_that("belplau", {
   x5 <- bca(matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), c(0.8, 0.2), c(1,2,3))
   result <- belplau(x5, h=matrix(c(1,1,0,1,1,1), nrow=2, byrow = TRUE))
   expect_equal(unname(x5$spec[1,1]), unname(result[2,1]))
-  ## T6 test Fast Zeta Transform
+  
+  ## T6 test fzt
   x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
                        byrow = TRUE), m = c(0.2,0.5, 0.3), 
            cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
@@ -36,12 +37,14 @@ test_that("belplau", {
   expect_equal(belplau(nzdsr(z))["b + c",], belplau(nzdsr(z), method="fzt")["b + c",])
   expect_equal(belplau(nzdsr(z))["a + b",], belplau(nzdsr(z), method="fzt")["a + b",])
   expect_equal(belplau(nzdsr(z))["frame",], belplau(nzdsr(z), method="fzt")["frame",])
-  ## T7 test Efficient Zeta Transform
+  
+  ## T7 test ezt
   #expect_equal(belplau(nzdsr(z))["a",], belplau(nzdsr(z), method="ezt")["a",])
   #expect_equal(belplau(nzdsr(z))["b + c",], belplau(nzdsr(z), method="ezt")["b + c",])
   #expect_equal(belplau(nzdsr(z))["a + b",], belplau(nzdsr(z), method="ezt")["a + b",])
   #expect_equal(belplau(nzdsr(z))["frame",], belplau(nzdsr(z), method="ezt")["frame",])
-  ## T8 test Efficient Zeta Transform on a small problem
+  
+  ## T8 test ezt with figure 3
   tt6 <- matrix(c(0,0,0,0,0,0,
                   1,0,0,0,0,0,
                   0,0,0,1,0,0,
@@ -60,7 +63,7 @@ test_that("belplau", {
   expect_equal(belplau(x6n, method="fzt")["a + c + d + f",], belplau(x6n, method="ezt")["a + c + d + f",])
   expect_equal(belplau(x6n, method="fzt")["frame",], belplau(x6n, method="ezt")["frame",])
   
-  ## T9 Test EZT on a join-closed subset
+  ## T9 Test ezt-j with figure 9 
   tt9 <- matrix(c(0,0,0,0,0,0,
                   1,0,0,0,1,1,
                   0,0,1,1,1,1,
