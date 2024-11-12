@@ -261,14 +261,6 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     rownames(W2c) <- nameRows(1-W2)
     W21 <- rbind(W2,W2c)
     
-    #W21 <- W2
-    
-    # add emptyset TODO: remove this after finding the bug
-    #W21 <- rbind(rep(0,ncol(W21)),W21)
-    #rownames(W21)[1] <- "emptyset"
-    #MACC <- c(0, MACC)
-    #names(MACC)[1] <- "emptyset"
-    
     # Step 2.0.2 Insert closure elements
     W2x <- W21
     for (i in 1:nrow(W21)) {

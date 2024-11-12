@@ -2,7 +2,7 @@
 #' 
 #' @param qq Commonality function
 #' @param n Frame dimension
-#' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a join-closed subset ("emt-j") 
+#' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m") 
 #' @param tt = NULL: 
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
@@ -13,7 +13,7 @@
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames)
 #' mFromQQ(x$qq, x$tt)
-mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
+mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
   # Obtain tt matrix from commonality function
   #
   # 1. Check that the input qq is a function
@@ -54,7 +54,7 @@ mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
     W21 <- W2
     MACC <- apply(tt, 1, qq)
     #
-    # Efficient Mobius Transform
+    # Efficient Mobius Transform: fig 6, cor 3.2.5
     #
     # Step 0.1.1 insert closure elements
     W2x <- W21
@@ -118,28 +118,114 @@ mFromQQRecursive <- function(qq,n,method = NULL,tt = NULL) {
     # Step 1.3: Compute the graph
     m0 <- MACC3
     
-    for (i in 1:nrow(W24)) {
+    for (i in nrow(W24):1) {
       xx <- W24[i,]
-      if (all(xx==0)) next 
       for (j in 1:nrow(W23)) {
         y <- W23[j,]
         z <- pmax(y,xx)
         # Find w, the position of z on the list W2
         w <- which(apply(W23, 1, function(x) return(all(x == z))))
         if (!all(z==y) && length(w) != 0) {
+          #print("subtract")
+          #print(m0[j])
+          #print(m0[w])
           m0[j] <- m0[j] - m0[w]
         }
       }
     }
     
     return(m0)
-  } else if (method=="emt-j") {
+  } else if (method=="emt-m") {
+    # Load tt, qq
+    W2 <- tt
+    W21 <- W2
+    MACC <- apply(tt, 1, qq)
     #
-    # Efficient Mobius Transform on a join-closed subset
+    # Efficient Mobius Transform on a meet-closed subset: fig 8, cor 3.2.6
     #
-    # TODO:
     
+    # add emptyset TODO: remove this after finding the bug
+    #W21 <- rbind(rep(0,ncol(W21)),W21)
+    #MACC <- c(0, MACC)
+
+    # Step 2.0.2 Insert closure elements
+    W2x <- W21
+    for (i in 1:nrow(W21)) {
+      for (j in i:nrow(W21)) {
+        # Step 2.0.2.1 insert meet-closure
+        z <- pmin(W21[i,],W21[j,])
+        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
+        if (length(x) == 0) {
+          z <- t(as.matrix(z))
+          rownames(z) <- nameRows(z)
+          W2x <- rbind(W2x,z)
+        }
+      }
+    }
+    W21 <- W2x
+    
+    if((nrow(W21)-nrow(W2))>0) {
+      MACCc <- rep(0,nrow(W21)-nrow(W2))
+      names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+      MACC1 <- c(MACC,MACCc)
+    } else {
+      MACC1 <- MACC
+    }
+    
+    # Step 2.0.3 Remove duplicates
+    MACC2 <- MACC1[!duplicated(W21)]
+    W22 <- W21[!duplicated(W21),]
+    
+    # Step 2.0.4 Sort W2, MACC
+    sort_order <- order(apply(W22,1,sum))
+    W23 <- W22[sort_order,]
+    MACC3 <- MACC2[sort_order]
+    
+    # Step 2.1: Find iota elements
+    # Step 2.1.1: Find upsets of each singleton in W23
+    # Step 2.1.2: Filter those that are non-empty
+    # Step 2.1.3: Find infimum of each upset
+    iota <- NULL
+    for (i in 1:ncol(W23)) {
+      ZZ <- rep(0,ncol(W23))
+      ZZ[i] <- 1
+      uZZ <- arrow(ZZ,W23,"up")
+      if(is.null(nrow(uZZ)) || nrow(uZZ) > 0) { 
+        inf_uZZ <- bound(if (is.null(nrow(uZZ))) t(as.matrix(uZZ)) else uZZ,"inf") 
+      } else { 
+        inf_uZZ <- NULL
+      }
+      iota <- rbind(iota, inf_uZZ)
+    }
+    W24 <- iota[!duplicated(iota),]
+    
+    # Step 2.2: Compute the graph
+    
+    # Step 2.2.1: Check if the first condition is satisfied
+    # Step 2.2.1: Check if the second condition is satisfied
+    m0 <- MACC3
+    
+    for (i in nrow(W24):1) {
+      xx <- W24[i,]
+      for (j in 1:nrow(W23)) {
+        y <- W23[j,]
+        z0 <- arrow(pmax(xx,y), W23, "up")
+        z <- bound(if (is.null(nrow(z0))) t(as.matrix(z0)) else as.matrix(z0), "inf")
+        # Find w, the position of z on the list W2
+        w <- which(apply(W23, 1, function(s) return(all(s == z)))) 
+        k0 <- W24[1:i,]
+        if ((length(w) > 0) && (!all(z==y)) && 
+            all((pmax(y,bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")) - z) >= 0)) {
+          #print("subtract")
+          #print(m0[j])
+          #print(m0[w])
+          m0[j] <- m0[j] - m0[w]
+        }
+      }
+    }
+    
+    return(m0)
   }  else {
-    stop("Input method must be one of fmt, emt, emt-j, emt-m")
+    stop("Input method must be one of fmt, emt, emt-m")
   }
 }

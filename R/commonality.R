@@ -224,7 +224,7 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
       ZZ <- rep(0,ncol(W23))
       ZZ[i] <- 1
       uZZ <- arrow(ZZ,W23,"up")
-      if(nrow(uZZ) > 0) { 
+      if(is.null(nrow(uZZ)) || nrow(uZZ) > 0) { 
         inf_uZZ <- bound(if (is.null(nrow(uZZ))) t(as.matrix(uZZ)) else uZZ,"inf") 
       } else { 
         inf_uZZ <- NULL
