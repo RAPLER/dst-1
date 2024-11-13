@@ -104,7 +104,25 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
   # Use Fast Zeta Transform
   #
   if(is.null(method)) {
-    stop("Input method cannot be NULL")
+    #
+    # 3.1 Check if there's hypothesis to be tested
+    if (!is.null(h)) {
+      # check that h is like x$tt
+      if ((is.matrix(h) == FALSE) ) {
+        stop("h parameter must be a (0,1) or logical matrix.")
+      }
+      if (ncol(h) != ncol(x$tt)) {
+        stop("Error in input arguments: number of columns of h not equal to ncol(x$tt)") 
+      }
+      if (is.null(colnames(h)) ) {
+        colnames(h) <- colnames(x$tt)
+        rownames(h) <- nameRows(h)
+      }  
+      resul <- belplauH(MACC,W2,h) 
+    } else {
+      resul <- belplauH(MACC, W2, h = W2) 
+    }
+    return(resul)
   } else if(method == "fzt") {
     
     bel <- rep(0, 2**ncol(W2))
@@ -355,25 +373,5 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
   } else {
     stop("Input method must be one of fzt, ezt, ezt-m")
   }
-  
-  #
-  # 3.1 Check if there's hypothesis to be tested
-  if (!is.null(h)) {
-    # check that h is like x$tt
-    if ((is.matrix(h) == FALSE) ) {
-      stop("h parameter must be a (0,1) or logical matrix.")
-    }
-    if (ncol(h) != ncol(x$tt)) {
-      stop("Error in input arguments: number of columns of h not equal to ncol(x$tt)") 
-    }
-    if (is.null(colnames(h)) ) {
-      colnames(h) <- colnames(x$tt)
-      rownames(h) <- nameRows(h)
-    }  
-    resul <- belplauH(MACC,W2,h) 
-  } else {
-    resul <- belplauH(MACC, W2, h = W2) 
-  }
-  return(resul)
 }
 
