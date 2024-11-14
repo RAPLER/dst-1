@@ -7,9 +7,9 @@
 bound(x, method = NULL)
 }
 \arguments{
-\item{method}{Return supremum or infimum}
+\item{x}{Binary matrix encoding the lattice from which the supremum or infimum is found}
 
-\item{tt}{Binary matrix encoding the lattice from which the supremum or infimum is found}
+\item{method}{Return supremum or infimum}
 }
 \value{
 b Binary vector of sup or inf

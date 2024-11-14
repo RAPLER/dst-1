@@ -1,6 +1,6 @@
 #' Find inf, sup of a lattice
 #' 
-#' @param tt  Binary matrix encoding the lattice from which the supremum or infimum is found
+#' @param x  Binary matrix encoding the lattice from which the supremum or infimum is found
 #' @param method Return supremum or infimum
 #' @return b Binary vector of sup or inf
 #' @author Peiyuan Zhu
