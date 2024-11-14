@@ -123,8 +123,8 @@ round(belplau(bpa3_plus_singl), 5)
 Now let's compute the commonality function from the mass function by Fast Zeta transform. 
 
 ```{r}
-bpa1 <- bca(matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), c(0.8, 0.2), fzt=TRUE, cnames=c("Peter", "John", "Mary"))
-bpa2 <- bca(matrix(c(0,1,1,1,1,1), nrow = 2, byrow = TRUE), c(0.6, 0.4), fzt=TRUE, cnames=c("Peter", "John", "Mary"))
+bpa1 <- bca(matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), c(0.8, 0.2), method = "fzt", cnames=c("Peter", "John", "Mary"))
+bpa2 <- bca(matrix(c(0,1,1,1,1,1), nrow = 2, byrow = TRUE), c(0.6, 0.4), method = "fzt", cnames=c("Peter", "John", "Mary"))
 bpa3<-dsrwonLogsumexp(bpa1, bpa2, use_qq = TRUE)
 ```
 
@@ -140,9 +140,9 @@ rownames(tt_abc) <- nameRows(tt_abc)
 Then, we apply Mobius inversion. With the mass function at hand, we can then use Fast Zeta Transform to compute belief and plausibility.
 
 ```{r}
-mass <- mFromQQRecursive(bpa3$qq,as.integer(bpa3$infovar[1,2]))
+mass <- mFromQQRecursive(bpa3$qq,as.integer(bpa3$infovar[1,2]), method = "fmt")
 bpa3$tt <- tt_abc[mass>0,]
 bpa3$spec <- cbind(1:nrow(bpa3$tt),mass[mass>0])
 colnames(bpa3$spec) <- c("specnb","mass")
-belplau(bpa3, fzt=TRUE)
+belplau(bpa3, method = "fzt")
 ```
