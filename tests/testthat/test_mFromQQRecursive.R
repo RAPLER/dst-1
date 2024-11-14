@@ -145,11 +145,12 @@ test_that("mFromQQRecursive", {
   expect_equal(unname(mFromQQRecursive(x8$qq,6,method="emt-m",tt8)[7]),mFromQQRecursive(x8$qq,6,method="fmt",tt8)[29])
   expect_equal(unname(mFromQQRecursive(x8$qq,6,method="emt-m",tt8)[8]),mFromQQRecursive(x8$qq,6,method="fmt",tt8)[64])
   
-  # Test 1.5.1: testing algorithm from figure 8 with the data from figure 6 (failed)
-  #mFromQQRecursive(x8$qq,6,method="emt",tt8)
-  #mFromQQRecursive(x8$qq,6,method="emt-m",tt8)
+  # Test 1.5.1: testing algorithm from figure 8 with the data from figure 6
+  # expected: Don't need to modify the domain
+  expect_equal(mFromQQRecursive(x6$qq,6,method="emt",tt6),mFromQQRecursive(x6$qq,6,method="emt-m",tt6))
   
   # Test 1.5.2: testing algorithm from figure 6 with the data from figure 8 (failed)
-  #mFromQQRecursive(x6$qq,6,method="emt",tt6)
-  #mFromQQRecursive(x6$qq,6,method="emt-m",tt6)
+  # expected: compute the join closure
+  #mFromQQRecursive(x8$qq,6,method="emt",tt8)
+  #mFromQQRecursive(x8$qq,6,method="emt-m",tt8)
 })

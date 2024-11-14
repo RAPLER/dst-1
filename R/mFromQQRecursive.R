@@ -199,6 +199,10 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
     }
     W24 <- iota[!duplicated(iota),]
     
+    # Sort iota elements
+    sort_order <- order(apply(W24,1,sum))
+    W24 <- W24[sort_order,]
+    
     # Step 2.2: Compute the graph
     
     # Step 2.2.1: Check if the first condition is satisfied
