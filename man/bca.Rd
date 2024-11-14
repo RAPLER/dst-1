@@ -9,7 +9,8 @@ bca(
   tt = NULL,
   m,
   qq = NULL,
-  fzt = FALSE,
+  W2c = NULL,
+  method = NULL,
   include_all = FALSE,
   cnames = NULL,
   con = NULL,
@@ -28,7 +29,9 @@ bca(
 
 \item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
 
-\item{fzt}{= FALSE Whether to use Fast Zeta Transform to construct commonality functions}
+\item{W2c}{= NULL: A binary matrix of support. Before combination with another bca with fzt-x, input the tt matrix of another bca.}
+
+\item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")}
 
 \item{include_all}{= FALSE Put TRUE to include all elements with 0 mass in the bca.}
 

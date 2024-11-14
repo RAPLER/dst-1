@@ -4,14 +4,16 @@
 \alias{commonality}
 \title{Compute qq from tt}
 \usage{
-commonality(tt, m, fzt = FALSE)
+commonality(tt, m, method = NULL, W2c = NULL)
 }
 \arguments{
-\item{tt}{Mass assignment set matrix}
+\item{tt}{Bolean description matrix}
 
-\item{m}{Mass assignment}
+\item{m}{Mass assignment vector of probabilities}
 
-\item{fzt}{= FALSE Whether to use Fast Zeta Transform}
+\item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a join-closed subset ("ezt-j")}
+
+\item{W2c}{= NULL: A binary matrix of support. Defaults to the complement of tt matrix}
 }
 \value{
 f Commonality function

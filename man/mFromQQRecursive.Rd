@@ -4,12 +4,16 @@
 \alias{mFromQQRecursive}
 \title{Construct a mass vector from qq function and ttmatrix of focal elements recursively.}
 \usage{
-mFromQQRecursive(qq, n)
+mFromQQRecursive(qq, n, method = NULL, tt = NULL)
 }
 \arguments{
 \item{qq}{Commonality function}
 
 \item{n}{Frame dimension}
+
+\item{method}{= NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m")}
+
+\item{tt}{= NULL:}
 }
 \value{
 m A corresponding mass vector

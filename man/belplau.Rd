@@ -4,7 +4,7 @@
 \alias{belplau}
 \title{Calculation of the degrees of Belief and Plausibility of a basic chance assignment (bca).}
 \usage{
-belplau(x, remove = FALSE, h = NULL, fzt = FALSE)
+belplau(x, remove = FALSE, h = NULL, method = NULL)
 }
 \arguments{
 \item{x}{A basic chance assignment mass function (see \code{\link{bca}}).}
@@ -13,7 +13,7 @@ belplau(x, remove = FALSE, h = NULL, fzt = FALSE)
 
 \item{h}{= NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}}
 
-\item{fzt}{= FALSE: Whether to use Fast Zeta Transform}
+\item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m")}
 }
 \value{
 A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
