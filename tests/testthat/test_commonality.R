@@ -107,4 +107,7 @@ test_that("commonality", {
   expect_equal(x61$qq(c(0,0,1,1,0,1)),x62$qq(c(0,0,1,1,0,1)))
   expect_equal(x61$qq(c(1,0,1,1,0,1)),x62$qq(c(1,0,1,1,0,1)))
   expect_equal(x61$qq(c(1,1,1,1,1,1)),x62$qq(c(1,1,1,1,1,1)))
+  
+  # TODO: Test ezt 
+  # TODO: Cross test
 })

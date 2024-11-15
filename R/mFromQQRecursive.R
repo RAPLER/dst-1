@@ -42,6 +42,9 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
         z <- pmin(x,y)
         w <- decode(rep(2, n), z)
         if (!all(z==y)) {
+          #print("subtract")
+          #print(z)
+          #print(y)
           m_seq[w + 1] <- m_seq[w + 1] - m_seq[j]
         }
       }
@@ -78,7 +81,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
       }
     }
     W21 <- W2x
-    
+    # TODO: compute values
     MACCc <- rep(0,nrow(W21)-nrow(W2))
     if (length(MACCc) > 0) { names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)] }
     MACC1 <- c(MACC,MACCc)
@@ -118,6 +121,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
     # Step 1.3: Compute the graph
     m0 <- MACC3
     
+    print(m0)
     for (i in nrow(W24):1) {
       xx <- W24[i,]
       for (j in 1:nrow(W23)) {
@@ -132,6 +136,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
           m0[j] <- m0[j] - m0[w]
         }
       }
+      print(m0)
     }
     
     return(m0)
@@ -165,6 +170,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
     W21 <- W2x
     
     if((nrow(W21)-nrow(W2))>0) {
+      # TODO: compute values
       MACCc <- rep(0,nrow(W21)-nrow(W2))
       names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
       MACC1 <- c(MACC,MACCc)

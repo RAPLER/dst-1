@@ -198,6 +198,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     }
     W21 <- W2x
     
+    # TODO: compute values
     MACCc <- rep(0,nrow(W21)-nrow(W2))
     names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
     MACC1 <- c(MACC,MACCc)
@@ -296,6 +297,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     W21 <- W2x
     
     if((nrow(W21)-nrow(W2))>0) {
+      # TODO: compute values
       MACCc <- rep(0,nrow(W21)-nrow(W2))
       names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
       MACC1 <- c(MACC,MACCc)
