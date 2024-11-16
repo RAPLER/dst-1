@@ -4,6 +4,7 @@
 #' @param n Frame dimension
 #' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m") 
 #' @param tt = NULL: 
+#' @param cnames = NULL: 
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
 #' @export
@@ -13,7 +14,7 @@
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames)
 #' mFromQQ(x$qq, x$tt)
-mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
+mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL, cnames = NULL) {
   # Obtain tt matrix from commonality function
   #
   # 1. Check that the input qq is a function
@@ -32,6 +33,13 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
     for (i in 1:length(m_seq)) {
       w <- encode(rep(2, n), i - 1)
       m_seq[i] <- qq(w)
+    }
+    
+    for (j in 1:2**n) {
+      y <- encode(rep(2, n), j - 1)
+      yy <- t(as.matrix(y))
+      colnames(yy) <- if(!is.null(tt)) colnames(tt) else if(!is.null(cnames)) cnames else stop("One of tt and cnames must not be NULL")
+      names(m_seq)[j] <- nameRows(yy)
     }
     
     for (i in 1:n) {
@@ -81,10 +89,13 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
       }
     }
     W21 <- W2x
-    # TODO: compute values
-    MACCc <- rep(0,nrow(W21)-nrow(W2))
-    if (length(MACCc) > 0) { names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)] }
-    MACC1 <- c(MACC,MACCc)
+    
+    if((nrow(W21)-nrow(W2))>0) {
+      MACCc <- apply(W21[(nrow(W2)+1):nrow(W21),],1,qq)
+      MACC1 <- c(MACC,MACCc)
+    } else {
+      MACC1 <- MACC
+    }
     
     # Step 0.2 Remove duplicates
     MACC2 <- MACC1[!duplicated(W21)]
@@ -121,7 +132,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
     # Step 1.3: Compute the graph
     m0 <- MACC3
     
-    print(m0)
+    #print(m0)
     for (i in nrow(W24):1) {
       xx <- W24[i,]
       for (j in 1:nrow(W23)) {
@@ -136,7 +147,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
           m0[j] <- m0[j] - m0[w]
         }
       }
-      print(m0)
+      #print(m0)
     }
     
     return(m0)
@@ -148,11 +159,6 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
     #
     # Efficient Mobius Transform on a meet-closed subset: fig 8, cor 3.2.6
     #
-    
-    # add emptyset TODO: remove this after finding the bug
-    #W21 <- rbind(rep(0,ncol(W21)),W21)
-    #MACC <- c(0, MACC)
-
     # Step 2.0.2 Insert closure elements
     W2x <- W21
     for (i in 1:nrow(W21)) {
@@ -170,9 +176,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL) {
     W21 <- W2x
     
     if((nrow(W21)-nrow(W2))>0) {
-      # TODO: compute values
-      MACCc <- rep(0,nrow(W21)-nrow(W2))
-      names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+      MACCc <- apply(W21[(nrow(W2)+1):nrow(W21),],1,qq)
       MACC1 <- c(MACC,MACCc)
     } else {
       MACC1 <- MACC

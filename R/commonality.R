@@ -95,7 +95,7 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     }
     W21 <- W2x
     
-    # TODO: compute values
+    # insert zeros
     MACCc <- rep(0,nrow(W21)-nrow(W2))
     names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
     MACC1 <- c(MACC,MACCc)
@@ -203,7 +203,7 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     }
     W21 <- W2x
     
-    # TODO: compute values
+    # insert zeros
     MACCc <- rep(0,nrow(W21)-nrow(W2))
     names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
     MACC1 <- c(MACC,MACCc)

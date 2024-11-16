@@ -29,6 +29,7 @@ mFromQQ <- function(qq, tt) {
   
   for (i in 1:nrow(tt)) {
     m0 <- mobiusInvHQQ(qq,tt[i,])
+    names(m0) <- nameRows(t(as.matrix(tt[i,])))
     if (m0 > 0) {
       m <- c(m, m0)
     }
