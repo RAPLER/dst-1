@@ -17,6 +17,11 @@ b Binary vector of sup or inf
 \description{
 Find inf, sup of a lattice
 }
+\examples{
+M <- matrix(c(0,1,1,1,1,1),nrow=2)
+x <- t(as.matrix(c(0,1,0)))
+bound(M,"inf")
+}
 \author{
 Peiyuan Zhu
 }

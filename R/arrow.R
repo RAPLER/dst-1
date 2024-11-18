@@ -7,6 +7,9 @@
 #' @author Peiyuan Zhu
 #' @export
 #' @examples 
+#' M <- matrix(c(0,1,1,1,1,1),nrow=2)
+#' x <- c(0,1,0)
+#' arrow(x,M,"up")
 arrow<-function(x,M,method=NULL){
   if(method=="up") {
     s <- M[apply(t(t(M)>=x), 1, all),]

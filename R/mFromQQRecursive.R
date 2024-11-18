@@ -13,7 +13,7 @@
 #' m<- c(.9,.1)
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames)
-#' mFromQQ(x$qq, x$tt)
+#' mFromQQRecursive(x$qq, 2, method = "fmt", cnames = cnames)
 mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL, cnames = NULL) {
   # Obtain tt matrix from commonality function
   #

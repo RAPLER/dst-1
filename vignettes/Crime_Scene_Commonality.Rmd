@@ -140,7 +140,7 @@ rownames(tt_abc) <- nameRows(tt_abc)
 Then, we apply Mobius inversion. With the mass function at hand, we can then use Fast Zeta Transform to compute belief and plausibility.
 
 ```{r}
-mass <- mFromQQRecursive(bpa3$qq,as.integer(bpa3$infovar[1,2]), method = "fmt")
+mass <- mFromQQRecursive(bpa3$qq,as.integer(bpa3$infovar[1,2]), method = "fmt",cnames=unlist(bpa3$valuenames))
 bpa3$tt <- tt_abc[mass>0,]
 bpa3$spec <- cbind(1:nrow(bpa3$tt),mass[mass>0])
 colnames(bpa3$spec) <- c("specnb","mass")

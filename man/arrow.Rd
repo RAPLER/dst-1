@@ -19,6 +19,11 @@ b Binary vector of sup or inf
 \description{
 Find upset, downset of a set among a lattice
 }
+\examples{
+M <- matrix(c(0,1,1,1,1,1),nrow=2)
+x <- c(0,1,0)
+arrow(x,M,"up")
+}
 \author{
 Peiyuan Zhu
 }

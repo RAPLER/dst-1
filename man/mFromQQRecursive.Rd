@@ -4,7 +4,7 @@
 \alias{mFromQQRecursive}
 \title{Construct a mass vector from qq function and ttmatrix of focal elements recursively.}
 \usage{
-mFromQQRecursive(qq, n, method = NULL, tt = NULL)
+mFromQQRecursive(qq, n, method = NULL, tt = NULL, cnames = NULL)
 }
 \arguments{
 \item{qq}{Commonality function}
@@ -14,6 +14,8 @@ mFromQQRecursive(qq, n, method = NULL, tt = NULL)
 \item{method}{= NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m")}
 
 \item{tt}{= NULL:}
+
+\item{cnames}{= NULL:}
 }
 \value{
 m A corresponding mass vector
@@ -26,7 +28,7 @@ tt<- t(matrix(c(1,0,1,1),ncol = 2))
 m<- c(.9,.1)
 cnames <- c("yes","no")
 x<- bca(tt, m, cnames=cnames)
-mFromQQ(x$qq, x$tt)
+mFromQQRecursive(x$qq, 2, method = "fmt", cnames = cnames)
 }
 \author{
 Peiyuan Zhu
