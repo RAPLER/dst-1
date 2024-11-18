@@ -3,8 +3,8 @@
 #' @param qq Commonality function
 #' @param n Frame dimension
 #' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m") 
-#' @param tt = NULL: 
-#' @param cnames = NULL: 
+#' @param tt = NULL: Subsets whose masses are evaluated
+#' @param cnames = NULL: A character vector containing the names of the elements of the frame of discernment
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
 #' @export
