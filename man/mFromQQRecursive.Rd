@@ -13,9 +13,9 @@ mFromQQRecursive(qq, n, method = NULL, tt = NULL, cnames = NULL)
 
 \item{method}{= NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m")}
 
-\item{tt}{= NULL:}
+\item{tt}{= NULL: Subsets whose masses are evaluated}
 
-\item{cnames}{= NULL:}
+\item{cnames}{= NULL: A character vector containing the names of the elements of the frame of discernment}
 }
 \value{
 m A corresponding mass vector

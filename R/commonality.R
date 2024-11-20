@@ -46,7 +46,10 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
       }
     }
     
-    f <- function(x) {
+    f <- function(x=NULL) {
+      if (is.null(x)) {
+        return(m_seq)
+      }
       # print(m_seq)
       w <- decode(rep(2, ncol(tt)), x)
       q <- m_seq[w + 1]
@@ -155,8 +158,11 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
       }
     }
     
-    f <- function(x) {
+    f <- function(x=NULL) {
       # print(Q0)
+      if (is.null(x)) {
+        return(Q0)
+      }
       z <- t(as.matrix(x))
       colnames(z) <- colnames(W2)
       nz <- nameRows(z)
@@ -258,6 +264,9 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     }
     
     f <- function(x) {
+      if (is.null(x)) {
+        return(Q0)
+      }
       z <- t(as.matrix(x))
       colnames(z) <- colnames(W2)
       nz <- nameRows(z)

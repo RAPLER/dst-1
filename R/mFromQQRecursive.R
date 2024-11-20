@@ -239,7 +239,7 @@ mFromQQRecursive <- function(qq, n, method = NULL, tt = NULL, cnames = NULL) {
     }
     
     return(m0)
-  }  else {
+  } else {
     stop("Input method must be one of fmt, emt, emt-m")
   }
 }
