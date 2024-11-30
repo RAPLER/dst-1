@@ -16,21 +16,36 @@
 #' qq(c(1,0,0))
 commonality <- function(tt, m, method = NULL, W2c = NULL){
   if (is.null(method)) {
-    f <- function(x) {
-      q <- 0
-      for (i in 1:nrow(tt)) {
-        if (all(tt[i,] - x >= 0)) {
-          q <- q + m[i]
+    Q0 <- rep(0, 2**ncol(tt))
+    for (i in 1:length(Q0)) {
+      y <- encode(rep(2, ncol(tt)), i - 1)
+      yy <- t(as.matrix(y))
+      colnames(yy) <- colnames(tt)
+      names(Q0)[i] <- nameRows(yy)
+    }
+    for (i in 1:nrow(tt)) {
+      for (j in 1:length(Q0)) {
+        w <- encode(rep(2,ncol(tt)),j - 1)
+        if (all(tt[i,] - w >= 0)) {
+          Q0[j] <- Q0[j] + m[i]
         }
       }
-      return(q)
     }
+    return(Q0)
   } else if (method=="fzt") {
     # Fast Zeta Transform
-    m_seq <- rep(0, 2**ncol(tt))
+    Q0 <- rep(0, 2**ncol(tt))
+    
+    for (i in 1:length(Q0)) {
+      y <- encode(rep(2, ncol(tt)), i - 1)
+      yy <- t(as.matrix(y))
+      colnames(yy) <- colnames(tt)
+      names(Q0)[i] <- nameRows(yy)
+    }
+    
     for (i in 1:nrow(tt)) {
       w <- decode(rep(2, ncol(tt)), tt[i,])
-      m_seq[w + 1] <- m[i]
+      Q0[w + 1] <- m[i]
     }
 
     for (i in 1:ncol(tt)) {
@@ -41,22 +56,12 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
         z <- pmin(x,y)
         w <- decode(rep(2, ncol(tt)), z)
         if (!all(z==y)) {
-          m_seq[w + 1] <- m_seq[j] + m_seq[w + 1]
+          Q0[w + 1] <- Q0[j] + Q0[w + 1]
         }
       }
     }
     
-    f <- function(x=NULL) {
-      if (is.null(x)) {
-        return(m_seq)
-      }
-      # print(m_seq)
-      w <- decode(rep(2, ncol(tt)), x)
-      q <- m_seq[w + 1]
-      # print(q)
-      return(q)
-    }
-    return(f)
+    return(Q0)
   } else if (method=="ezt") {
     #
     # Use Efficient Zeta Transform
@@ -108,7 +113,7 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     W22 <- W21[!duplicated(W21),]
     
     # Step 1.0: Sort W2, MACC
-    sort_order <- order(apply(W22,1,sum))
+    sort_order <- order(apply(W22,1,function(x) decode(rep(2,ncol(W22)),x)))
     W23 <- W22[sort_order,]
     MACC3 <- MACC2[sort_order]
     
@@ -158,23 +163,7 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
       }
     }
     
-    f <- function(x=NULL) {
-      # print(Q0)
-      if (is.null(x)) {
-        return(Q0)
-      }
-      z <- t(as.matrix(x))
-      colnames(z) <- colnames(W2)
-      nz <- nameRows(z)
-      w <- Q0[nz]
-      # print(w)
-      if(is.na(w)) {
-        return(0)
-      } else {
-        return(unname(w))
-      }
-    }
-    return(f)
+    return(Q0)
   } else if (method=="ezt-j") {
     #
     # Efficient Zeta Transform on a join-closed subset
@@ -210,6 +199,7 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     W21 <- W2x
     
     # insert zeros
+    # TODO: change this
     MACCc <- rep(0,nrow(W21)-nrow(W2))
     names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
     MACC1 <- c(MACC,MACCc)
@@ -263,21 +253,7 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
       }
     }
     
-    f <- function(x) {
-      if (is.null(x)) {
-        return(Q0)
-      }
-      z <- t(as.matrix(x))
-      colnames(z) <- colnames(W2)
-      nz <- nameRows(z)
-      w <- Q0[nz]
-      if(is.na(w)) {
-        return(0)
-      } else {
-        return(unname(w))
-      }
-    }
-    return(f)
+    return(Q0)
   } else {
     stop("Input method must be one of NULL, fzt, ezt, ezt-j, ezt-m")
   }

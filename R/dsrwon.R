@@ -357,7 +357,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
   if (use_qq == TRUE) {
     q1 <- x$qq
     q2 <- y$qq
-    qq <- function(X) q1(X) * q2(X)
+    qq <- q1 * q2
     con <- 0
     tt <- NULL
     spec <- NULL

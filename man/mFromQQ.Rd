@@ -2,27 +2,31 @@
 % Please edit documentation in R/mFromQQ.R
 \name{mFromQQ}
 \alias{mFromQQ}
-\title{Construct a mass vector from qq function.}
+\title{Construct a mass vector from qq function and ttmatrix of focal elements recursively.}
 \usage{
-mFromQQ(qq, tt)
+mFromQQ(qq, n, cnames, method = NULL)
 }
 \arguments{
 \item{qq}{Commonality function}
 
-\item{tt}{logical description matrix from ttmatrixFromQQ}
+\item{n}{Frame dimension}
+
+\item{method}{= NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m")}
+
+\item{cnames:}{A character vector containing the names of the elements of the frame of discernment}
 }
 \value{
 m A corresponding mass vector
 }
 \description{
-Construct a mass vector from qq function.
+Construct a mass vector from qq function and ttmatrix of focal elements recursively.
 }
 \examples{
 tt<- t(matrix(c(1,0,1,1),ncol = 2))
 m<- c(.9,.1)
 cnames <- c("yes","no")
 x<- bca(tt, m, cnames=cnames)
-mFromQQ(x$qq, x$tt)
+mFromQQ(x$qq, 2, method = "fmt", cnames = cnames)
 }
 \author{
 Peiyuan Zhu
