@@ -255,6 +255,6 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     
     return(Q0)
   } else {
-    stop("Input method must be one of NULL, fzt, ezt, ezt-j, ezt-m")
+    stop("Input method must be one of NULL, fzt, ezt, ezt-j")
   }
 }
