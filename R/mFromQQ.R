@@ -181,9 +181,6 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
         # Find w, the position of z on the list W2
         w <- which(apply(W23, 1, function(x) return(all(x == z))))
         if (!all(z==y) && length(w) != 0) {
-          #print("subtract")
-          #print(m0[j])
-          #print(m0[w])
           m0[j] <- m0[j] - m0[w]
         }
       }
