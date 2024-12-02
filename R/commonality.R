@@ -69,16 +69,15 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     W2 <- tt
     MACC <- m
     names(MACC) <- rownames(W2)
-    # Step 0.1 Insert complements of W2 into W2
-    if (is.null(W2c)) {
-      W2c <- 1-W2
-      rownames(W2c) <- nameRows(1-W2)
-    } else {
+    
+    # Step 0.1 Insert W2c into W2
+    if (!is.null(W2c)) {
       colnames(W2c) <- colnames(W2)
       rownames(W2c) <- nameRows(W2c)
+      W21 <- rbind(W2,W2c)
+    } else {
+      W21 <- W2
     }
-    
-    W21 <- rbind(W2,W2c)
     
     # Step 0.1.1 insert closure elements
     W2x <- W21
@@ -103,9 +102,14 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     }
     W21 <- W2x
     
-    # insert zeros
-    MACCc <- rep(0,nrow(W21)-nrow(W2))
-    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    # insert commonality values
+    # TODO: test this
+    if (nrow(W21)-nrow(W2) > 0) {
+      MACCc <- rep(0,nrow(W21)-nrow(W2))
+      names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    } else {
+      MACCc <- NULL
+    }
     MACC1 <- c(MACC,MACCc)
     
     # Step 0.2 Remove duplicates
@@ -171,16 +175,15 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     W2 <- tt
     MACC <- m
     names(MACC) <- rownames(W2)
-    # Step 0.1 Insert complements of W2 into W2
-    if (is.null(W2c)) {
-      W2c <- 1-W2
-      rownames(W2c) <- nameRows(1-W2)
-    } else {
+    
+    # Step 0.1 Insert W2c into W2
+    if (!is.null(W2c)) {
       colnames(W2c) <- colnames(W2)
       rownames(W2c) <- nameRows(W2c)
+      W21 <- rbind(W2,W2c)
+    } else {
+      W21 <- W2
     }
-    
-    W21 <- rbind(W2,W2c)
     
     # Step 2.0.2 Insert closure elements
     W2x <- W21
@@ -198,10 +201,14 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     }
     W21 <- W2x
     
-    # insert zeros
-    # TODO: change this
-    MACCc <- rep(0,nrow(W21)-nrow(W2))
-    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    # insert commonality values
+    # TODO: test this
+    if (nrow(W21)-nrow(W2) > 0) {
+      MACCc <- rep(0,nrow(W21)-nrow(W2))
+      names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
+    } else {
+      MACCc <- NULL
+    }
     MACC1 <- c(MACC,MACCc)
     
     # Step 2.0.3 Remove duplicates
@@ -231,6 +238,10 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     }
     W24 <- iota[!duplicated(iota),]
     
+    # Step 2.1.4 Sort W24
+    sort_order <- order(apply(W24,1,sum))
+    W24 <- W24[sort_order,]
+
     # Step 2.2: Compute the graph
     
     # Step 2.2.1: Check if the first condition is satisfied

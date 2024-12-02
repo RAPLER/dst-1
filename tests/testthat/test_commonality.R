@@ -65,7 +65,7 @@ test_that("commonality", {
   
   expect_equal(w$qq[names(z$qq)],z$qq)
   
-  # Test ezt-j with figure 7
+  # Test ezt-j with figure 5
   x61 <- bca(tt6, m6, cnames=cnames6, method="fzt")
   x62 <- bca(tt6, m6, cnames=cnames6, method="ezt-j")
   
@@ -74,3 +74,4 @@ test_that("commonality", {
   # TODO: Test ezt 
   # TODO: Cross test
 })
+
