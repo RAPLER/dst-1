@@ -9,6 +9,7 @@
 #' @param mcores Make use of multiple cores ("yes") or not ("no"). Default = "no".
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
 #' @param use_qq = TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE
+#' @param method = NULL
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
 #' @param skpt_tt Skip reconstruction of tt matrix. Default = FALSE.
 #' @param infovarnames Deprecated. Old name for \code{varnames}.
@@ -46,7 +47,7 @@
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, method = NULL, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
   # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
@@ -353,10 +354,138 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, varna
   # 
   # End case with use of subsets names
   #
-  
   if (use_qq == TRUE) {
     q1 <- x$qq
     q2 <- y$qq
+    
+    # Augment q1 with q2, q2 with q1
+    n <- unname(x$infovar[,2])
+    cnames <- x$valuenames[[1]]
+    tt1 <- matrix(rep(0,length(q1) * n), nrow = length(q1), ncol = n)
+    colnames(tt1) <- cnames
+    
+    for (i in 1:nrow(tt1)) {
+      if (names(q1[i]) == "\u00f8") { 
+        next 
+      } else if (names(q1[i]) == "frame") { 
+        tt1[i,] <- rep(1,n)
+      } else { 
+        tt1[i,] <- (cnames %in% trimws(unlist(strsplit(names(q1[i]) , "\\+")))) 
+      }
+    }
+    rownames(tt1) <- names(q1)
+    
+    n <- unname(x$infovar[,2])
+    cnames <- x$valuenames[[1]]
+    tt2 <- matrix(rep(0,length(q2) * n), nrow = length(q2), ncol = n)
+    colnames(tt2) <- cnames
+    for (i in 1:nrow(tt2)) {
+      if (names(q2[i]) == "\u00f8") { 
+        next 
+      } else if (names(q2[i]) == "frame") { 
+        tt2[i,] <- rep(1,n)
+      } else { 
+        tt2[i,] <- (cnames %in% trimws(unlist(strsplit(names(q2[i]) , "\\+")))) 
+      }
+    }
+    rownames(tt2) <- names(q2)
+    
+    # Take union
+    ttx <- rbind(tt1,tt2)
+    
+    # Add closure elements
+    if (is.null(method) || method=="fmt") { 
+      
+    } else if (method=="emt" || method=="emt-m") { 
+      
+      if (method=="emt") {
+        tty <- ttx
+        for (i in 1:nrow(ttx)) { 
+          for (j in i:nrow(ttx)) { 
+            z <- pmax(ttx[i,],ttx[j,])
+            x <- which(apply(tty, 1, function(x) return(all(x == z))))
+            if (length(x) == 0) {
+              z <- t(as.matrix(z))
+              rownames(z) <- nameRows(z)
+              tty <- rbind(tty,z)
+            }
+            
+            z <- pmin(ttx[i,],ttx[j,])
+            x <- which(apply(tty, 1, function(x) return(all(x == z))))
+            if (length(x) == 0) {
+              z <- t(as.matrix(z))
+              rownames(z) <- nameRows(z)
+              tty <- rbind(tty,z)
+            }
+          }
+        }
+      }
+    
+      if (method=="emt-m") { 
+        tty <- ttx
+        for (i in 1:nrow(ttx)) { 
+          for (j in i:nrow(ttx)) { 
+            z <- pmin(ttx[i,],ttx[j,])
+            x <- which(apply(tty, 1, function(x) return(all(x == z))))
+            if (length(x) == 0) {
+              z <- t(as.matrix(z))
+              rownames(z) <- nameRows(z)
+              tty <- rbind(tty,z)
+            }
+          }
+        }
+      }
+      
+      # Remove duplicates of the joint
+      tty <- tty[!duplicated(tty),]
+      
+      # Sort order of the joint
+      sort_order <- order(apply(tty,1,function(x) decode(rep(2,ncol(tty)),x)))
+      tty <- tty[sort_order,]
+      
+      # Evaluate commonality values for q1, q2
+      q1x <- rep(0, nrow(tty))
+      q2x <- rep(0, nrow(tty))
+      for (i in 1:nrow(tty)) {
+        z <- tty[i,]
+        w1 <- which(apply(tt1, 1, function(x) return(all(x == z))))
+        if (length(w1) == 0) {
+          
+          for (j in 1:nrow(tt1)) {
+            if (all((tt1[j,] - z >= 0))) {
+              q1x[i] <- unname(q1[j])
+              names(q1x)[i] <- nameRows(t(as.matrix(z)))
+              break
+            }
+          }
+          
+        } else {
+          q1x[i] <- q1[w1]
+          names(q1x)[i] <- names(q1[w1])
+        }
+        
+        w2 <- which(apply(tt2, 1, function(x) return(all(x == z))))
+        if (length(w2) == 0) {
+          
+          for (j in 1:nrow(tt2)) {
+            if (all((tt2[j,] - z) >= 0)) {
+              q2x[i] <- unname(q2[j])
+              names(q2x)[i] <- nameRows(t(as.matrix(z)))
+              break
+            }
+          }
+          
+        } else {
+          q2x[i] <- q2[w2]
+          names(q2x)[i] <- names(q2[w2])
+        }
+      }
+      
+      q1 <- q1x
+      q2 <- q2x
+    }
+    
+    # Combine
     qq <- q1 * q2
     con <- 0
     tt <- NULL

@@ -57,12 +57,15 @@ test_that("commonality", {
   tty <- matrix(c(0,1,1,1,1,1), nrow = 2, 
                 byrow = TRUE)
   
-  x <- bca(tt = ttx, m = c(0.4, 0.6), W2c = tty, method="ezt",
+  x <- bca(tt = ttx, m = c(0.4, 0.6), method="ezt",
            cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
-  y <- bca(tt =  tty, m = c(0.3, 0.7), W2c = ttx, method="ezt",  
+  y <- bca(tt =  tty, m = c(0.3, 0.7), method="ezt",  
            cnames = c("a", "b", "c"),  varnames = "y", idvar = 2)
-  z <- dsrwon(x,y,use_qq = TRUE)
   
+  # TODO: finish this
+  z <- dsrwon(x,y,use_qq = TRUE, method="emt")
+  
+  # TODO: pass this
   expect_equal(w$qq[names(z$qq)],z$qq)
   
   # Test ezt-j with figure 5

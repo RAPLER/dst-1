@@ -5,7 +5,6 @@
 #' @param tt Bolean description matrix
 #' @param m Mass assignment vector of probabilities
 #' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a join-closed subset ("ezt-j")
-#' @param W2c = NULL: A binary matrix of support. Defaults to the complement of tt matrix
 #' @return f Commonality function
 #' @author Peiyuan Zhu
 #' @export
@@ -14,7 +13,7 @@
 #' m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 #' qq <- commonality(x$tt,x$spec[,2])
 #' qq(c(1,0,0))
-commonality <- function(tt, m, method = NULL, W2c = NULL){
+commonality <- function(tt, m, method = NULL){
   if (is.null(method)) {
     Q0 <- rep(0, 2**ncol(tt))
     for (i in 1:length(Q0)) {
@@ -66,54 +65,12 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     #
     # Use Efficient Zeta Transform
     #
-    W2 <- tt
+    W21 <- tt
     MACC <- m
-    names(MACC) <- rownames(W2)
-    
-    # Step 0.1 Insert W2c into W2
-    if (!is.null(W2c)) {
-      colnames(W2c) <- colnames(W2)
-      rownames(W2c) <- nameRows(W2c)
-      W21 <- rbind(W2,W2c)
-    } else {
-      W21 <- W2
-    }
-    
-    # Step 0.1.1 insert closure elements
-    W2x <- W21
-    for (i in 1:nrow(W21)) {
-      for (j in i:nrow(W21)) {
-        z <- pmax(W21[i,],W21[j,])
-        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
-        if (length(x) == 0) {
-          z <- t(as.matrix(z))
-          rownames(z) <- nameRows(z)
-          W2x <- rbind(W2x,z)
-        }
-        
-        z <- pmin(W21[i,],W21[j,])
-        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
-        if (length(x) == 0) {
-          z <- t(as.matrix(z))
-          rownames(z) <- nameRows(z)
-          W2x <- rbind(W2x,z)
-        }
-      }
-    }
-    W21 <- W2x
-    
-    # insert commonality values
-    # TODO: test this
-    if (nrow(W21)-nrow(W2) > 0) {
-      MACCc <- rep(0,nrow(W21)-nrow(W2))
-      names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
-    } else {
-      MACCc <- NULL
-    }
-    MACC1 <- c(MACC,MACCc)
+    names(MACC) <- rownames(W21)
     
     # Step 0.2 Remove duplicates
-    MACC2 <- MACC1[!duplicated(W21)]
+    MACC2 <- MACC[!duplicated(W21)]
     W22 <- W21[!duplicated(W21),]
     
     # Step 1.0: Sort W2, MACC
@@ -149,19 +106,12 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     
     for (i in 1:nrow(W24)) {
       xx <- W24[i,]
-      if (all(xx==0)) next 
       for (j in 1:nrow(W23)) {
-        # print(i)
-        # print(j)
         y <- W23[j,]
         z <- pmax(y,xx)
         # Find w, the position of z on the list W2
         w <- which(apply(W23, 1, function(x) return(all(x == z))))
-        # print(xx)
-        # print(y)
-        # print(z)
         if (!all(z==y) && length(w) != 0) {
-          # print("update")
           Q0[j] <- Q0[j] + Q0[w]
         }
       }
@@ -172,47 +122,12 @@ commonality <- function(tt, m, method = NULL, W2c = NULL){
     #
     # Efficient Zeta Transform on a join-closed subset
     #
-    W2 <- tt
+    W21 <- tt
     MACC <- m
-    names(MACC) <- rownames(W2)
-    
-    # Step 0.1 Insert W2c into W2
-    if (!is.null(W2c)) {
-      colnames(W2c) <- colnames(W2)
-      rownames(W2c) <- nameRows(W2c)
-      W21 <- rbind(W2,W2c)
-    } else {
-      W21 <- W2
-    }
-    
-    # Step 2.0.2 Insert closure elements
-    W2x <- W21
-    for (i in 1:nrow(W21)) {
-      for (j in i:nrow(W21)) {
-        # Step 2.0.2.1 insert meet-closure
-        z <- pmin(W21[i,],W21[j,])
-        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
-        if (length(x) == 0) {
-          z <- t(as.matrix(z))
-          rownames(z) <- nameRows(z)
-          W2x <- rbind(W2x,z)
-        }
-      }
-    }
-    W21 <- W2x
-    
-    # insert commonality values
-    # TODO: test this
-    if (nrow(W21)-nrow(W2) > 0) {
-      MACCc <- rep(0,nrow(W21)-nrow(W2))
-      names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
-    } else {
-      MACCc <- NULL
-    }
-    MACC1 <- c(MACC,MACCc)
+    names(MACC) <- rownames(W21)
     
     # Step 2.0.3 Remove duplicates
-    MACC2 <- MACC1[!duplicated(W21)]
+    MACC2 <- MACC[!duplicated(W21)]
     W22 <- W21[!duplicated(W21),]
     
     # Step 2.0.4 Sort W2, MACC

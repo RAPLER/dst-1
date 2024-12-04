@@ -205,6 +205,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
       }
     }
     W21 <- W2
+    
     #
     # Efficient Mobius Transform on a meet-closed subset: fig 8, cor 3.2.6
     #
