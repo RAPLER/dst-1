@@ -361,34 +361,11 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
     # Augment q1 with q2, q2 with q1
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt1 <- matrix(rep(0,length(q1) * n), nrow = length(q1), ncol = n)
-    colnames(tt1) <- cnames
-    
-    for (i in 1:nrow(tt1)) {
-      if (names(q1[i]) == "\u00f8") { 
-        next 
-      } else if (names(q1[i]) == "frame") { 
-        tt1[i,] <- rep(1,n)
-      } else { 
-        tt1[i,] <- (cnames %in% trimws(unlist(strsplit(names(q1[i]) , "\\+")))) 
-      }
-    }
-    rownames(tt1) <- names(q1)
+    tt1 <- ttmatrixFromQQ(q1,n,cnames)
     
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt2 <- matrix(rep(0,length(q2) * n), nrow = length(q2), ncol = n)
-    colnames(tt2) <- cnames
-    for (i in 1:nrow(tt2)) {
-      if (names(q2[i]) == "\u00f8") { 
-        next 
-      } else if (names(q2[i]) == "frame") { 
-        tt2[i,] <- rep(1,n)
-      } else { 
-        tt2[i,] <- (cnames %in% trimws(unlist(strsplit(names(q2[i]) , "\\+")))) 
-      }
-    }
-    rownames(tt2) <- names(q2)
+    tt2 <- ttmatrixFromQQ(q2,n,cnames)
     
     # Take union
     ttx <- rbind(tt1,tt2)

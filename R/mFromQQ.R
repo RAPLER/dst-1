@@ -78,74 +78,13 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     
     return(m0)
   } else if (method == "emt") {
-    # Load qq
-    MACC <- qq
-    
-    # Load tt
-    W2 <- matrix(rep(0,length(qq) * n), nrow = length(qq), ncol = n)
-    colnames(W2) <- cnames
-    for (i in 1:nrow(W2)) {
-      if (names(qq[i]) == "\u00f8") { 
-        next 
-      } else if (names(qq[i]) == "frame") { 
-        W2[i,] <- rep(1,n)
-      } else { 
-        W2[i,] <- (cnames %in% trimws(unlist(strsplit(names(qq[i]) , "\\+")))) 
-      }
-    }
-    W21 <- W2
+    # Load qq, tt
+    MACC3 <- qq
+    W23 <- ttmatrixFromQQ(qq,n,cnames)
     
     #
     # Efficient Mobius Transform: fig 6, cor 3.2.5
     #
-    # Step 0.1.1 insert closure elements
-    W2x <- W21
-    for (i in 1:nrow(W21)) {
-      for (j in i:nrow(W21)) {
-        z <- pmax(W21[i,],W21[j,])
-        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
-        if (length(x) == 0) {
-          z <- t(as.matrix(z))
-          rownames(z) <- nameRows(z)
-          W2x <- rbind(W2x,z)
-        }
-        
-        z <- pmin(W21[i,],W21[j,])
-        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
-        if (length(x) == 0) {
-          z <- t(as.matrix(z))
-          rownames(z) <- nameRows(z)
-          W2x <- rbind(W2x,z)
-        }
-      }
-    }
-    W21 <- W2x
-    
-    if (nrow(W21)-nrow(W2) > 0) {
-      MACCc <- rep(0,nrow(W21)-nrow(W2))
-      for (i in 1:(nrow(W21)-nrow(W2))) {
-        for (j in 1:nrow(W2)) {
-          if (all((W2[j,] - W21[nrow(W2)+i,]) >= 0)) {
-            MACCc[i] <- unname(MACC[j])
-            break
-          }
-        }
-      }
-    } else {
-      MACCc <- NULL
-    }
-    names(MACCc) <- rownames(W21)[(nrow(W2)+1):nrow(W21)]
-    MACC1 <- c(MACC,MACCc)
-    
-    # Step 0.2 Remove duplicates
-    MACC2 <- MACC1[!duplicated(W21)]
-    W22 <- W21[!duplicated(W21),]
-    
-    # Step 1.0: Sort W2, MACC
-    sort_order <- order(apply(W22,1,function(x) decode(rep(2,ncol(W22)),x)))
-    W23 <- W22[sort_order,]
-    MACC3 <- MACC2[sort_order]
-    
     # Step 1.1: Find all join-irreducible elements by checking if it's a union of any two elements less than that
     rho <- rowSums(W23)
     jir <- rep(0,nrow(W23))
@@ -189,58 +128,13 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     
     return(m0)
   } else if (method=="emt-m") {
-    # Load qq
-    MACC <- qq
-    
-    # Load tt
-    W2 <- matrix(rep(0,length(qq) * n), nrow = length(qq), ncol = n)
-    colnames(W2) <- cnames
-    for (i in 1:nrow(W2)) {
-      if (names(qq[i]) == "\u00f8") { 
-        next 
-      } else if (names(qq[i]) == "frame") { 
-        W2[i,] <- rep(1,n)
-      } else { 
-        W2[i,] <- (cnames %in% trimws(unlist(strsplit(names(qq[i]) , "\\+")))) 
-      }
-    }
-    W21 <- W2
+    # Load qq, tt
+    MACC3 <- qq
+    W23 <- ttmatrixFromQQ(qq,n,cnames)
     
     #
     # Efficient Mobius Transform on a meet-closed subset: fig 8, cor 3.2.6
     #
-    # Step 2.0.2 Insert closure elements
-    W2x <- W21
-    for (i in 1:nrow(W21)) {
-      for (j in i:nrow(W21)) {
-        # Step 2.0.2.1 insert meet-closure
-        z <- pmin(W21[i,],W21[j,])
-        x <- which(apply(W2x, 1, function(x) return(all(x == z))))
-        if (length(x) == 0) {
-          z <- t(as.matrix(z))
-          rownames(z) <- nameRows(z)
-          W2x <- rbind(W2x,z)
-        }
-      }
-    }
-    W21 <- W2x
-    
-    if((nrow(W21)-nrow(W2))>0) {
-      MACCc <- apply(W21[(nrow(W2)+1):nrow(W21),],1,qq)
-      MACC1 <- c(MACC,MACCc)
-    } else {
-      MACC1 <- MACC
-    }
-    
-    # Step 2.0.3 Remove duplicates
-    MACC2 <- MACC1[!duplicated(W21)]
-    W22 <- W21[!duplicated(W21),]
-    
-    # Step 2.0.4 Sort W2, MACC
-    sort_order <- order(apply(W22,1,function(x) decode(rep(2,ncol(W22)),x)))
-    W23 <- W22[sort_order,]
-    MACC3 <- MACC2[sort_order]
-    
     # Step 2.1: Find iota elements
     # Step 2.1.1: Find upsets of each singleton in W23
     # Step 2.1.2: Filter those that are non-empty

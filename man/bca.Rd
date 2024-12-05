@@ -9,7 +9,6 @@ bca(
   tt = NULL,
   m,
   qq = NULL,
-  W2c = NULL,
   method = NULL,
   include_all = FALSE,
   cnames = NULL,
@@ -28,8 +27,6 @@ bca(
 \item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.}
 
 \item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
-
-\item{W2c}{= NULL: A binary matrix of support. Before combination with another bca with fzt-x, input the tt matrix of another bca.}
 
 \item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")}
 
