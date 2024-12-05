@@ -43,4 +43,70 @@ test_that("dsrwon", {
   X1 <- bca(tt = matrix(c(1,1,0,0, rep(1,4)), ncol = 4, byrow = TRUE), m = c(0.2,0.8), cnames = c("c", "a", "b", "d"), idvar = 1, varnames = "X1")
   #
   expect_error(dsrwon(x = X0, y = X1) , "Value names of the two frames differ. Check value names of variables as well as their position.")
+  #
+  # T8: 
+  # Test dsrwon with a generated binary matrix
+  
+  # Subset data
+  n <- 20
+  m <- 30
+  
+  # Sample S
+  S <- 3
+  set.seed(0)
+  e <- sample.int(m,S)
+  
+  # Sample b
+  b0 <- rnorm(S, sd=0.6)
+  b <- rep(0,m)
+  b[e] <- b0
+  
+  # Sample X
+  m0 <- matrix(0, n, m)
+  X <- apply(m0, c(1,2), function(x) sample(c(0,1),1))
+  Xb <- X * b
+  
+  # Set outcome
+  library(LaplacesDemon)
+  y <- runif(length(Xb)) < invlogit(Xb)
+  
+  a <- 0.01
+  rsid <- 1:m
+  bma <- bca(rbind(if (y[1]>0) X[1,1:m] > 1 else
+    (2-X[1,1:m]) > 1,rep(1,m)), c(a,1-a),
+    cnames=rsid, method="ezt")
+  
+  for(i in 1:n) {
+    bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] > 1 else
+      (2-X[i,1:m]) > 1,rep(1,m)), c(a,1-a),
+      cnames=rsid, method="ezt")
+    bma <- dsrwon(bma,bma_new,use_qq = TRUE,method="emt-m")
+  }
+  
+  a <- 0.01
+  rsid <- 1:m
+  bma1 <- bca(rbind(if (y[1]>0) X[1,1:m] > 1 else
+    (2-X[1,1:m]) > 1,rep(1,m)), c(a,1-a),
+    cnames=rsid, method="ezt")
+  
+  for(i in 1:n) {
+    bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] > 1 else
+      (2-X[i,1:m]) > 1,rep(1,m)), c(a,1-a),
+      cnames=rsid, method="ezt")
+    bma1 <- dsrwon(bma1,bma_new)
+  }
+  
+  mm <- mFromQQ(bma$qq,unname(bma$infovar[,2]),bma$valuenames[[1]],"emt-m")
+  tt <- ttmatrixFromQQ(bma$qq,unname(bma$infovar[,2]),bma$valuenames[[1]])
+  
+  bma$tt <- tt
+  bma$spec <- as.matrix(cbind(seq(1,length(m)),mm))
+  colnames(bma$spec) <- c("spec","mass")
+  
+  sort_order <- order(apply(bma1$tt,1,function(x) decode(rep(2,ncol(bma1$tt)),x)))
+  bma1$tt <- bma1$tt[sort_order,]
+  bma1$spec <- bma1$spec[sort_order,]
+  
+  expect_equal(unname(bma$spec[,2]),bma1$spec[,2])
+  
 })
