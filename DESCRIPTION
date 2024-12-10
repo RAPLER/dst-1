@@ -27,7 +27,8 @@ Imports:
     methods,
     parallel,
     rlang,
-    utils
+    utils,
+    bit
 Suggests: 
     igraph,
     knitr,
