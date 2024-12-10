@@ -372,9 +372,9 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
     ttx <- ttx[!duplicated(ttx),]
     
     # Create hashtable
-    m1 <- hashtab()
+    m0 <- hashtab()
     for (i in 1:nrow(ttx)) {
-      m1[[as.bit(ttx[i,])]] <- 0
+      m0[[as.bit(ttx[i,])]] <- 0
     }
     
     # Add closure elements
@@ -412,9 +412,9 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
           if (i+1 > length(ttyl)) break
           for (j in (i+1):length(ttyl)) { 
             z <- ttxl[[i]] & ttyl[[j]]
-            x <- m1[[z]]
+            x <- m0[[z]]
             if (is.null(x)) {
-              m1[[z]] <- 0
+              m0[[z]] <- 0
               ttyl <- append(ttyl,list(z))
             }
           }
@@ -428,41 +428,56 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       sort_order <- order(apply(tty,1,function(x) decode(rep(2,ncol(tty)),x)))
       tty <- tty[sort_order,]
       
+      # Create hashtable
+      m1 <- hashtab()
+      for (i in 1:nrow(tt1)) {
+        m1[[as.bit(tt1[i,])]] <- q1[i]
+      }
+      
+      m2 <- hashtab()
+      for (i in 1:nrow(tt2)) {
+        m2[[as.bit(tt2[i,])]] <- q2[i]
+      }
+      
       # Evaluate commonality values for q1, q2
       q1x <- rep(0, nrow(tty))
       q2x <- rep(0, nrow(tty))
       for (i in 1:nrow(tty)) {
-        z <- tty[i,]
-        w1 <- which(apply(tt1, 1, function(x) return(all(x == z))))
-        if (length(w1) == 0) {
+        z <- as.bit(tty[i,])
+        w1 <- m1[[z]]
+        if (is.null(w1)) {
           
           for (j in 1:nrow(tt1)) {
-            if (all((tt1[j,] - z >= 0))) {
+            if (all((tt1[j,] - tty[i,] >= 0))) {
               q1x[i] <- unname(q1[j])
-              names(q1x)[i] <- nameRows(t(as.matrix(z)))
+              v <- t(as.logical(z))
+              colnames(v) <- colnames(tt1)
+              names(q1x)[i] <- nameRows(v)
               break
             }
           }
           
         } else {
-          q1x[i] <- q1[w1]
-          names(q1x)[i] <- names(q1[w1])
+          q1x[i] <- w1
+          names(q1x)[i] <- names(w1)
         }
         
-        w2 <- which(apply(tt2, 1, function(x) return(all(x == z))))
-        if (length(w2) == 0) {
+        w2 <- m2[[z]]
+        if (is.null(w2)) {
           
           for (j in 1:nrow(tt2)) {
-            if (all((tt2[j,] - z) >= 0)) {
+            if (all((tt2[j,] - tty[i,]) >= 0)) {
               q2x[i] <- unname(q2[j])
-              names(q2x)[i] <- nameRows(t(as.matrix(z)))
+              v <- t(as.logical(z))
+              colnames(v) <- colnames(tt1)
+              names(q2x)[i] <- nameRows(v)
               break
             }
           }
           
         } else {
-          q2x[i] <- q2[w2]
-          names(q2x)[i] <- names(q2[w2])
+          q2x[i] <- w2
+          names(q2x)[i] <- names(w2)
         }
       }
       
