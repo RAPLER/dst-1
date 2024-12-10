@@ -76,10 +76,10 @@ test_that("dsrwon", {
     cnames=rsid, method="ezt")
   
   for(i in 2:n) {
+    print(i)
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] > 1 else
       (2-X[i,1:m]) > 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt")
-    print("done")
     bma <- dsrwon(bma,bma_new,use_qq = TRUE,method="emt-m")
   }
   
