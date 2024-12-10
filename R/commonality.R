@@ -151,7 +151,7 @@ commonality <- function(tt, m, method = NULL){
       }
       iota <- append(iota, list(inf_uZZ))
     }
-    iota <- do.call(iota, lapply(ttyl, as.logical))
+    iota <- do.call(rbind, lapply(iota, as.logical))
     W24 <- iota[!duplicated(iota),]
     
     # Step 2.1.4 Sort W24
