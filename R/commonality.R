@@ -139,7 +139,7 @@ commonality <- function(tt, m, method = NULL){
     # Step 2.1.1: Find upsets of each singleton in W23
     # Step 2.1.2: Filter those that are non-empty
     # Step 2.1.3: Find infimum of each upset
-    iota <- NULL
+    iota <- list
     for (i in 1:ncol(W23)) {
       ZZ <- rep(0,ncol(W23))
       ZZ[i] <- 1
@@ -149,8 +149,9 @@ commonality <- function(tt, m, method = NULL){
       } else { 
         inf_uZZ <- NULL
       }
-      iota <- rbind(iota, inf_uZZ)
+      iota <- append(iota, list(inf_uZZ))
     }
+    iota <- do.call(iota, lapply(ttyl, as.logical))
     W24 <- iota[!duplicated(iota),]
     
     # Step 2.1.4 Sort W24

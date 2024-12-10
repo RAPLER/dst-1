@@ -77,8 +77,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
   m1 <- x$spec[,2]
   m2 <- y$spec[,2]
   if ( ((abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) && use_qq == FALSE) {
-    print(m1)
-    print(m2)
     stop("Invalid data, sum of masses of one vector, or both, greater than one.")
   }
   # End input checks
@@ -411,8 +409,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
         ttxl<-lapply(1:nrow(ttx), function(i) as.bit(ttx[i, ]))
         ttyl <- ttxl
         for (i in 1:length(ttxl)) {
-          print(i)
-          print(length(ttxl))
           if (i+1 > length(ttyl)) break
           for (j in (i+1):length(ttyl)) { 
             z <- ttxl[[i]] & ttyl[[j]]
@@ -425,7 +421,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
         }
         tty <- do.call(rbind, lapply(ttyl, as.logical))
         colnames(tty) <- colnames(ttx)
-        nameRows(tty)
+        rownames(tty) <- nameRows(tty)
       }
       
       # Sort order of the joint
