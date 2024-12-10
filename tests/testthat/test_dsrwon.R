@@ -48,8 +48,8 @@ test_that("dsrwon", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 20
-  m <- 30
+  n <- 50
+  m <- 300
   
   # Sample S
   S <- 3
@@ -67,8 +67,7 @@ test_that("dsrwon", {
   Xb <- X * b
   
   # Set outcome
-  library(LaplacesDemon)
-  y <- runif(length(Xb)) < invlogit(Xb)
+  y <- runif(length(Xb)) < 1/(1 + exp(-Xb))
   
   a <- 0.01
   rsid <- 1:m
@@ -76,7 +75,7 @@ test_that("dsrwon", {
     (2-X[1,1:m]) > 1,rep(1,m)), c(a,1-a),
     cnames=rsid, method="ezt")
   
-  for(i in 1:n) {
+  for(i in 2:n) {
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] > 1 else
       (2-X[i,1:m]) > 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt")
@@ -89,7 +88,7 @@ test_that("dsrwon", {
     (2-X[1,1:m]) > 1,rep(1,m)), c(a,1-a),
     cnames=rsid, method="ezt")
   
-  for(i in 1:n) {
+  for(i in 2:n) {
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] > 1 else
       (2-X[i,1:m]) > 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt")

@@ -370,6 +370,15 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
     # Take union
     ttx <- rbind(tt1,tt2)
     
+    # Remove duplicates of the joint
+    ttx <- ttx[!duplicated(ttx),]
+    
+    # Create hashtable
+    m1 <- hashtab()
+    for (i in 1:nrow(ttx)) {
+      m1[[as.bit(ttx[i,])]] <- 0
+    }
+    
     # Add closure elements
     if (is.null(method) || method=="fmt") { 
       
@@ -401,10 +410,11 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       if (method=="emt-m") { 
         tty <- ttx
         for (i in 1:nrow(ttx)) { 
-          for (j in i:nrow(ttx)) { 
-            z <- pmin(ttx[i,],ttx[j,])
-            x <- which(apply(tty, 1, function(x) return(all(x == z))))
-            if (length(x) == 0) {
+          for (j in (i+1):nrow(tty)) { 
+            z <- pmin(ttx[i,],tty[j,])
+            x <- m1[[as.bit(z)]]
+            if (is.null(x)) {
+              m1[[as.bit(z)]] <- 0
               z <- t(as.matrix(z))
               rownames(z) <- nameRows(z)
               tty <- rbind(tty,z)
@@ -412,9 +422,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
           }
         }
       }
-      
-      # Remove duplicates of the joint
-      tty <- tty[!duplicated(tty),]
       
       # Sort order of the joint
       sort_order <- order(apply(tty,1,function(x) decode(rep(2,ncol(tty)),x)))
