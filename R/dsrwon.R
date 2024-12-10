@@ -408,19 +408,24 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       }
     
       if (method=="emt-m") { 
-        tty <- ttx
-        for (i in 1:nrow(ttx)) { 
-          for (j in (i+1):nrow(tty)) { 
-            z <- pmin(ttx[i,],tty[j,])
-            x <- m1[[as.bit(z)]]
+        ttxl<-lapply(1:nrow(ttx), function(i) as.bit(ttx[i, ]))
+        ttyl <- ttxl
+        for (i in 1:length(ttxl)) {
+          print(i)
+          print(length(ttxl))
+          if (i+1 > length(ttyl)) break
+          for (j in (i+1):length(ttyl)) { 
+            z <- ttxl[[i]] & ttyl[[j]]
+            x <- m1[[z]]
             if (is.null(x)) {
-              m1[[as.bit(z)]] <- 0
-              z <- t(as.matrix(z))
-              rownames(z) <- nameRows(z)
-              tty <- rbind(tty,z)
+              m1[[z]] <- 0
+              ttyl <- append(ttyl,list(z))
             }
           }
         }
+        tty <- do.call(rbind, lapply(ttyl, as.logical))
+        colnames(tty) <- colnames(ttx)
+        nameRows(tty)
       }
       
       # Sort order of the joint
