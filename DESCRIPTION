@@ -28,7 +28,8 @@ Imports:
     parallel,
     rlang,
     utils,
-    bit
+    bit,
+    Rcpp
 Suggests: 
     igraph,
     knitr,

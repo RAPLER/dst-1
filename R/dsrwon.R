@@ -371,12 +371,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
     # Remove duplicates of the joint
     ttx <- ttx[!duplicated(ttx),]
     
-    # Create hashtable
-    m0 <- hashtab()
-    for (i in 1:nrow(ttx)) {
-      m0[[as.bit(ttx[i,])]] <- 0
-    }
-    
     # Add closure elements
     if (is.null(method) || method=="fmt") { 
       
@@ -406,19 +400,10 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       }
     
       if (method=="emt-m") { 
-        ttxl<-lapply(1:nrow(ttx), function(i) as.bit(ttx[i, ]))
+        ttxl <- lapply(1:nrow(ttx), function(i) ttx[i, ])
         ttyl <- ttxl
-        for (i in 1:length(ttxl)) {
-          if (i+1 > length(ttyl)) break
-          for (j in (i+1):length(ttyl)) { 
-            z <- ttxl[[i]] & ttyl[[j]]
-            x <- m0[[z]]
-            if (is.null(x)) {
-              m0[[z]] <- 0
-              ttyl <- append(ttyl,list(z))
-            }
-          }
-        }
+        sourceCpp("R/closure.cpp")
+        ttyl <- closure(ttxl,ttyl)
         tty <- do.call(rbind, lapply(ttyl, as.logical))
         colnames(tty) <- colnames(ttx)
         rownames(tty) <- nameRows(tty)
