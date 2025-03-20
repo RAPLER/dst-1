@@ -141,6 +141,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     # Step 2.1.3: Find infimum of each upset
     iota <- NULL
     for (i in 1:ncol(W23)) {
+      print(i)
       ZZ <- rep(0,ncol(W23))
       ZZ[i] <- 1
       uZZ <- arrow(ZZ,W23,"up")
