@@ -5,8 +5,14 @@
 #include <boost/dynamic_bitset.hpp>
 using namespace Rcpp;
 
+//' Augment list of binary vectors with closure elements
+//' 
+//' @param ttxl list of binary vectors
+//' @export
+
+
 // [[Rcpp::export]]
-List closure(List ttxl, List ttyl){
+List closure(List ttxl){
   std::vector<boost::dynamic_bitset<>> ttxlv;
   
   std::vector<boost::dynamic_bitset<>> ttylv;

@@ -30,6 +30,9 @@ Imports:
     utils,
     bit,
     Rcpp
+LinkingTo: 
+    Rcpp,
+    BH
 Suggests: 
     igraph,
     knitr,

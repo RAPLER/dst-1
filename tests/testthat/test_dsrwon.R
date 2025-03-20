@@ -48,8 +48,8 @@ test_that("dsrwon", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 50
-  m <- 300
+  n <- 100
+  m <- 3000
   
   # Sample S
   S <- 3
@@ -77,10 +77,14 @@ test_that("dsrwon", {
   
   for(i in 2:n) {
     print(i)
+    start.time <- Sys.time()
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] > 1 else
       (2-X[i,1:m]) > 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt")
     bma <- dsrwon(bma,bma_new,use_qq = TRUE,method="emt-m")
+    end.time <- Sys.time()
+    time.taken <- end.time - start.time
+    print(time.taken)
   }
   
   a <- 0.01

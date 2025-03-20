@@ -402,7 +402,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       if (method=="emt-m") { 
         ttxl <- lapply(1:nrow(ttx), function(i) ttx[i, ])
         ttyl <- ttxl
-        sourceCpp("R/closure.cpp")
         ttyl <- closure(ttxl,ttyl)
         tty <- do.call(rbind, lapply(ttyl, as.logical))
         colnames(tty) <- colnames(ttx)
