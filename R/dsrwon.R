@@ -401,8 +401,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
     
       if (method=="emt-m") { 
         ttxl <- lapply(1:nrow(ttx), function(i) ttx[i, ])
-        ttyl <- ttxl
-        ttyl <- closure(ttxl,ttyl)
+        ttyl <- closure(ttxl)
         tty <- do.call(rbind, lapply(ttyl, as.logical))
         colnames(tty) <- colnames(ttx)
         rownames(tty) <- nameRows(tty)
