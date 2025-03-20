@@ -3,6 +3,7 @@
 
 #' Augment list of binary vectors with closure elements
 #' 
+#' @name closure
 #' @param ttxl list of binary vectors
 #' @export
 NULL
