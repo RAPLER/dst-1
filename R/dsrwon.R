@@ -19,7 +19,8 @@
 #'   \item Sort_order Sort order of subsets.
 #'   }
 #' @author Claude Boivin, Peiyuan Zhu
-#' @import methods
+#' @import methods bit
+#' @importFrom utils hashtab
 #' @importClassesFrom Matrix RsparseMatrix
 #' @export
 #' @examples 
