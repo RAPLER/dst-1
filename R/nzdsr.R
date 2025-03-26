@@ -53,9 +53,9 @@ nzdsr<-function(x, sparse = "no", comm = "no") {
   # Normalize commonality function
   if(!is.null(x$qq) && comm=="yes") {
     Q <- x$qq
-    m0 <- mobiusInvHQQ(Q,rep(0,x$infovar[2]))
+    m0 <- Q["\u00f8"]
     if(m0 != 0) {
-      x$qq <- function(X) Q(X) / (1 - m0)
+      x$qq <- Q / (1 - m0)
     }
   }
   

@@ -3,7 +3,6 @@
 #' It may occur that the result of the combination of two basic chance assignments with Dempster's Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
 #' @param x A basic chance assignment, i.e. a object of class bcaspec.
 #' @param sparse Put "yes" to use sparse matrix. Default = "no".
-#' @param comm Put "yes" to use commonality function. Default = "no".
 #' @return z The normalized basic chance assignment.
 #' @author Claude Boivin, Peiyuan Zhu
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
@@ -35,7 +34,7 @@
 #' nzdsr(y2)  
 #' @export
 #' 
-nzdsrLogsumexp<-function(x, sparse="no", comm = "no") {
+nzdsrLogsumexp<-function(x, sparse="no") {
   #
   # Local variables: nc, vacuous, w1, w12, mac, MACC, empty, m_empty, tri, ind, m0, Q
   # Functions calls: nameRows
@@ -45,23 +44,9 @@ nzdsrLogsumexp<-function(x, sparse="no", comm = "no") {
     stop("Input argument not of class bcaspec.")
   }
   
-  # 1.1 Check commonality function
-  if (comm=="yes" && is.null(x$qq)) {
-    stop("Need input commonality function")
-  }
-  
-  # Normalize commonality function
-  if(!is.null(x$qq) && comm=="yes") {
-    Q <- x$qq
-    m0 <- mobiusInvHQQ(Q,rep(0,x$infovar[2]))
-    if(m0 != 0) {
-      x$qq <- function(X) Q(X) / (1 - m0)
-    }
-  }
-  
   #
   # case of tt matrix missing
-  if (is.null(x$tt) && comm=="no") {
+  if (is.null(x$tt)) {
     if(sparse=="yes") {
       x$tt <- ttmatrix(x$ssnames, "yes")
     } else {
@@ -69,7 +54,6 @@ nzdsrLogsumexp<-function(x, sparse="no", comm = "no") {
     }
   }
   
-  if (comm == "no") {
   #
   # 3. Assign variables
   w12<-cbind(x$spec[,2], x$tt)
@@ -114,7 +98,6 @@ nzdsrLogsumexp<-function(x, sparse="no", comm = "no") {
   # Computation of the conflict indice
   #
   con <- 1-(1-x$con)*(1-m_empty)
-  }
   
   #
   # infovar, varnames, valuenames, inforel parameters
@@ -126,12 +109,8 @@ nzdsrLogsumexp<-function(x, sparse="no", comm = "no") {
   colnames(inforel) <- c("relnb", "depth") 
   #
   # construction of the result
-  if (comm=="no") {
-    z <- list(con = con, tt = tt, qq = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
-    class(z) <- append(class(z), "bcaspec")
-  } else {
-    z <- list(con = 0, tt = NULL, qq = x$qq, spec = NULL, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
-  }
+  z <- list(con = con, tt = tt, qq = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
+  class(z) <- append(class(z), "bcaspec")
   #
   return(z)
 }
