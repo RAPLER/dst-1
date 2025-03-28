@@ -8,15 +8,20 @@ test_that("commonality", {
                        byrow = TRUE), m = c(0.2,0.5, 0.3), 
            cnames = c("a", "b", "c"), varnames = "x", idvar = 1, method="fzt")
   y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
-                       byrow = TRUE), m = c(0.6, 0.4),  
+                       byrow = TRUE), m = c(0.6, 0.4), 
            cnames = c("a", "b", "c"),  varnames = "y", idvar = 1, method="fzt")
   z <- dsrwon(x,y)
   w <- dsrwon(x,y,use_qq = TRUE)
   q <- commonality(z$tt,z$spec[,2])
   expect_equal(q,w$qq)
   
-  # test agreement with fzt
-  q <- commonality(z$tt,z$spec[,2],method="ezt")
+  # test agreement between fzt, ezt
+  ttxl <- lapply(1:nrow(z$tt), function(i) z$tt[i, ])
+  ttyl <- closure(ttxl,TRUE)
+  ttzl <- do.call(rbind, ttyl)
+  colnames(ttzl) <- c("a", "b", "c")
+  rownames(ttzl) <- nameRows(ttzl)
+  q <- commonality(ttzl,c(z$spec[,2],0),method="ezt")
   expect_equal(q,w$qq[names(q)])
   
   # test fzt vs ezt
@@ -62,19 +67,14 @@ test_that("commonality", {
   y <- bca(tt =  tty, m = c(0.3, 0.7), method="ezt",  
            cnames = c("a", "b", "c"),  varnames = "y", idvar = 2)
   
-  # TODO: finish this
   z <- dsrwon(x,y,use_qq = TRUE, method="emt")
   
-  # TODO: pass this
   expect_equal(w$qq[names(z$qq)],z$qq)
   
   # Test ezt-j with figure 5
   x61 <- bca(tt6, m6, cnames=cnames6, method="fzt")
-  x62 <- bca(tt6, m6, cnames=cnames6, method="ezt-j")
+  x62 <- bca(tt6, m6, cnames=cnames6, method="ezt-m")
   
   expect_equal(x61$qq[names(x62$qq)],x62$qq)
-  
-  # TODO: Test ezt 
-  # TODO: Cross test
 })
 
