@@ -378,31 +378,16 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
     } else if (method=="emt" || method=="emt-m") { 
       
       if (method=="emt") {
-        tty <- ttx
-        for (i in 1:nrow(ttx)) { 
-          for (j in i:nrow(ttx)) { 
-            z <- pmax(ttx[i,],ttx[j,])
-            x <- which(apply(tty, 1, function(x) return(all(x == z))))
-            if (length(x) == 0) {
-              z <- t(as.matrix(z))
-              rownames(z) <- nameRows(z)
-              tty <- rbind(tty,z)
-            }
-            
-            z <- pmin(ttx[i,],ttx[j,])
-            x <- which(apply(tty, 1, function(x) return(all(x == z))))
-            if (length(x) == 0) {
-              z <- t(as.matrix(z))
-              rownames(z) <- nameRows(z)
-              tty <- rbind(tty,z)
-            }
-          }
-        }
+        ttxl <- lapply(1:nrow(ttx), function(i) ttx[i, ])
+        ttyl <- closure(ttxl)
+        tty <- do.call(rbind, lapply(ttyl, as.logical))
+        colnames(tty) <- colnames(ttx)
+        rownames(tty) <- nameRows(tty)
       }
     
       if (method=="emt-m") { 
         ttxl <- lapply(1:nrow(ttx), function(i) ttx[i, ])
-        ttyl <- closure(ttxl)
+        ttyl <- closure(ttxl, FALSE)
         tty <- do.call(rbind, lapply(ttyl, as.logical))
         colnames(tty) <- colnames(ttx)
         rownames(tty) <- nameRows(tty)

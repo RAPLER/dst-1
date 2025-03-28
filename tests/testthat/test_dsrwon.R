@@ -73,15 +73,15 @@ test_that("dsrwon", {
   rsid <- 1:m
   bma <- bca(rbind(if (y[1]>0) X[1,1:m] >= 1 else
     (1-X[1,1:m]) >= 1,rep(1,m)), c(a,1-a),
-    cnames=rsid, method="ezt-j")
+    cnames=rsid)
   
   for(i in 2:n) {
     print(i)
     start.time <- Sys.time()
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
-      cnames=rsid, method="ezt-j")
-    bma <- dsrwon(bma,bma_new,use_qq = TRUE,method="emt-m")
+      cnames=rsid)
+    bma <- dsrwon(bma,bma_new,use_ssnames = TRUE)
     end.time <- Sys.time()
     time.taken <- end.time - start.time
     print(time.taken)
@@ -91,27 +91,20 @@ test_that("dsrwon", {
   rsid <- 1:m
   bma1 <- bca(rbind(if (y[1]>0) X[1,1:m] >= 1 else
     (1-X[1,1:m]) >= 1,rep(1,m)), c(a,1-a),
-    cnames=rsid, method="ezt-j")
+    cnames=rsid, method="ezt")
   
   for(i in 2:n) {
     print(i)
     start.time <- Sys.time()
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
-      cnames=rsid, method="ezt-j")
+      cnames=rsid, method="ezt")
     bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,method="emt")
     end.time <- Sys.time()
     time.taken <- end.time - start.time
     print(time.taken)
   }
-  
-  mm <- mFromQQ(bma$qq,unname(bma$infovar[,2]),bma$valuenames[[1]],"emt-m")
-  tt <- ttmatrixFromQQ(bma$qq,unname(bma$infovar[,2]),bma$valuenames[[1]])
-  
-  bma$tt <- tt
-  bma$spec <- as.matrix(cbind(seq(1,length(m)),mm))
-  colnames(bma$spec) <- c("spec","mass")
-  
+
   mm <- mFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]],"emt-m")
   tt <- ttmatrixFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]])
   
@@ -119,10 +112,14 @@ test_that("dsrwon", {
   bma1$spec <- as.matrix(cbind(seq(1,length(m)),mm))
   colnames(bma1$spec) <- c("spec","mass")
   
-  #sort_order <- order(apply(bma1$tt,1,function(x) decode(rep(2,ncol(bma1$tt)),x)))
-  #bma1$tt <- bma1$tt[sort_order,]
-  #bma1$spec <- bma1$spec[sort_order,]
+  sort_order <- order(apply(bma1$tt,1,function(x) decode(rep(2,ncol(bma1$tt)),x)))
+  bma1$tt <- bma1$tt[sort_order,]
+  bma1$spec <- bma1$spec[sort_order,]
   
-  expect_equal(unname(bma$spec[,2]),bma1$spec[,2])
+  sort_order <- order(apply(bma$tt,1,function(x) decode(rep(2,ncol(bma$tt)),x)))
+  bma$tt <- bma$tt[sort_order,]
+  bma$spec <- bma$spec[sort_order,]
+  
+  expect_equal(unname(bma$spec[,2]),unname(bma1$spec[,2]))
   
 })

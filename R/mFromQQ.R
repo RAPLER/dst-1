@@ -171,6 +171,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
       print(i)
       xx <- W24[i,]
       for (j in 1:nrow(W23)) {
+        print(j)
         y <- W23[j,]
         z0 <- arrow(pmax(xx,y), W23, "up")
         z <- bound(if (is.null(nrow(z0))) t(as.matrix(z0)) else as.matrix(z0), "inf")

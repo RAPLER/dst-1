@@ -179,7 +179,7 @@ bca<-function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cname
     }
     
     # 7.1 build qq
-    if (is.null(qq) == TRUE ) {
+    if (is.null(qq) == TRUE && !is.null(method)) {
       qq <- commonality(tt,m,method)
     }
     

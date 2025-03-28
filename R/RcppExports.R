@@ -3,12 +3,11 @@
 
 #' Augment list of binary vectors with closure elements
 #' 
-#' @name closure
 #' @param ttxl list of binary vectors
 #' @export
 NULL
 
-closure <- function(ttxl) {
-    .Call(`_dst_closure`, ttxl)
+closure <- function(ttxl, computeJoin = TRUE) {
+    .Call(`_dst_closure`, ttxl, computeJoin)
 }
 
