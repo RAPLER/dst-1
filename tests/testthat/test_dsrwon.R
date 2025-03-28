@@ -91,15 +91,15 @@ test_that("dsrwon", {
   rsid <- 1:m
   bma1 <- bca(rbind(if (y[1]>0) X[1,1:m] >= 1 else
     (1-X[1,1:m]) >= 1,rep(1,m)), c(a,1-a),
-    cnames=rsid, method="ezt")
+    cnames=rsid, method="ezt-m")
   
   for(i in 2:n) {
     print(i)
     start.time <- Sys.time()
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
-      cnames=rsid, method="ezt")
-    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,method="emt")
+      cnames=rsid, method="ezt-m")
+    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,method="emt-m")
     end.time <- Sys.time()
     time.taken <- end.time - start.time
     print(time.taken)

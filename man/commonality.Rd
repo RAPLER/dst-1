@@ -11,7 +11,7 @@ commonality(tt, m, method = NULL)
 
 \item{m}{Mass assignment vector of probabilities}
 
-\item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a join-closed subset ("ezt-j")}
+\item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m")}
 }
 \value{
 f Commonality function
