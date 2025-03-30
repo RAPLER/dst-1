@@ -90,7 +90,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     jir <- rep(0,nrow(W23))
     l <- 1
     for (i in 1:nrow(W23)) {
-      print(i)
+      #print(i)
       stop <- FALSE
       for (j in 1:i) {
         for (k in 1:i) {
@@ -114,7 +114,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     
     #print(m0)
     for (i in nrow(W24):1) {
-      print(i)
+      #print(i)
       xx <- W24[i,]
       for (j in 1:nrow(W23)) {
         y <- W23[j,]
@@ -125,7 +125,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
           m0[j] <- m0[j] - m0[w]
         }
       }
-      print(m0)
+      #print(m0)
     }
     
     return(m0)
@@ -143,7 +143,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     # Step 2.1.3: Find infimum of each upset
     iota <- NULL
     for (i in 1:ncol(W23)) {
-      print(i)
+      #print(i)
       ZZ <- rep(0,ncol(W23))
       ZZ[i] <- 1
       uZZ <- arrow(ZZ,W23,"up")
@@ -165,13 +165,13 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
     m0 <- MACC3
-    print(unname(m0))
+    #print(unname(m0))
     
     for (i in nrow(W24):1) {
-      print(i)
+      #print(i)
       xx <- W24[i,]
       for (j in 1:nrow(W23)) {
-        print(j)
+        #print(j)
         y <- W23[j,]
         z0 <- arrow(pmax(xx,y), W23, "up")
         z <- bound(if (is.null(nrow(z0))) t(as.matrix(z0)) else as.matrix(z0), "inf")
@@ -183,7 +183,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
           m0[j] <- m0[j] - m0[w]
         }
       }
-      print(unname(m0))
+      #print(unname(m0))
     }
     
     return(m0)

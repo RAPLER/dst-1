@@ -394,7 +394,8 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       }
       
       # Sort order of the joint
-      sort_order <- order(apply(tty,1,function(x) decode(rep(2,ncol(tty)),x)))
+      #sort_order <- order(apply(tty,1,function(x) decode(rep(2,ncol(tty)),x)))
+      sort_order <- order(rowSums(tty))
       tty <- tty[sort_order,]
       
       # Create hashtable
@@ -409,6 +410,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       }
       
       # Evaluate commonality values for q1, q2
+      # Search for superset
       q1x <- rep(0, nrow(tty))
       q2x <- rep(0, nrow(tty))
       for (i in 1:nrow(tty)) {

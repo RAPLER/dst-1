@@ -120,6 +120,6 @@ test_that("dsrwon", {
   bma$tt <- bma$tt[sort_order,]
   bma$spec <- bma$spec[sort_order,]
   
-  expect_equal(unname(bma$spec[,2]),unname(bma1$spec[,2]))
+  expect_equal(bma$spec[,2],unname(bma1$spec[,2]))
   
 })
