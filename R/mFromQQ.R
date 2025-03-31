@@ -1,4 +1,4 @@
-#' Construct a mass vector from qq function and ttmatrix of focal elements recursively.
+#' Construct a mass vector from qq function and tt matrix of focal elements recursively.
 #' 
 #' @param qq Commonality function
 #' @param n Frame dimension
@@ -11,7 +11,7 @@
 #' tt<- t(matrix(c(1,0,1,1),ncol = 2))
 #' m<- c(.9,.1)
 #' cnames <- c("yes","no")
-#' x<- bca(tt, m, cnames=cnames)
+#' x<- bca(tt, m, cnames=cnames, method = "fzt")
 #' mFromQQ(x$qq, 2, method = "fmt", cnames = cnames)
 mFromQQ <- function(qq, n, cnames, method = NULL) {
   # Obtain tt matrix from commonality function
