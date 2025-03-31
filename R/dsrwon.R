@@ -394,11 +394,11 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       }
       
       # Sort order of the joint
-      #sort_order <- order(apply(tty,1,function(x) decode(rep(2,ncol(tty)),x)))
       sort_order <- order(rowSums(tty))
       tty <- tty[sort_order,]
       
       # Create hashtable
+      # for commonality values that exist
       m1 <- hashtab()
       for (i in 1:nrow(tt1)) {
         m1[[as.bit(tt1[i,])]] <- q1[i]
@@ -414,10 +414,11 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       q1x <- rep(0, nrow(tty))
       q2x <- rep(0, nrow(tty))
       for (i in 1:nrow(tty)) {
+        # Go through the entire list of subsets
         z <- as.bit(tty[i,])
         w1 <- m1[[z]]
         if (is.null(w1)) {
-          
+          # If commonality value doesn't exist in q1
           for (j in 1:nrow(tt1)) {
             if (all((tt1[j,] - tty[i,] >= 0))) {
               q1x[i] <- unname(q1[j])
@@ -429,13 +430,14 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
           }
           
         } else {
+          # If commonality value exists
           q1x[i] <- w1
           names(q1x)[i] <- names(w1)
         }
         
         w2 <- m2[[z]]
         if (is.null(w2)) {
-          
+          # If commonality value doesn't exist in q2
           for (j in 1:nrow(tt2)) {
             if (all((tt2[j,] - tty[i,]) >= 0)) {
               q2x[i] <- unname(q2[j])
@@ -447,6 +449,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
           }
           
         } else {
+          # If commonality value exists
           q2x[i] <- w2
           names(q2x)[i] <- names(w2)
         }
