@@ -23,8 +23,8 @@ Construct a description matrix from a qq vector
 tt<- t(matrix(c(1,0,1,1),ncol = 2))
 m<- c(.9,.1)
 cnames <- c("yes","no")
-x<- bca(tt, m, cnames=cnames)
-ttmatrixFromQQ(x$qq,as.integer(x$infovar[1,2]))
+x<- bca(tt, m, cnames=cnames, method="ezt-m")
+ttmatrixFromQQ(x$qq,as.integer(x$infovar[1,2]), cnames)
 }
 \author{
 Peiyuan Zhu
