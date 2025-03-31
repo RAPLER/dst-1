@@ -11,9 +11,9 @@ mFromQQ(qq, n, cnames, method = NULL)
 
 \item{n}{Frame dimension}
 
-\item{method}{= NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m")}
+\item{cnames}{A character vector containing the names of the elements of the frame of discernment}
 
-\item{cnames:}{A character vector containing the names of the elements of the frame of discernment}
+\item{method}{= NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m")}
 }
 \value{
 m A corresponding mass vector
