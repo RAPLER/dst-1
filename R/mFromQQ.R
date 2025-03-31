@@ -2,7 +2,7 @@
 #' 
 #' @param qq Commonality function
 #' @param n Frame dimension
-#' @param cnames: A character vector containing the names of the elements of the frame of discernment
+#' @param cnames A character vector containing the names of the elements of the frame of discernment
 #' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m") 
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
