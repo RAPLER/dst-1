@@ -418,7 +418,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
         z <- as.bit(tty[i,])
         w1 <- m1[[z]]
         if (is.null(w1)) {
-          # If commonality value doesn't exist in q1
+          # If commonality value doesn't exist
           for (j in 1:nrow(tt1)) {
             if (all((tt1[j,] - tty[i,] >= 0))) {
               q1x[i] <- unname(q1[j])
@@ -437,7 +437,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
         
         w2 <- m2[[z]]
         if (is.null(w2)) {
-          # If commonality value doesn't exist in q2
+          # If commonality value doesn't exist
           for (j in 1:nrow(tt2)) {
             if (all((tt2[j,] - tty[i,]) >= 0)) {
               q2x[i] <- unname(q2[j])

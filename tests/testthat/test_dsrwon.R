@@ -104,6 +104,11 @@ test_that("dsrwon", {
     time.taken <- end.time - start.time
     print(time.taken)
   }
+  
+  #library(profvis)
+  #prof <- profvis(dsrwon(bma1,bma_new,use_qq = TRUE,method="emt-m"))
+  #htmlwidgets::saveWidget(prof, "../../prof.html")
+  #browseURL("../../prof.html")
 
   mm <- mFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]],"emt-m")
   tt <- ttmatrixFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]])
