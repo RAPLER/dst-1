@@ -9,7 +9,7 @@
 #' @param ssnames A list of subsets names which will be obtained from the column names of the tt matrix.
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
 #' @param qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
-#' @param method = NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")
+#' @param method = NULL: Use Fast Zeta Transform ("fzt"), Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m").
 #' @param include_all = FALSE Put TRUE to include all elements with 0 mass in the bca.
 #' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
@@ -48,6 +48,9 @@
 #' byrow = TRUE), m = c(0.6,0.4), 
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
+#' x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' byrow = TRUE), m = c(0.2,0.5, 0.3), include_all = TRUE,
+#' cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
 #' @references \itemize{
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 

@@ -28,7 +28,7 @@ bca(
 
 \item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
 
-\item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt")}
+\item{method}{= NULL: Use Fast Zeta Transform ("fzt"), Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m").}
 
 \item{include_all}{= FALSE Put TRUE to include all elements with 0 mass in the bca.}
 
