@@ -2,7 +2,7 @@
 % Please edit documentation in R/mFromQQ.R
 \name{mFromQQ}
 \alias{mFromQQ}
-\title{Construct a mass vector from qq function and ttmatrix of focal elements recursively.}
+\title{Construct a mass vector from qq function and tt matrix of focal elements recursively.}
 \usage{
 mFromQQ(qq, n, cnames, method = NULL)
 }
@@ -19,13 +19,13 @@ mFromQQ(qq, n, cnames, method = NULL)
 m A corresponding mass vector
 }
 \description{
-Construct a mass vector from qq function and ttmatrix of focal elements recursively.
+Construct a mass vector from qq function and tt matrix of focal elements recursively.
 }
 \examples{
 tt<- t(matrix(c(1,0,1,1),ncol = 2))
 m<- c(.9,.1)
 cnames <- c("yes","no")
-x<- bca(tt, m, cnames=cnames)
+x<- bca(tt, m, cnames=cnames, method = "fzt")
 mFromQQ(x$qq, 2, method = "fmt", cnames = cnames)
 }
 \author{

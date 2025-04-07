@@ -393,70 +393,9 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
         rownames(tty) <- nameRows(tty)
       }
       
-      # Sort order of the joint
-      sort_order <- order(rowSums(tty))
-      tty <- tty[sort_order,]
-      
-      # Create hashtable
-      # for commonality values that exist
-      m1 <- hashtab()
-      for (i in 1:nrow(tt1)) {
-        m1[[as.bit(tt1[i,])]] <- q1[i]
-      }
-      
-      m2 <- hashtab()
-      for (i in 1:nrow(tt2)) {
-        m2[[as.bit(tt2[i,])]] <- q2[i]
-      }
-      
-      # Evaluate commonality values for q1, q2
-      # Search for superset
-      q1x <- rep(0, nrow(tty))
-      q2x <- rep(0, nrow(tty))
-      for (i in 1:nrow(tty)) {
-        # Go through the entire list of subsets
-        z <- as.bit(tty[i,])
-        w1 <- m1[[z]]
-        if (is.null(w1)) {
-          # If commonality value doesn't exist
-          for (j in 1:nrow(tt1)) {
-            if (all((tt1[j,] - tty[i,] >= 0))) {
-              q1x[i] <- unname(q1[j])
-              v <- t(as.logical(z))
-              colnames(v) <- colnames(tt1)
-              names(q1x)[i] <- nameRows(v)
-              break
-            }
-          }
-          
-        } else {
-          # If commonality value exists
-          q1x[i] <- w1
-          names(q1x)[i] <- names(w1)
-        }
-        
-        w2 <- m2[[z]]
-        if (is.null(w2)) {
-          # If commonality value doesn't exist
-          for (j in 1:nrow(tt2)) {
-            if (all((tt2[j,] - tty[i,]) >= 0)) {
-              q2x[i] <- unname(q2[j])
-              v <- t(as.logical(z))
-              colnames(v) <- colnames(tt1)
-              names(q2x)[i] <- nameRows(v)
-              break
-            }
-          }
-          
-        } else {
-          # If commonality value exists
-          q2x[i] <- w2
-          names(q2x)[i] <- names(w2)
-        }
-      }
-      
-      q1 <- q1x
-      q2 <- q2x
+      x <- imputeQQ(tty,tt1,tt2,q1,q2)
+      q1 <- x$q1
+      q2 <- x$q2
     }
     
     # Combine
