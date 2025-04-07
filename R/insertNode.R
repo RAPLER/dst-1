@@ -4,6 +4,9 @@ insertNode<-function(x, q, node, depth = 0){
     return(createNode(x,q,depth))
   }
   
+  # TODO: insert conjunction node is needed
+  
+  # TODO: change TRUE to the appropriate condition for comparison
   if (TRUE) {
     node$left <- insertNode(x, q, node$left, depth + 1)
   } else {
