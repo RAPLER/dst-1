@@ -4,7 +4,7 @@ insertNode<-function(x, q, node, depth = 0){
     return(createNode(x,q,depth))
   }
   
-  # TODO: insert conjunction node is needed
+  # TODO: insert disjunction node when needed
   
   # TODO: change TRUE to the appropriate condition for comparison
   if (TRUE) {
