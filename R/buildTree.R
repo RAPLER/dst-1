@@ -1,5 +1,6 @@
-#' Build a tree
-#'
+#' Build a tree 
+#' 
+#' Example: Figure 12
 buildTree<-function(tt, q){
   tree <- NULL
   
