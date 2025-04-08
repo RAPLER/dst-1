@@ -1,8 +1,7 @@
-createNode <- function(x, q, depth = 0) {
+createNode <- function(x, q) {
   list(
     x = x,
     value = q,
-    depth = depth,
     left = NULL,
     right = NULL
   )
