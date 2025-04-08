@@ -25,17 +25,17 @@ insertNode <- function(x, q, node){
       # then insert the new bit vector to the left of the current bit vector
       # - Otherwise insert the new bit vector to the right of the current bit vector
       
-      node$left <- insertNode(node$x, node$q, node_disj$left)
-      node$right <- insertNode(x, q, node_disj$right)
+      node_disj$left <- insertNode(node$x, node$q, node_disj$left)
+      node_disj$right <- insertNode(x, q, node_disj$right)
       
     } else {
       
-      node$left <- insertNode(x, q, node_disj$left)
-      node$right <- insertNode(node$x, node$q, node_disj$right)
+      node_disj$left <- insertNode(x, q, node_disj$left)
+      node_disj$right <- insertNode(node$x, node$q, node_disj$right)
       
     }
     
-    return(node)
+    return(node_disj)
     
   } else if (as.logical(x[node$depth+1]==node$x[node$depth+1])) {
     # decide left or right child

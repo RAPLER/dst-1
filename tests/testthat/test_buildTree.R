@@ -10,4 +10,7 @@ test_that("buildTree", {
   m <- c(0.1,0.2,0.3,0.4)
   q <- commonality(x,m,"ezt-m")
   tree <- buildTree(x,q)
+  expect_equal(tree$x,as.bit(x[1,]))
+  expect_equal(tree$depth,0)
+  # TODO: add more tests
 })

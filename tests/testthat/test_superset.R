@@ -10,6 +10,7 @@ test_that("superset", {
   m <- c(0.1,0.2,0.3,0.4)
   q <- commonality(x,m,"ezt-m")
   tree <- buildTree(x,q)
-  w <- c(0,1,0)
+  w <- as.bit(c(0,1,0))
   expect_equal(superset(tree,w),0.7)
+  # TODO: add more tests
 })

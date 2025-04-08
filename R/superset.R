@@ -1,7 +1,16 @@
 #' Find the smallest superset of a vector
 #' 
-superset<-function(tree,w) {
-  w <- as.bit(w)
+superset<-function(node,w) {
+  if (all((node$x & w) == w) & !is.null(node$value)) {
+    # return binary vector
+    return(node$x)
+  }
   
-  return(0.7)
+  if (!any(node$x & w)) {
+    # move to the left
+    return(superset(node$left, w))
+  } else {
+    # move to the right
+    return(superset(node$right, w))
+  }
 }
