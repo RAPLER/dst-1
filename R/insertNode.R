@@ -1,6 +1,7 @@
 #' Insert bit vector and value into a node
 #' 
 insertNode <- function(x, q, node){
+  # TODO: confirm if this is correct
   
   if (is.null(node)) {
     return(createNode(x,q))
