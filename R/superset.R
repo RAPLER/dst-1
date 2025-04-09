@@ -1,9 +1,9 @@
-#' Find the smallest superset of a vector
+#' Find the q value of the smallest superset of a vector
 #' 
 superset<-function(node,w) {
-  if (all((node$x & w) == w) & !is.null(node$value)) {
+  if (all((node$x & w) == w) && !is.null(node$q)) {
     # return binary vector
-    return(node$x)
+    return(node$q)
   }
   
   if (!any(node$x & w)) {

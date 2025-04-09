@@ -31,7 +31,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
   if(use_tree){
     
     tree1 <- buildTree(tt1,q1)
-    tree2 <- buildTree(tt2,q1)
+    tree2 <- buildTree(tt2,q2)
     
   }
   
@@ -63,7 +63,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
       # If commonality value doesn't exist
       if(use_tree) {
         
-        ww1 <- superset(tree1,w1)
+        ww1 <- superset(tree1,z)
         
       } else {
         for (j in 1:nrow(tt1)) {
@@ -90,7 +90,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
       # If commonality value doesn't exist
       if(use_tree) {
         
-        ww2 <- superset(tree2,w2)
+        ww2 <- superset(tree2,z)
         
       } else {
         for (j in 1:nrow(tt2)) {

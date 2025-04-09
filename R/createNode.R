@@ -4,7 +4,7 @@ createNode<-function(x, q) {
   d <- max(which(x==1))-1
   list(
     x = x,
-    value = q,
+    q = q,
     left = NULL,
     right = NULL,
     depth = d

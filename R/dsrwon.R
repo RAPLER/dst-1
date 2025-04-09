@@ -393,7 +393,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
         rownames(tty) <- nameRows(tty)
       }
       
-      x <- imputeQQ(tty,tt1,tt2,q1,q2)
+      x <- imputeQQ(tty,tt1,tt2,q1,q2,TRUE)
       q1 <- x$q1
       q2 <- x$q2
     }

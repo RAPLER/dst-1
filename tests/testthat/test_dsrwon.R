@@ -48,8 +48,8 @@ test_that("dsrwon", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 5
-  m <- 2000
+  n <- 10
+  m <- 30
   
   # Sample S
   S <- 3
