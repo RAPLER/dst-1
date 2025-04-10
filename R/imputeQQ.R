@@ -135,19 +135,14 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
         # output from tree disagree from brute force search
         if (wwx!=ww1) {
           # enter into debug mode
+          # problem may be in insertNode or superset
+          # - insertNode seems fine
+          # - more likely the issue is in superset
+          j <- which(card_nodup1==sum(tt1[l,]))
+          tree <- tree1[[j]]
           browser()
-        }
-        
-        start <- which(card_nodup1 == min(card_nodup1[card_nodup1 > sum(z)]))[1]
-        
-        for (j in start:length(card_nodup1)) {
-          
-          ww1 <- superset(tree1[[j]],z)
-          
-          if (!is.null(ww1)) {
-            break
-          }
-          
+          ## ww1 shouldn't be NULL
+          ww1 <- superset(tree,z)
         }
       }
       
