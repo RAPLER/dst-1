@@ -38,7 +38,7 @@ bcaPrint <- function(x, remove = FALSE) {
   y <- as.data.frame(cbind(rownames(x$tt), x$spec))
   colnames(y)[1] <- deparse(substitute(x))
   if (!is.null (x$qq) ) {
-    print("Closure elements have been added to the bca, since you use commonalities.")
+    print("Closure elements (with 0 mass) may have been added to the bca, since you use commonalities.")
   } else
   if (remove == TRUE) {
   y <- y[y[,ncol(y)] > 0,]
