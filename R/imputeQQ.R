@@ -28,16 +28,41 @@
 #' x$q2
 imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
   
-  if(use_tree){
+  # Sort order
+  card1 <- rowSums(tt1)
+  sort_order1 <- order(card1)
+  card1 <- card1[sort_order1]
+  tt1 <- tt1[sort_order1,]
+  q1 <- q1[sort_order1]
+  card_nodup1 <- card1[!duplicated(card1)]
+  
+  card2 <- rowSums(tt2)
+  sort_order2 <- order(card2)
+  card2 <- card2[sort_order2]
+  tt2 <- tt2[sort_order2,]
+  q2 <- q2[sort_order2]
+  card_nodup2 <- card2[!duplicated(card2)]
     
-    tree1 <- buildTree(tt1,q1)
-    tree2 <- buildTree(tt2,q2)
+  if(use_tree){
+    # Build tree
+    tree1 <- list()
+    tree2 <- list()
+    
+    for (j in 1:length(card_nodup1)) {
+      
+      idx1 <- (card1==card_nodup1[j])
+      tree1[[j]] <- buildTree(tt1[idx1,],q1[idx1])
+      
+    }
+    
+    for (j in 1:length(card_nodup2)) {
+      
+      idx2 <- (card2==card_nodup2[j])
+      tree2[[j]] <- buildTree(tt2[idx2,],q2[idx2])
+      
+    }
     
   }
-  
-  # Sort order of the joint
-  sort_order <- order(rowSums(tty))
-  tty <- tty[sort_order,]
   
   # Create hashtable
   # for commonality values that exist
@@ -61,16 +86,68 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
     w1 <- m1[[z]]
     if (is.null(w1)) {
       # If commonality value doesn't exist
+        
       if(use_tree) {
         
-        ww1 <- superset(tree1,z)
+        start <- which(card_nodup1 == min(card_nodup1[card_nodup1 > sum(z)]))[1]
+          
+        for (j in start:length(card_nodup1)) {
         
-      } else {
-        for (j in 1:nrow(tt1)) {
-          if (all((tt1[j,] - tty[i,] >= 0))) {
-            ww1 <- q1[j]
+          ww1 <- superset(tree1[[j]],z)
+          
+          if (!is.null(ww1)) {
             break
           }
+        
+        }
+        
+      } else {
+        
+        start <- which(card1 == min(card1[card1 > sum(z)]))[1]
+        
+        for (j in start:nrow(tt1)) {
+          
+          if (all((tt1[j,] - tty[i,] >= 0))) {
+            
+            ww1 <- q1[j]
+            break
+            
+          }
+        }
+        
+      }
+      
+      { 
+        # TODO: make sure this doesn't show up
+        # debug
+        start <- which(card1 == min(card1[card1 > sum(z)]))[1]
+        
+        for (l in start:nrow(tt1)) {
+          
+          if (all((tt1[l,] - tty[i,] >= 0))) {
+            
+            wwx <- q1[l]
+            break
+            
+          }
+        }
+        
+        # output from tree disagree from brute force search
+        if (wwx!=ww1) {
+          # enter into debug mode
+          browser()
+        }
+        
+        start <- which(card_nodup1 == min(card_nodup1[card_nodup1 > sum(z)]))[1]
+        
+        for (j in start:length(card_nodup1)) {
+          
+          ww1 <- superset(tree1[[j]],z)
+          
+          if (!is.null(ww1)) {
+            break
+          }
+          
         }
       }
       
@@ -90,21 +167,37 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
       # If commonality value doesn't exist
       if(use_tree) {
         
-        ww2 <- superset(tree2,z)
+        start <- which(card_nodup2 == min(card_nodup2[card_nodup2 > sum(z)]))[1]
         
-      } else {
-        for (j in 1:nrow(tt2)) {
-          if (all((tt2[j,] - tty[i,]) >= 0)) {
-            ww2 <- q2[j]
+        for (j in start:length(card_nodup2)) {
+          
+          ww2 <- superset(tree2[[j]],z)
+          
+          if (!is.null(ww2)) {
             break
           }
+          
         }
+        
+      } else {
+        
+        start <- which(card2 == min(card2[card2 > sum(z)]))[1]
+        
+        for (j in start:nrow(tt2)) {
+          
+          if (all((tt2[j,] - tty[i,] >= 0))) {
+            
+            ww2 <- q2[j]
+            break
+            
+          }
+        }
+        
+        q2x[i] <- unname(ww2)
+        v <- t(as.logical(z))
+        colnames(v) <- colnames(tt1)
+        names(q2x)[i] <- nameRows(v)
       }
-      q2x[i] <- unname(ww2)
-      v <- t(as.logical(z))
-      colnames(v) <- colnames(tt1)
-      names(q2x)[i] <- nameRows(v)
-      
     } else {
       # If commonality value exists
       q2x[i] <- w2

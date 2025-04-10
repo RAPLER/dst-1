@@ -1,17 +1,19 @@
 #' Find the q value of the smallest superset of a vector
 #' 
 superset<-function(node,w) {
-  # TODO: if the tree is correctly built, this is incorrect
   if (all((node$x & w) == w) && !is.null(node$q)) {
-    # return binary vector
+    # return q value
     return(node$q)
   }
   
-  if (all((node$x & w) == w)) {
-    # move to the left
-    return(superset(node$left, w))
-  } else {
+  if (!all(node$x[0:node$depth] == w[0:node$depth])) {
+    # give up this branch
+    return(NULL)
+  } else if (w[node$depth+1]) {
     # move to the right
     return(superset(node$right, w))
+  } else {
+    # move to the left
+    return(superset(node$left, w))
   }
 }

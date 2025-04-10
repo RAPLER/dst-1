@@ -4,12 +4,14 @@
 buildTree<-function(tt, q){
   tree <- NULL
   
-  sort_order <-order(apply(tt,1,sum))
-  tt <- tt[sort_order,]
-  q <- q[sort_order]
+  n <- if (is.null(nrow(tt))) 1 else nrow(tt)
   
-  for (i in 1:nrow(tt)) {
-    tree <- insertNode(as.bit(tt[i,]),q[i],tree)
+  for (i in 1:n) {
+    
+    row <- if (is.null(nrow(tt))) tt else tt[i, ]
+    
+    tree <- insertNode(as.bit(row),q[i],tree)
+    
   }
   
   return(tree)
