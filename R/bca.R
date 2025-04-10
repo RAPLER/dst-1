@@ -9,8 +9,8 @@
 #' @param ssnames A list of subsets names which will be obtained from the column names of the tt matrix.
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
 #' @param qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
-#' @param method = NULL: Use Fast Zeta Transform ("fzt"), Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m").
-#' @param include_all = FALSE Put TRUE to include all elements with 0 mass in the bca.
+#' @param method Default= NULL. Use Fast Zeta Transform ("fzt"), Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m"). If used, the \code{tt} matrix will be augmented with its closure elements.
+#' @param include_all Default = FALSE. Put TRUE to include all elements with 0 mass in the bca.
 #' @param cnames A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
 #' @param idvar The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted. 
@@ -183,6 +183,27 @@ bca<-function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cname
     
     # 7.1 build qq
     if (is.null(qq) == TRUE && !is.null(method)) {
+      # add closure elements
+      tt1 <- tt
+      # add closure elements to matrix
+      cl_tt1 <- closure(lapply(1:nrow(tt1), function(i) tt1[i, ]))
+      tty1c <- matrix(unlist(cl_tt1), ncol=ncol(tt1), byrow = TRUE)
+      m1c <- c(m, rep(0,(nrow(tty1c)-nrow(tt1)) ) )
+      # Order the subsets so the frame is in the last position of tt matrix
+      ztab <- cbind(tty1c, m1c)
+      colnames(ztab) <- c(colnames(tt), "mass" )
+      sort_order<-order(apply(tty1c,1,sum))
+      ztab=ztab[sort_order,]
+      if (is.matrix(ztab) == FALSE) {
+        ztab <- matrix(ztab,ncol = length(ztab), dimnames = list("frame", names(ztab)))
+      }
+      tt = ztab[,1:ncol(ztab)-1]
+      rownames(tt) <- nameRows(tt)
+      m = ztab[,ncol(ztab)]
+      spec <- cbind((1:nrow(tt)), m)
+      colnames(spec) <- c("specnb", "mass")
+      rownames(spec) <- rownames(tt)
+      # compute commonalities
       qq <- commonality(tt,m,method)
     }
     

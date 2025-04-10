@@ -28,9 +28,9 @@ bca(
 
 \item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
 
-\item{method}{= NULL: Use Fast Zeta Transform ("fzt"), Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m").}
+\item{method}{Default= NULL. Use Fast Zeta Transform ("fzt"), Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m"). If used, the \code{tt} matrix will be augmented with its closure elements.}
 
-\item{include_all}{= FALSE Put TRUE to include all elements with 0 mass in the bca.}
+\item{include_all}{Default = FALSE. Put TRUE to include all elements with 0 mass in the bca.}
 
 \item{cnames}{A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
 
