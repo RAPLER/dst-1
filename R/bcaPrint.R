@@ -3,6 +3,7 @@
 #' This utility function does a simple printing of a bca
 #' 
 #' @param x A list of class bcaspec.
+#' @param remove Default = FALSE. Put = TRUE to exclude subsets with zero mass.
 #' @return A table of subsets with their associated mass. Subsets are identified by row names.
 #' @author Claude Boivin
 #' @export
@@ -11,7 +12,16 @@
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), idvar = 1)
 #' bcaPrint(z)
-bcaPrint <- function(x) {
+#' y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
+#' byrow = TRUE), m = c(0.6,0.4), include_all = TRUE,
+#' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
+#'  bcaPrint(y)
+#'  bcaPrint(y, remove = TRUE)
+#' x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' byrow = TRUE), m = c(0.2,0.5, 0.3),
+#' cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
+#'  bcaPrint(x)
+bcaPrint <- function(x, remove = FALSE) {
   #
   # Local variables: y 
   # Functions calls: None
@@ -29,7 +39,8 @@ bcaPrint <- function(x) {
   colnames(y)[1] <- deparse(substitute(x))
   if (!is.null (x$qq) ) {
     print("Closure elements have been added to the bca, since you use commonalities.")
-  } else {
+  } else
+  if (remove == TRUE) {
   y <- y[y[,ncol(y)] > 0,]
   }
   rownames(y) <- NULL

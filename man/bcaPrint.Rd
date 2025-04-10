@@ -4,10 +4,12 @@
 \alias{bcaPrint}
 \title{Simple printing of the \code{tt} matrix and mass values of a basic chance assignment (bca)}
 \usage{
-bcaPrint(x)
+bcaPrint(x, remove = FALSE)
 }
 \arguments{
 \item{x}{A list of class bcaspec.}
+
+\item{remove}{Default = FALSE. Put = TRUE to exclude subsets with zero mass.}
 }
 \value{
 A table of subsets with their associated mass. Subsets are identified by row names.
@@ -20,6 +22,15 @@ z <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3,
 byrow = TRUE), m = c(0.2,0.5, 0.3), 
 cnames = c("a", "b", "c"), idvar = 1)
 bcaPrint(z)
+y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
+byrow = TRUE), m = c(0.6,0.4), include_all = TRUE,
+cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
+ bcaPrint(y)
+ bcaPrint(y, remove = TRUE)
+x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+byrow = TRUE), m = c(0.2,0.5, 0.3),
+cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
+ bcaPrint(x)
 }
 \author{
 Claude Boivin
