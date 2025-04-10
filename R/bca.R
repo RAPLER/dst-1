@@ -41,16 +41,16 @@
 #' colnames(tt1) <- c("yes", "no")
 #' m <- c(.9, .1)
 #' bca(tt=tt1, m, idvar = 1)
-#' x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
-#' byrow = TRUE), m = c(0.2,0.5, 0.3), include_all = TRUE,
-#' cnames = c("a", "b", "c"), idvar = 1)
 #' y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
-#' byrow = TRUE), m = c(0.6,0.4), 
+#' byrow = TRUE), m = c(0.6,0.4), include_all = TRUE,
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
+#'  bcaPrint(y)
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
+#'  bcaPrint(vacuous)
 #' x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
-#' byrow = TRUE), m = c(0.2,0.5, 0.3), include_all = TRUE,
+#' byrow = TRUE), m = c(0.2,0.5, 0.3),
 #' cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
+#'x$qq
 #' @references \itemize{
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
