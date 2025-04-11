@@ -5,6 +5,10 @@
 \title{Augment list of binary vectors with closure elements}
 \arguments{
 \item{ttxl}{list of binary vectors}
+
+\item{computeJoin}{= true: whether to compute join closure}
+
+\item{display_progress}{= false: whether to display progress bar}
 }
 \description{
 Augment list of binary vectors with closure elements

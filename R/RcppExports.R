@@ -5,10 +5,12 @@
 #' 
 #' @name closure
 #' @param ttxl list of binary vectors
+#' @param computeJoin = true: whether to compute join closure
+#' @param display_progress = false: whether to display progress bar
 #' @export
 NULL
 
-closure <- function(ttxl, computeJoin = TRUE) {
-    .Call(`_dst_closure`, ttxl, computeJoin)
+closure <- function(ttxl, computeJoin = TRUE, display_progress = FALSE) {
+    .Call(`_dst_closure`, ttxl, computeJoin, display_progress)
 }
 

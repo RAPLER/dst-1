@@ -29,10 +29,12 @@ Imports:
     rlang,
     utils,
     bit,
-    Rcpp
+    Rcpp,
+    RcppProgress
 LinkingTo: 
     Rcpp,
-    BH
+    BH,
+    RcppProgress
 Suggests: 
     igraph,
     knitr,

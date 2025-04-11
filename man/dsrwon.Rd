@@ -11,6 +11,7 @@ dsrwon(
   use_ssnames = FALSE,
   use_qq = FALSE,
   method = NULL,
+  use_tree = FALSE,
   varnames = NULL,
   relnb = NULL,
   skpt_tt = FALSE,
@@ -29,6 +30,8 @@ dsrwon(
 \item{use_qq}{= TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE}
 
 \item{method}{= NULL}
+
+\item{use_tree}{= TRUE to use tree structure to impute commonality values. Default = FALSE}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
