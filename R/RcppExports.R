@@ -4,9 +4,11 @@
 #' Augment list of binary vectors with closure elements
 #' 
 #' @name closure
+#' @details 
 #' @param ttxl list of binary vectors
 #' @param computeJoin = true: whether to compute join closure
 #' @param display_progress = false: whether to display progress bar
+#' @return a list of binary vectors including the closure elements
 #' @export
 NULL
 

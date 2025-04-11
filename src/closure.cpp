@@ -45,6 +45,8 @@ List closure(List ttxl, bool computeJoin = true, bool display_progress = false) 
   Progress p(ttylv.size()*ttylv.size(), display_progress);
   for (size_t i = 0; i < ttylv.size(); ++i) {
     for (size_t j = 0; j < ttylv.size(); ++j) {
+      p.increment(); 
+      
       // Always compute meet (AND)
       boost::dynamic_bitset<> meet = ttylv[i] & ttylv[j];
       if (m0.find(meet) == m0.end()) {
