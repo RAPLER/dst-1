@@ -33,12 +33,26 @@ bcaPrint <- function(x, remove = FALSE) {
   }
   # x must have tt and spec
   if (is.null(x$tt) || is.null(x$spec)) {
+    if (!is.null (x$qq)) {
+      # rebuild tt and spec
+      # recover mass vector
+      mx <- mFromQQ(x$qq, x$infovar[1,2], x$valuenames[[1]], method = "emt-m")
+      # recover tt
+      tx <- (ttmatrixFromQQ(x$qq,x$infovar[1,2],x$valuenames[[1]]))[mx >0,]
+      specx <- matrix(c(1:nrow(tx),mx[mx>0]), ncol = 2 )
+      rownames(specx) <- rownames(tx)
+      colnames(specx) <- c("specnb", "mass")
+      x$tt <- tx
+      x$spec <- specx
+      # End
+    } else {
     stop("Missing tt or spec")
+    }
   }
   y <- as.data.frame(cbind(rownames(x$tt), x$spec))
-  colnames(y)[1] <- deparse(substitute(x))
+  colnames(y)[1] <- x$varnames[[1]]
   if (!is.null (x$qq) ) {
-    print("Closure elements (with 0 mass) may have been added to the bca, since you use commonalities.")
+    message("Closure elements (with 0 mass) may have been added to the bca, since you use commonalities.")
   } else
   if (remove == TRUE) {
   y <- y[y[,ncol(y)] > 0,]
