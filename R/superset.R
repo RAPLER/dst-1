@@ -1,13 +1,20 @@
 #' Find the q value of the smallest superset of a vector
 #' 
 superset<-function(node,w) {
-  if (!all(node$x[0:node$depth] == w[0:node$depth])) {
-    # give up this branch
+  if(is.null(node)) {
     return(NULL)
-  } else if (all((node$x & w) == w) && !is.null(node$q)) {
+  }
+  if (all((node$x & w) == w) && !is.null(node$q)) {
     # return q value
     return(node$q)
-  } else if (w[node$depth+1]) {
+  } 
+  if (node$depth!=0) {
+    if (!all((node$x[0:node$depth] & w[0:node$depth]) == w[0:node$depth])) {
+      # give up this branch
+      return(NULL)
+    }
+  }
+  if (w[node$depth+1]) {
     # move to the right
     return(superset(node$right, w))
   } else {
