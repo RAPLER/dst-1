@@ -6,21 +6,14 @@
 using namespace Rcpp;
 
 //' Augment list of binary vectors with closure elements
-//' 
 //' @name closure
-//' @details 
-//' @param ttxl list of binary vectors
-//' @param computeJoin = true: whether to compute join closure
-//' @param display_progress = false: whether to display progress bar
-//' @return a list of binary vectors including the closure elements
+//' @param ttxl A list of binary vectors
+//' @param computeJoin = true: to compute join closure. Default = TRUE
+//' @return A list of binary vectors including the closure elements
 //' @export
 
-// [[Rcpp::depends(RcppProgress)]]
-#include <progress.hpp>
-#include <progress_bar.hpp>
-
 // [[Rcpp::export]]
-List closure(List ttxl, bool computeJoin = true, bool display_progress = false) {
+List closure(List ttxl, bool computeJoin = true) {
   std::vector<boost::dynamic_bitset<>> ttxlv;
   std::vector<boost::dynamic_bitset<>> ttylv;
   std::unordered_map<boost::dynamic_bitset<>, size_t> m0;
@@ -42,11 +35,9 @@ List closure(List ttxl, bool computeJoin = true, bool display_progress = false) 
   }
   
   // Compute closures
-  Progress p(ttylv.size()*ttylv.size(), display_progress);
   for (size_t i = 0; i < ttylv.size(); ++i) {
     for (size_t j = 0; j < ttylv.size(); ++j) {
-      p.increment(); 
-      
+
       // Always compute meet (AND)
       boost::dynamic_bitset<> meet = ttylv[i] & ttylv[j];
       if (m0.find(meet) == m0.end()) {

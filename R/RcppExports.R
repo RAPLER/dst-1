@@ -2,17 +2,14 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 #' Augment list of binary vectors with closure elements
-#' 
 #' @name closure
-#' @details 
-#' @param ttxl list of binary vectors
-#' @param computeJoin = true: whether to compute join closure
-#' @param display_progress = false: whether to display progress bar
-#' @return a list of binary vectors including the closure elements
+#' @param ttxl A list of binary vectors
+#' @param computeJoin = true: to compute join closure. Default = TRUE
+#' @return A list of binary vectors including the closure elements
 #' @export
 NULL
 
-closure <- function(ttxl, computeJoin = TRUE, display_progress = FALSE) {
-    .Call(`_dst_closure`, ttxl, computeJoin, display_progress)
+closure <- function(ttxl, computeJoin = TRUE) {
+    .Call(`_dst_closure`, ttxl, computeJoin)
 }
 

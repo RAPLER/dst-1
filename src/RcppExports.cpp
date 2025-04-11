@@ -11,21 +11,20 @@ Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
 // closure
-List closure(List ttxl, bool computeJoin, bool display_progress);
-RcppExport SEXP _dst_closure(SEXP ttxlSEXP, SEXP computeJoinSEXP, SEXP display_progressSEXP) {
+List closure(List ttxl, bool computeJoin);
+RcppExport SEXP _dst_closure(SEXP ttxlSEXP, SEXP computeJoinSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type ttxl(ttxlSEXP);
     Rcpp::traits::input_parameter< bool >::type computeJoin(computeJoinSEXP);
-    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
-    rcpp_result_gen = Rcpp::wrap(closure(ttxl, computeJoin, display_progress));
+    rcpp_result_gen = Rcpp::wrap(closure(ttxl, computeJoin));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_dst_closure", (DL_FUNC) &_dst_closure, 3},
+    {"_dst_closure", (DL_FUNC) &_dst_closure, 2},
     {NULL, NULL, 0}
 };
 
