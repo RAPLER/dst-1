@@ -2,11 +2,12 @@
 #' 
 #' @details Impute commonality values based on a closure matrix
 #'  
-#' @param tty closure matrix
-#' @param q1 named vector of commonality values
-#' @param q2 named vector of commonality values
-#' @param tt1 q1 support matrix
-#' @param tt2 q2 support matrix
+#' @param tty A closure matrix
+#' @param tt1 A q1 support matrix
+#' @param tt2 A q2 support matrix
+#' @param q1 A named vector of commonality values
+#' @param q2 A named vector of commonality values
+#' @param tree_type tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL
 #' @return x a list with two elements \itemize{
 #'  \item q1 new commonality vector
 #'  \item q2 new commonality vector
@@ -26,7 +27,7 @@
 #' x <- imputeQQ(tty,tt1,tt2,q1,q2)
 #' x$q1
 #' x$q2
-imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
+imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
   
   # Sort order
   card1 <- rowSums(tt1)
@@ -43,7 +44,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
   q2 <- q2[sort_order2]
   card_nodup2 <- card2[!duplicated(card2)]
     
-  if(use_tree){
+  if(tree_type=="multiple"){
     # Build tree
     tree1 <- list()
     tree2 <- list()
@@ -62,6 +63,9 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
       
     }
     
+  } else if(tree_type=="single") {
+    tree1 <- buildTree(tt1,q1)
+    tree2 <- buildTree(tt2,q2)
   }
   
   # Create hashtable
@@ -87,7 +91,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
     if (is.null(w1)) {
       # If commonality value doesn't exist
         
-      if(use_tree) {
+      if(tree_type=="multiple") {
         
         start <- which(card_nodup1 == min(card_nodup1[card_nodup1 > sum(z)]))[1]
           
@@ -100,6 +104,10 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
           }
         
         }
+        
+      } else if (tree_type=="single") {
+        
+        ww1 <- superset(tree1,z)
         
       } else {
         
@@ -130,7 +138,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
     w2 <- m2[[z]]
     if (is.null(w2)) {
       # If commonality value doesn't exist
-      if(use_tree) {
+      if(tree_type=="multiple") {
         
         start <- which(card_nodup2 == min(card_nodup2[card_nodup2 > sum(z)]))[1]
         
@@ -142,6 +150,10 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
             break
           }
         }
+      } else if (tree_type=="single") {
+        
+        ww2 <- superset(tree2,z)
+        
       } else {
         
         start <- which(card2 == min(card2[card2 > sum(z)]))[1]

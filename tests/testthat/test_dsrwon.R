@@ -99,7 +99,7 @@ test_that("dsrwon", {
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt-m")
-    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,method="emt-m",use_tree=TRUE) 
+    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,method="emt-m",tree_type="single") 
     end.time <- Sys.time()
     time.taken <- end.time - start.time
     print(time.taken)

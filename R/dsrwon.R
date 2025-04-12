@@ -9,7 +9,7 @@
 #' @param mcores Make use of multiple cores ("yes") or not ("no"). Default = "no".
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
 #' @param use_qq = TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE
-#' @param use_tree = TRUE to use tree structure to impute commonality values. Default = FALSE
+#' @param tree_type tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL
 #' @param method = NULL
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
 #' @param skpt_tt Skip reconstruction of tt matrix. Default = FALSE.
@@ -49,7 +49,7 @@
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, method = NULL, use_tree = FALSE, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, method = NULL, tree_type = NULL, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
   # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
@@ -394,7 +394,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
         rownames(tty) <- nameRows(tty)
       }
       
-      x <- imputeQQ(tty,tt1,tt2,q1,q2,use_tree)
+      x <- imputeQQ(tty,tt1,tt2,q1,q2,tree_type)
       q1 <- x$q1
       q2 <- x$q2
       
