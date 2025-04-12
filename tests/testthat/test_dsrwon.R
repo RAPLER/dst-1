@@ -48,8 +48,8 @@ test_that("dsrwon", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
-  m <- 2000
+  n <- 30
+  m <- 10
   
   # Sample S
   S <- 3
@@ -99,7 +99,7 @@ test_that("dsrwon", {
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt-m")
-    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,method="emt-m",use_tree=FALSE) # TODO: let the test pass when use_tree=TRUE
+    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,method="emt-m",use_tree=TRUE) 
     end.time <- Sys.time()
     time.taken <- end.time - start.time
     print(time.taken)
@@ -117,6 +117,7 @@ test_that("dsrwon", {
   bma1$spec <- as.matrix(cbind(seq(1,length(m)),mm))
   colnames(bma1$spec) <- c("spec","mass")
   
+  # Warning: decode doesn't work for large arrays
   sort_order <- order(apply(bma1$tt,1,function(x) decode(rep(2,ncol(bma1$tt)),x)))
   bma1$tt <- bma1$tt[sort_order,]
   bma1$spec <- bma1$spec[sort_order,]

@@ -6,11 +6,11 @@
 using namespace Rcpp;
 
 //' Augment list of binary vectors with closure elements
-//' 
 //' @name closure
-//' @param ttxl list of binary vectors
+//' @param ttxl A list of binary vectors
+//' @param computeJoin = true: to compute join closure. Default = TRUE
+//' @return A list of binary vectors including the closure elements
 //' @export
-
 
 // [[Rcpp::export]]
 List closure(List ttxl, bool computeJoin = true) {
@@ -37,6 +37,7 @@ List closure(List ttxl, bool computeJoin = true) {
   // Compute closures
   for (size_t i = 0; i < ttylv.size(); ++i) {
     for (size_t j = 0; j < ttylv.size(); ++j) {
+
       // Always compute meet (AND)
       boost::dynamic_bitset<> meet = ttylv[i] & ttylv[j];
       if (m0.find(meet) == m0.end()) {

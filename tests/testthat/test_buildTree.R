@@ -33,5 +33,4 @@ test_that("buildTree", {
   expect_equal(tree$left$right$depth,2)
   
   # TODO: add more tests
-  
 })

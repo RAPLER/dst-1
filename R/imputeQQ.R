@@ -114,7 +114,6 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
             
           }
         }
-        
       }
       
       q1x[i] <- unname(ww1)
@@ -142,9 +141,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
           if (!is.null(ww2)) {
             break
           }
-          
         }
-        
       } else {
         
         start <- which(card2 == min(card2[card2 > sum(z)]))[1]
@@ -158,12 +155,12 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,use_tree=FALSE) {
             
           }
         }
-        
-        q2x[i] <- unname(ww2)
-        v <- t(as.logical(z))
-        colnames(v) <- colnames(tt1)
-        names(q2x)[i] <- nameRows(v)
       }
+      
+      q2x[i] <- unname(ww2)
+      v <- t(as.logical(z))
+      colnames(v) <- colnames(tt1)
+      names(q2x)[i] <- nameRows(v)
     } else {
       # If commonality value exists
       q2x[i] <- w2
