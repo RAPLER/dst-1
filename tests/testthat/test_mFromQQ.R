@@ -63,7 +63,7 @@ test_that("mFromQQ", {
   colnames(tt6) <- cnames6
   rownames(tt6) <- nameRows(tt6)
   m6 <- c(0.01,0.02,0.03,0.04,0.05,0.06,0.79)
-  x6 <- bca(tt6,m6,cnames=cnames6)
+  x6 <- bca(tt6,m6,cnames=cnames6, method = "fzt")
   x6n <- nzdsr(x6)
   
   m1 <- mFromQQ(x6$qq,6,method="emt",cnames=cnames6)
