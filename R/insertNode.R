@@ -1,6 +1,17 @@
 #' Insert bit vector and value into a node
 #' 
+#' @details # TO DO
+#' @param  x a boolean or binary vector coerced to bit vector. 
+#' @param  q a commonnality value associated to \code{x}.
+#' @param node An existing tree structure
+#' @return The tree augmented structure.
+#' @author  Peiyuan Zhu
+#' @export
+#' @examples 
+#' # TO DO
 insertNode <- function(x, q, node){
+  # Functions calls: createNode
+  # Recursive
   if (is.null(node)) {
     return(createNode(x,q))
   }

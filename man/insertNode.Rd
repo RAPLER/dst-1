@@ -6,6 +6,25 @@
 \usage{
 insertNode(x, q, node)
 }
+\arguments{
+\item{x}{a boolean or binary vector coerced to bit vector.}
+
+\item{q}{a commonnality value associated to \code{x}.}
+
+\item{node}{An existing tree structure}
+}
+\value{
+The tree augmented structure.
+}
 \description{
 Insert bit vector and value into a node
+}
+\details{
+# TO DO
+}
+\examples{
+# TO DO
+}
+\author{
+Peiyuan Zhu
 }
