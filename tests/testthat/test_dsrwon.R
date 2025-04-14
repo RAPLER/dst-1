@@ -119,7 +119,7 @@ test_that("dsrwon", {
   bma1$spec <- as.matrix(cbind(seq(1,length(m)),mm))
   colnames(bma1$spec) <- c("spec","mass")
   
-  # Warning: decode doesn't work for large arrays
+  # TODO: use permutation instead of decode, since decode doesn't work for large arrays
   sort_order <- order(apply(bma1$tt,1,function(x) decode(rep(2,ncol(bma1$tt)),x)))
   bma1$tt <- bma1$tt[sort_order,]
   bma1$spec <- bma1$spec[sort_order,]
