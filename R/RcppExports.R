@@ -3,13 +3,14 @@
 
 #' Augment list of binary vectors with closure elements
 #' @name closure
-#' @param ttxl A list of binary vectors
+#' @param ttx A binary matrix
 #' @param computeJoin = true: to compute join closure. Default = TRUE
+#' @param display_progress = true: to compute join closure. Default = FALSE
 #' @return A list of binary vectors including the closure elements
 #' @export
 NULL
 
-closure <- function(ttxl, computeJoin = TRUE) {
-    .Call(`_dst_closure`, ttxl, computeJoin)
+closure <- function(ttx, computeJoin = TRUE, display_progress = FALSE) {
+    .Call(`_dst_closure`, ttx, computeJoin, display_progress)
 }
 

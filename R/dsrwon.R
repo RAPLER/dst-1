@@ -9,6 +9,7 @@
 #' @param mcores Make use of multiple cores ("yes") or not ("no"). Default = "no".
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
 #' @param use_qq = TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE
+#' @param use_sparse Make use of sparse matrices ("yes") or not ("no"). Default = "no".
 #' @param tree_type tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL
 #' @param method = NULL
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
@@ -49,7 +50,7 @@
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, method = NULL, tree_type = NULL, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sparse = "no", method = NULL, tree_type = NULL, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
   # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
@@ -361,35 +362,29 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
     # Augment q1 with q2, q2 with q1
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt1 <- ttmatrixFromQQ(q1,n,cnames)
+    tt1 <- ttmatrixFromQQ(q1,n,cnames,use_sparse)
     
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt2 <- ttmatrixFromQQ(q2,n,cnames)
+    tt2 <- ttmatrixFromQQ(q2,n,cnames,use_sparse)
     
     # Take union
     ttx <- rbind(tt1,tt2)
     
     # Remove duplicates of the joint
-    ttx <- ttx[!duplicated(ttx),]
+    ttx <- ttx[!duplicated(rownames(ttx)),]
     
     # Add closure elements
-    if (is.null(method) || method=="fmt") { 
-      
-    } else if (method=="emt" || method=="emt-m") { 
+    if (method=="emt" || method=="emt-m") { 
       
       if (method=="emt") {
-        ttxl <- lapply(1:nrow(ttx), function(i) ttx[i, ])
-        ttyl <- closure(ttxl)
-        tty <- do.call(rbind, lapply(ttyl, as.logical))
+        tty <- closure(ttx)
         colnames(tty) <- colnames(ttx)
         rownames(tty) <- nameRows(tty)
       }
     
       if (method=="emt-m") { 
-        ttxl <- lapply(1:nrow(ttx), function(i) ttx[i, ])
-        ttyl <- closure(ttxl, FALSE)
-        tty <- do.call(rbind, lapply(ttyl, as.logical))
+        tty <- closure(ttx,FALSE)
         colnames(tty) <- colnames(ttx)
         rownames(tty) <- nameRows(tty)
       }
@@ -398,6 +393,8 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, metho
       q1 <- x$q1
       q2 <- x$q2
       
+    } else {
+      stop("method needs to be one of emt, emt-m if use_qq is TRUE")
     }
     
     # Combine

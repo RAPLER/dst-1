@@ -186,8 +186,7 @@ bca<-function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cname
       # add closure elements
       tt1 <- tt
       # add closure elements to matrix
-      cl_tt1 <- closure(lapply(1:nrow(tt1), function(i) tt1[i, ]))
-      tty1c <- matrix(unlist(cl_tt1), ncol=ncol(tt1), byrow = TRUE)
+      tty1c <- closure(tt1)
       m1c <- c(m, rep(0,(nrow(tty1c)-nrow(tt1)) ) )
       # Order the subsets so the frame is in the last position of tt matrix
       ztab <- cbind(tty1c, m1c)

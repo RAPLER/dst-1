@@ -1,32 +1,34 @@
 // [[Rcpp::depends(BH)]]
-#include <Rcpp.h>
+// [[Rcpp::depends(RcppProgress)]]
 #include <stdio.h>
 #include <boost/functional/hash.hpp>
 #include <boost/dynamic_bitset.hpp>
+#include <progress.hpp>
+#include <progress_bar.hpp>
 using namespace Rcpp;
 
 //' Augment list of binary vectors with closure elements
 //' @name closure
-//' @param ttxl A list of binary vectors
+//' @param ttx A binary matrix
 //' @param computeJoin = true: to compute join closure. Default = TRUE
+//' @param display_progress = true: to compute join closure. Default = FALSE
 //' @return A list of binary vectors including the closure elements
 //' @export
 
 // [[Rcpp::export]]
-List closure(List ttxl, bool computeJoin = true) {
+LogicalMatrix closure(IntegerMatrix ttx, bool computeJoin = true, bool display_progress = false) {
+  // TODO: accept sparse matrix ttx
   std::vector<boost::dynamic_bitset<>> ttxlv;
   std::vector<boost::dynamic_bitset<>> ttylv;
   std::unordered_map<boost::dynamic_bitset<>, size_t> m0;
   
   // Convert input list to bitset vector
-  for (int i = 0; i < ttxl.size(); ++i) {
-    IntegerVector vec = as<IntegerVector>(ttxl[i]);
+  for (int i = 0; i < ttx.nrow(); ++i) {
+    IntegerVector vec = IntegerVector(ttx.row(i));  // convert row to IntegerVector
     boost::dynamic_bitset<> bitset1(vec.size());
     
-    for (size_t j = 0; j < vec.size(); ++j) {
-      if (vec[j] != 0) {
-        bitset1[j] = 1;
-      }
+    for (int j = 0; j < vec.size(); ++j) {
+      bitset1[j] = (vec[j] != 0);  // shorter and safe
     }
     
     ttxlv.push_back(bitset1);
@@ -35,7 +37,9 @@ List closure(List ttxl, bool computeJoin = true) {
   }
   
   // Compute closures
-  for (size_t i = 0; i < ttylv.size(); ++i) {
+  Progress p(ttxlv.size(), display_progress);
+  for (size_t i = 0; i < ttxlv.size(); ++i) {
+    p.increment();
     for (size_t j = 0; j < ttylv.size(); ++j) {
 
       // Always compute meet (AND)
@@ -56,16 +60,18 @@ List closure(List ttxl, bool computeJoin = true) {
     }
   }
   
-  // Convert result to R list
-  Rcpp::List result;
-  for (const auto& bitset : ttylv) {
-    Rcpp::IntegerVector rvec(bitset.size());
-    for (size_t i = 0; i < bitset.size(); ++i) {
-      rvec[i] = bitset[i];
-    }
-    result.push_back(rvec);
-  }
+  // Convert result to LogicalMatrix
+  // TODO: export sparse matrix
+  size_t n_rows = ttylv.size();
+  size_t n_cols = ttylv[0].size();  // assume all bitsets have the same length
   
+  Rcpp::LogicalMatrix result(n_rows, n_cols);
+  for (size_t i = 0; i < n_rows; ++i) {
+    const auto& bitset = ttylv[i];
+    for (size_t j = 0; j < n_cols; ++j) {
+      result(i, j) = static_cast<int>(bitset[j]);  // R logical is just 0/1 here
+    }
+  }
   return result;
 }
 

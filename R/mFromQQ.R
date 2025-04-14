@@ -142,6 +142,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     # Step 2.1.2: Filter those that are non-empty
     # Step 2.1.3: Find infimum of each upset
     iota <- NULL
+    # TODO: optimize this
     for (i in 1:ncol(W23)) {
       #print(i)
       ZZ <- rep(0,ncol(W23))

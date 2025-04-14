@@ -43,7 +43,7 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
   tt2 <- tt2[sort_order2,]
   q2 <- q2[sort_order2]
   card_nodup2 <- card2[!duplicated(card2)]
-    
+  
   if(tree_type=="multiple"){
     # Build tree
     tree1 <- list()
@@ -62,6 +62,10 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
       tree2[[j]] <- buildTree(tt2[idx2,],q2[idx2])
       
     }
+    
+    #debug
+    #treex <- buildTree(tt1,q1)
+    #treey <- buildTree(tt2,q2)
     
   } else if(tree_type=="single") {
     tree1 <- buildTree(tt1,q1)
@@ -90,20 +94,24 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
     w1 <- m1[[z]]
     if (is.null(w1)) {
       # If commonality value doesn't exist
-        
+      
       if(tree_type=="multiple") {
         
         start <- which(card_nodup1 == min(card_nodup1[card_nodup1 > sum(z)]))[1]
-          
-        for (j in start:length(card_nodup1)) {
         
+        for (j in start:length(card_nodup1)) {
+          
           ww1 <- superset(tree1[[j]],z)
           
           if (!is.null(ww1)) {
             break
           }
-        
+          
         }
+        
+        # TODO: debug this
+        #wwx <- superset(treex,z)
+        #if (wwx!=ww1) {browser()}
         
       } else if (tree_type=="single") {
         
@@ -150,6 +158,10 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
             break
           }
         }
+        
+        # TODO: debug this
+        #wwy <- superset(treey,z)
+        #if (wwy!=ww2) {browser()}
       } else if (tree_type=="single") {
         
         ww2 <- superset(tree2,z)
