@@ -15,7 +15,7 @@ test_that("closure", {
   expect_equal(tty[4,],c(0,1,0))
   
   ttx <- methods::as(matrix(c(0,1,0,1,0,0,1,1,1), nrow=3, byrow = TRUE), "RsparseMatrix")
-  tty <- closureSparse(ttx)
+  tty <- closureSparse(ttx, display_progress=TRUE)
   expect_equal(tty[4,],c(0,0,0))
   expect_equal(tty[5,],c(1,1,0))
 })
