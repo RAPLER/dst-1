@@ -109,10 +109,6 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
           
         }
         
-        # TODO: debug this
-        #wwx <- superset(treex,z)
-        #if (wwx!=ww1) {browser()}
-        
       } else if (tree_type=="single") {
         
         ww1 <- superset(tree1,z)
@@ -159,9 +155,6 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
           }
         }
         
-        # TODO: debug this
-        #wwy <- superset(treey,z)
-        #if (wwy!=ww2) {browser()}
       } else if (tree_type=="single") {
         
         ww2 <- superset(tree2,z)
