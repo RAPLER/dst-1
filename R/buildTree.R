@@ -7,7 +7,7 @@
 #' @author  Peiyuan Zhu
 #' @import methods bit
 #' @export
-#' @references  Chaveroche, Franck Davoine, Véronique Cherfaoui. Eﬃcient Möbius Transformations and their applications to Dempster-Shafer Theory: Clarification and implementation. arXiv preprint arXiv:2107.07359
+#' @references  Chaveroche, Franck Davoine, Véronique Cherfaoui. Eﬃcient Möbius Transformations and their applications to Dempster-Shafer Theory: Clarification and implementation. ArXiv preprint arXiv:2107.07359
 #' @examples 
 #' # Example from figure 12 of the cited reference.
 #'  x <- matrix(c(1,0,0,
