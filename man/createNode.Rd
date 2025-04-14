@@ -2,12 +2,34 @@
 % Please edit documentation in R/createNode.R
 \name{createNode}
 \alias{createNode}
-\title{Change depth to appropriate calculation
-- depth equals the greatest index corresponding to 1 in the bit vector x}
+\title{Change depth to appropriate calculation}
 \usage{
 createNode(x, q)
 }
+\arguments{
+\item{x}{A boolean or binary vector coerced to bit vector.}
+
+\item{q}{A commonnality value associated to \code{x}.}
+}
+\value{
+A list of length 5 containing the following components:  \itemize{
+\item x The binary table.
+\item q The commonalities.
+\item left The left side of the tree.
+\item right The right side of the tree.
+\item depth The depth of the tree..
+}
+}
 \description{
 Change depth to appropriate calculation
-- depth equals the greatest index corresponding to 1 in the bit vector x
+}
+\details{
+Depth equals the greatest index corresponding to 1 in the bit vector \code{x}.
+}
+\examples{
+# TO DO
+
+}
+\author{
+Peiyuan Zhu
 }

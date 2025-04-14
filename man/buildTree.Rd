@@ -32,7 +32,7 @@ A tree structure of commonalities is built from the binary matrix\code{tt}. This
  q_tree <- buildTree(x,q)
 }
 \references{
-Chaveroche, Franck Davoine, Véronique Cherfaoui. Eﬃcient Möbius Transformations and their applications to Dempster-Shafer Theory: Clarification and implementation. arXiv preprint arXiv:2107.07359
+Chaveroche, Franck Davoine, Véronique Cherfaoui. Eﬃcient Möbius Transformations and their applications to Dempster-Shafer Theory: Clarification and implementation. ArXiv preprint arXiv:2107.07359
 }
 \author{
 Peiyuan Zhu
