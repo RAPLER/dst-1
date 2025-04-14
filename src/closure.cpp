@@ -60,19 +60,19 @@ LogicalMatrix closure(IntegerMatrix ttx, bool computeJoin = true, bool display_p
     }
   }
   
+  // TODO: export sparse matrix tty
   // Convert result to LogicalMatrix
-  // TODO: export sparse matrix
   size_t n_rows = ttylv.size();
   size_t n_cols = ttylv[0].size();  // assume all bitsets have the same length
   
-  Rcpp::LogicalMatrix result(n_rows, n_cols);
+  Rcpp::LogicalMatrix tty(n_rows, n_cols);
   for (size_t i = 0; i < n_rows; ++i) {
     const auto& bitset = ttylv[i];
     for (size_t j = 0; j < n_cols; ++j) {
-      result(i, j) = static_cast<int>(bitset[j]);  // R logical is just 0/1 here
+      tty(i, j) = static_cast<int>(bitset[j]);  // R logical is just 0/1 here
     }
   }
-  return result;
+  return tty;
 }
 
 

@@ -48,8 +48,8 @@ test_that("dsrwon", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 5
-  m <- 2000
+  n <- 10
+  m <- 30
   
   # Sample S
   S <- 3
@@ -99,8 +99,8 @@ test_that("dsrwon", {
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt-m")
-    # TODO: tree_type = "single" didn't pass
-    # TODO: use_sparse = "yes" didn't pass
+    # TODO: pass the test when tree_type = "single" 
+    # TODO: pass the test when use_sparse = "yes"
     bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,use_sparse="no",method="emt-m",tree_type="multiple")
     end.time <- Sys.time()
     time.taken <- end.time - start.time
