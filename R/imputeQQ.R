@@ -63,10 +63,6 @@ imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
       
     }
     
-    #debug
-    #treex <- buildTree(tt1,q1)
-    #treey <- buildTree(tt2,q2)
-    
   } else if(tree_type=="single") {
     tree1 <- buildTree(tt1,q1)
     tree2 <- buildTree(tt2,q2)

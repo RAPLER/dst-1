@@ -379,15 +379,12 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
       
       if (method=="emt") {
         tty <- closure(ttx)
-        colnames(tty) <- colnames(ttx)
-        rownames(tty) <- nameRows(tty)
-      }
-    
-      if (method=="emt-m") { 
+      } else if (method=="emt-m") { 
         tty <- closure(ttx,FALSE)
-        colnames(tty) <- colnames(ttx)
-        rownames(tty) <- nameRows(tty)
       }
+      
+      colnames(tty) <- colnames(ttx)
+      rownames(tty) <- nameRows(tty)
       
       x <- imputeQQ(tty,tt1,tt2,q1,q2,tree_type)
       q1 <- x$q1

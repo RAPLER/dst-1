@@ -4,7 +4,7 @@
 \alias{ttmatrixFromQQ}
 \title{Construct a description matrix from a qq vector}
 \usage{
-ttmatrixFromQQ(qq, n, cnames)
+ttmatrixFromQQ(qq, n, cnames, sparse = "no")
 }
 \arguments{
 \item{qq}{Commonality function}
@@ -12,6 +12,8 @@ ttmatrixFromQQ(qq, n, cnames)
 \item{n}{Dimension of the frame}
 
 \item{cnames}{A character vector containing the names of the elements of the frame of discernment}
+
+\item{sprase}{= c("yes","no") whether to use sparse matrix. Default = "no".}
 }
 \value{
 tt A corresponding logical description matrix

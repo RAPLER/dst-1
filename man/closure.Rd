@@ -4,9 +4,11 @@
 \alias{closure}
 \title{Augment list of binary vectors with closure elements}
 \arguments{
-\item{ttxl}{A list of binary vectors}
+\item{ttx}{A binary matrix}
 
 \item{computeJoin}{= true: to compute join closure. Default = TRUE}
+
+\item{display_progress}{= true: to compute join closure. Default = FALSE}
 }
 \value{
 A list of binary vectors including the closure elements

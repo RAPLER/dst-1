@@ -10,8 +10,9 @@ dsrwon(
   mcores = "no",
   use_ssnames = FALSE,
   use_qq = FALSE,
+  use_sparse = "no",
   method = NULL,
-  use_tree = FALSE,
+  tree_type = NULL,
   varnames = NULL,
   relnb = NULL,
   skpt_tt = FALSE,
@@ -29,9 +30,11 @@ dsrwon(
 
 \item{use_qq}{= TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE}
 
+\item{use_sparse}{Make use of sparse matrices ("yes") or not ("no"). Default = "no".}
+
 \item{method}{= NULL}
 
-\item{use_tree}{= TRUE to use tree structure to impute commonality values. Default = FALSE}
+\item{tree_type}{tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 

@@ -4,18 +4,20 @@
 \alias{imputeQQ}
 \title{Impute commonality values based on a closure matrix}
 \usage{
-imputeQQ(tty, tt1, tt2, q1, q2, use_tree = FALSE)
+imputeQQ(tty, tt1, tt2, q1, q2, tree_type = NULL)
 }
 \arguments{
-\item{tty}{closure matrix}
+\item{tty}{A closure matrix}
 
-\item{tt1}{q1 support matrix}
+\item{tt1}{A q1 support matrix}
 
-\item{tt2}{q2 support matrix}
+\item{tt2}{A q2 support matrix}
 
-\item{q1}{named vector of commonality values}
+\item{q1}{A named vector of commonality values}
 
-\item{q2}{named vector of commonality values}
+\item{q2}{A named vector of commonality values}
+
+\item{tree_type}{tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL}
 }
 \value{
 x a list with two elements \itemize{
