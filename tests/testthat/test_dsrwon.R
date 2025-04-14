@@ -48,8 +48,8 @@ test_that("dsrwon", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
-  m <- 30
+  n <- 5
+  m <- 2000
   
   # Sample S
   S <- 3
@@ -99,9 +99,8 @@ test_that("dsrwon", {
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt-m")
-    # TODO: pass the test when tree_type = "single" 
     # TODO: pass the test when use_sparse = "yes"
-    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,use_sparse="no",method="emt-m",tree_type="multiple")
+    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,use_sparse="no",method="emt-m",tree_type="single")
     end.time <- Sys.time()
     time.taken <- end.time - start.time
     print(time.taken)
@@ -119,15 +118,6 @@ test_that("dsrwon", {
   bma1$spec <- as.matrix(cbind(seq(1,length(m)),mm))
   colnames(bma1$spec) <- c("spec","mass")
   
-  # TODO: use permutation instead of decode, since decode doesn't work for large arrays
-  sort_order <- order(apply(bma1$tt,1,function(x) decode(rep(2,ncol(bma1$tt)),x)))
-  bma1$tt <- bma1$tt[sort_order,]
-  bma1$spec <- bma1$spec[sort_order,]
-  
-  sort_order <- order(apply(bma$tt,1,function(x) decode(rep(2,ncol(bma$tt)),x)))
-  bma$tt <- bma$tt[sort_order,]
-  bma$spec <- bma$spec[sort_order,]
-  
-  expect_equal(bma$spec[,2],unname(bma1$spec[,2]))
+  expect_equal(bma$spec[,2],unname(bma1$spec[rownames(bma$tt),2]))
   
 })
