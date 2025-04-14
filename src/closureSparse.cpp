@@ -1,5 +1,7 @@
 // [[Rcpp::depends(BH)]]
 // [[Rcpp::depends(RcppProgress)]]
+// [[Rcpp::depends(RcppArmadillo)]]
+#include <RcppArmadillo.h>
 #include <stdio.h>
 #include <boost/functional/hash.hpp>
 #include <boost/dynamic_bitset.hpp>
@@ -8,32 +10,32 @@
 using namespace Rcpp;
 
 //' Augment a sparse binary matrixs with closure elements
-//' @name closure
-//' @param ttx A binary matrix
+//' @name closureSparse
+//' @param ttx A sparse binary matrix
 //' @param computeJoin = true: to compute join closure. Default = TRUE
 //' @param display_progress = true: to compute join closure. Default = FALSE
-//' @return A binary matrix including the closure elements
+//' @return A sparse binary matrix including the closure elements
 //' @export
 
 // [[Rcpp::export]]
-LogicalMatrix closure(IntegerMatrix ttx, bool computeJoin = true, bool display_progress = false) {
+arma::sp_mat closureSparse(arma::sp_mat ttx, bool computeJoin = true, bool display_progress = false) {
   // TODO: accept sparse matrix ttx
   std::vector<boost::dynamic_bitset<>> ttxlv;
   std::vector<boost::dynamic_bitset<>> ttylv;
   std::unordered_map<boost::dynamic_bitset<>, size_t> m0;
   
-  // Convert input matrix to bitset vectors
-  for (int i = 0; i < ttx.nrow(); ++i) {
-    IntegerVector vec = IntegerVector(ttx.row(i));  // convert row to IntegerVector
-    boost::dynamic_bitset<> bitset1(vec.size());
+  // Convert input arma::sp_mat to bitset vectors
+  for (size_t i = 0; i < ttx.n_rows; ++i) {
+    boost::dynamic_bitset<> bitset_row(ttx.n_cols);
     
-    for (int j = 0; j < vec.size(); ++j) {
-      bitset1[j] = (vec[j] != 0);  // shorter and safe
+    // Use sparse row iterator to efficiently access non-zero elements
+    for (arma::sp_mat::const_row_iterator it = ttx.begin_row(i); it != ttx.end_row(i); ++it) {
+      bitset_row[it.col()] = 1;
     }
     
-    ttxlv.push_back(bitset1);
-    ttylv.push_back(bitset1);
-    m0.emplace(bitset1, 0);
+    ttxlv.push_back(bitset_row);
+    ttylv.push_back(bitset_row);
+    m0.emplace(bitset_row, 0);
   }
   
   // Compute closures
@@ -60,11 +62,11 @@ LogicalMatrix closure(IntegerMatrix ttx, bool computeJoin = true, bool display_p
     }
   }
   
-  // Convert result to LogicalMatrix
+  // Convert result to arma::sp_mat
   size_t n_rows = ttylv.size();
-  size_t n_cols = ttx.ncol();  // assume all bitsets have the same length
+  size_t n_cols = ttx.n_cols;  // assume all bitsets have the same length
   
-  Rcpp::LogicalMatrix tty(n_rows, n_cols);
+  arma::sp_mat tty(n_rows, n_cols);
   for (size_t i = 0; i < n_rows; ++i) {
     const auto& bitset = ttylv[i];
     for (size_t j = 0; j < n_cols; ++j) {

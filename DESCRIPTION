@@ -30,11 +30,13 @@ Imports:
     utils,
     bit,
     Rcpp,
-    RcppProgress
+    RcppProgress,
+    RcppArmadillo
 LinkingTo: 
     Rcpp,
     BH,
-    RcppProgress
+    RcppProgress,
+    RcppArmadillo
 Suggests: 
     igraph,
     knitr,

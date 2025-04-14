@@ -48,8 +48,8 @@ test_that("dsrwon", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 5
-  m <- 2000
+  n <- 10
+  m <- 30
   
   # Sample S
   S <- 3
@@ -99,8 +99,7 @@ test_that("dsrwon", {
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid, method="ezt-m")
-    # TODO: pass the test when use_sparse = "yes"
-    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,use_sparse="no",method="emt-m",tree_type="single")
+    bma1 <- dsrwon(bma1,bma_new,use_qq = TRUE,use_sparse="yes",method="emt-m",tree_type="single")
     end.time <- Sys.time()
     time.taken <- end.time - start.time
     print(time.taken)
@@ -112,7 +111,7 @@ test_that("dsrwon", {
   #browseURL("../../prof.html")
 
   mm <- mFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]],"emt-m")
-  tt <- ttmatrixFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]])
+  tt <- ttmatrixFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]],"yes")
   
   bma1$tt <- tt
   bma1$spec <- as.matrix(cbind(seq(1,length(m)),mm))

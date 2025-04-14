@@ -378,9 +378,9 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
     if (method=="emt" || method=="emt-m") { 
       
       if (method=="emt") {
-        tty <- closure(ttx)
+        if(use_sparse=="no") tty <- closure(ttx) else if(use_sparse=="yes") tty <- closureSparse(ttx) else stop("use_sparse can be either yes or no")
       } else if (method=="emt-m") { 
-        tty <- closure(ttx,FALSE)
+        if(use_sparse=="no") tty <- closure(ttx,FALSE) else if(use_sparse=="yes") tty <- closureSparse(ttx,FALSE) else stop("use_sparse can be either yes or no")
       }
       
       colnames(tty) <- colnames(ttx)

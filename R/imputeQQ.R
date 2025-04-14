@@ -30,14 +30,14 @@
 imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
   
   # Sort order
-  card1 <- rowSums(tt1)
+  card1 <- Matrix::rowSums(tt1)
   sort_order1 <- order(card1)
   card1 <- card1[sort_order1]
   tt1 <- tt1[sort_order1,]
   q1 <- q1[sort_order1]
   card_nodup1 <- card1[!duplicated(card1)]
   
-  card2 <- rowSums(tt2)
+  card2 <- Matrix::rowSums(tt2)
   sort_order2 <- order(card2)
   card2 <- card2[sort_order2]
   tt2 <- tt2[sort_order2,]
