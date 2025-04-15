@@ -209,7 +209,7 @@ bca<-function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cname
     #
     # 8. Construction of the result
     #
-    y<-list(con = con, tt = tt, qq=qq, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
+    y<-list(con = con, tt = tt, qq=qq, method = method, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
     # end test
     #
     class(y) <- append(class(y), "bcaspec")
