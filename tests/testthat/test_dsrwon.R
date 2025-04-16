@@ -110,6 +110,7 @@ test_that("dsrwon", {
   #htmlwidgets::saveWidget(prof, "../../prof.html")
   #browseURL("../../prof.html")
 
+  # TODO: pass this for sparse == "yes
   mm <- mFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]],"emt-m")
   tt <- ttmatrixFromQQ(bma1$qq,unname(bma1$infovar[,2]),bma1$valuenames[[1]],"yes")
   

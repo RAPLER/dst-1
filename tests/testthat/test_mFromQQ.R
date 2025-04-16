@@ -99,4 +99,14 @@ test_that("mFromQQ", {
   m1 <- mFromQQ(x8$qq,6,method="emt",cnames=cnames8)
   m2 <- mFromQQ(x8$qq,6,method="emt-m",cnames=cnames8)
   expect_equal(m1,m2)
+  
+  # Test 1.5.3: testing sparse algorithm from figure 8 with the data from figure 6
+  m1 <- mFromQQ(x6$qq,6,method="emt",cnames=cnames6, "yes")
+  m2 <- mFromQQ(x6$qq,6,method="emt-m",cnames=cnames6, "yes")
+  expect_equal(m1,m2)
+  
+  # Test 1.5.4: testing sparsealgorithm from figure 6 with the data from figure 8
+  m1 <- mFromQQ(x8$qq,6,method="emt",cnames=cnames8, "yes")
+  m2 <- mFromQQ(x8$qq,6,method="emt-m",cnames=cnames8, "yes")
+  expect_equal(m1,m2)
 })

@@ -4,6 +4,7 @@
 #' @param n Frame dimension
 #' @param cnames A character vector containing the names of the elements of the frame of discernment
 #' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m") 
+#' @param sprase = c("yes","no") whether to use sparse matrix. Default = "no".
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
 #' @export
@@ -13,7 +14,7 @@
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames, method = "fzt")
 #' mFromQQ(x$qq, 2, method = "fmt", cnames = cnames)
-mFromQQ <- function(qq, n, cnames, method = NULL) {
+mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
   # Obtain tt matrix from commonality function
   #
   # Check that the input qq is a function
@@ -80,7 +81,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
   } else if (method == "emt") {
     # Load qq, tt
     MACC3 <- qq
-    W23 <- ttmatrixFromQQ(qq,n,cnames)
+    W23 <- ttmatrixFromQQ(qq,n,cnames,sparse)
     
     #
     # Efficient Mobius Transform: fig 6, cor 3.2.5
@@ -130,9 +131,10 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     
     return(m0)
   } else if (method=="emt-m") {
+    # TODO: make this work for sparse W23
     # Load qq, tt
     MACC3 <- qq
-    W23 <- ttmatrixFromQQ(qq,n,cnames)
+    W23 <- ttmatrixFromQQ(qq,n,cnames,sparse)
     
     #
     # Efficient Mobius Transform on a meet-closed subset: fig 8, cor 3.2.6
@@ -142,7 +144,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL) {
     # Step 2.1.2: Filter those that are non-empty
     # Step 2.1.3: Find infimum of each upset
     iota <- NULL
-    # TODO: optimize this according to algorithm 4, 5
+    # TODO: rewrite this according to algorithm 4, 5
     for (i in 1:ncol(W23)) {
       #print(i)
       ZZ <- rep(0,ncol(W23))
