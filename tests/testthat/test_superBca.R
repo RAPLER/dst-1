@@ -1,6 +1,25 @@
 context("create superBca")
 library(dst)
 test_that("superBca", {
+  a <- 1e-3
+  # test T1
+  x <- matrix(c(0,1,1,1,1,0), nrow = 2, byrow = TRUE)
+  x <- methods::as(x, "RsparseMatrix")
+  
+  y <- rep(1,1)
+  
+  s1<-superBca(x,y,a)
+  
+  # test T2
+  x <- matrix(c(1,0,0,1,1,0), nrow = 2, byrow = TRUE)
+  x <- methods::as(x, "RsparseMatrix")
+  
+  y <- c(0,1)
+
+  s2<-superBca(x,y,a)
+  
+  expect_equal(s1$m, s2$m)
+  
   # T8: 
   # Test dsrwon with a generated binary matrix
   
