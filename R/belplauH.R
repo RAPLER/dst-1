@@ -20,6 +20,7 @@
 #' rownames(hyp) <- nameRows(hyp)
 #' belplauH(MACC = x$spec[,2], W2 = x$tt, h = hyp)
 belplauH <-function(MACC, W2, h) {
+  print("compute belplau starts")
   start.time <- Sys.time()
   bel <- rep(0,nrow(h))
   disbel <- rep(0,nrow(h))
