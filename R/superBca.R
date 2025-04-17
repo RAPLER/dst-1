@@ -35,10 +35,10 @@ superBca<-function(x,y,a,y0=0,flip=TRUE) {
   qq <- rep(0,nrow(x_c))
   
   pb <- progress_bar$new(
-    format = "  computing closure [:bar] :percent eta: :eta",
+    format = "  computing commonality [:bar] :percent eta: :eta",
     total = nrow(x_c), clear = FALSE, width= 100)
   
-  print("compute closure starts")
+  print("compute commonality starts")
   start.time <- Sys.time()
   for(i in 1:nrow(x_c)) {
     pb$tick()
@@ -47,7 +47,7 @@ superBca<-function(x,y,a,y0=0,flip=TRUE) {
   }
   end.time <- Sys.time()
   time.taken <- end.time - start.time
-  print("compute closure finishes within")
+  print("compute commonality finishes within")
   print(time.taken)
   
   print("compute mobius inversion starts")
