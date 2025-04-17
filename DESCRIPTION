@@ -31,7 +31,8 @@ Imports:
     bit,
     Rcpp,
     RcppProgress,
-    RcppArmadillo
+    RcppArmadillo,
+    progress
 LinkingTo: 
     Rcpp,
     BH,

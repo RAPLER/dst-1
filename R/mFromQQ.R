@@ -5,8 +5,11 @@
 #' @param cnames A character vector containing the names of the elements of the frame of discernment
 #' @param method = NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m") 
 #' @param sprase = c("yes","no") whether to use sparse matrix. Default = "no".
+#' @param tt A binary matrix.
+#' @param use_pb Whether to print progress bar.
 #' @return m A corresponding mass vector
 #' @author Peiyuan Zhu
+#' @import progress
 #' @export
 #' @examples 
 #' tt<- t(matrix(c(1,0,1,1),ncol = 2))
@@ -14,7 +17,7 @@
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames, method = "fzt")
 #' mFromQQ(x$qq, 2, method = "fmt", cnames = cnames)
-mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
+mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = NULL, use_pb = FALSE) {
   # Obtain tt matrix from commonality function
   #
   # Check that the input qq is a function
@@ -80,8 +83,9 @@ mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
     return(m0)
   } else if (method == "emt") {
     # Load qq, tt
-    MACC3 <- qq
-    W23 <- ttmatrixFromQQ(qq,n,cnames,sparse)
+    if(is.null(tt)) {
+      tt <- ttmatrixFromQQ(qq,n,cnames,sparse)
+    }
     
     #
     # Efficient Mobius Transform: fig 6, cor 3.2.5
@@ -111,7 +115,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
     # Step 1.2: Sort the join-irreducible elements by cardinality (skip because it's already sorted)
     
     # Step 1.3: Compute the graph
-    m0 <- MACC3
+    m0 <- qq
     
     #print(m0)
     for (i in nrow(W24):1) {
@@ -131,10 +135,10 @@ mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
     
     return(m0)
   } else if (method=="emt-m") {
-    # TODO: make this work for sparse W23
     # Load qq, tt
-    MACC3 <- qq
-    W23 <- ttmatrixFromQQ(qq,n,cnames,sparse)
+    if(is.null(tt)) {
+      tt <- ttmatrixFromQQ(qq,n,cnames,sparse)
+    }
     
     #
     # Efficient Mobius Transform on a meet-closed subset: fig 8, cor 3.2.6
@@ -143,22 +147,36 @@ mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
     # Step 2.1.1: Find upsets of each singleton in W23
     # Step 2.1.2: Filter those that are non-empty
     # Step 2.1.3: Find infimum of each upset
-    iota <- NULL
-    # TODO: rewrite this according to algorithm 4, 5
-    for (i in 1:ncol(W23)) {
-      #print(i)
-      ZZ <- rep(0,ncol(W23))
-      ZZ[i] <- 1
-      uZZ <- arrow(ZZ,W23,"up")
-      if(is.null(nrow(uZZ)) || nrow(uZZ) > 0) { 
-        inf_uZZ <- bound(if (is.null(nrow(uZZ))) t(as.matrix(uZZ)) else uZZ,"inf") 
-      } else { 
-        inf_uZZ <- NULL
-      }
-      iota <- rbind(iota, inf_uZZ)
-    }
-    W24 <- iota[!duplicated(iota),]
+    pb <- progress_bar$new(
+      format = "  computing iota elements [:bar] :percent eta: :eta",
+      total = ncol(tt), clear = FALSE, width= 100)
+    n <- ncol(tt)
+    iota_list <- list()
     
+    for (omega in 1:n) {
+      pb$tick()
+      i <- rep(1L, n)          # Start with full set
+      included <- FALSE
+      
+      for (row in 1:nrow(tt)) {
+        FF <- tt[row, ]
+        if (FF[omega] == 1L) {  # F ⊇ {omega}
+          included <- TRUE
+          i <- i * FF           # i ← i ∩ F (elementwise AND for binary)
+          if (sum(i) == 1L && i[omega] == 1L) {
+            break              # i = {omega}, we can stop early
+          }
+        }
+      }
+      
+      if (included) {
+        iota_list[[length(iota_list) + 1]] <- i
+      }
+    }
+    
+    # Combine and deduplicate
+    W24 <- unique(do.call(rbind, iota_list))
+
     # Sort iota elements
     sort_order <- order(apply(W24,1,sum))
     W24 <- W24[sort_order,]
@@ -167,19 +185,24 @@ mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
     
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
-    m0 <- MACC3
+    m0 <- qq
     #print(unname(m0))
     
+    # TODO: rewrite this with the tree algorithm
+    pb <- progress_bar$new(
+      format = "  computing graph [:bar] :percent eta: :eta",
+      total = nrow(W24), clear = FALSE, width= 100)
     for (i in nrow(W24):1) {
+      pb$tick()
       #print(i)
       xx <- W24[i,]
-      for (j in 1:nrow(W23)) {
+      for (j in 1:nrow(tt)) {
         #print(j)
-        y <- W23[j,]
-        z0 <- arrow(pmax(xx,y), W23, "up")
+        y <- tt[j,]
+        z0 <- arrow(pmax(xx,y), tt, "up")
         z <- bound(if (is.null(nrow(z0))) t(as.matrix(z0)) else as.matrix(z0), "inf")
         # Find w, the position of z on the list W2
-        w <- which(apply(W23, 1, function(s) return(all(s == z)))) 
+        w <- which(apply(tt, 1, function(s) return(all(s == z)))) 
         k0 <- W24[1:i,]
         if ((length(w) > 0) && (!all(z==y)) && 
             all((pmax(y,bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")) - z) >= 0)) {
@@ -188,7 +211,7 @@ mFromQQ <- function(qq, n, cnames, method = NULL, sparse = "no") {
       }
       #print(unname(m0))
     }
-    
+
     return(m0)
   } else {
     stop("Input method must be one of fmt, emt, emt-m")

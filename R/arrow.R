@@ -12,9 +12,9 @@
 #' arrow(x,M,"up")
 arrow<-function(x,M,method=NULL){
   if(method=="up") {
-    s <- M[apply(t(t(M)>=x), 1, all),]
+    s <- M[apply(Matrix::t(Matrix::t(M)>=x), 1, all),]
   } else if (method=="down") {
-    s <- M[apply(t(t(M)<=x), 1, all),]
+    s <- M[apply(Matrix::t(Matrix::t(M)<=x), 1, all),]
   } else {
     stop("method must be one of up, down")
   }

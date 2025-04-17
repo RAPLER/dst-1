@@ -4,7 +4,15 @@
 \alias{mFromQQ}
 \title{Construct a mass vector from qq function and tt matrix of focal elements recursively.}
 \usage{
-mFromQQ(qq, n, cnames, method = NULL, sparse = "no")
+mFromQQ(
+  qq,
+  n = NULL,
+  cnames = NULL,
+  method = NULL,
+  sparse = "no",
+  tt = NULL,
+  use_pb = FALSE
+)
 }
 \arguments{
 \item{qq}{Commonality function}
@@ -14,6 +22,10 @@ mFromQQ(qq, n, cnames, method = NULL, sparse = "no")
 \item{cnames}{A character vector containing the names of the elements of the frame of discernment}
 
 \item{method}{= NULL: Use Fast Mobius Transform ("fmt") or Efficient Mobius Transform ("emt") or Efficient Mobius Transform on a meet-closed subset ("emt-m")}
+
+\item{tt}{A binary matrix.}
+
+\item{use_pb}{Whether to print progress bar.}
 
 \item{sprase}{= c("yes","no") whether to use sparse matrix. Default = "no".}
 }
