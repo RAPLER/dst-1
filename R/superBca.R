@@ -1,3 +1,21 @@
+#' simple support bca
+#' 
+#' @details simple support bca
+#'  
+#' @param x 
+#' @param y 
+#' @param a 
+#' @param y0 
+#' @param flip 
+#' @return z a list with three elements \itemize{
+#'  \item tt 
+#'  \item qq 
+#'  \item z
+#' }
+#' @author Peiyuan Zhu
+#' @export
+#' @examples
+#' 1
 superBca<-function(x,y,a,y0=0,flip=TRUE) {
   x <- methods::as(x, "RsparseMatrix")
   if(flip) x[y==y0,] <- 1 - x[y==y0,]
@@ -41,5 +59,7 @@ superBca<-function(x,y,a,y0=0,flip=TRUE) {
   print("compute mobius inversion finishes within")
   print(time.taken)
   
-  return(list("tt"=x_c, "qq"=qq, "m"=m))
+  z <- list("tt"=x_c, "qq"=qq, "m"=m)
+  
+  return(z)
 }
