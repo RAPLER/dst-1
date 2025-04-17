@@ -11,6 +11,7 @@
 #'  \item Column 5: the Plausibility ratio \code{rplau}.
 #'    }
 #' @author Peiyuan Zhu
+#' @import progress
 #' @export
 #' @examples 
 #' x <- bca(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))
@@ -19,9 +20,14 @@
 #' rownames(hyp) <- nameRows(hyp)
 #' belplauH(MACC = x$spec[,2], W2 = x$tt, h = hyp)
 belplauH <-function(MACC, W2, h) {
+  start.time <- Sys.time()
   bel <- rep(0,nrow(h))
   disbel <- rep(0,nrow(h))
+  pb <- progress_bar$new(
+    format = "  computing belplau [:bar] :percent eta: :eta",
+    total = nrow(W2), clear = FALSE, width= 100)
   for (i in 1:nrow(W2)) {
+    pb$tick()
     # print(i)
     for (j in 1:nrow(h)) {
       # if bpa$tt[i,] is contained in h[j,]
@@ -40,5 +46,9 @@ belplauH <-function(MACC, W2, h) {
   unc <- plau - bel
   z <- cbind(bel,disbel,unc,plau,rplau)
   rownames(z) <- rownames(h)
+  end.time <- Sys.time()
+  time.taken <- end.time - start.time
+  print("compute belplau finishes within")
+  print(time.taken)
   return(z)
 }
