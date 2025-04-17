@@ -1,6 +1,6 @@
-superBca<-function(x,y,a,y0=0) {
+superBca<-function(x,y,a,y0=0,flip=TRUE) {
   x <- methods::as(x, "RsparseMatrix")
-  x[y==y0,] <- 1 - x[y==y0,]
+  if(flip) x[y==y0,] <- 1 - x[y==y0,]
   
   print("compute closure starts")
   start.time <- Sys.time()
