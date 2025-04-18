@@ -15,13 +15,14 @@
 #' @examples 
 #' # TO DO
 #' 
-createNode<-function(x, q) {
-  d <- if(any(x)) max(which(x==1)) - 1 else -1
+createNode <- function(x, q, index = NULL) {
+  d <- if (any(x)) max(which(x == 1)) - 1 else -1
   list(
     x = x,
     q = q,
     left = NULL,
     right = NULL,
-    depth = d
+    depth = d,
+    index = index
   )
 }

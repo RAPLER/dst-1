@@ -185,40 +185,21 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
-    m0 <- qq
-    #print(unname(m0))
-    
-    # TODO: rewrite this with the tree algorithm
+
+    tree <- buildTree(tt,qq)
     pb <- progress_bar$new(
-      format = "  computing graph [:bar] :percent eta: :eta",
+      format = "  computing graph with tree [:bar] :percent eta: :eta",
       total = nrow(W24), clear = FALSE, width= 100)
-    # TODO: tree <- buildTree(tt,qq)
     for (i in nrow(W24):1) {
       pb$tick()
-      #print(i)
-      xx <- W24[i,]
-      
-      # TODO: traverse the whole tree
-      for (j in 1:nrow(tt)) {
-        #print(j)
-        y <- tt[j,]
-        # Find w, the position of z on the list W2
-        # TODO: e <- superset(tree,pmax(xx,y))
-        # TODO: z <- e$x
-        # TODO: s <- e$q
-        z0 <- arrow(pmax(xx,y), tt, "up")
-        z <- bound(if (is.null(nrow(z0))) t(as.matrix(z0)) else as.matrix(z0), "inf")
-        w <- which(apply(tt, 1, function(s) return(all(s == z)))) 
-        k0 <- W24[1:i,]
-        if ((length(w) > 0) && (!all(z==y)) && 
-            all((pmax(y,bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")) - z) >= 0)) {
-          m0[j] <- m0[j] - m0[w]
-        }
-      }
-      #print(unname(m0))
+      xx <- as.bit(W24[i,])
+      k0 <- W24[1:i,]
+      s <- as.bit(bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup"))
+      tree <- updateTree(tree,xx,s)
     }
-
-    return(m0)
+    m1 <- unravelTree(tree)
+    
+    return(m1)
   } else {
     stop("Input method must be one of fmt, emt, emt-m")
   }

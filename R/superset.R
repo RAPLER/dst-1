@@ -6,7 +6,7 @@ superset<-function(node,w) {
   }
   if (all((node$x & w) == w) && !is.null(node$q)) {
     # return q value
-    return(node$q)
+    return(node)
   } 
   if (node$depth!=0) {
     if (!all((node$x[0:node$depth] & w[0:node$depth]) == w[0:node$depth])) {

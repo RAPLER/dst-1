@@ -32,5 +32,15 @@ test_that("buildTree", {
   expect_equal(tree$left$right$q,q[3])
   expect_equal(tree$left$right$depth,2)
   
+  # Test Fig 12 + b
+  x <- matrix(c(1,0,0,
+                0,0,1,
+                0,1,1,
+                1,1,1,
+                0,1,0), nrow = 5, byrow = TRUE, dimnames = list(NULL,c("a","b","c")))
+  q <- c(0.1,0.2,0.3,0.3,0.1)
+  
+  tree <- buildTree(x,q)
+  
   # TODO: add more tests
 })
