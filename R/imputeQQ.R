@@ -19,12 +19,12 @@
 #' @examples
 #' tt1 <- matrix(c(1,1,0,1,1,1), byrow=TRUE, nrow=2, dimnames=list(NULL,c("a","b","c")))
 #' tt2 <- matrix(c(0,1,1,1,1,1), byrow=TRUE, nrow=2, dimnames=list(NULL,c("a","b","c")))
-#' tty <- matrix(c(0,1,1,0,1,1,1,1,1,0,1,0), byrow=TRUE, nrow=4, dimnames=list(NULL,c("a","b","c")))
+#' tty <- matrix(c(0,1,1,1,1,0,1,1,1,0,1,0), byrow=TRUE, nrow=4, dimnames=list(NULL,c("a","b","c")))
 #' q1 <- c(1,0.9)
 #' q2 <- c(1,0.8)
 #' names(q1) <- nameRows(tt1)
 #' names(q2) <- nameRows(tt2)
-#' x <- imputeQQ(tty,tt1,tt2,q1,q2)
+#' x <- imputeQQ(tty,tt1,tt2,q1,q2, tree_type = "single")
 #' x$q1
 #' x$q2
 imputeQQ<-function(tty,tt1,tt2,q1,q2,tree_type=NULL) {
