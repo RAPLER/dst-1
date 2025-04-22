@@ -7,12 +7,15 @@
 #include <progress_bar.hpp>
 using namespace Rcpp;
 
-//' Augment a sparse binary matrixs with closure elements
+//' Augment a sparse binary matrix with closure elements
 //' @name closure
 //' @param ttx A binary matrix
 //' @param computeJoin = true: to compute join closure. Default = TRUE
 //' @param display_progress = true: to compute join closure. Default = FALSE
 //' @return A binary matrix including the closure elements
+//' @examples
+//' ttx <- matrix(c(0,1,1,1,1,0,1,1,1), nrow=3, byrow = TRUE)
+//' tty <- closure(ttx, computeJoin = FALSE)
 //' @export
 
 // [[Rcpp::export]]

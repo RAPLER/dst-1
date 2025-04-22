@@ -2,7 +2,7 @@
 % Please edit documentation in R/RcppExports.R
 \name{closure}
 \alias{closure}
-\title{Augment a sparse binary matrixs with closure elements}
+\title{Augment a sparse binary matrix with closure elements}
 \arguments{
 \item{ttx}{A binary matrix}
 
@@ -14,5 +14,9 @@
 A binary matrix including the closure elements
 }
 \description{
-Augment a sparse binary matrixs with closure elements
+Augment a sparse binary matrix with closure elements
+}
+\examples{
+ttx <- matrix(c(0,1,1,1,1,0,1,1,1), nrow=3, byrow = TRUE)
+tty <- closure(ttx, computeJoin = FALSE)
 }
