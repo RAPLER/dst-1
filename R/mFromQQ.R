@@ -17,7 +17,7 @@
 #' cnames <- c("yes","no")
 #' x<- bca(tt, m, cnames=cnames, method = "fzt")
 #' mFromQQ(x$qq, 2, method = "fmt", cnames = cnames)
-mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = NULL, use_pb = FALSE) {
+mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = NULL, use_pb = FALSE, tree_type = NULL) {
   # Obtain tt matrix from commonality function
   #
   # Check that the input qq is a function
@@ -185,21 +185,90 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
-
-    tree <- buildTree(tt,qq)
+    
+    if (!is.null(tree_type)) {
+      
+      if (tree_type=="single") {
+        
+        tree <- buildTree(tt,qq)
+        
+      } else if (tree_type=="multiple") {
+        
+        trees <- buildTrees(tt,qq)
+        
+      } else {
+        
+        stop("tree_type can either be \"single\" or \"multiple\"")
+        
+      }
+    } 
+    
     pb <- progress_bar$new(
-      format = "  computing graph with tree [:bar] :percent eta: :eta",
+      format = "  computing graph [:bar] :percent eta: :eta",
       total = nrow(W24), clear = FALSE, width= 100)
+    
+    if (is.null(tree_type)) {
+      
+      m0 <- qq
+      
+    }
+    
     for (i in nrow(W24):1) {
       pb$tick()
-      xx <- as.bit(W24[i,])
-      k0 <- W24[1:i,]
-      s <- as.bit(bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup"))
-      tree <- updateTree(tree,xx,s)
+      
+      if (is.null(tree_type)) {
+        
+        xx <- W24[i,]
+        for (j in 1:nrow(tt)) {
+
+          y <- tt[j,]
+          z0 <- arrow(pmax(xx,y), tt, "up")
+          z <- bound(if (is.null(nrow(z0))) t(as.matrix(z0)) else as.matrix(z0), "inf")
+          
+          # Find w, the position of z on the list W2
+          w <- which(apply(tt, 1, function(s) return(all(s == z)))) 
+          k0 <- W24[1:i,]
+          s <- bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")
+          if ((length(w) > 0) && (!all(z==y)) && 
+              all((pmax(y,s) - z) >= 0)) {
+            m0[j] <- m0[j] - m0[w]
+          }
+        }
+      } else {
+      
+        xx <- as.bit(W24[i,])
+        k0 <- W24[1:i,]
+        s <- as.bit(bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup"))
+        
+        if (tree_type=="single") {
+          # TODO: make this option work
+          tree <- updateTree(tree,xx,s)
+          
+        } else if (tree_type=="multiple") { 
+          # TODO: make this option work
+          
+          for(i in 1:length(trees$card_nodup)) {
+            
+            trees[[i]] <- updateTrees(trees[[i]], xx, s, tree=trees, card_nodup=trees$card_nodup)
+            
+          }
+        }
+      }
     }
-    m1 <- unravelTree(tree)
     
-    return(m1)
+    if (!is.null(tree_type)) {
+      
+      if (tree_type=="single") {
+        
+        m0 <- unravelTree(tree) 
+        
+      } else if (tree_type=="multiple") {
+        
+        m0 <- unravelTrees(trees) 
+        
+      }
+    }
+    return(m0)
   } else {
     stop("Input method must be one of fmt, emt, emt-m")
   }

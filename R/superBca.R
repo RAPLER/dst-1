@@ -16,7 +16,7 @@
 #' @export
 #' @examples
 #' 1
-superBca<-function(x,y,a,y0=0,flip=TRUE) {
+superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
   x <- methods::as(x, "RsparseMatrix")
   if(flip) x[y==y0,] <- 1 - x[y==y0,]
   
@@ -52,7 +52,7 @@ superBca<-function(x,y,a,y0=0,flip=TRUE) {
   
   print("compute mobius inversion starts")
   start.time <- Sys.time()
-  m <- mFromQQ(qq,method="emt-m",tt=x_c,use_pb=TRUE)
+  m <- mFromQQ(qq,method="emt-m",tt=x_c,use_pb=TRUE,tree_type=tree_type)
   
   end.time <- Sys.time()
   time.taken <- end.time - start.time

@@ -49,10 +49,10 @@ test_that("dsrwon", {
   
   # Subset data
   n <- 10
-  m <- 30
+  m <- 100
+  S <- 10
   
   # Sample S
-  S <- 3
   set.seed(1)
   e <- sample.int(m,S)
   

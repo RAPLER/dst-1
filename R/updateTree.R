@@ -1,7 +1,7 @@
-# Update the entire tree
 updateTree <- function(node, xx, s, root = node) {
   
   if (!is.null(node)) {
+    
     if (!is.null(node$q)) {
       y <- node$x
       e <- superset(root, y | xx)  # Use global root here
@@ -16,6 +16,11 @@ updateTree <- function(node, xx, s, root = node) {
     
     node$left <- updateTree(node$left, xx, s, root)
     node$right <- updateTree(node$right, xx, s, root)
+    
+    # Also update the empty set node if it exists
+    if (!is.null(node$empty_set)) {
+      node$empty_set <- updateTree(node$empty_set, xx, s, root)
+    }
   }
   
   return(node)

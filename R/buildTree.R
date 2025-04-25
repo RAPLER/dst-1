@@ -18,13 +18,33 @@
 #'  m <- c(0.1,0.2,0.3,0.4)
 #'  q <- commonality(x,m,"ezt-m")
 #'  q_tree <- buildTree(x,q)
-buildTree <- function(tt, q) {
+buildTree <- function(tt, qq) {
+  
   tree <- NULL
   n <- if (is.null(nrow(tt))) 1 else nrow(tt)
+  empty_set <- FALSE
   
   for (i in 1:n) {
+    
     row <- if (is.null(nrow(tt))) tt else tt[i, ]
-    tree <- insertNode(as.bit(row), q[i], tree, i)
+    
+    if(sum(row)==0) {
+      
+      q <- qq[i]
+      j <- i
+      empty_set <- TRUE
+      next
+      
+    }
+    
+    tree <- insertNode(as.bit(row), qq[i], tree, i)
+    
+  }
+  
+  if (empty_set) {
+    
+    tree$empty_set <- createNode(as.bit(rep(0,if(is.null(nrow(tt))) length(tt) else ncol(tt))), q, j)
+    
   }
   
   return(tree)

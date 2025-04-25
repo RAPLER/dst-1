@@ -1,7 +1,7 @@
-unravelTree <- function(tree) {
+unravelTrees <- function(trees) {
   values <- list()
   
-  # Recursive collection
+  # Recursive collection for a single tree
   traverse <- function(node) {
     if (is.null(node)) return()
     
@@ -19,7 +19,10 @@ unravelTree <- function(tree) {
     }
   }
   
-  traverse(tree)
+  # Traverse all trees (excluding card_nodup)
+  for (tree in trees[seq_along(trees) - 1]) { 
+    traverse(tree)
+  }
   
   # Sort by index and extract q values
   sorted <- values[order(sapply(values, `[[`, "index"))]

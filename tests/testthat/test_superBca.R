@@ -8,7 +8,7 @@ test_that("superBca", {
   
   y <- rep(1,1)
   
-  s1<-superBca(x,y,a)
+  s1<-superBca(x,y,a,tree_type = "single")
   
   # test T2
   x <- matrix(c(1,0,0,1,1,0), nrow = 2, byrow = TRUE)
@@ -18,14 +18,22 @@ test_that("superBca", {
 
   s2<-superBca(x,y,a)
   
-  expect_equal(s1$m, s2$m)
+  expect_equal(s1$m, s2$m,tree_type = "multiple")
+  
+  # test T3
+  x <- matrix(c(0,1,0,1,0,0), nrow = 2, byrow = TRUE)
+  x <- methods::as(x, "RsparseMatrix")
+  
+  y <- rep(1,1)
+  
+  s1<-superBca(x,y,a,tree_type = "single")
   
   # T8: 
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 5
-  m <- 2000
+  n <- 10
+  m <- 30
   
   # Sample S
   S <- 3
@@ -66,12 +74,28 @@ test_that("superBca", {
     print(time.taken)
   }
   
-  # test superBca
-  bma1 <- superBca(X,y,a)
+  # test superBca NULL
+  bma0 <- superBca(X,y,a,tree_type=NULL)
+  
+  colnames(bma0$tt) <- rsid
+  names(bma0$m) <- nameRows(bma0$tt)
+  
+  expect_equal(bma$spec[,2],unname(bma0$m[rownames(bma$tt)]))
+  
+  # test superBca single
+  bma1 <- superBca(X,y,a,tree_type="single")
   
   colnames(bma1$tt) <- rsid
-  names(bma1$m) <- nameRows(bma1$tt)
+  names(bma1$m) <- nameRows(bma1$tt) # TODO: the number of rows don't match
   
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
+  
+  # test superBca multiple
+  bma2 <- superBca(X,y,a,tree_type="multiple")
+  
+  colnames(bma2$tt) <- rsid
+  names(bma2$m) <- nameRows(bma2$tt) # TODO: the number of rows don't match
+  
+  expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
   
 })

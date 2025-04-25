@@ -109,4 +109,28 @@ test_that("mFromQQ", {
   m1 <- mFromQQ(x8$qq,6,method="emt",cnames=cnames8, "yes")
   m2 <- mFromQQ(x8$qq,6,method="emt-m",cnames=cnames8, "yes")
   expect_equal(m1,m2)
+  
+  # Test 1.6.1 with figure 8
+  tt8 <- matrix(c(0,0,0,0,0,0,
+                  1,0,0,0,0,0,
+                  0,1,0,0,0,0,
+                  1,1,0,0,0,0,
+                  0,0,1,0,0,0,
+                  0,0,0,1,0,0,
+                  0,1,1,1,0,0,
+                  1,1,1,1,1,1), nrow = 8, byrow = TRUE)
+  cnames8 <- c("a","b","c","d","e","f")
+  colnames(tt8) <- cnames8
+  rownames(tt8) <- nameRows(tt8)
+  m8 <- c(0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.72)
+  x8 <- bca(tt8,m8,cnames=cnames8,method = "ezt")
+
+  m1 <- mFromQQ(x8$qq,method="emt-m",tt=tt8,use_pb=TRUE,tree_type=NULL)
+  m2 <- mFromQQ(x8$qq,method="emt-m",tt=tt8,use_pb=TRUE,tree_type="multiple")
+  expect_equal(m1[names(m2)],m2)
+  
+  m1 <- mFromQQ(x8$qq,method="emt-m",tt=tt8,use_pb=TRUE,tree_type=NULL)
+  m2 <- mFromQQ(x8$qq,method="emt-m",tt=tt8,use_pb=TRUE,tree_type="single")
+  expect_equal(m1[names(m2)],m2)
+  
 })
