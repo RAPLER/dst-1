@@ -86,7 +86,7 @@ test_that("superBca", {
   bma1 <- superBca(X,y,a,tree_type="single")
   
   colnames(bma1$tt) <- rsid
-  names(bma1$m) <- nameRows(bma1$tt) # TODO: the number of rows don't match
+  names(bma1$m) <- nameRows(bma1$tt) # TODO: updateTree isn't correct; superset isn't returning the smallest (same set)
   
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
   
@@ -94,7 +94,7 @@ test_that("superBca", {
   bma2 <- superBca(X,y,a,tree_type="multiple")
   
   colnames(bma2$tt) <- rsid
-  names(bma2$m) <- nameRows(bma2$tt) # TODO: the number of rows don't match
+  names(bma2$m) <- nameRows(bma2$tt) # TODO: debug this after the "single" is correct
   
   expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
   
