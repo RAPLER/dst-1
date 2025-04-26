@@ -11,10 +11,15 @@
 #' @examples 
 #' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, byrow = TRUE),
 #' m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
-#' qq <- commonality(x$tt,x$spec[,2])
+#' qq <- commonality(x$tt,x$spec[,2],  method = "ezt")
 #' qq
+#' qq1 <- commonality(x$tt,x$spec[,2])
+#' qq1
 commonality <- function(tt, m, method = NULL){
-  
+  # Checks
+  if (isS4(tt) == TRUE ) {
+    tt <- as.matrix(tt) # convert sparse to matrix. to be able to apply duplicated() operator and other matrix operators.
+  }
   if (is.null(method)) {
     Q0 <- rep(0, 2**ncol(tt))
     for (i in 1:length(Q0)) {

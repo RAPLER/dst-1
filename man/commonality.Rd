@@ -22,8 +22,10 @@ qq is the commonality function as a set function from the subsets of the frame t
 \examples{
 x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, byrow = TRUE),
 m = c(0.2,0.5, 0.3), cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
-qq <- commonality(x$tt,x$spec[,2])
+qq <- commonality(x$tt,x$spec[,2],  method = "ezt")
 qq
+qq1 <- commonality(x$tt,x$spec[,2])
+qq1
 }
 \author{
 Peiyuan Zhu
