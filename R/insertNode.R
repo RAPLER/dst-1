@@ -33,8 +33,13 @@ insertNode <- function(x, q, node, index) {
     }
     return(node_disj)
   } else if (all(x==node$x)) {
-    node$q <- q # update q if there's already a disjunction node
-  } else if (x[node$depth+1] == node$x[node$depth+1]) {
+    disj <- createNode(x,q)
+    node$q <- disj$q # update q if there's already a disjunction node
+    node$index <- disj$index
+    node$depth <- disj$depth
+  }
+  
+  if (x[node$depth+1] == node$x[node$depth+1]) {
     node$right <- insertNode(x, q, node$right, index)
   } else {
     node$left <- insertNode(x, q, node$left, index)

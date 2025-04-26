@@ -133,4 +133,6 @@ test_that("mFromQQ", {
   m2 <- mFromQQ(x8$qq,method="emt-m",tt=tt8,use_pb=TRUE,tree_type="single")
   expect_equal(m1[names(m2)],m2)
   
+  # TODO: add more tests
+  
 })

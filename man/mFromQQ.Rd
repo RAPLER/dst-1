@@ -11,7 +11,8 @@ mFromQQ(
   method = NULL,
   sparse = "no",
   tt = NULL,
-  use_pb = FALSE
+  use_pb = FALSE,
+  tree_type = NULL
 )
 }
 \arguments{

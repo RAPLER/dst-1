@@ -4,7 +4,7 @@
 \alias{insertNode}
 \title{Insert bit vector and value into a node}
 \usage{
-insertNode(x, q, node)
+insertNode(x, q, node, index)
 }
 \arguments{
 \item{x}{a boolean or binary vector coerced to bit vector.}

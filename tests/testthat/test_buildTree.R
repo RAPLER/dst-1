@@ -45,8 +45,8 @@ test_that("buildTree", {
   expect_equal(tree$q,q[1])
   expect_equal(tree$depth,0)
   
-  expect_equal(tree$left$x,as.bit(c(0,1,0)))
-  expect_equal(tree$left$q,0.1)
+  expect_equal(tree$left$x,as.bit(x[5,]))
+  expect_equal(tree$left$q,q[5])
   expect_equal(tree$left$depth,1)
   
   expect_equal(tree$right$x,as.bit(x[4,]))
@@ -61,7 +61,7 @@ test_that("buildTree", {
   expect_equal(tree$left$right$q,q[3])
   expect_equal(tree$left$right$depth,2)
   
-  # Test Fig 12 + emptyset
+  # Test Fig 12 + emptyset in the last row
   x <- matrix(c(1,0,0,
                 0,0,1,
                 0,1,1,

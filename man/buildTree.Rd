@@ -4,7 +4,7 @@
 \alias{buildTree}
 \title{Build a tree of...}
 \usage{
-buildTree(tt, q)
+buildTree(tt, qq)
 }
 \arguments{
 \item{tt}{A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment.}

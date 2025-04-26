@@ -28,7 +28,7 @@ test_that("superBca", {
   
   s1<-superBca(x,y,a,tree_type = "single")
   
-  # T8: 
+  # T4
   # Test dsrwon with a generated binary matrix
   
   # Subset data
@@ -74,7 +74,7 @@ test_that("superBca", {
     print(time.taken)
   }
   
-  # test superBca NULL
+  # T5: test superBca NULL
   bma0 <- superBca(X,y,a,tree_type=NULL)
   
   colnames(bma0$tt) <- rsid
@@ -82,7 +82,7 @@ test_that("superBca", {
   
   expect_equal(bma$spec[,2],unname(bma0$m[rownames(bma$tt)]))
   
-  # test superBca single
+  # T6: test superBca single
   bma1 <- superBca(X,y,a,tree_type="single")
   
   colnames(bma1$tt) <- rsid
@@ -90,7 +90,7 @@ test_that("superBca", {
   
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
   
-  # test superBca multiple
+  # T7: test superBca multiple
   bma2 <- superBca(X,y,a,tree_type="multiple")
   
   colnames(bma2$tt) <- rsid

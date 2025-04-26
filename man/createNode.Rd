@@ -4,7 +4,7 @@
 \alias{createNode}
 \title{Change depth to appropriate calculation}
 \usage{
-createNode(x, q)
+createNode(x, q, index = NULL)
 }
 \arguments{
 \item{x}{A boolean or binary vector coerced to bit vector.}

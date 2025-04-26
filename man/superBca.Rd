@@ -4,7 +4,7 @@
 \alias{superBca}
 \title{simple support bca}
 \usage{
-superBca(x, y, a, y0 = 0, flip = TRUE)
+superBca(x, y, a, y0 = 0, flip = TRUE, tree_type = "single")
 }
 \arguments{
 \item{x}{}
