@@ -9,7 +9,7 @@ superset<-function(node,w) {
     return(node)
   } 
   if (node$depth!=0) {
-    if (!all((node$x[0:node$depth] & w[0:node$depth]) == w[0:node$depth])) {
+    if (!all((node$x[1:node$depth] & w[1:node$depth]) == w[1:node$depth])) {
       # give up this branch
       return(NULL)
     }

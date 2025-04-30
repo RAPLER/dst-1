@@ -9,20 +9,18 @@ updateTree <- function(node, xx, s, root = node) {
         z <- e$x
         m0w <- e$q
         if (!all(z == y) && all(z == ((y | s) & z))) {
-          if(sum(y)==0){
+          if(all(y==as.bit(c(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))&&
+                 all(z==as.bit(c(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0)))){
             print("update")
             print(as.integer(y))
             print(as.integer(z))
             print(as.integer(s))
             print(node$q)
             print(m0w)
-            if (abs(node$q-0.001007982)<1e-8) {
-              browser()
-              superset(root, y | xx)
-            }
           }
           node$q <- node$q - m0w
-          if(sum(y)==0){
+          if(all(y==as.bit(c(0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)))&&
+             all(z==as.bit(c(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0)))){
             print(node$q) 
           }
         }
