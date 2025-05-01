@@ -14,7 +14,7 @@ insertNode <- function(node1, node2) {
     return(node1)
   }
   
-  if (node1$depth <= node2$depth && node1$depth < (length(node1$x) - 1)) {
+  if (node1$depth <= node2$depth && node1$depth < length(node1$x)) {
     
     if (all(node1$x==node2$x)) {
       node2$q <- node1$q
@@ -55,12 +55,12 @@ insertNode <- function(node1, node2) {
   
   if (node1$x[node2$depth+1] == TRUE) {
     
-    print("R")
+    #print("R")
     node2$right <- insertNode(node1, node2$right)
     
   } else {
     
-    print("L")
+    #print("L")
     node2$left <- insertNode(node1, node2$left)
     
   }
