@@ -21,14 +21,16 @@
 buildTree <- function(tt, qq) {
   
   tree <- NULL
+  
   n <- if (is.null(nrow(tt))) 1 else nrow(tt)
+  
   empty_set <- FALSE
   
   for (i in 1:n) {
     
-    row <- if (is.null(nrow(tt))) tt else tt[i, ]
+    x <- if (is.null(nrow(tt))) tt else tt[i, ]
     
-    if(sum(row)==0) {
+    if(sum(x)==0) {
       
       q <- qq[i]
       j <- i
@@ -37,7 +39,9 @@ buildTree <- function(tt, qq) {
       
     }
     
-    tree <- insertNode(as.bit(row), qq[i], tree, i)
+    node <- createNode(as.bit(x), qq[i], i)
+    
+    tree <- insertNode(node, tree)
     
   }
   
@@ -49,3 +53,4 @@ buildTree <- function(tt, qq) {
   
   return(tree)
 }
+

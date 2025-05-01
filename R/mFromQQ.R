@@ -235,6 +235,7 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
                     all(z==c(0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0))) {
               print("update")
               print(y)
+              print(pmax(xx,y))
               print(z)
               print(s)
               print(m0[j])

@@ -8,19 +8,23 @@ superset<-function(node,w) {
     # return q value
     return(node)
   } 
-  if (node$depth!=0) {
-    if (!all((node$x[1:node$depth] & w[1:node$depth]) == w[1:node$depth])) {
+  if (node$depth>=0) {
+    if (!all((node$x[1:(node$depth+1)] & w[1:(node$depth+1)]) == w[1:(node$depth+1)])) {
       # give up this branch
       return(NULL)
     }
   }
   if (w[node$depth+1]) {
     # move to the right
+    print("R")
     return(superset(node$right, w))
   } else {
     # move to the left
+    print("L")
     result <- superset(node$left, w)
     if (!is.null(result)) return(result)
+    print("L failed")
+    print("R")
     return(superset(node$right, w))
   }
 }
