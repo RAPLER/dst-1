@@ -231,7 +231,24 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
           s <- bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")
           if ((length(w) > 0) && (!all(z==y)) && 
               all((pmax(y,s) - z) >= 0)) {
+            if (all(y==c(0, 0, 0, 0, 0, 0, 0, 1,
+                         0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0))) {
+              print(y)
+              print(pmax(xx,y))
+              print(z)
+              print(s)
+              print(m0[j])
+              print(m0[w])
+            }
             m0[j] <- m0[j] - m0[w]
+            if (all(y==c(0, 0, 0, 0, 0, 0, 0, 1,
+                         0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0, 0, 0,
+                         0, 0, 0, 0, 0, 0))) {
+              print(m0[j])
+            }
           }
         }
       } else {

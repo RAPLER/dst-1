@@ -4,14 +4,14 @@
 \alias{insertNode}
 \title{Insert bit vector and value into a node}
 \usage{
-insertNode(x, q, node, index)
+insertNode(node1, node2)
 }
 \arguments{
+\item{node2}{An existing tree structure}
+
 \item{x}{a boolean or binary vector coerced to bit vector.}
 
 \item{q}{a commonnality value associated to \code{x}.}
-
-\item{node}{An existing tree structure}
 }
 \value{
 The tree augmented structure.

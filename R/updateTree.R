@@ -8,8 +8,25 @@ updateTree <- function(node, xx, s, root = node) {
       if (!is.null(e)) {
         z <- e$x
         m0w <- e$q
+        if (all(y==as.bit(c(0, 0, 0, 0, 0, 0, 0, 1,
+                            0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0)))) {
+          print(as.integer(y))
+          print(as.integer(y | xx))
+          print(as.integer(z))
+          print(as.integer(s))
+          print(node$q)
+          print(m0w)
+        }
         if (!all(z == y) && all(z == ((y | s) & z))) {
           node$q <- node$q - m0w
+        }
+        if (all(y==as.bit(c(0, 0, 0, 0, 0, 0, 0, 1,
+                            0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0, 0, 0,
+                            0, 0, 0, 0, 0, 0)))) {
+          print(node$q)
         }
       }
     }
