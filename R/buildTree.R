@@ -22,11 +22,14 @@ buildTree <- function(tt, qq) {
   
   tree <- NULL
   
+  depth <- apply(tt,1,function(x) if (sum(x)>0) max(which(x == 1)) - 1 else -1)
+  sort_order <- order(depth)
+  
   n <- if (is.null(nrow(tt))) 1 else nrow(tt)
   
   empty_set <- FALSE
   
-  for (i in 1:n) {
+  for (i in sort_order) {
     
     x <- if (is.null(nrow(tt))) tt else tt[i, ]
     
@@ -40,6 +43,10 @@ buildTree <- function(tt, qq) {
     }
     
     node <- createNode(as.bit(x), qq[i], i)
+    
+    #if (all(x==c(1,0,0,1,0,0,1,1,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,1,0,1,0,1,1,0))) {
+    #  browser()
+    #}
     
     tree <- insertNode(node, tree)
     

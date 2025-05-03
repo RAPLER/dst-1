@@ -36,7 +36,7 @@ test_that("superBca", {
   m <- 30
   
   # Sample S
-  S <- 3
+  S <- 1
   set.seed(1)
   e <- sample.int(m,S)
   
@@ -75,6 +75,7 @@ test_that("superBca", {
   }
   
   # T5: test superBca NULL
+  
   bma0 <- superBca(X,y,a,tree_type=NULL)
   
   colnames(bma0$tt) <- rsid

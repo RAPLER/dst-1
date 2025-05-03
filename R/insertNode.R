@@ -14,55 +14,38 @@ insertNode <- function(node1, node2) {
     return(node1)
   }
   
-  if (node1$depth <= node2$depth && node1$depth < length(node1$x)) {
+  if (!all(node1$x[0:node2$depth] == node2$x[0:node2$depth])) {
+    depth_disj <- which(as.logical(xor(node1$x, node2$x)))[1]
+    x_disj <- node1$x
+    x_disj[depth_disj] <- TRUE
+    x_disj[(depth_disj+1):length(x_disj)] <- FALSE
     
-    if (all(node1$x==node2$x)) {
-      node2$q <- node1$q
-      node2$index <- node1$index
-      
-      return(node2)
-    } else if (!all(node1$x[0:node2$depth] == node2$x[0:node2$depth])) {
-      
-      depth_disj <- which(as.logical(xor(node1$x, node2$x)))[1]
-      x_disj <- node1$x
-      x_disj[depth_disj] <- TRUE
-      x_disj[(depth_disj+1):length(x_disj)] <- FALSE
-      
-      is_equal <- all(node1$x==x_disj)
-      node_disj <- if(is_equal) node1 else createNode(x_disj, NULL, NULL) 
-      
-      if (node1$x[node_disj$depth + 1] == TRUE) {
+    is_same <- all(node1$x==x_disj)
+    node_disj <- createNode(x_disj, if (is_same) node1$q else NULL, if (is_same) node1$index else NULL) # create disjunction node with the same q
+    
+    if ((node_disj$depth < node2$depth) && (node_disj$depth < (length(x_disj) - 1))) {
+      if ((node1$x[node_disj$depth + 1] == TRUE)) {
         node_disj$left <- node2
-        if(!is_equal) node_disj$right <- node1
       } else {
-        if(!is_equal) node_disj$left <- node1
         node_disj$right <- node2
       }
-      
-      #print("insert disjunction node")
-      
+      if(!is_same) node_disj <- insertNode(node1, node_disj)
       return(node_disj)
-      
-    } else {
-      
-      node1$right <- insertNode(node2, node1$right)
-        
-      #print("insert node itself")
-      
-      return(node1)
     }
   }
   
-  if (node1$x[node2$depth+1] == TRUE) {
-    
-    #print("R")
+  if (all(node1$x==node2$x)) {
+    disj <- createNode(node1$x,node1$q,node1$index)
+    node2$q <- disj$q # update q if there's already a disjunction node
+    node2$index <- disj$index
+    node2$depth <- disj$depth
+    return(node2)
+  }
+  
+  if (node1$x[node2$depth+1] == node2$x[node2$depth+1]) {
     node2$right <- insertNode(node1, node2$right)
-    
   } else {
-    
-    #print("L")
     node2$left <- insertNode(node1, node2$left)
-    
   }
   return(node2)
 }
