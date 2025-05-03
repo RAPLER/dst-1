@@ -2,6 +2,20 @@
 context("Compute qq function from tt matrix")
 library(dst)
 test_that("commonality", {
+  # T0
+  # Check case where commonalities are computed after
+  y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+                        byrow = TRUE), m = c(0.2,0.5, 0.3), 
+            cnames = c("a", "b", "c"),  
+            varnames = "x", idvar = 1) 
+  y2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+                        byrow = TRUE), m = c(0.6, 0.4),  
+            cnames = c("a", "b", "c"),  
+            varnames = "x", idvar = 1)
+  z <- dsrwon(y1,y2)
+  q1 <- commonality(ppm$tt, m = ppm$spec[,2], method = "ezt")
+  q2 <- commonality(ppm$tt, m = ppm$spec[,2], method = "ezt-m")
+  expect_equal(q1,q2)
   # T1
   # Check combination with qq is the same as combination with tt 
   # by checking commonality function of the bca is same of the combined commonality function
@@ -13,9 +27,9 @@ test_that("commonality", {
            cnames = c("a", "b", "c"),  varnames = "y", idvar = 1, method="fzt")
   z <- dsrwon(x,y)
   w <- dsrwon(x,y,use_qq = TRUE)
-  q <- commonality(z$tt,z$spec[,2])
-  expect_equal(q,w$qq)
-  
+ 
+ expect_equal(q,w$qq)
+
   # T2.
   # Test agreement between fzt, ezt
   ttxl <- lapply(1:nrow(z$tt), function(i) z$tt[i, ])
