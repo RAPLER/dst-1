@@ -18,42 +18,44 @@
 #'  m <- c(0.1,0.2,0.3,0.4)
 #'  q <- commonality(x,m,"ezt-m")
 #'  q_tree <- buildTree(x,q)
-buildTree <- function(tt, qq) {
-  
+buildTree <- function(tt, qq, indices = NULL) {
   tree <- NULL
-  
-  depth <- apply(if (is.null(nrow(tt))) t(as.matrix(tt)) else tt,1,function(x) if (sum(x)>0) max(which(x == 1)) - 1 else -1)
-  sort_order <- order(depth)
-  
-  n <- if (is.null(nrow(tt))) 1 else nrow(tt)
-  
   empty_set <- FALSE
   
-  for (i in sort_order) {
+  if (is.null(nrow(tt))) {
+    tt <- matrix(tt, nrow = 1)
+  }
+  
+  # Compute depth of each set
+  depth <- apply(tt, 1, function(x) if (sum(x) > 0) max(which(x == 1)) - 1 else -1)
+  
+  # Default to 1...n if indices not provided
+  if (is.null(indices)) {
+    indices <- seq_len(nrow(tt))
+  }
+  
+  sort_order <- order(depth)
+  
+  for (k in sort_order) {
+    i <- indices[k]
+    x <- tt[k, ]
     
-    x <- if (is.null(nrow(tt))) tt else tt[i, ]
-    
-    if(sum(x)==0) {
-      
+    if (sum(x) == 0) {
       q <- qq[i]
       j <- i
       empty_set <- TRUE
       next
-      
     }
     
     node <- createNode(as.bit(x), qq[i], i)
-    
     tree <- insertNode(node, tree)
-    
   }
   
   if (empty_set) {
-    
-    tree$empty_set <- createNode(as.bit(rep(0,if(is.null(nrow(tt))) length(tt) else ncol(tt))), q, j)
-    
+    tree$empty_set <- createNode(as.bit(rep(0, ncol(tt))), q, j)
   }
   
   return(tree)
 }
+
 

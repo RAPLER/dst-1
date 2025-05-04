@@ -6,11 +6,13 @@ buildTrees <- function(tt, qq) {
   
   trees <- list()
   
-  for (i in 1:length(card_nodup)) {
+  for (i in seq_along(card_nodup)) {
+    idx <- which(card == card_nodup[i])
+    tt_sub <- tt[idx, , drop = FALSE]
+    qq_sub <- qq[idx]
     
-    idx <- (card==card_nodup[i])
-    trees[[i]] <- if(card_nodup[i]==0) buildTree(tt[idx,],qq[idx])[[1]] else buildTree(tt[idx,],qq[idx])
-    
+    # Pass the original indices explicitly
+    trees[[i]] <- if (card_nodup[i] == 0) buildTree(tt_sub, qq, indices = idx)[[1]] else buildTree(tt_sub, qq, indices = idx)
   }
   
   trees$card_nodup <- card_nodup
