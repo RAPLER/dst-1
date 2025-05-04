@@ -245,8 +245,7 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
           tree <- updateTree(tree,xx,s)
           
         } else if (tree_type=="multiple") { 
-          # TODO: make this option work
-          
+
           for(i in 1:length(trees$card_nodup)) {
             
             trees[[i]] <- updateTrees(trees[[i]], xx, s, tree=trees, card_nodup=trees$card_nodup)
