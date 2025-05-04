@@ -32,8 +32,8 @@ test_that("superBca", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
-  m <- 30
+  n <- 20
+  m <- 2000
   
   # Sample S
   S <- 1

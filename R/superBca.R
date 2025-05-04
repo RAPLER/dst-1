@@ -38,6 +38,7 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
     format = "  computing commonality [:bar] :percent eta: :eta",
     total = nrow(x_c), clear = FALSE, width= 100)
   
+  # TODO: make this faster
   print("compute commonality starts")
   start.time <- Sys.time()
   for(i in 1:nrow(x_c)) {

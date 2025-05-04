@@ -147,6 +147,7 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     # Step 2.1.1: Find upsets of each singleton in W23
     # Step 2.1.2: Filter those that are non-empty
     # Step 2.1.3: Find infimum of each upset
+    # TODO: make this faster
     pb <- progress_bar$new(
       format = "  computing iota elements [:bar] :percent eta: :eta",
       total = ncol(tt), clear = FALSE, width= 100)
