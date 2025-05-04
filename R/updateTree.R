@@ -1,5 +1,4 @@
 updateTree <- function(node, xx, s, root = node) {
-  
   if (!is.null(node)) {
     
     if (!is.null(node$q)) {
@@ -9,7 +8,14 @@ updateTree <- function(node, xx, s, root = node) {
         z <- e$x
         m0w <- e$q
         if (!all(z == y) && all(z == ((y | s) & z))) {
+          print("update")
+          print(y)
+          print(y | xx)
+          print(z)
+          print(node$q)
+          print(m0w)
           node$q <- node$q - m0w
+          print(node$q)
         }
       }
     }

@@ -3,7 +3,7 @@ updateTrees <- function(node, xx, s, root = node, trees, card_nodup) {
     
     if (!is.null(node$q)) {
       y <- node$x
-      k <- card_nodup[card_nodup > sum(y)]
+      k <- card_nodup[card_nodup >= sum(y | xx)]
       if (length(k) > 0) {
         start <- which(card_nodup == min(k))[1]
         e <- NULL

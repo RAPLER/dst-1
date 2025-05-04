@@ -27,6 +27,8 @@ test_that("buildTrees", {
   expect_equal(trees[[3]]$q,q[4])
   expect_equal(trees[[3]]$depth,2)
   
+  expect_equal(trees[[4]],c(1,2,3))
+  
   # Test Fig 12 + b
   x <- matrix(c(1,0,0,
                 0,0,1,
@@ -51,9 +53,9 @@ test_that("buildTrees", {
   
   trees <- buildTrees(x,q)
   
-  expect_equal(trees[[1]]$empty_set$x,as.bit(x[5,]))
-  expect_equal(trees[[1]]$empty_set$q,q[5])
-  expect_equal(trees[[1]]$empty_set$depth,-1)
+  expect_equal(trees[[1]]$x,as.bit(x[5,]))
+  expect_equal(trees[[1]]$q,q[5])
+  expect_equal(trees[[1]]$depth,-1)
   
   # Test Fig 12 + emptyset in the middle
   x <- matrix(c(0,0,1,
@@ -65,9 +67,9 @@ test_that("buildTrees", {
   
   trees <- buildTrees(x,q)
   
-  expect_equal(trees[[1]]$empty_set$x,as.bit(x[2,]))
-  expect_equal(trees[[1]]$empty_set$q,q[2])
-  expect_equal(trees[[1]]$empty_set$depth,-1)
+  expect_equal(trees[[1]]$x,as.bit(x[2,]))
+  expect_equal(trees[[1]]$q,q[2])
+  expect_equal(trees[[1]]$depth,-1)
   
   # Test Fig 12 + emptyset in the first row
   x <- matrix(c(0,0,0,
@@ -79,9 +81,9 @@ test_that("buildTrees", {
   
   trees <- buildTrees(x,q)
   
-  expect_equal(trees[[1]]$empty_set$x,as.bit(x[1,]))
-  expect_equal(trees[[1]]$empty_set$q,q[1])
-  expect_equal(trees[[1]]$empty_set$depth,-1)
+  expect_equal(trees[[1]]$x,as.bit(x[1,]))
+  expect_equal(trees[[1]]$q,q[1])
+  expect_equal(trees[[1]]$depth,-1)
   
   # TODO: add more tests
 })

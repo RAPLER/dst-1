@@ -9,9 +9,10 @@ buildTrees <- function(tt, qq) {
   for (i in 1:length(card_nodup)) {
     
     idx <- (card==card_nodup[i])
-    trees[[i]] <- buildTree(tt[idx,],qq[idx])
+    trees[[i]] <- if(card_nodup[i]==0) buildTree(tt[idx,],qq[idx])[[1]] else buildTree(tt[idx,],qq[idx])
     
   }
+  
   trees$card_nodup <- card_nodup
   return(trees)
 }

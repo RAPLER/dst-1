@@ -16,15 +16,11 @@ superset<-function(node,w) {
   }
   if (w[node$depth+1]) {
     # move to the right
-    #print("R")
     return(superset(node$right, w))
   } else {
     # move to the left
-    #print("L")
     result <- superset(node$left, w)
     if (!is.null(result)) return(result)
-    #print("Not L")
-    #print("R")
     return(superset(node$right, w))
   }
 }
