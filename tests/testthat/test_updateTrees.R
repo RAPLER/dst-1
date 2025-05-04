@@ -2,6 +2,7 @@
 context("update a list of trees")
 library(dst)
 test_that("updateTrees", {
+  # Compare updateTrees vs updateTree
   x <- matrix(c(1,0,0,
                 0,0,1,
                 0,1,1,
