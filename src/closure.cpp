@@ -20,7 +20,7 @@ using namespace Rcpp;
 
 // [[Rcpp::export]]
 LogicalMatrix closure(IntegerMatrix ttx, bool computeJoin = true, bool display_progress = false) {
-  // TODO: accept sparse matrix ttx
+  // Declare lists of bitsets
   std::vector<boost::dynamic_bitset<>> ttxlv;
   std::vector<boost::dynamic_bitset<>> ttylv;
   std::unordered_map<boost::dynamic_bitset<>, size_t> m0;

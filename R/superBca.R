@@ -32,8 +32,6 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
   
   x_c <- rbind(x_c, methods::as(t(rep(1,ncol(x_c))), "RsparseMatrix"))
   
-  qq <- rep(0,nrow(x_c))
-  
   pb <- progress_bar$new(
     format = "  computing commonality [:bar] :percent eta: :eta",
     total = nrow(x_c), clear = FALSE, width= 100)
@@ -41,11 +39,12 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
   # TODO: make this faster
   print("compute commonality starts")
   start.time <- Sys.time()
-  for(i in 1:nrow(x_c)) {
-    pb$tick()
-    qq[i] <- (1 - a) ** sum(sapply(seq_len(nrow(x)), function(j) { 
-      !all(x[j, ] - x_c[i, ] >= 0) }))
-  }
+  #qq <- rep(0,nrow(x_c))
+  #for(i in 1:nrow(x_c)) {
+  #  pb$tick()
+  #  qq[i] <- (1 - a) ** sum(sapply(seq_len(nrow(x)), function(j) { !all(x[j, ] - x_c[i, ] >= 0) }))
+  #}
+  qq<-commSparse(x,x_c,a,TRUE)
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print("compute commonality finishes within")

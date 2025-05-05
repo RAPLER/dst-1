@@ -30,3 +30,17 @@ closureSparse <- function(ttx, computeJoin = TRUE, display_progress = FALSE) {
     .Call(`_dst_closureSparse`, ttx, computeJoin, display_progress)
 }
 
+#' Comptue commonality values of a group of simple support functions on its closure elements
+#' @name commSparse
+#' @param x The non-trivial support of the mass function
+#' @param x_c A sparse binary matrix of closure elements
+#' @param a Mass assigned to the non-trivial support
+#' @param display_progress = true: to compute join closure. Default = FALSE
+#' @return A sparse binary matrix including the closure elements
+#' @export
+NULL
+
+commSparse <- function(x, x_c, a, display_progress = FALSE) {
+    .Call(`_dst_commSparse`, x, x_c, a, display_progress)
+}
+

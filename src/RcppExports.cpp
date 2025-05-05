@@ -37,10 +37,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// commSparse
+NumericVector commSparse(arma::sp_mat x, arma::sp_mat x_c, double a, bool display_progress);
+RcppExport SEXP _dst_commSparse(SEXP xSEXP, SEXP x_cSEXP, SEXP aSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type x(xSEXP);
+    Rcpp::traits::input_parameter< arma::sp_mat >::type x_c(x_cSEXP);
+    Rcpp::traits::input_parameter< double >::type a(aSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(commSparse(x, x_c, a, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_dst_closure", (DL_FUNC) &_dst_closure, 3},
     {"_dst_closureSparse", (DL_FUNC) &_dst_closureSparse, 3},
+    {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},
     {NULL, NULL, 0}
 };
 
