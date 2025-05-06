@@ -41,6 +41,7 @@ arma::sp_mat closureSparse(arma::sp_mat ttx, bool computeJoin = true, bool displ
   // Compute closures
   Progress p(ttxlv.size(), display_progress);
   for (size_t i = 0; i < ttxlv.size(); ++i) {
+    if (Progress::check_abort()) break;
     p.increment();
     for (size_t j = 0; j < ttylv.size(); ++j) {
 

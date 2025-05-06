@@ -5,6 +5,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <progress.hpp>
 #include <progress_bar.hpp>
+#include "eta_progress_bar.hpp"
 using namespace Rcpp;
 
 //' Augment a sparse binary matrix with closure elements
@@ -40,7 +41,8 @@ LogicalMatrix closure(IntegerMatrix ttx, bool computeJoin = true, bool display_p
   }
   
   // Compute closures
-  Progress p(ttxlv.size(), display_progress);
+  ETAProgressBar pb;
+  Progress p(ttxlv.size(), display_progress, pb);
   for (size_t i = 0; i < ttxlv.size(); ++i) {
     p.increment();
     for (size_t j = 0; j < ttylv.size(); ++j) {

@@ -7,6 +7,7 @@
 #include <boost/dynamic_bitset.hpp>
 #include <progress.hpp>
 #include <progress_bar.hpp>
+#include "eta_progress_bar.hpp"
 using namespace Rcpp;
 
 //' Comptue commonality values of a group of simple support functions on its closure elements
@@ -36,7 +37,8 @@ NumericVector commSparse(arma::sp_mat x, arma::sp_mat x_c, double a, bool displa
     x_bits.push_back(row_bits);
   }
   
-  Progress p(nc, display_progress);
+  ETAProgressBar pb;
+  Progress p(nc, display_progress, pb);
   
   for (int i = 0; i < nc; ++i) {
     if (Progress::check_abort()) break;
