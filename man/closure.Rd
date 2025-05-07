@@ -8,7 +8,7 @@
 
 \item{computeJoin}{= true: to compute join closure. Default = TRUE}
 
-\item{display_progress}{= true: to compute join closure. Default = FALSE}
+\item{display_progress}{= true: to show progress bar. Default = FALSE}
 }
 \value{
 A binary matrix including the closure elements
