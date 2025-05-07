@@ -157,6 +157,8 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     print(time.taken)
     
     W24 <- as.matrix(W24)
+    sort_order <- order(apply(W24,1,sum))
+    W24 <- W24[sort_order,]
     
     # Step 2.2: Compute the graph
     
