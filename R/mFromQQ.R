@@ -161,6 +161,7 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     W24 <- W24[sort_order,]
     
     # Step 2.2: Compute the graph
+    # TODO: port everything below into RCpp
     
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
