@@ -20,6 +20,15 @@ using namespace Rcpp;
 // [[Rcpp::export]]
 arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
   int n = tt.n_cols;
+  int m = tt.n_rows;
+  
+  // Precompute row bitsets
+  std::vector<boost::dynamic_bitset<>> row_bitsets(m, boost::dynamic_bitset<>(n));
+  for (int row = 0; row < m; ++row) {
+    for (arma::sp_mat::const_row_iterator it = tt.begin_row(row); it != tt.end_row(row); ++it) {
+      row_bitsets[row].set(it.col());
+    }
+  }
   
   // Map to store unique iota bitsets and their assigned row index
   std::unordered_map<boost::dynamic_bitset<>, size_t> iota_map;
@@ -35,11 +44,8 @@ arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
     i.set(); // full set
     bool included = false;
     
-    for (int row = 0; row < tt.n_rows; ++row) {
-      boost::dynamic_bitset<> FFbs(n);
-      for (arma::sp_mat::const_row_iterator it = tt.begin_row(row); it != tt.end_row(row); ++it) {
-        FFbs.set(it.col());
-      }
+    for (int row = 0; row < m; ++row) {
+      const boost::dynamic_bitset<>& FFbs = row_bitsets[row];
       
       if (FFbs.test(omega)) {
         included = true;
