@@ -147,7 +147,15 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     # Step 2.1.1: Find upsets of each singleton in W23
     # Step 2.1.2: Filter those that are non-empty
     # Step 2.1.3: Find infimum of each upset
+    
+    print("compute iota elements starts")
+    start.time <- Sys.time()
     W24 <- iotaSparse(tt,TRUE)
+    end.time <- Sys.time()
+    time.taken <- end.time - start.time
+    print("compute iota elements finishes within")
+    print(time.taken)
+    
     W24 <- as.matrix(W24)
     
     # Step 2.2: Compute the graph
@@ -198,8 +206,7 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
           w <- which(apply(tt, 1, function(s) return(all(s == z)))) 
           k0 <- W24[1:i,]
           s <- bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")
-          if ((length(w) > 0) && (!all(z==y)) && 
-              all((pmax(y,s) - z) >= 0)) {
+          if ((length(w) > 0) && (!all(z==y)) && all((pmax(y,s) - z) >= 0)) {
             m0[j] <- m0[j] - m0[w]
           }
         }
