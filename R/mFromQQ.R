@@ -147,40 +147,8 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     # Step 2.1.1: Find upsets of each singleton in W23
     # Step 2.1.2: Filter those that are non-empty
     # Step 2.1.3: Find infimum of each upset
-    # TODO: make this faster
-    pb <- progress_bar$new(
-      format = "  computing iota elements [:bar] :percent eta: :eta",
-      total = ncol(tt), clear = FALSE, width= 100)
-    n <- ncol(tt)
-    iota_list <- list()
-    
-    for (omega in 1:n) {
-      pb$tick()
-      i <- rep(1L, n)          # Start with full set
-      included <- FALSE
-      
-      for (row in 1:nrow(tt)) {
-        FF <- tt[row, ]
-        if (FF[omega] == 1L) {  # F ⊇ {omega}
-          included <- TRUE
-          i <- i * FF           # i ← i ∩ F (elementwise AND for binary)
-          if (sum(i) == 1L && i[omega] == 1L) {
-            break              # i = {omega}, we can stop early
-          }
-        }
-      }
-      
-      if (included) {
-        iota_list[[length(iota_list) + 1]] <- i
-      }
-    }
-    
-    # Combine and deduplicate
-    W24 <- unique(do.call(rbind, iota_list))
-
-    # Sort iota elements
-    sort_order <- order(apply(W24,1,sum))
-    W24 <- W24[sort_order,]
+    W24 <- iotaSparse(tt,TRUE)
+    W24 <- as.matrix(W24)
     
     # Step 2.2: Compute the graph
     

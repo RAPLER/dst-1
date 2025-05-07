@@ -51,11 +51,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// iotaSparse
+arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress);
+RcppExport SEXP _dst_iotaSparse(SEXP ttSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::sp_mat >::type tt(ttSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(iotaSparse(tt, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_dst_closure", (DL_FUNC) &_dst_closure, 3},
     {"_dst_closureSparse", (DL_FUNC) &_dst_closureSparse, 3},
     {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},
+    {"_dst_iotaSparse", (DL_FUNC) &_dst_iotaSparse, 2},
     {NULL, NULL, 0}
 };
 

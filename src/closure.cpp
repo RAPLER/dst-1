@@ -12,7 +12,7 @@ using namespace Rcpp;
 //' @name closure
 //' @param ttx A binary matrix
 //' @param computeJoin = true: to compute join closure. Default = TRUE
-//' @param display_progress = true: to compute join closure. Default = FALSE
+//' @param display_progress = true: to show progress bar. Default = FALSE
 //' @return A binary matrix including the closure elements
 //' @examples
 //' ttx <- matrix(c(0,1,1,1,1,0,1,1,1), nrow=3, byrow = TRUE)

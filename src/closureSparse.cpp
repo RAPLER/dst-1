@@ -13,7 +13,7 @@ using namespace Rcpp;
 //' @name closureSparse
 //' @param ttx A sparse binary matrix
 //' @param computeJoin = true: to compute join closure. Default = TRUE
-//' @param display_progress = true: to compute join closure. Default = FALSE
+//' @param display_progress = true: to show progress bar. Default = FALSE
 //' @return A sparse binary matrix including the closure elements
 //' @export
 

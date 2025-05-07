@@ -5,7 +5,7 @@
 #' @name closure
 #' @param ttx A binary matrix
 #' @param computeJoin = true: to compute join closure. Default = TRUE
-#' @param display_progress = true: to compute join closure. Default = FALSE
+#' @param display_progress = true: to show progress bar. Default = FALSE
 #' @return A binary matrix including the closure elements
 #' @examples
 #' ttx <- matrix(c(0,1,1,1,1,0,1,1,1), nrow=3, byrow = TRUE)
@@ -21,7 +21,7 @@ closure <- function(ttx, computeJoin = TRUE, display_progress = FALSE) {
 #' @name closureSparse
 #' @param ttx A sparse binary matrix
 #' @param computeJoin = true: to compute join closure. Default = TRUE
-#' @param display_progress = true: to compute join closure. Default = FALSE
+#' @param display_progress = true: to show progress bar. Default = FALSE
 #' @return A sparse binary matrix including the closure elements
 #' @export
 NULL
@@ -35,12 +35,24 @@ closureSparse <- function(ttx, computeJoin = TRUE, display_progress = FALSE) {
 #' @param x The non-trivial support of the mass function
 #' @param x_c A sparse binary matrix of closure elements
 #' @param a Mass assigned to the non-trivial support
-#' @param display_progress = true: to compute join closure. Default = FALSE
+#' @param display_progress = true: to show progress bar. Default = FALSE
 #' @return A sparse binary matrix including the closure elements
 #' @export
 NULL
 
 commSparse <- function(x, x_c, a, display_progress = FALSE) {
     .Call(`_dst_commSparse`, x, x_c, a, display_progress)
+}
+
+#' Comptue iota elements of a sparse binary matrix of closure elements
+#' @name iotaSparse
+#' @param tt A sparse matrix of closure elements
+#' @param display_progress = true: to show progress bar. Default = FALSE
+#' @return A sparse binary matrix of the iota elements
+#' @export
+NULL
+
+iotaSparse <- function(tt, display_progress = FALSE) {
+    .Call(`_dst_iotaSparse`, tt, display_progress)
 }
 

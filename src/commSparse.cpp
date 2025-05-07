@@ -15,7 +15,7 @@ using namespace Rcpp;
 //' @param x The non-trivial support of the mass function
 //' @param x_c A sparse binary matrix of closure elements
 //' @param a Mass assigned to the non-trivial support
-//' @param display_progress = true: to compute join closure. Default = FALSE
+//' @param display_progress = true: to show progress bar. Default = FALSE
 //' @return A sparse binary matrix including the closure elements
 //' @export
 

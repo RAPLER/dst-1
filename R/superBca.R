@@ -36,14 +36,8 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
     format = "  computing commonality [:bar] :percent eta: :eta",
     total = nrow(x_c), clear = FALSE, width= 100)
   
-  # TODO: make this faster
   print("compute commonality starts")
   start.time <- Sys.time()
-  #qq <- rep(0,nrow(x_c))
-  #for(i in 1:nrow(x_c)) {
-  #  pb$tick()
-  #  qq[i] <- (1 - a) ** sum(sapply(seq_len(nrow(x)), function(j) { !all(x[j, ] - x_c[i, ] >= 0) }))
-  #}
   qq<-commSparse(x,x_c,a,TRUE)
   end.time <- Sys.time()
   time.taken <- end.time - start.time
@@ -53,7 +47,6 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
   print("compute mobius inversion starts")
   start.time <- Sys.time()
   m <- mFromQQ(qq,method="emt-m",tt=x_c,use_pb=TRUE,tree_type=tree_type)
-  
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print("compute mobius inversion finishes within")
