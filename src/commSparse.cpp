@@ -25,16 +25,26 @@ NumericVector commSparse(arma::sp_mat x, arma::sp_mat x_c, double a, bool displa
   int m = x.n_cols;
   int nc = x_c.n_rows;
   
-  std::vector<boost::dynamic_bitset<>> x_bits;
+  std::vector<boost::dynamic_bitset<>> x_bits(n);
+  std::vector<boost::dynamic_bitset<>> xc_bits(nc);
   NumericVector qq(nc);
   
-  // Convert sparse matrix x to vector of bitsets
+  // Convert x
   for (int i = 0; i < n; ++i) {
     boost::dynamic_bitset<> row_bits(m);
     for (arma::sp_mat::const_row_iterator it = x.begin_row(i); it != x.end_row(i); ++it) {
       row_bits[it.col()] = 1;
     }
-    x_bits.push_back(row_bits);
+    x_bits[i] = row_bits;
+  }
+  
+  // Convert x_c
+  for (int i = 0; i < nc; ++i) {
+    boost::dynamic_bitset<> row_bits(m);
+    for (arma::sp_mat::const_row_iterator it = x_c.begin_row(i); it != x_c.end_row(i); ++it) {
+      row_bits[it.col()] = 1;
+    }
+    xc_bits[i] = row_bits;
   }
   
   ETAProgressBar pb;
@@ -44,22 +54,14 @@ NumericVector commSparse(arma::sp_mat x, arma::sp_mat x_c, double a, bool displa
     if (Progress::check_abort()) break;
     p.increment();
     
-    boost::dynamic_bitset<> c_bits(m);
-    for (arma::sp_mat::const_row_iterator it = x_c.begin_row(i); it != x_c.end_row(i); ++it) {
-      c_bits[it.col()] = 1;
-    }
-    
     int count_not_subsets = 0;
-    
     for (int j = 0; j < n; ++j) {
-      if ((x_bits[j] & c_bits) != c_bits) {
+      if ((xc_bits[i] & x_bits[j]) != xc_bits[i]) {
         count_not_subsets++;
       }
     }
-    
     qq[i] = std::pow(1.0 - a, count_not_subsets);
   }
   
   return qq;
 }
-

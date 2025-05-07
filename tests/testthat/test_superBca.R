@@ -75,7 +75,6 @@ test_that("superBca", {
   }
   
   # T5: test superBca NULL
-  
   bma0 <- superBca(X,y,a,tree_type=NULL)
   
   colnames(bma0$tt) <- rsid

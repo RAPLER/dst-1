@@ -32,10 +32,6 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
   
   x_c <- rbind(x_c, methods::as(t(rep(1,ncol(x_c))), "RsparseMatrix"))
   
-  pb <- progress_bar$new(
-    format = "  computing commonality [:bar] :percent eta: :eta",
-    total = nrow(x_c), clear = FALSE, width= 100)
-  
   print("compute commonality starts")
   start.time <- Sys.time()
   qq<-commSparse(x,x_c,a,TRUE)

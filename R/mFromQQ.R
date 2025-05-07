@@ -164,42 +164,22 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
     
-    # TODO: move tree_type == "single", "multiple" into RCpp
-    if (!is.null(tree_type)) {
-      
-      if (tree_type=="single") {
-        
-        tree <- buildTree(tt,qq)
-        
-      } else if (tree_type=="multiple") {
-        
-        trees <- buildTrees(tt,qq)
-        
-      } else {
-        
-        stop("tree_type can either be \"single\" or \"multiple\"")
-        
-      }
-    } 
-    
-    pb <- progress_bar$new(
-      format = "  computing graph [:bar] :percent eta: :eta",
-      total = nrow(W24), clear = FALSE, width= 100)
-    
+    # TODO: Move tree_type == "single", "multiple" into RCpp
     if (is.null(tree_type)) {
+      
+      pb <- progress_bar$new(
+        format = "  computing graph [:bar] :percent eta: :eta",
+        total = nrow(W24), clear = FALSE, width= 100)
       
       m0 <- qq
       
-    }
-    
-    for (i in nrow(W24):1) {
-      pb$tick()
-      
-      if (is.null(tree_type)) {
-        
-        xx <- W24[i,]
-        for (j in 1:nrow(tt)) {
+      for (i in nrow(W24):1) {
+        pb$tick()
 
+        xx <- W24[i,]
+        
+        for (j in 1:nrow(tt)) {
+          
           y <- tt[j,]
           z0 <- arrow(pmax(xx,y), tt, "up")
           z <- bound(if (is.null(nrow(z0))) t(as.matrix(z0)) else as.matrix(z0), "inf")
@@ -208,43 +188,57 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
           w <- which(apply(tt, 1, function(s) return(all(s == z)))) 
           k0 <- W24[1:i,]
           s <- bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")
+          
           if ((length(w) > 0) && (!all(z==y)) && all((pmax(y,s) - z) >= 0)) {
             m0[j] <- m0[j] - m0[w]
           }
         }
-      } else {
+        
+      }
+    } else if (tree_type=="single") {
       
+      pb <- progress_bar$new(
+        format = "  computing graph [:bar] :percent eta: :eta",
+        total = nrow(W24), clear = FALSE, width= 100)
+      
+      tree <- buildTree(tt, qq)
+      
+      for (i in nrow(W24):1) {
+        pb$tick()
+        
         xx <- as.bit(W24[i,])
         k0 <- W24[1:i,]
         s <- as.bit(bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup"))
+        tree <- updateTree(tree, xx, s)
+      }
+      
+      m0 <- unravelTree(tree)
+      
+    } else if (tree_type=="multiple") {
+      
+      pb <- progress_bar$new(
+        format = "  computing graph [:bar] :percent eta: :eta",
+        total = nrow(W24), clear = FALSE, width= 100)
+      
+      trees <- buildTrees(tt,qq)
+      
+      for (i in nrow(W24):1) {
+        pb$tick()
         
-        if (tree_type=="single") {
+        xx <- as.bit(W24[i,])
+        k0 <- W24[1:i,]
+        s <- as.bit(bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup"))
+        for(i in 1:length(trees$card_nodup)) {
           
-          tree <- updateTree(tree,xx,s)
+          trees[[i]] <- updateTrees(trees[[i]], xx, s, tree=trees, card_nodup=trees$card_nodup)
           
-        } else if (tree_type=="multiple") { 
-
-          for(i in 1:length(trees$card_nodup)) {
-            
-            trees[[i]] <- updateTrees(trees[[i]], xx, s, tree=trees, card_nodup=trees$card_nodup)
-            
-          }
         }
       }
+      
+      m0 <- unravelTrees(trees) 
+      
     }
     
-    if (!is.null(tree_type)) {
-      
-      if (tree_type=="single") {
-        
-        m0 <- unravelTree(tree) 
-        
-      } else if (tree_type=="multiple") {
-        
-        m0 <- unravelTrees(trees) 
-        
-      }
-    }
     return(m0)
   } else {
     stop("Input method must be one of fmt, emt, emt-m")
