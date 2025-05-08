@@ -63,12 +63,52 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// buildTreeFast
+SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q);
+RcppExport SEXP _dst_buildTreeFast(SEXP ttSEXP, SEXP qSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type tt(ttSEXP);
+    Rcpp::traits::input_parameter< const NumericVector& >::type q(qSEXP);
+    rcpp_result_gen = Rcpp::wrap(buildTreeFast(tt, q));
+    return rcpp_result_gen;
+END_RCPP
+}
+// updateTreeFast
+SEXP updateTreeFast(SEXP tree_ptr, LogicalVector xx_vec, LogicalVector s_vec);
+RcppExport SEXP _dst_updateTreeFast(SEXP tree_ptrSEXP, SEXP xx_vecSEXP, SEXP s_vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type tree_ptr(tree_ptrSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type xx_vec(xx_vecSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type s_vec(s_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateTreeFast(tree_ptr, xx_vec, s_vec));
+    return rcpp_result_gen;
+END_RCPP
+}
+// unravelTreeFast
+NumericVector unravelTreeFast(SEXP tree_ptr, int n);
+RcppExport SEXP _dst_unravelTreeFast(SEXP tree_ptrSEXP, SEXP nSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type tree_ptr(tree_ptrSEXP);
+    Rcpp::traits::input_parameter< int >::type n(nSEXP);
+    rcpp_result_gen = Rcpp::wrap(unravelTreeFast(tree_ptr, n));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_dst_closure", (DL_FUNC) &_dst_closure, 3},
     {"_dst_closureSparse", (DL_FUNC) &_dst_closureSparse, 3},
     {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},
     {"_dst_iotaSparse", (DL_FUNC) &_dst_iotaSparse, 2},
+    {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 2},
+    {"_dst_updateTreeFast", (DL_FUNC) &_dst_updateTreeFast, 3},
+    {"_dst_unravelTreeFast", (DL_FUNC) &_dst_unravelTreeFast, 2},
     {NULL, NULL, 0}
 };
 

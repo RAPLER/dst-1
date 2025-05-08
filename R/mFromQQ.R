@@ -201,18 +201,18 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
         format = "  computing graph [:bar] :percent eta: :eta",
         total = nrow(W24), clear = FALSE, width= 100)
       
-      tree <- buildTree(tt, qq)
+      tree <- buildTreeFast(tt, qq)
       
       for (i in nrow(W24):1) {
         pb$tick()
         
-        xx <- as.bit(W24[i,])
+        xx <- W24[i,]
         k0 <- W24[1:i,]
-        s <- as.bit(bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup"))
-        tree <- updateTree(tree, xx, s)
+        s <- bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")
+        tree <- updateTreeFast(tree, xx, s)
       }
       
-      m0 <- unravelTree(tree)
+      m0 <- unravelTreeFast(tree, length(qq))
       
     } else if (tree_type=="multiple") {
       
