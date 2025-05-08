@@ -10,16 +10,24 @@ using namespace Rcpp;
 using boost::dynamic_bitset;
 using std::shared_ptr;
 
+int computeDepth(const dynamic_bitset<>& x) {
+  for (int i = x.size() - 1; i >= 0; --i) {
+    if (x[i]) return i;
+  }
+  return -1; // for the empty set
+}
+
 struct TreeNode {
   dynamic_bitset<> x;
   double q;
   int index;
+  int depth;
   shared_ptr<TreeNode> left = nullptr;
   shared_ptr<TreeNode> right = nullptr;
   shared_ptr<TreeNode> empty_set = nullptr;
-  // TODO: add depth
   
-  TreeNode(dynamic_bitset<> x_, double q_, int idx_) : x(x_), q(q_), index(idx_) {}
+  TreeNode(dynamic_bitset<> x_, double q_, int idx_)
+    : x(x_), q(q_), index(idx_), depth(computeDepth(x_)) {}
 };
 
 shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node, shared_ptr<TreeNode> root) {
@@ -33,6 +41,7 @@ shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node, shared_ptr<TreeNode> 
   }
   return root;
 }
+
 
 shared_ptr<TreeNode> superset(shared_ptr<TreeNode> node, const dynamic_bitset<>& z) {
   if (!node) return nullptr;
@@ -163,25 +172,34 @@ NumericVector unravelTreeFast(SEXP tree_ptr, int n) {
 // [[Rcpp::export]]
 List inspectNode(SEXP tree_ptr) {
   XPtr<shared_ptr<TreeNode>> ptr(tree_ptr);
-  auto node = *ptr;
+  auto root = *ptr;
   
-  if (!node) return R_NilValue;
+  if (!root) return R_NilValue;
   
-  auto toList = [](shared_ptr<TreeNode> n) -> List {
+  // Recursive function to convert the full tree into nested R lists
+  std::function<List(shared_ptr<TreeNode>)> buildTree = [&](shared_ptr<TreeNode> n) -> List {
     if (!n) return R_NilValue;
+    
     IntegerVector bits(n->x.size());
     for (size_t i = 0; i < n->x.size(); ++i) bits[i] = n->x[i];
-    return List::create(
+    
+    List result = List::create(
       _["x"] = bits,
       _["q"] = n->q,
-      _["index"] = n->index
+      _["index"] = n->index,
+      _["depth"] = n->depth,
+      _["left"] = buildTree(n->left),
+      _["right"] = buildTree(n->right)
     );
+    
+    if (n->empty_set) {
+      result.push_back(buildTree(n->empty_set), "empty_set");
+    }
+    
+    return result;
   };
   
-  return List::create(
-    _["node"] = toList(node),
-    _["left"] = toList(node->left),
-    _["right"] = toList(node->right),
-    _["empty_set"] = toList(node->empty_set)
-  );
+  return buildTree(root);
 }
+
+
