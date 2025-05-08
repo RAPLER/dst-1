@@ -159,3 +159,29 @@ NumericVector unravelTreeFast(SEXP tree_ptr, int n) {
   }
   return result;
 }
+
+// [[Rcpp::export]]
+List inspectNode(SEXP tree_ptr) {
+  XPtr<shared_ptr<TreeNode>> ptr(tree_ptr);
+  auto node = *ptr;
+  
+  if (!node) return R_NilValue;
+  
+  auto toList = [](shared_ptr<TreeNode> n) -> List {
+    if (!n) return R_NilValue;
+    IntegerVector bits(n->x.size());
+    for (size_t i = 0; i < n->x.size(); ++i) bits[i] = n->x[i];
+    return List::create(
+      _["x"] = bits,
+      _["q"] = n->q,
+      _["index"] = n->index
+    );
+  };
+  
+  return List::create(
+    _["node"] = toList(node),
+    _["left"] = toList(node->left),
+    _["right"] = toList(node->right),
+    _["empty_set"] = toList(node->empty_set)
+  );
+}

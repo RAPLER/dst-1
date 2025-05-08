@@ -100,6 +100,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// inspectNode
+List inspectNode(SEXP tree_ptr);
+RcppExport SEXP _dst_inspectNode(SEXP tree_ptrSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type tree_ptr(tree_ptrSEXP);
+    rcpp_result_gen = Rcpp::wrap(inspectNode(tree_ptr));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_dst_closure", (DL_FUNC) &_dst_closure, 3},
@@ -109,6 +120,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 2},
     {"_dst_updateTreeFast", (DL_FUNC) &_dst_updateTreeFast, 3},
     {"_dst_unravelTreeFast", (DL_FUNC) &_dst_unravelTreeFast, 2},
+    {"_dst_inspectNode", (DL_FUNC) &_dst_inspectNode, 1},
     {NULL, NULL, 0}
 };
 

@@ -61,3 +61,7 @@ unravelTreeFast <- function(tree_ptr, n) {
     .Call(`_dst_unravelTreeFast`, tree_ptr, n)
 }
 
+inspectNode <- function(tree_ptr) {
+    .Call(`_dst_inspectNode`, tree_ptr)
+}
+
