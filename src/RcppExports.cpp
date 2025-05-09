@@ -88,15 +88,26 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// supersetFast
+SEXP supersetFast(SEXP node_ptr, LogicalVector z_vec);
+RcppExport SEXP _dst_supersetFast(SEXP node_ptrSEXP, SEXP z_vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type node_ptr(node_ptrSEXP);
+    Rcpp::traits::input_parameter< LogicalVector >::type z_vec(z_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(supersetFast(node_ptr, z_vec));
+    return rcpp_result_gen;
+END_RCPP
+}
 // unravelTreeFast
-NumericVector unravelTreeFast(SEXP tree_ptr, int n);
-RcppExport SEXP _dst_unravelTreeFast(SEXP tree_ptrSEXP, SEXP nSEXP) {
+NumericVector unravelTreeFast(SEXP tree_ptr);
+RcppExport SEXP _dst_unravelTreeFast(SEXP tree_ptrSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type tree_ptr(tree_ptrSEXP);
-    Rcpp::traits::input_parameter< int >::type n(nSEXP);
-    rcpp_result_gen = Rcpp::wrap(unravelTreeFast(tree_ptr, n));
+    rcpp_result_gen = Rcpp::wrap(unravelTreeFast(tree_ptr));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -119,7 +130,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_dst_iotaSparse", (DL_FUNC) &_dst_iotaSparse, 2},
     {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 2},
     {"_dst_updateTreeFast", (DL_FUNC) &_dst_updateTreeFast, 3},
-    {"_dst_unravelTreeFast", (DL_FUNC) &_dst_unravelTreeFast, 2},
+    {"_dst_supersetFast", (DL_FUNC) &_dst_supersetFast, 2},
+    {"_dst_unravelTreeFast", (DL_FUNC) &_dst_unravelTreeFast, 1},
     {"_dst_inspectNode", (DL_FUNC) &_dst_inspectNode, 1},
     {NULL, NULL, 0}
 };

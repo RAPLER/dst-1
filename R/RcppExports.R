@@ -57,8 +57,12 @@ updateTreeFast <- function(tree_ptr, xx_vec, s_vec) {
     .Call(`_dst_updateTreeFast`, tree_ptr, xx_vec, s_vec)
 }
 
-unravelTreeFast <- function(tree_ptr, n) {
-    .Call(`_dst_unravelTreeFast`, tree_ptr, n)
+supersetFast <- function(node_ptr, z_vec) {
+    .Call(`_dst_supersetFast`, node_ptr, z_vec)
+}
+
+unravelTreeFast <- function(tree_ptr) {
+    .Call(`_dst_unravelTreeFast`, tree_ptr)
 }
 
 inspectNode <- function(tree_ptr) {

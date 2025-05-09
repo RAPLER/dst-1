@@ -212,7 +212,7 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
         tree <- updateTreeFast(tree, xx, s)
       }
       
-      m0 <- unravelTreeFast(tree, length(qq))
+      m0 <- unravelTreeFast(tree)
       
     } else if (tree_type=="multiple") {
       
