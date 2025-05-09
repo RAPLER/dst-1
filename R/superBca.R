@@ -34,19 +34,15 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
   
   print("compute commonality starts")
   start.time <- Sys.time()
+  
   qq<-commSparse(x,x_c,a,TRUE)
+  
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print("compute commonality finishes within")
   print(time.taken)
   
-  print("compute mobius inversion starts")
-  start.time <- Sys.time()
   m <- mFromQQ(qq,method="emt-m",tt=x_c,use_pb=TRUE,tree_type=tree_type)
-  end.time <- Sys.time()
-  time.taken <- end.time - start.time
-  print("compute mobius inversion finishes within")
-  print(time.taken)
   
   z <- list("tt"=x_c, "qq"=qq, "m"=m)
   

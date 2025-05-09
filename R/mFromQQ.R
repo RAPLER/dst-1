@@ -203,11 +203,16 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
       
       print("build tree starts")
       start.time <- Sys.time()
+      
       tree <- buildTreeFast(tt, qq, TRUE)
+      
       end.time <- Sys.time()
       time.taken <- end.time - start.time
       print("build tree finishes within")
       print(time.taken)
+      
+      print("update tree starts")
+      start.time <- Sys.time()
       
       for (i in nrow(W24):1) {
         pb$tick()
@@ -218,7 +223,20 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
         tree <- updateTreeFast(tree, xx, s)
       }
       
+      end.time <- Sys.time()
+      time.taken <- end.time - start.time
+      print("update tree finishes within")
+      print(time.taken)
+      
+      print("unravel tree starts")
+      start.time <- Sys.time()
+      
       m0 <- unravelTreeFast(tree)
+      
+      end.time <- Sys.time()
+      time.taken <- end.time - start.time
+      print("unravel tree finishes within")
+      print(time.taken)
       
     } else if (tree_type=="multiple") {
       
