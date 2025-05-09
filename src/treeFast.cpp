@@ -234,19 +234,6 @@ SEXP updateTreeFast(SEXP tree_ptr, LogicalVector xx_vec, LogicalVector s_vec) {
   return tree_ptr;
 }
 
-void collectValues(shared_ptr<TreeNode> node, std::vector<std::pair<int, double>>& out) {
-  if (!node) return;
-  
-  collectValues(node->left, out);
-  if (node->index >= 0 && node->q != -1) {
-    out.emplace_back(node->index, node->q);
-  }
-  collectValues(node->right, out);
-  if (node->empty_set) {
-    collectValues(node->empty_set, out);
-  }
-}
-
 // [[Rcpp::export]]
 SEXP supersetFast(SEXP node_ptr, LogicalVector z_vec) {
   XPtr<shared_ptr<TreeNode>> ptr(node_ptr);
