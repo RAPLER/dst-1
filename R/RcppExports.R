@@ -49,8 +49,8 @@ iotaSparse <- function(tt, display_progress = FALSE) {
     .Call(`_dst_iotaSparse`, tt, display_progress)
 }
 
-buildTreeFast <- function(tt, q) {
-    .Call(`_dst_buildTreeFast`, tt, q)
+buildTreeFast <- function(tt, q, display_progress = FALSE) {
+    .Call(`_dst_buildTreeFast`, tt, q, display_progress)
 }
 
 updateTreeFast <- function(tree_ptr, xx_vec, s_vec) {

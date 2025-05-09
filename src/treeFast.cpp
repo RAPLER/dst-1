@@ -5,6 +5,9 @@
 #include <boost/dynamic_bitset.hpp>
 #include <memory>
 #include <algorithm>
+#include <progress.hpp>
+#include <progress_bar.hpp>
+#include "eta_progress_bar.hpp"
 
 using namespace Rcpp;
 using boost::dynamic_bitset;
@@ -133,11 +136,18 @@ shared_ptr<TreeNode> superset(shared_ptr<TreeNode> node, const dynamic_bitset<>&
 
 
 // [[Rcpp::export]]
-SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q) {
+SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q, bool display_progress = false) {
   std::vector<shared_ptr<TreeNode>> nodes;
   std::vector<int> depths(tt.n_rows);
   
+  ETAProgressBar pb;
+  Progress p(tt.n_rows, display_progress, pb);
+  
   for (unsigned int i = 0; i < tt.n_rows; ++i) {
+    
+    if (Progress::check_abort()) break;
+    p.increment();
+    
     dynamic_bitset<> bitset(tt.n_cols);
     int last = -1;
     for (arma::sp_mat::const_row_iterator it = tt.begin_row(i); it != tt.end_row(i); ++it) {

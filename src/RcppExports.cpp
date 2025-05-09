@@ -64,14 +64,15 @@ BEGIN_RCPP
 END_RCPP
 }
 // buildTreeFast
-SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q);
-RcppExport SEXP _dst_buildTreeFast(SEXP ttSEXP, SEXP qSEXP) {
+SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q, bool display_progress);
+RcppExport SEXP _dst_buildTreeFast(SEXP ttSEXP, SEXP qSEXP, SEXP display_progressSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type tt(ttSEXP);
     Rcpp::traits::input_parameter< const NumericVector& >::type q(qSEXP);
-    rcpp_result_gen = Rcpp::wrap(buildTreeFast(tt, q));
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(buildTreeFast(tt, q, display_progress));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -128,7 +129,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_dst_closureSparse", (DL_FUNC) &_dst_closureSparse, 3},
     {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},
     {"_dst_iotaSparse", (DL_FUNC) &_dst_iotaSparse, 2},
-    {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 2},
+    {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 3},
     {"_dst_updateTreeFast", (DL_FUNC) &_dst_updateTreeFast, 3},
     {"_dst_supersetFast", (DL_FUNC) &_dst_supersetFast, 2},
     {"_dst_unravelTreeFast", (DL_FUNC) &_dst_unravelTreeFast, 1},

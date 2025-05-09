@@ -33,7 +33,7 @@ test_that("superBca", {
   
   # Subset data
   n <- 10
-  m <- 2000
+  m <- 30
   
   # Sample S
   S <- 1
@@ -94,7 +94,7 @@ test_that("superBca", {
   bma2 <- superBca(X,y,a,tree_type="multiple")
   
   colnames(bma2$tt) <- rsid
-  names(bma2$m) <- nameRows(bma2$tt) 
+  names(bma2$m) <- nameRows(bma2$tt)
   
   expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
   

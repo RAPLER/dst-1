@@ -201,7 +201,13 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
         format = "  computing graph [:bar] :percent eta: :eta",
         total = nrow(W24), clear = FALSE, width= 100)
       
-      tree <- buildTreeFast(tt, qq)
+      print("build tree starts")
+      start.time <- Sys.time()
+      tree <- buildTreeFast(tt, qq, TRUE)
+      end.time <- Sys.time()
+      time.taken <- end.time - start.time
+      print("build tree finishes within")
+      print(time.taken)
       
       for (i in nrow(W24):1) {
         pb$tick()
