@@ -2,20 +2,20 @@
 % Please edit documentation in R/superBca.R
 \name{superBca}
 \alias{superBca}
-\title{simple support bca}
+\title{Fast combination of many support functions}
 \usage{
 superBca(x, y, a, y0 = 0, flip = TRUE, tree_type = "single")
 }
 \arguments{
-\item{x}{}
+\item{x}{The binary matrix of support functions}
 
-\item{y}{}
+\item{y}{A logical column matrix which row of the matrix x must be inverted}
 
-\item{a}{}
+\item{a}{The mass value of the simple support functions}
 
-\item{y0}{}
+\item{y0}{The value used to check for the rows of x to invert.}
 
-\item{flip}{}
+\item{flip}{TRUE by default. Function will check for the presence of rows to invert.}
 }
 \value{
 z a list with three elements \itemize{
@@ -25,10 +25,10 @@ z a list with three elements \itemize{
 }
 }
 \description{
-simple support bca
+Fast combination of many support functions
 }
 \details{
-simple support bca
+The case of many support functions with the same mass.
 }
 \examples{
 1

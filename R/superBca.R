@@ -1,12 +1,12 @@
-#' simple support bca
+#' Fast combination of many support functions
 #' 
-#' @details simple support bca
+#' @details The case of many support functions with the same mass.
 #'  
-#' @param x 
-#' @param y 
-#' @param a 
-#' @param y0 
-#' @param flip 
+#' @param x The binary matrix of support functions
+#' @param y A logical column matrix which row of the matrix x must be inverted
+#' @param a The mass value of the simple support functions
+#' @param y0 The value used to check for the rows of x to invert.
+#' @param flip TRUE by default. Function will check for the presence of rows to invert.
 #' @return z a list with three elements \itemize{
 #'  \item tt 
 #'  \item qq 
