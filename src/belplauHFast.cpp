@@ -7,6 +7,22 @@
 using namespace Rcpp;
 using boost::dynamic_bitset;
 
+//' Calculate belief, disbelief, unknown, plausibility, plausibility ratio
+//' @name belplauHFast
+//' @param MACC Vector of masses e.g. x$m
+//' @param W2 Description matrix e.g. x$tt
+//' @param h Hypotheses to be tested, same format as x$tt
+//' @param display_progress Whether to show progress bar
+//' @return A matrix of \code{M} rows by 5 columns is returned, where \code{M} is the number of hypothesis tested: \itemize{
+//'  \item Column 1: the degree of Belief \code{bel};
+//'  \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
+//'  \item Column 3: the degree of Epistemic uncertainty \code{unc};
+//'  \item Column 4: the degree of Plausibility \code{plau};
+//'  \item Column 5: the Plausibility ratio \code{rplau}.
+//'    }
+//' @examples 1
+//' @export
+
 // [[Rcpp::export]]
 NumericMatrix belplauHFast(NumericVector MACC, const arma::sp_mat& W2, NumericMatrix h, bool display_progress = false) {
   int M = h.nrow();          // Number of hypotheses
