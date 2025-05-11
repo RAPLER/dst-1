@@ -56,7 +56,7 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
     colnames(x_c) <- colnames(x_c, do.NULL = FALSE, prefix = "c") 
   } 
   #
-  infovar <- matrix(c(idvar, ncol(tt)), ncol = 2)
+  infovar <- matrix(c(idvar, ncol(x_c)), ncol = 2)
   if (is.null(valuenames) | missing(valuenames)) {
     valuenames <- split(colnames(x_c), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
   }

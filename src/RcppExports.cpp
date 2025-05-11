@@ -11,6 +11,20 @@ Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
 Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
 #endif
 
+// belplauHFast
+NumericMatrix belplauHFast(NumericVector MACC, const arma::sp_mat& W2, NumericMatrix h, bool display_progress);
+RcppExport SEXP _dst_belplauHFast(SEXP MACCSEXP, SEXP W2SEXP, SEXP hSEXP, SEXP display_progressSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericVector >::type MACC(MACCSEXP);
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type W2(W2SEXP);
+    Rcpp::traits::input_parameter< NumericMatrix >::type h(hSEXP);
+    Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
+    rcpp_result_gen = Rcpp::wrap(belplauHFast(MACC, W2, h, display_progress));
+    return rcpp_result_gen;
+END_RCPP
+}
 // closure
 LogicalMatrix closure(IntegerMatrix ttx, bool computeJoin, bool display_progress);
 RcppExport SEXP _dst_closure(SEXP ttxSEXP, SEXP computeJoinSEXP, SEXP display_progressSEXP) {
@@ -173,6 +187,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
+    {"_dst_belplauHFast", (DL_FUNC) &_dst_belplauHFast, 4},
     {"_dst_closure", (DL_FUNC) &_dst_closure, 3},
     {"_dst_closureSparse", (DL_FUNC) &_dst_closureSparse, 3},
     {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},

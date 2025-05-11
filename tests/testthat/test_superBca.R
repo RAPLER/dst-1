@@ -32,11 +32,11 @@ test_that("superBca", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
-  m <- 30
+  n <- 30
+  m <- 100
   
   # Sample S
-  S <- 1
+  S <- 3
   set.seed(1)
   e <- sample.int(m,S)
   
@@ -98,4 +98,15 @@ test_that("superBca", {
   
   expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
   
+  # T8 belplau
+  H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
+
+  bp <- belplauH(bma2$m, bma2$tt, H)
+  bp2 <- belplauHFast(bma2$m, bma2$tt, H, TRUE)
+  
+  expect_equal(bp, bp2)
+  
+  # T9 belplauPlot
+  belplauPlot(bp,rsid,rep(0,length(rsid)))
+
 })

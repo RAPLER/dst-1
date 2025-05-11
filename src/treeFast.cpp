@@ -139,8 +139,7 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
                    const Rcpp::NumericVector& q,
                    bool display_progress = false,
                    Rcpp::Nullable<Rcpp::IntegerVector> indices = R_NilValue) {
-  using namespace Rcpp;
-  
+
   int n_rows = tt.n_rows;
   int n_cols = tt.n_cols;
   
@@ -268,7 +267,6 @@ SEXP supersetFast(SEXP node_ptr, LogicalVector z_vec) {
 
 // [[Rcpp::export]]
 NumericVector unravelTreeFast(SEXP tree_ptr) {
-  using namespace Rcpp;
   XPtr<std::shared_ptr<TreeNode>> ptr(tree_ptr);
   auto tree = *ptr;
   
@@ -346,8 +344,7 @@ List inspectNode(SEXP tree_ptr) {
 
 // [[Rcpp::export]]
 Rcpp::List inspectNodes(Rcpp::List trees) {
-  using namespace Rcpp;
-  
+
   IntegerVector card_nodup = trees.attr("card_nodup");
   int num_trees = card_nodup.size();
   List result(num_trees + 1);  // One extra for card_nodup
@@ -397,8 +394,7 @@ Rcpp::List inspectNodes(Rcpp::List trees) {
 
 // [[Rcpp::export]]
 Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) {
-  using namespace Rcpp;
-  
+
   int n = tt.n_rows;
   int p = tt.n_cols;
   
@@ -452,8 +448,7 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
 
 // [[Rcpp::export]]
 Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
-  using namespace Rcpp;
-  
+
   IntegerVector card_nodup = trees.attr("card_nodup");
   int num_trees = card_nodup.size();
   
@@ -499,8 +494,7 @@ Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
 
 // [[Rcpp::export]]
 Rcpp::List updateTreesFast(Rcpp::List trees, Rcpp::NumericVector xx_vec, Rcpp::NumericVector s_vec) {
-  using namespace Rcpp;
-  
+
   IntegerVector card_nodup = trees.attr("card_nodup");
   
   dynamic_bitset<> xx(xx_vec.size());
