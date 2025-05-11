@@ -16,7 +16,7 @@
 #' @export
 #' @examples
 #' 1
-superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
+superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varnames = NULL, valuenames = NULL, idvar = 1) {
   x <- methods::as(x, "RsparseMatrix")
   if(flip) x[y==y0,] <- 1 - x[y==y0,]
   
@@ -46,10 +46,18 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single") {
   
   # Output result
   # z <- list("tt"=x_c, "qq"=qq, "m"=m)
-  infovar <-  matrix(c(0, ncol(x)), ncol = 2)
+  # Check column names
+  if (is.null(cnames)) {    
+    colnames(x_c) <- colnames(x_c, do.NULL = FALSE, prefix = "c") 
+  } 
+  #
+  infovar <- matrix(c(idvar, ncol(tt)), ncol = 2)
   if (is.null(valuenames) | missing(valuenames)) {
-    valuenames <- split(colnames(tt), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
+    valuenames <- split(colnames(x_c), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
   }
+  if (is.null(varnames)) {
+    varnames <- names(valuenames)
+  } 
   z <-list(con = NULL, "tt"=x_c, "qq"=qq, "m"=m,  method = "emt-m", spec = NULL , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = NULL, inforel = NULL) 
   # end test
   #

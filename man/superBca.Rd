@@ -4,7 +4,18 @@
 \alias{superBca}
 \title{Fast combination of multiple simple support functions}
 \usage{
-superBca(x, y, a, y0 = 0, flip = TRUE, tree_type = "single")
+superBca(
+  x,
+  y,
+  a,
+  y0 = 0,
+  flip = TRUE,
+  tree_type = "single",
+  cnames = NULL,
+  varnames = NULL,
+  valuenames = NULL,
+  idvar = 1
+)
 }
 \arguments{
 \item{x}{A binary matrix of simple support functions define on a same frame of discernment (Fod).}
