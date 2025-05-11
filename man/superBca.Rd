@@ -2,20 +2,20 @@
 % Please edit documentation in R/superBca.R
 \name{superBca}
 \alias{superBca}
-\title{Fast combination of many support functions}
+\title{Fast combination of multiple simple support functions}
 \usage{
 superBca(x, y, a, y0 = 0, flip = TRUE, tree_type = "single")
 }
 \arguments{
-\item{x}{The binary matrix of support functions}
+\item{x}{A binary matrix of simple support functions define on a same frame of discernment (Fod).}
 
-\item{y}{A logical column matrix which row of the matrix x must be inverted}
+\item{y}{A column matrix \code{y} of TRUE/FALSE values.}
 
-\item{a}{The mass value of the simple support functions}
+\item{a}{The mass value allotted to each simple support function. All support functions have the same mass.}
 
-\item{y0}{The value used to check for the rows of x to invert.}
+\item{y0}{A value used to check which rows of the matrix \code{x} are to be inverted. Set at 0 (FALSE).}
 
-\item{flip}{TRUE by default. Function will check for the presence of rows to invert.}
+\item{flip}{Parameter used when some rows of the table \code{x} need to be reversed. The default value is TRUE (check rows).}
 }
 \value{
 z a list with three elements \itemize{
@@ -25,10 +25,10 @@ z a list with three elements \itemize{
 }
 }
 \description{
-Fast combination of many support functions
+Fast combination of multiple simple support functions
 }
 \details{
-The case of many support functions with the same mass.
+This function handles the case of combining several simple support functions defined on a very large frame of discernment (Fod). The simple support functions are arranged row by row in a binary array \code{x}. The number of rows of the array is equal to the number of support functions to be combined.The support functions can be defined as is or by their complement when it's faster to code. A column matrix \code{y} of TRUE/FALSE values is used to identify the rows of the array that need to be inverted.
 }
 \examples{
 1
