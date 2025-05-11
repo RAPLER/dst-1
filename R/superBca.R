@@ -46,6 +46,11 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
   
   # Output result
   # z <- list("tt"=x_c, "qq"=qq, "m"=m)
+  # Build specification matrix spec
+  #
+  spec <- cbind((1:nrow(x_c)), m)
+  colnames(spec) <- c("specnb", "mass")
+  rownames(spec) <- rownames(x_c)
   # Check column names
   if (is.null(cnames)) {    
     colnames(x_c) <- colnames(x_c, do.NULL = FALSE, prefix = "c") 
@@ -58,7 +63,7 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
   if (is.null(varnames)) {
     varnames <- names(valuenames)
   } 
-  z <-list(con = NULL, "tt"=x_c, "qq"=qq, "m"=m,  method = "emt-m", spec = NULL , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = NULL, inforel = NULL) 
+  z <-list(con = NULL, "tt"=x_c, "qq"=qq, "m"=m,  method = "emt-m", spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = NULL, inforel = NULL) 
   # end test
   #
   class(z) <- append(class(z), "bcaspec")
