@@ -10,7 +10,7 @@ test_that("buildTreeFast", {
   q <- c(0.1,0.2,0.3,0.4)
   
   tree <- buildTreeFast(methods::as(x, "RsparseMatrix"), q)
-  qx <- unravelTreeFast(tree, length(q))
+  qx <- unravelTreeFast(tree)
   expect_equal(q,qx)
   
   tree <- inspectNode(tree)

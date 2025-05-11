@@ -164,7 +164,6 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     # Step 2.2.1: Check if the first condition is satisfied
     # Step 2.2.1: Check if the second condition is satisfied
     
-    # TODO: Move tree_type == "single", "multiple" into RCpp
     if (is.null(tree_type)) {
       
       pb <- progress_bar$new(
@@ -244,22 +243,44 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
         format = "  computing graph [:bar] :percent eta: :eta",
         total = nrow(W24), clear = FALSE, width= 100)
       
-      trees <- buildTrees(tt,qq)
+      print("build trees starts")
+      start.time <- Sys.time()
+      
+      trees <- buildTreesFast(tt,qq)
+      
+      end.time <- Sys.time()
+      time.taken <- end.time - start.time
+      print("build trees finishes within")
+      print(time.taken)
+      
+      print("update trees starts")
+      start.time <- Sys.time()
       
       for (i in nrow(W24):1) {
         pb$tick()
         
-        xx <- as.bit(W24[i,])
+        xx <- W24[i,]
         k0 <- W24[1:i,]
-        s <- as.bit(bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup"))
-        for(i in 1:length(trees$card_nodup)) {
-          
-          trees[[i]] <- updateTrees(trees[[i]], xx, s, tree=trees, card_nodup=trees$card_nodup)
-          
-        }
+        s <- bound(if (is.null(nrow(k0))) t(as.matrix(k0)) else k0, "sup")
+        
+        trees <- updateTreesFast(trees, xx, s)
+        
       }
       
-      m0 <- unravelTrees(trees) 
+      end.time <- Sys.time()
+      time.taken <- end.time - start.time
+      print("update trees finishes within")
+      print(time.taken)
+      
+      print("unravel trees starts")
+      start.time <- Sys.time()
+      
+      m0 <- unravelTreesFast(trees) 
+      
+      end.time <- Sys.time()
+      time.taken <- end.time - start.time
+      print("unravel trees finishes within")
+      print(time.taken)
       
     }
     

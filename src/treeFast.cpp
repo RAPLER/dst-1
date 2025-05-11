@@ -134,21 +134,32 @@ shared_ptr<TreeNode> superset(shared_ptr<TreeNode> node, const dynamic_bitset<>&
   }
 }
 
-
 // [[Rcpp::export]]
-SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q, bool display_progress = false) {
-  std::vector<shared_ptr<TreeNode>> nodes;
-  std::vector<int> depths(tt.n_rows);
+SEXP buildTreeFast(const arma::sp_mat& tt,
+                   const Rcpp::NumericVector& q,
+                   bool display_progress = false,
+                   Rcpp::Nullable<Rcpp::IntegerVector> indices = R_NilValue) {
+  using namespace Rcpp;
   
+  int n_rows = tt.n_rows;
+  int n_cols = tt.n_cols;
+  
+  IntegerVector actual_indices;
+  if (indices.isNotNull()) {
+    actual_indices = indices.get();
+  } else {
+    actual_indices = seq(0, n_rows - 1);  // default index vector
+  }
+  
+  std::vector<int> depths(n_rows);
   ETAProgressBar pb;
-  Progress p(tt.n_rows, display_progress, pb);
+  Progress p(n_rows, display_progress, pb);
   
-  for (unsigned int i = 0; i < tt.n_rows; ++i) {
-    
+  for (int i = 0; i < n_rows; ++i) {
     if (Progress::check_abort()) break;
     p.increment();
     
-    dynamic_bitset<> bitset(tt.n_cols);
+    dynamic_bitset<> bitset(n_cols);
     int last = -1;
     for (arma::sp_mat::const_row_iterator it = tt.begin_row(i); it != tt.end_row(i); ++it) {
       bitset.set(it.col());
@@ -157,33 +168,39 @@ SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q, bool display_
     depths[i] = last;
   }
   
-  std::vector<int> sort_order(tt.n_rows);
+  std::vector<int> sort_order(n_rows);
   std::iota(sort_order.begin(), sort_order.end(), 0);
   std::sort(sort_order.begin(), sort_order.end(), [&](int a, int b) {
     return depths[a] < depths[b];
   });
   
-  shared_ptr<TreeNode> tree = nullptr;
-  shared_ptr<TreeNode> empty_node = nullptr;
-  for (int i : sort_order) {
-    dynamic_bitset<> bitset(tt.n_cols);
-    for (arma::sp_mat::const_row_iterator it = tt.begin_row(i); it != tt.end_row(i); ++it) {
+  std::shared_ptr<TreeNode> tree = nullptr;
+  std::shared_ptr<TreeNode> empty_node = nullptr;
+  
+  for (int k : sort_order) {
+    dynamic_bitset<> bitset(n_cols);
+    for (arma::sp_mat::const_row_iterator it = tt.begin_row(k); it != tt.end_row(k); ++it) {
       bitset.set(it.col());
     }
+    
+    int index = actual_indices[k];
+    
     if (bitset.none()) {
-      empty_node = std::make_shared<TreeNode>(bitset, q[i], i);
+      empty_node = std::make_shared<TreeNode>(bitset, q[index], index);
       continue;
     }
-    auto node = std::make_shared<TreeNode>(bitset, q[i], i);
+    
+    auto node = std::make_shared<TreeNode>(bitset, q[index], index);
     tree = insertNode(node, tree);
   }
   
-  if (empty_node && tree) {
+  if (empty_node && !tree) {
+    tree = empty_node;
+  } else if (empty_node && tree) {
     tree->empty_set = empty_node;
   }
   
-  XPtr<shared_ptr<TreeNode>> ptr(new shared_ptr<TreeNode>(tree), true);
-  return ptr;
+  return XPtr<std::shared_ptr<TreeNode>>(new std::shared_ptr<TreeNode>(tree), true);
 }
 
 shared_ptr<TreeNode> updateTreeFastRec(shared_ptr<TreeNode> node, const dynamic_bitset<>& xx,
@@ -291,7 +308,6 @@ NumericVector unravelTreeFast(SEXP tree_ptr) {
 }
 
 
-
 // [[Rcpp::export]]
 List inspectNode(SEXP tree_ptr) {
   XPtr<shared_ptr<TreeNode>> ptr(tree_ptr);
@@ -323,6 +339,228 @@ List inspectNode(SEXP tree_ptr) {
   };
   
   return buildTree(root);
+}
+
+// Multiple trees
+// TODO
+
+// [[Rcpp::export]]
+Rcpp::List inspectNodes(Rcpp::List trees) {
+  using namespace Rcpp;
+  
+  IntegerVector card_nodup = trees.attr("card_nodup");
+  int num_trees = card_nodup.size();
+  List result(num_trees + 1);  // One extra for card_nodup
+  
+  std::function<List(std::shared_ptr<TreeNode>)> recurse = [&](std::shared_ptr<TreeNode> n) -> List {
+    if (!n) return R_NilValue;
+    
+    IntegerVector bits(n->x.size());
+    for (size_t i = 0; i < n->x.size(); ++i) bits[i] = n->x[i];
+    
+    List out = List::create(
+      _["x"] = bits,
+      _["q"] = n->q,
+      _["index"] = n->index,
+      _["depth"] = n->depth,
+      _["left"] = recurse(n->left),
+      _["right"] = recurse(n->right)
+    );
+    
+    if (n->empty_set) {
+      out.push_back(recurse(n->empty_set), "empty_set");
+    }
+    
+    return out;
+  };
+  
+  for (int i = 0; i < num_trees; ++i) {
+    if (Rf_isNull(trees[i])) {
+      result[i] = R_NilValue;
+    } else {
+      XPtr<std::shared_ptr<TreeNode>> ptr(trees[i]);
+      std::shared_ptr<TreeNode> root = *ptr;
+      
+      if (root) {
+        result[i] = recurse(root);
+      } else if (ptr && (*ptr) && (*ptr)->empty_set) {
+        result[i] = List::create(_["empty_set"] = recurse((*ptr)->empty_set));
+      } else {
+        result[i] = R_NilValue;
+      }
+    }
+  }
+  
+  result[num_trees] = card_nodup;
+  return result;
+}
+
+// [[Rcpp::export]]
+Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) {
+  using namespace Rcpp;
+  
+  int n = tt.n_rows;
+  int p = tt.n_cols;
+  
+  // Compute cardinality (number of 1s per row)
+  std::vector<int> card(n, 0);
+  for (int i = 0; i < n; ++i) {
+    for (arma::sp_mat::const_row_iterator it = tt.begin_row(i); it != tt.end_row(i); ++it) {
+      card[i]++;
+    }
+  }
+  
+  // Sort indices by cardinality
+  std::vector<int> sort_order(n);
+  std::iota(sort_order.begin(), sort_order.end(), 0);
+  std::sort(sort_order.begin(), sort_order.end(), [&](int a, int b) {
+    return card[a] < card[b];
+  });
+  
+  // Compute unique cardinalities
+  std::vector<int> card_sorted(n);
+  for (int i = 0; i < n; ++i) {
+    card_sorted[i] = card[sort_order[i]];
+  }
+  std::vector<int> card_nodup;
+  std::unique_copy(card_sorted.begin(), card_sorted.end(), std::back_inserter(card_nodup));
+  
+  List trees(card_nodup.size());
+  
+  for (int i = 0; i < static_cast<int>(card_nodup.size()); ++i) {
+    int c = card_nodup[i];
+    std::vector<int> idx_vec;
+    for (int j = 0; j < n; ++j) {
+      if (card[j] == c) idx_vec.push_back(j);
+    }
+    
+    // Create submatrix manually for tt_sub
+    arma::sp_mat tt_sub(idx_vec.size(), p);
+    for (size_t row = 0; row < idx_vec.size(); ++row) {
+      for (arma::sp_mat::const_row_iterator it = tt.begin_row(idx_vec[row]); it != tt.end_row(idx_vec[row]); ++it) {
+        tt_sub(row, it.col()) = 1.0;
+      }
+    }
+    
+    IntegerVector indices(idx_vec.begin(), idx_vec.end());
+    trees[i] = buildTreeFast(tt_sub, q, false, indices);  // modified buildTreeFast with index support
+  }
+  
+  trees.attr("card_nodup") = IntegerVector(card_nodup.begin(), card_nodup.end());
+  return trees;
+}
+
+// [[Rcpp::export]]
+Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
+  using namespace Rcpp;
+  
+  IntegerVector card_nodup = trees.attr("card_nodup");
+  int num_trees = card_nodup.size();
+  
+  std::vector<std::pair<int, double>> values;
+  
+  for (int i = 0; i < num_trees; ++i) {
+    if (Rf_isNull(trees[i])) continue;
+    
+    XPtr<std::shared_ptr<TreeNode>> ptr(trees[i]);
+    std::shared_ptr<TreeNode> root = *ptr;
+    
+    std::function<void(std::shared_ptr<TreeNode>)> traverse = [&](std::shared_ptr<TreeNode> node) {
+      if (!node) return;
+      
+      traverse(node->left);
+      
+      if (node->index >= 0 && !std::isnan(node->q)) {
+        values.emplace_back(node->index, node->q);
+      }
+      
+      traverse(node->right);
+      
+      if (node->empty_set) {
+        traverse(node->empty_set);
+      }
+    };
+    
+    traverse(root);
+  }
+  
+  // Sort by index
+  std::sort(values.begin(), values.end(), [](const auto& a, const auto& b) {
+    return a.first < b.first;
+  });
+  
+  NumericVector result(values.size());
+  for (size_t i = 0; i < values.size(); ++i) {
+    result[i] = values[i].second;
+  }
+  
+  return result;
+}
+
+// [[Rcpp::export]]
+Rcpp::List updateTreesFast(Rcpp::List trees, Rcpp::NumericVector xx_vec, Rcpp::NumericVector s_vec) {
+  using namespace Rcpp;
+  
+  IntegerVector card_nodup = trees.attr("card_nodup");
+  
+  dynamic_bitset<> xx(xx_vec.size());
+  for (int i = 0; i < xx_vec.size(); ++i) {
+    if (xx_vec[i] != 0.0) xx.set(i);
+  }
+  
+  dynamic_bitset<> s(s_vec.size());
+  for (int i = 0; i < s_vec.size(); ++i) {
+    if (s_vec[i] != 0.0) s.set(i);
+  }
+  
+  for (int t = 0; t < trees.size(); ++t) {
+    if (Rf_isNull(trees[t])) continue;
+    
+    XPtr<std::shared_ptr<TreeNode>> root_ptr(trees[t]);
+    std::shared_ptr<TreeNode> root = *root_ptr;
+    
+    std::function<shared_ptr<TreeNode>(shared_ptr<TreeNode>)> updateRec = [&](shared_ptr<TreeNode> node) -> shared_ptr<TreeNode> {
+      if (!node) return nullptr;
+      
+      if (node->q >= 0) {
+        dynamic_bitset<> y = node->x;
+        int y_union_xx_card = (y | xx).count();
+        
+        for (int i = 0; i < card_nodup.size(); ++i) {
+          if (card_nodup[i] >= y_union_xx_card) {
+            for (int j = i; j < card_nodup.size(); ++j) {
+              if (Rf_isNull(trees[j])) continue;
+              
+              XPtr<std::shared_ptr<TreeNode>> target_ptr(trees[j]);
+              std::shared_ptr<TreeNode> target_root = *target_ptr;
+              
+              auto e = superset(target_root, y | xx);
+              if (e) {
+                dynamic_bitset<> z = e->x;
+                if (z != y && ((y | s) & z) == z) {
+                  node->q -= e->q;
+                }
+                goto NEXT_NODE;
+              }
+            }
+          }
+        }
+      }
+      
+      NEXT_NODE:
+        node->left = updateRec(node->left);
+      node->right = updateRec(node->right);
+      if (node->empty_set) {
+        node->empty_set = updateRec(node->empty_set);
+      }
+      
+      return node;
+    };
+    
+    updateRec(root);
+  }
+  
+  return trees;
 }
 
 

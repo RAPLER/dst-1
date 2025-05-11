@@ -49,8 +49,8 @@ iotaSparse <- function(tt, display_progress = FALSE) {
     .Call(`_dst_iotaSparse`, tt, display_progress)
 }
 
-buildTreeFast <- function(tt, q, display_progress = FALSE) {
-    .Call(`_dst_buildTreeFast`, tt, q, display_progress)
+buildTreeFast <- function(tt, q, display_progress = FALSE, indices = NULL) {
+    .Call(`_dst_buildTreeFast`, tt, q, display_progress, indices)
 }
 
 updateTreeFast <- function(tree_ptr, xx_vec, s_vec) {
@@ -67,5 +67,21 @@ unravelTreeFast <- function(tree_ptr) {
 
 inspectNode <- function(tree_ptr) {
     .Call(`_dst_inspectNode`, tree_ptr)
+}
+
+inspectNodes <- function(trees) {
+    .Call(`_dst_inspectNodes`, trees)
+}
+
+buildTreesFast <- function(tt, q) {
+    .Call(`_dst_buildTreesFast`, tt, q)
+}
+
+unravelTreesFast <- function(trees) {
+    .Call(`_dst_unravelTreesFast`, trees)
+}
+
+updateTreesFast <- function(trees, xx_vec, s_vec) {
+    .Call(`_dst_updateTreesFast`, trees, xx_vec, s_vec)
 }
 

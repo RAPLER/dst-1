@@ -64,15 +64,16 @@ BEGIN_RCPP
 END_RCPP
 }
 // buildTreeFast
-SEXP buildTreeFast(const arma::sp_mat& tt, const NumericVector& q, bool display_progress);
-RcppExport SEXP _dst_buildTreeFast(SEXP ttSEXP, SEXP qSEXP, SEXP display_progressSEXP) {
+SEXP buildTreeFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q, bool display_progress, Rcpp::Nullable<Rcpp::IntegerVector> indices);
+RcppExport SEXP _dst_buildTreeFast(SEXP ttSEXP, SEXP qSEXP, SEXP display_progressSEXP, SEXP indicesSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< const arma::sp_mat& >::type tt(ttSEXP);
-    Rcpp::traits::input_parameter< const NumericVector& >::type q(qSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type q(qSEXP);
     Rcpp::traits::input_parameter< bool >::type display_progress(display_progressSEXP);
-    rcpp_result_gen = Rcpp::wrap(buildTreeFast(tt, q, display_progress));
+    Rcpp::traits::input_parameter< Rcpp::Nullable<Rcpp::IntegerVector> >::type indices(indicesSEXP);
+    rcpp_result_gen = Rcpp::wrap(buildTreeFast(tt, q, display_progress, indices));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -123,17 +124,68 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// inspectNodes
+Rcpp::List inspectNodes(Rcpp::List trees);
+RcppExport SEXP _dst_inspectNodes(SEXP treesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type trees(treesSEXP);
+    rcpp_result_gen = Rcpp::wrap(inspectNodes(trees));
+    return rcpp_result_gen;
+END_RCPP
+}
+// buildTreesFast
+Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q);
+RcppExport SEXP _dst_buildTreesFast(SEXP ttSEXP, SEXP qSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< const arma::sp_mat& >::type tt(ttSEXP);
+    Rcpp::traits::input_parameter< const Rcpp::NumericVector& >::type q(qSEXP);
+    rcpp_result_gen = Rcpp::wrap(buildTreesFast(tt, q));
+    return rcpp_result_gen;
+END_RCPP
+}
+// unravelTreesFast
+Rcpp::NumericVector unravelTreesFast(Rcpp::List trees);
+RcppExport SEXP _dst_unravelTreesFast(SEXP treesSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type trees(treesSEXP);
+    rcpp_result_gen = Rcpp::wrap(unravelTreesFast(trees));
+    return rcpp_result_gen;
+END_RCPP
+}
+// updateTreesFast
+Rcpp::List updateTreesFast(Rcpp::List trees, Rcpp::NumericVector xx_vec, Rcpp::NumericVector s_vec);
+RcppExport SEXP _dst_updateTreesFast(SEXP treesSEXP, SEXP xx_vecSEXP, SEXP s_vecSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::List >::type trees(treesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type xx_vec(xx_vecSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type s_vec(s_vecSEXP);
+    rcpp_result_gen = Rcpp::wrap(updateTreesFast(trees, xx_vec, s_vec));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_dst_closure", (DL_FUNC) &_dst_closure, 3},
     {"_dst_closureSparse", (DL_FUNC) &_dst_closureSparse, 3},
     {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},
     {"_dst_iotaSparse", (DL_FUNC) &_dst_iotaSparse, 2},
-    {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 3},
+    {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 4},
     {"_dst_updateTreeFast", (DL_FUNC) &_dst_updateTreeFast, 3},
     {"_dst_supersetFast", (DL_FUNC) &_dst_supersetFast, 2},
     {"_dst_unravelTreeFast", (DL_FUNC) &_dst_unravelTreeFast, 1},
     {"_dst_inspectNode", (DL_FUNC) &_dst_inspectNode, 1},
+    {"_dst_inspectNodes", (DL_FUNC) &_dst_inspectNodes, 1},
+    {"_dst_buildTreesFast", (DL_FUNC) &_dst_buildTreesFast, 2},
+    {"_dst_unravelTreesFast", (DL_FUNC) &_dst_unravelTreesFast, 1},
+    {"_dst_updateTreesFast", (DL_FUNC) &_dst_updateTreesFast, 3},
     {NULL, NULL, 0}
 };
 
