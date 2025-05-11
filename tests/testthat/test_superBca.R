@@ -99,14 +99,18 @@ test_that("superBca", {
   expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
   
   # T8 belplau
-  H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
+  H <- ttmatrixPartition(ncol(bma1$tt), ncol(bma1$tt))
 
-  bp <- belplauH(bma2$m, bma2$tt, H)
-  bp2 <- belplauHFast(bma2$m, bma2$tt, H, TRUE)
+  bp <- belplauH(bma$spec[,2], bma$tt, H)
+  bp1 <- belplauHFast(bma1$m, bma1$tt, H, TRUE)
   
-  expect_equal(bp, bp2)
+  expect_equal(bp, bp1)
   
   # T9 belplauPlot
-  belplauPlot(bp,rsid,rep(0,length(rsid)),"rplau")
-  belplauPlot(bp,rsid,rep(0,length(rsid)),"bel")
+  idx <- rep(0,length(rsid))
+  idx[e] <- 1
+  belplauPlot(bp1,rsid,idx,"rplau")
+  belplauPlot(bp1,rsid,idx,"bel")
+  belplauPlot(bp1,rsid,idx,"plau")
+  
 })
