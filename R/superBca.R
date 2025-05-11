@@ -61,7 +61,7 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
   z <-list(con = NULL, "tt"=x_c, "qq"=qq, "m"=m,  method = "emt-m", spec = NULL , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = NULL, inforel = NULL) 
   # end test
   #
-  class(y) <- append(class(z), "bcaspec")
+  class(z) <- append(class(z), "bcaspec")
   
   return(z)
 }
