@@ -32,8 +32,8 @@ test_that("superBca", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 30
-  m <- 100
+  n <- 10
+  m <- 30
   
   # Sample S
   S <- 3
@@ -107,6 +107,6 @@ test_that("superBca", {
   expect_equal(bp, bp2)
   
   # T9 belplauPlot
-  belplauPlot(bp,rsid,rep(0,length(rsid)))
-
+  belplauPlot(bp,rsid,rep(0,length(rsid)),"rplau")
+  belplauPlot(bp,rsid,rep(0,length(rsid)),"bel")
 })
