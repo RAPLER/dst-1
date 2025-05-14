@@ -8,12 +8,13 @@ unravelTree <- function(tree) {
     traverse(node$left)
     
     if (!is.null(node$q) && !is.null(node$index)) {
-      values[[length(values) + 1]] <<- list(index = node$index, q = node$q)
+      for (idx in node$index) {
+        values[[length(values) + 1]] <<- list(index = idx, q = node$q)
+      }
     }
     
     traverse(node$right)
     
-    # Also traverse the empty set node if it exists
     if (!is.null(node$empty_set)) {
       traverse(node$empty_set)
     }

@@ -26,19 +26,19 @@ insertNode <- function(node1, node2) {
     if ((node_disj$depth < node2$depth) && (node_disj$depth < (length(x_disj) - 1))) {
       if ((node1$x[node_disj$depth + 1] == TRUE)) {
         node_disj$left <- node2
+        node_disj$right <- node1
       } else {
+        node_disj$left <- node1
         node_disj$right <- node2
       }
-      if(!is_same) node_disj <- insertNode(node1, node_disj)
       return(node_disj)
     }
   }
   
   if (all(node1$x==node2$x)) {
-    disj <- createNode(node1$x,node1$q,node1$index)
-    node2$q <- disj$q # update q if there's already a disjunction node
-    node2$index <- disj$index
-    node2$depth <- disj$depth
+    if (!(node1$index %in% node2$index)) {
+      node2$index <- c(node2$index, node1$index)
+    }
     return(node2)
   }
   

@@ -30,7 +30,7 @@ int findFirst(const dynamic_bitset<>& x) {
 struct TreeNode {
   dynamic_bitset<> x;
   double q;
-  int index;
+  int index; // TODO: replace this line with std::vector<int> index;
   int depth;
   shared_ptr<TreeNode> left = nullptr;
   shared_ptr<TreeNode> right = nullptr;
@@ -151,12 +151,13 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
   }
   
   std::vector<int> depths(n_rows);
+  Rcout << "Building tree\n";
   ETAProgressBar pb;
-  Progress p(n_rows, display_progress, pb);
+  Progress p1(n_rows, display_progress, pb);
   
   for (int i = 0; i < n_rows; ++i) {
     if (Progress::check_abort()) break;
-    p.increment();
+    p1.increment();
     
     dynamic_bitset<> bitset(n_cols);
     int last = -1;
@@ -393,7 +394,7 @@ Rcpp::List inspectNodes(Rcpp::List trees) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) {
+Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q, bool display_progress = false) {
 
   int n = tt.n_rows;
   int p = tt.n_cols;
@@ -423,7 +424,14 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
   
   List trees(card_nodup.size());
   
+  Rcout << "Building trees\n";
+  ETAProgressBar pb;
+  Progress p2(static_cast<int>(card_nodup.size()), display_progress, pb);
+  
   for (int i = 0; i < static_cast<int>(card_nodup.size()); ++i) {
+    if (Progress::check_abort()) break;
+    p2.increment();
+    
     int c = card_nodup[i];
     std::vector<int> idx_vec;
     for (int j = 0; j < n; ++j) {
