@@ -10,7 +10,7 @@
 #include "eta_progress_bar.hpp"
 using namespace Rcpp;
 
-//' Augment a sparse binary matrixs with closure elements
+//' Augment a sparse binary matrix with closure elements
 //' @name closureSparse
 //' @param ttx A sparse binary matrix
 //' @param computeJoin = true: to compute join closure. Default = TRUE

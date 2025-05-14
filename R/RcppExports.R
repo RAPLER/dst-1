@@ -38,7 +38,7 @@ closure <- function(ttx, computeJoin = TRUE, display_progress = FALSE) {
     .Call(`_dst_closure`, ttx, computeJoin, display_progress)
 }
 
-#' Augment a sparse binary matrixs with closure elements
+#' Augment a sparse binary matrix with closure elements
 #' @name closureSparse
 #' @param ttx A sparse binary matrix
 #' @param computeJoin = true: to compute join closure. Default = TRUE

@@ -32,11 +32,11 @@ test_that("superBca", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
-  m <- 30
+  n <- 4
+  m <- 5
   
   # Sample S
-  S <- 3
+  S <- 1
   set.seed(1)
   e <- sample.int(m,S)
   

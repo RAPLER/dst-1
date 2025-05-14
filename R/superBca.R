@@ -17,6 +17,7 @@
 #' @examples
 #' 1
 superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varnames = NULL, valuenames = NULL, idvar = 1) {
+  
   x <- methods::as(x, "RsparseMatrix")
   if(flip) x[y==y0,] <- 1 - x[y==y0,]
   
