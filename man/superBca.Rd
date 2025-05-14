@@ -11,7 +11,6 @@ superBca(
   y0 = 0,
   flip = TRUE,
   tree_type = "single",
-  cnames = NULL,
   varnames = NULL,
   valuenames = NULL,
   idvar = 1
@@ -29,11 +28,7 @@ superBca(
 \item{flip}{Parameter used when some rows of the table \code{x} need to be reversed. The default value is TRUE (check rows).}
 }
 \value{
-z a list with three elements \itemize{
- \item tt 
- \item qq 
- \item z
-}
+z An object of class \code{bcaspec} called a bca for "basic chance assignment"
 }
 \description{
 Fast combination of multiple simple support functions
@@ -42,7 +37,18 @@ Fast combination of multiple simple support functions
 This function handles the case of combining several simple support functions defined on a very large frame of discernment (Fod). The simple support functions are arranged row by row in a binary array \code{x}. The number of rows of the array is equal to the number of support functions to be combined.The support functions can be defined as is or by their complement when it's faster to code. A column matrix \code{y} of TRUE/FALSE values is used to identify the rows of the array that need to be inverted.
 }
 \examples{
-1
+x1 <- bca(tt= matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
+   m = c(0.9,0.1), cnames = c("yes", "no"),
+   varnames = "x", idvar = 1)
+x2 <- bca(tt = matrix(c(0,1,1,1),nrow = 2, byrow = TRUE),
+   m = c(0.9,0.1), cnames = c("yes", "no"), 
+   varnames = "x", idvar = 1)
+x <- rbind(x1$tt[1,], x2$tt[1,])
+rownames(x) <- nameRows(x)
+y <- matrix(c(TRUE, TRUE), ncol = 1 )
+a <- 0.9
+z <- superBca(x, y, a, tree_type="single")
+
 }
 \author{
 Peiyuan Zhu
