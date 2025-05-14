@@ -7,15 +7,21 @@
 #' @param a The mass value allotted to each simple support function. All support functions have the same mass. 
 #' @param y0 A value used to check which rows of the matrix \code{x} are to be inverted. Set at 0 (FALSE).
 #' @param flip Parameter used when some rows of the table \code{x} need to be reversed. The default value is TRUE (check rows).
-#' @return z a list with three elements \itemize{
-#'  \item tt 
-#'  \item qq 
-#'  \item z
-#' }
+#' @return z An object of class \code{bcaspec} called a bca for "basic chance assignment"
 #' @author Peiyuan Zhu
 #' @export
 #' @examples
-#' 1
+#' x1 <- bca(tt= matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
+#'    m = c(0.9,0.1), cnames = c("yes", "no"),
+#'    varnames = "x", idvar = 1)
+#' x2 <- bca(tt = matrix(c(0,1,1,1),nrow = 2, byrow = TRUE),
+#'    m = c(0.9,0.1), cnames = c("yes", "no"), 
+#'    varnames = "x", idvar = 1)
+#' x <- rbind(x1$tt[1,], x2$tt[1,])
+#' rownames(x) <- nameRows(x)
+#' y <- matrix(c(TRUE, TRUE), ncol = 1 )
+#' a <- 0.9
+#' z <- superBca(x, y, a, tree_type="single")
 superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varnames = NULL, valuenames = NULL, idvar = 1) {
   
   x <- methods::as(x, "RsparseMatrix")
@@ -25,6 +31,15 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
   start.time <- Sys.time()
   
   x_c <- closureSparse(x, FALSE, TRUE)
+  # Check column names
+  if (is.null(colnames(x))) {    
+    colnames(x_c) <- colnames(x_c, do.NULL = FALSE, prefix = "c") 
+  }
+  else {
+    colnames(x_c) <- colnames(x)
+    rownames(x_c) <- nameRows(x_c)
+  }
+  #
   
   end.time <- Sys.time()
   time.taken <- end.time - start.time
@@ -47,15 +62,11 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
   
   # Output result
   # z <- list("tt"=x_c, "qq"=qq, "m"=m)
+ 
   # Build specification matrix spec
-  #
   spec <- cbind((1:nrow(x_c)), m)
   colnames(spec) <- c("specnb", "mass")
   rownames(spec) <- rownames(x_c)
-  # Check column names
-  if (is.null(cnames)) {    
-    colnames(x_c) <- colnames(x_c, do.NULL = FALSE, prefix = "c") 
-  } 
   #
   infovar <- matrix(c(idvar, ncol(x_c)), ncol = 2)
   if (is.null(valuenames) | missing(valuenames)) {
