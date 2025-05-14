@@ -83,6 +83,7 @@ test_that("superBca", {
   expect_equal(bma$spec[,2],unname(bma0$m[rownames(bma$tt)]))
   
   # T6: test superBca single
+  # TODO: make this error free
   bma1 <- superBca(X,y,a,tree_type="single")
   
   colnames(bma1$tt) <- rsid
@@ -91,6 +92,7 @@ test_that("superBca", {
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
   
   # T7: test superBca multiple
+  # TODO: make this error free
   bma2 <- superBca(X,y,a,tree_type="multiple")
   
   colnames(bma2$tt) <- rsid
