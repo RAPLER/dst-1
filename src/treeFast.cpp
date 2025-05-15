@@ -144,7 +144,6 @@ shared_ptr<TreeNode> superset(shared_ptr<TreeNode> node, const dynamic_bitset<>&
 // [[Rcpp::export]]
 SEXP buildTreeFast(const arma::sp_mat& tt,
                    const Rcpp::NumericVector& q,
-                   bool display_progress = false,
                    Rcpp::Nullable<Rcpp::IntegerVector> indices = R_NilValue) {
 
   int n_rows = tt.n_rows;
@@ -159,15 +158,7 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
   
   std::vector<int> depths(n_rows);
   
-  if (display_progress) {
-    Rcout << "Building tree\n";
-  }
-  ETAProgressBar pb1;
-  Progress p1(n_rows, display_progress, pb1);
-  
   for (int i = 0; i < n_rows; ++i) {
-    if (Progress::check_abort()) break;
-    p1.increment();
     
     dynamic_bitset<> bitset(n_cols);
     int last = -1;
@@ -435,9 +426,9 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
   std::unique_copy(card_sorted.begin(), card_sorted.end(), std::back_inserter(card_nodup));
   
   List trees(card_nodup.size());
-  
-  for (int i = 0; i < static_cast<int>(card_nodup.size()); ++i) {
 
+  for (int i = 0; i < static_cast<int>(card_nodup.size()); ++i) {
+    
     int c = card_nodup[i];
     std::vector<int> idx_vec;
     for (int j = 0; j < n; ++j) {
@@ -453,7 +444,7 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
     }
     
     IntegerVector indices(idx_vec.begin(), idx_vec.end());
-    trees[i] = buildTreeFast(tt_sub, q, false, indices);  // modified buildTreeFast with index support
+    trees[i] = buildTreeFast(tt_sub, q, indices);  // modified buildTreeFast with index support
   }
   
   trees.attr("card_nodup") = IntegerVector(card_nodup.begin(), card_nodup.end());

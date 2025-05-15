@@ -203,7 +203,7 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
       print("build tree starts")
       start.time <- Sys.time()
       
-      tree <- buildTreeFast(tt, qq, TRUE)
+      tree <- buildTreeFast(tt, qq)
       
       end.time <- Sys.time()
       time.taken <- end.time - start.time
