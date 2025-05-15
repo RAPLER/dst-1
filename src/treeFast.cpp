@@ -29,16 +29,20 @@ int findFirst(const dynamic_bitset<>& x) {
 
 struct TreeNode {
   dynamic_bitset<> x;
-  double q;
-  int index; // TODO: replace this line with std::vector<int> index;
+  double q;                     
+  std::vector<int> index;       
   int depth;
   shared_ptr<TreeNode> left = nullptr;
   shared_ptr<TreeNode> right = nullptr;
   shared_ptr<TreeNode> empty_set = nullptr;
   
   TreeNode(dynamic_bitset<> x_, double q_, int idx_)
-    : x(x_), q(q_), index(idx_), depth(findLast(x_)) {}
+    : x(x_), q(q_), depth(findLast(x_)) {
+    index.push_back(idx_);
+  }
 };
+
+
 
 shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node1, shared_ptr<TreeNode> node2) {
   if (!node2) return node1;
@@ -68,7 +72,7 @@ shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node1, shared_ptr<TreeNode>
     auto node_disj = std::make_shared<TreeNode>(
       x_disj,
       is_same ? node1->q : -1,
-      is_same ? node1->index : -1
+      is_same ? node1->index[0] : -1
     );
     
     if (node_disj->depth < node2->depth && node_disj->depth < x_disj.size()) {
@@ -89,9 +93,12 @@ shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node1, shared_ptr<TreeNode>
   }
   
   if (node1->x == node2->x) { 
-    node2->q = node1->q;
-    node2->index = node1->index;
-    node2->depth = node1->depth;
+    // Insert only if the index is not already present
+    int new_idx = node1->index[0];
+    auto& indices = node2->index;
+    if (std::find(indices.begin(), indices.end(), new_idx) == indices.end()) {
+      node2->index.push_back(new_idx);
+    }
     return node2;
   }
   
@@ -151,9 +158,12 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
   }
   
   std::vector<int> depths(n_rows);
-  Rcout << "Building tree\n";
-  ETAProgressBar pb;
-  Progress p1(n_rows, display_progress, pb);
+  
+  if (display_progress) {
+    Rcout << "Building tree\n";
+  }
+  ETAProgressBar pb1;
+  Progress p1(n_rows, display_progress, pb1);
   
   for (int i = 0; i < n_rows; ++i) {
     if (Progress::check_abort()) break;
@@ -279,8 +289,10 @@ NumericVector unravelTreeFast(SEXP tree_ptr) {
     
     traverse(node->left);
     
-    if (node->index >= 0 && !std::isnan(node->q)) {
-      values.emplace_back(node->index, node->q);
+    if (node->q >= 0) {
+      for (int idx : node->index) {
+        values.emplace_back(idx, node->q);
+      }
     }
     
     traverse(node->right);
@@ -324,7 +336,7 @@ List inspectNode(SEXP tree_ptr) {
     List result = List::create(
       _["x"] = bits,
       _["q"] = n->q,
-      _["index"] = n->index,
+      _["index"] = wrap(n->index),
       _["depth"] = n->depth,
       _["left"] = buildTree(n->left),
       _["right"] = buildTree(n->right)
@@ -359,7 +371,7 @@ Rcpp::List inspectNodes(Rcpp::List trees) {
     List out = List::create(
       _["x"] = bits,
       _["q"] = n->q,
-      _["index"] = n->index,
+      _["index"] = wrap(n->index),
       _["depth"] = n->depth,
       _["left"] = recurse(n->left),
       _["right"] = recurse(n->right)
@@ -394,8 +406,8 @@ Rcpp::List inspectNodes(Rcpp::List trees) {
 }
 
 // [[Rcpp::export]]
-Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q, bool display_progress = false) {
-
+Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) {
+  
   int n = tt.n_rows;
   int p = tt.n_cols;
   
@@ -424,14 +436,8 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q, 
   
   List trees(card_nodup.size());
   
-  Rcout << "Building trees\n";
-  ETAProgressBar pb;
-  Progress p2(static_cast<int>(card_nodup.size()), display_progress, pb);
-  
   for (int i = 0; i < static_cast<int>(card_nodup.size()); ++i) {
-    if (Progress::check_abort()) break;
-    p2.increment();
-    
+
     int c = card_nodup[i];
     std::vector<int> idx_vec;
     for (int j = 0; j < n; ++j) {
@@ -473,8 +479,10 @@ Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
       
       traverse(node->left);
       
-      if (node->index >= 0 && !std::isnan(node->q)) {
-        values.emplace_back(node->index, node->q);
+      if (node->q >= 0) {
+        for (int idx : node->index) {
+          values.emplace_back(idx, node->q);
+        }
       }
       
       traverse(node->right);

@@ -94,8 +94,8 @@ inspectNodes <- function(trees) {
     .Call(`_dst_inspectNodes`, trees)
 }
 
-buildTreesFast <- function(tt, q, display_progress = FALSE) {
-    .Call(`_dst_buildTreesFast`, tt, q, display_progress)
+buildTreesFast <- function(tt, q) {
+    .Call(`_dst_buildTreesFast`, tt, q)
 }
 
 unravelTreesFast <- function(trees) {

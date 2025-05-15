@@ -11,6 +11,7 @@ superBca(
   y0 = 0,
   flip = TRUE,
   tree_type = "single",
+  cnames = NULL,
   varnames = NULL,
   valuenames = NULL,
   idvar = 1
@@ -48,7 +49,6 @@ rownames(x) <- nameRows(x)
 y <- matrix(c(TRUE, TRUE), ncol = 1 )
 a <- 0.9
 z <- superBca(x, y, a, tree_type="single")
-
 }
 \author{
 Peiyuan Zhu
