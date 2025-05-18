@@ -2,19 +2,19 @@
 % Please edit documentation in R/RcppExports.R
 \name{closure}
 \alias{closure}
-\title{Augment a sparse binary matrix with closure elements}
+\title{Augment a binary matrix with closure elements.}
 \arguments{
-\item{ttx}{A binary matrix}
+\item{ttx}{A binary matrix.}
 
-\item{computeJoin}{= true: to compute join closure. Default = TRUE}
+\item{computeJoin}{= true: to compute join closure. Default = TRUE.}
 
-\item{display_progress}{= true: to show progress bar. Default = FALSE}
+\item{display_progress}{= true: to show progress bar. Default = FALSE.}
 }
 \value{
-A binary matrix including the closure elements
+tty A binary matrix including the closure elements.
 }
 \description{
-Augment a sparse binary matrix with closure elements
+Augment a binary matrix with closure elements.
 }
 \examples{
 ttx <- matrix(c(0,1,1,1,1,0,1,1,1), nrow=3, byrow = TRUE)
