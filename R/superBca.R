@@ -31,14 +31,6 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
   start.time <- Sys.time()
   
   x_c <- closureSparse(x, FALSE, TRUE)
-  # Check column names
-  if (is.null(colnames(x))) {    
-    colnames(x_c) <- colnames(x_c, do.NULL = FALSE, prefix = "c") 
-  }
-  else {
-    colnames(x_c) <- colnames(x)
-    rownames(x_c) <- nameRows(x_c)
-  }
   #
   
   end.time <- Sys.time()
@@ -66,16 +58,9 @@ superBca<-function(x,y,a,y0=0,flip=TRUE,tree_type="single", cnames = NULL, varna
   # Build specification matrix spec
   spec <- cbind((1:nrow(x_c)), m)
   colnames(spec) <- c("specnb", "mass")
-  rownames(spec) <- rownames(x_c)
   #
   infovar <- matrix(c(idvar, ncol(x_c)), ncol = 2)
-  if (is.null(valuenames) | missing(valuenames)) {
-    valuenames <- split(colnames(x_c), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
-  }
-  if (is.null(varnames)) {
-    varnames <- names(valuenames)
-  } 
-  z <-list(con = NULL, "tt"=x_c, "qq"=qq, "m"=m,  method = "emt-m", spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = NULL, inforel = NULL) 
+  z <-list(con = NULL, "tt"=x_c, "qq"=qq, "m"=m,  method = "emt-m", spec = spec , infovar = infovar, varnames = NULL, valuenames = NULL, ssnames = NULL, inforel = NULL) 
   # end test
   #
   class(z) <- append(class(z), "bcaspec")
