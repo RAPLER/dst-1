@@ -13,7 +13,7 @@ test_that("updateTrees", {
   trees <- buildTrees(x,q)
   
   xx <- as.bit(c(1,1,0))
-  s <- as.bit(c(0,1,0))
+  s <- as.bit(c(1,1,1))
   
   tree <- updateTree(tree,xx,s)
   

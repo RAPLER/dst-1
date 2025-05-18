@@ -2,7 +2,7 @@ context("compute iota elements")
 library(dst)
 test_that("iotsSparse", {
   # Subset data
-  n <- 10
+  n <- 50
   m <- 2000
   
   # Sample S

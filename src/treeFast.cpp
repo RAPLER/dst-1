@@ -29,20 +29,16 @@ int findFirst(const dynamic_bitset<>& x) {
 
 struct TreeNode {
   dynamic_bitset<> x;
-  double q;                     
-  std::vector<int> index;       
+  double q;
+  int index;
   int depth;
   shared_ptr<TreeNode> left = nullptr;
   shared_ptr<TreeNode> right = nullptr;
   shared_ptr<TreeNode> empty_set = nullptr;
   
   TreeNode(dynamic_bitset<> x_, double q_, int idx_)
-    : x(x_), q(q_), depth(findLast(x_)) {
-    index.push_back(idx_);
-  }
+    : x(x_), q(q_), index(idx_), depth(findLast(x_)) {}
 };
-
-
 
 shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node1, shared_ptr<TreeNode> node2) {
   if (!node2) return node1;
@@ -72,7 +68,7 @@ shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node1, shared_ptr<TreeNode>
     auto node_disj = std::make_shared<TreeNode>(
       x_disj,
       is_same ? node1->q : -1,
-      is_same ? node1->index[0] : -1
+      is_same ? node1->index : -1
     );
     
     if (node_disj->depth < node2->depth && node_disj->depth < x_disj.size()) {
@@ -87,18 +83,15 @@ shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node1, shared_ptr<TreeNode>
       //if (!is_same) {
       //  node_disj = insertNode(node1, node_disj->right);
       //}
-
+      
       return node_disj;
     }
   }
   
   if (node1->x == node2->x) { 
-    // Insert only if the index is not already present
-    int new_idx = node1->index[0];
-    auto& indices = node2->index;
-    if (std::find(indices.begin(), indices.end(), new_idx) == indices.end()) {
-      node2->index.push_back(new_idx);
-    }
+    node2->q = node1->q;
+    node2->index = node1->index;
+    node2->depth = node1->depth;
     return node2;
   }
   
@@ -144,8 +137,9 @@ shared_ptr<TreeNode> superset(shared_ptr<TreeNode> node, const dynamic_bitset<>&
 // [[Rcpp::export]]
 SEXP buildTreeFast(const arma::sp_mat& tt,
                    const Rcpp::NumericVector& q,
+                   bool display_progress = false,
                    Rcpp::Nullable<Rcpp::IntegerVector> indices = R_NilValue) {
-
+  
   int n_rows = tt.n_rows;
   int n_cols = tt.n_cols;
   
@@ -157,8 +151,12 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
   }
   
   std::vector<int> depths(n_rows);
+  ETAProgressBar pb;
+  Progress p(n_rows, display_progress, pb);
   
   for (int i = 0; i < n_rows; ++i) {
+    if (Progress::check_abort()) break;
+    p.increment();
     
     dynamic_bitset<> bitset(n_cols);
     int last = -1;
@@ -207,7 +205,7 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
 shared_ptr<TreeNode> updateTreeFastRec(shared_ptr<TreeNode> node, const dynamic_bitset<>& xx,
                                        const dynamic_bitset<>& s, shared_ptr<TreeNode> root) {
   if (node) {
-  
+    
     if (node->q >= 0) {
       dynamic_bitset<> y = node->x;
       shared_ptr<TreeNode> e = superset(root, y | xx);
@@ -221,7 +219,7 @@ shared_ptr<TreeNode> updateTreeFastRec(shared_ptr<TreeNode> node, const dynamic_
         }
       }
     }
-  
+    
     node->left = updateTreeFastRec(node->left, xx, s, root);
     node->right = updateTreeFastRec(node->right, xx, s, root);
     if (node->empty_set) {
@@ -280,10 +278,8 @@ NumericVector unravelTreeFast(SEXP tree_ptr) {
     
     traverse(node->left);
     
-    if (node->q >= 0) {
-      for (int idx : node->index) {
-        values.emplace_back(idx, node->q);
-      }
+    if (node->index >= 0 && !std::isnan(node->q)) {
+      values.emplace_back(node->index, node->q);
     }
     
     traverse(node->right);
@@ -327,7 +323,7 @@ List inspectNode(SEXP tree_ptr) {
     List result = List::create(
       _["x"] = bits,
       _["q"] = n->q,
-      _["index"] = wrap(n->index),
+      _["index"] = n->index,
       _["depth"] = n->depth,
       _["left"] = buildTree(n->left),
       _["right"] = buildTree(n->right)
@@ -348,7 +344,7 @@ List inspectNode(SEXP tree_ptr) {
 
 // [[Rcpp::export]]
 Rcpp::List inspectNodes(Rcpp::List trees) {
-
+  
   IntegerVector card_nodup = trees.attr("card_nodup");
   int num_trees = card_nodup.size();
   List result(num_trees + 1);  // One extra for card_nodup
@@ -362,7 +358,7 @@ Rcpp::List inspectNodes(Rcpp::List trees) {
     List out = List::create(
       _["x"] = bits,
       _["q"] = n->q,
-      _["index"] = wrap(n->index),
+      _["index"] = n->index,
       _["depth"] = n->depth,
       _["left"] = recurse(n->left),
       _["right"] = recurse(n->right)
@@ -426,9 +422,8 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
   std::unique_copy(card_sorted.begin(), card_sorted.end(), std::back_inserter(card_nodup));
   
   List trees(card_nodup.size());
-
+  
   for (int i = 0; i < static_cast<int>(card_nodup.size()); ++i) {
-    
     int c = card_nodup[i];
     std::vector<int> idx_vec;
     for (int j = 0; j < n; ++j) {
@@ -444,7 +439,7 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
     }
     
     IntegerVector indices(idx_vec.begin(), idx_vec.end());
-    trees[i] = buildTreeFast(tt_sub, q, indices);  // modified buildTreeFast with index support
+    trees[i] = buildTreeFast(tt_sub, q, false, indices);  // modified buildTreeFast with index support
   }
   
   trees.attr("card_nodup") = IntegerVector(card_nodup.begin(), card_nodup.end());
@@ -453,7 +448,7 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
 
 // [[Rcpp::export]]
 Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
-
+  
   IntegerVector card_nodup = trees.attr("card_nodup");
   int num_trees = card_nodup.size();
   
@@ -470,10 +465,8 @@ Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
       
       traverse(node->left);
       
-      if (node->q >= 0) {
-        for (int idx : node->index) {
-          values.emplace_back(idx, node->q);
-        }
+      if (node->index >= 0 && !std::isnan(node->q)) {
+        values.emplace_back(node->index, node->q);
       }
       
       traverse(node->right);
@@ -501,7 +494,7 @@ Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
 
 // [[Rcpp::export]]
 Rcpp::List updateTreesFast(Rcpp::List trees, Rcpp::NumericVector xx_vec, Rcpp::NumericVector s_vec) {
-
+  
   IntegerVector card_nodup = trees.attr("card_nodup");
   
   dynamic_bitset<> xx(xx_vec.size());
@@ -563,5 +556,4 @@ Rcpp::List updateTreesFast(Rcpp::List trees, Rcpp::NumericVector xx_vec, Rcpp::N
   
   return trees;
 }
-
 
