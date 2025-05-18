@@ -1,13 +1,13 @@
-// [[Rcpp::depends(BH)]]
-// [[Rcpp::depends(RcppProgress)]]
 // [[Rcpp::depends(RcppArmadillo)]]
+// [[Rcpp::depends(RcppProgress)]]
 #include <RcppArmadillo.h>
-#include <stdio.h>
-#include <boost/functional/hash.hpp>
-#include <boost/dynamic_bitset.hpp>
 #include <progress.hpp>
 #include <progress_bar.hpp>
 #include "eta_progress_bar.hpp"
+#include <bitset>
+#include <unordered_map>
+#include <vector>
+
 using namespace Rcpp;
 
 //' Comptue iota elements of a sparse binary matrix of closure elements
@@ -17,17 +17,23 @@ using namespace Rcpp;
 //' @return A sparse binary matrix of the iota elements
 //' @export
 
+const size_t MAX_COLS = 5000; // Adjust this if necessary
+
 // [[Rcpp::export]]
 arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
   int n = tt.n_cols;
   int m = tt.n_rows;
+  
+  if (n > MAX_COLS) {
+    stop("Number of columns exceeds MAX_COLS in std::bitset.");
+  }
   
   // Precompute row bitsets
   Rcout << "Converting to bitsets\n";
   ETAProgressBar pb1;
   Progress p1(m, display_progress, pb1);
   
-  std::vector<boost::dynamic_bitset<>> row_bitsets(m, boost::dynamic_bitset<>(n));
+  std::vector<std::bitset<MAX_COLS>> row_bitsets(m);
   for (int row = 0; row < m; ++row) {
     if (Progress::check_abort()) break;
     p1.increment();
@@ -37,8 +43,7 @@ arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
     }
   }
   
-  // Map to store unique iota bitsets and their assigned row index
-  std::unordered_map<boost::dynamic_bitset<>, size_t> iota_map;
+  std::unordered_map<std::bitset<MAX_COLS>, size_t> iota_map;
   
   Rcout << "Computing iota elements\n";
   ETAProgressBar pb2;
@@ -48,12 +53,12 @@ arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
     if (Progress::check_abort()) break;
     p2.increment();
     
-    boost::dynamic_bitset<> i(n);
+    std::bitset<MAX_COLS> i;
     i.set(); // full set
     bool included = false;
     
     for (int row = 0; row < m; ++row) {
-      const boost::dynamic_bitset<>& FFbs = row_bitsets[row];
+      const std::bitset<MAX_COLS>& FFbs = row_bitsets[row];
       
       if (FFbs.test(omega)) {
         included = true;
@@ -64,17 +69,15 @@ arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
       }
     }
     
-    if (included) {
-      if (iota_map.find(i) == iota_map.end()) {
-        iota_map[i] = iota_map.size(); // assign row index
-      }
+    if (included && iota_map.find(i) == iota_map.end()) {
+      iota_map[i] = iota_map.size();
     }
   }
   
   // Create triplets for sparse matrix
   std::vector<arma::uword> row_indices, col_indices;
   for (const auto& [bs, row] : iota_map) {
-    for (size_t col = 0; col < bs.size(); ++col) {
+    for (size_t col = 0; col < n; ++col) {
       if (bs[col]) {
         row_indices.push_back(row);
         col_indices.push_back(col);

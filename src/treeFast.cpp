@@ -83,7 +83,7 @@ shared_ptr<TreeNode> insertNode(shared_ptr<TreeNode> node1, shared_ptr<TreeNode>
       //if (!is_same) {
       //  node_disj = insertNode(node1, node_disj->right);
       //}
-      
+
       return node_disj;
     }
   }
@@ -139,7 +139,7 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
                    const Rcpp::NumericVector& q,
                    bool display_progress = false,
                    Rcpp::Nullable<Rcpp::IntegerVector> indices = R_NilValue) {
-  
+
   int n_rows = tt.n_rows;
   int n_cols = tt.n_cols;
   
@@ -205,7 +205,7 @@ SEXP buildTreeFast(const arma::sp_mat& tt,
 shared_ptr<TreeNode> updateTreeFastRec(shared_ptr<TreeNode> node, const dynamic_bitset<>& xx,
                                        const dynamic_bitset<>& s, shared_ptr<TreeNode> root) {
   if (node) {
-    
+  
     if (node->q >= 0) {
       dynamic_bitset<> y = node->x;
       shared_ptr<TreeNode> e = superset(root, y | xx);
@@ -219,7 +219,7 @@ shared_ptr<TreeNode> updateTreeFastRec(shared_ptr<TreeNode> node, const dynamic_
         }
       }
     }
-    
+  
     node->left = updateTreeFastRec(node->left, xx, s, root);
     node->right = updateTreeFastRec(node->right, xx, s, root);
     if (node->empty_set) {
@@ -344,7 +344,7 @@ List inspectNode(SEXP tree_ptr) {
 
 // [[Rcpp::export]]
 Rcpp::List inspectNodes(Rcpp::List trees) {
-  
+
   IntegerVector card_nodup = trees.attr("card_nodup");
   int num_trees = card_nodup.size();
   List result(num_trees + 1);  // One extra for card_nodup
@@ -394,7 +394,7 @@ Rcpp::List inspectNodes(Rcpp::List trees) {
 
 // [[Rcpp::export]]
 Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) {
-  
+
   int n = tt.n_rows;
   int p = tt.n_cols;
   
@@ -448,7 +448,7 @@ Rcpp::List buildTreesFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q) 
 
 // [[Rcpp::export]]
 Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
-  
+
   IntegerVector card_nodup = trees.attr("card_nodup");
   int num_trees = card_nodup.size();
   
@@ -494,7 +494,7 @@ Rcpp::NumericVector unravelTreesFast(Rcpp::List trees) {
 
 // [[Rcpp::export]]
 Rcpp::List updateTreesFast(Rcpp::List trees, Rcpp::NumericVector xx_vec, Rcpp::NumericVector s_vec) {
-  
+
   IntegerVector card_nodup = trees.attr("card_nodup");
   
   dynamic_bitset<> xx(xx_vec.size());
