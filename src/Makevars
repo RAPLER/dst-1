@@ -1,2 +1,2 @@
-PKG_CXXFLAGS = -O4
-
+CXXFLAGS = -O4 -march=native -mtune=native -ffast-math -funroll-loops -fPIC
+CXX11FLAGS = $(CXXFLAGS)
