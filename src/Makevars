@@ -1,2 +1,4 @@
-CXXFLAGS = -O4 -march=native -mtune=native -ffast-math -funroll-loops -fPIC
-CXX11FLAGS = $(CXXFLAGS)
+CFLAGS=-O3
+CXXFLAGS=-O3
+FFLAGS=-O3
+FC=$(F77)
