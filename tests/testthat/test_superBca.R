@@ -33,7 +33,7 @@ test_that("superBca", {
   
   # Subset data
   n <- 10
-  m <- 30
+  m <- 2000
   
   # Sample S
   S <- 3

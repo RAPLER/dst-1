@@ -23,8 +23,15 @@ arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
  int m = tt.n_rows;
  
  // Precompute row bitsets
+ Rcout << "Converting to bitsets\n";
+ ETAProgressBar pb1;
+ Progress p1(m, display_progress, pb1);
  std::vector<boost::dynamic_bitset<>> row_bitsets(m, boost::dynamic_bitset<>(n));
+ 
  for (int row = 0; row < m; ++row) {
+   if (Progress::check_abort()) break;
+   p1.increment();
+   
    for (arma::sp_mat::const_row_iterator it = tt.begin_row(row); it != tt.end_row(row); ++it) {
      row_bitsets[row].set(it.col());
    }
@@ -33,12 +40,12 @@ arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
  // Map to store unique iota bitsets and their assigned row index
  std::unordered_map<boost::dynamic_bitset<>, size_t> iota_map;
  
- ETAProgressBar pb;
- Progress p(n, display_progress, pb);
+ ETAProgressBar pb2;
+ Progress p2(n, display_progress, pb2);
  
  for (int omega = 0; omega < n; ++omega) {
    if (Progress::check_abort()) break;
-   p.increment();
+   p2.increment();
    
    boost::dynamic_bitset<> i(n);
    i.set(); // full set
