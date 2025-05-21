@@ -77,6 +77,9 @@ iotaSparse <- function(tt, display_progress = FALSE) {
     .Call(`_dst_iotaSparse`, tt, display_progress)
 }
 
+#' TreeFast is an algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
+NULL
+
 buildTreeFast <- function(tt, q, display_progress = FALSE, indices = NULL) {
     .Call(`_dst_buildTreeFast`, tt, q, display_progress, indices)
 }

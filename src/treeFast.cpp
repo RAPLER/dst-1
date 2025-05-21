@@ -13,6 +13,9 @@ using namespace Rcpp;
 using boost::dynamic_bitset;
 using std::shared_ptr;
 
+//' TreeFast is an algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
+ //' @name treeFast
+
 int findLast(const dynamic_bitset<>& x) {
   for (int i = x.size() - 1; i >= 0; --i) {
     if (x[i]) return i;

@@ -7,18 +7,18 @@
 buildTree(tt, qq, indices = NULL)
 }
 \arguments{
-\item{tt}{A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment.}
+\item{tt}{A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the Frame of Discernment (FoD).}
 
-\item{q}{Commonality values of the tt matrix.}
+\item{q}{Commonality values of the \code{tt} matrix.}
 }
 \value{
-The tree struct
+tree The tree structure.
 }
 \description{
 Build a tree of...
 }
 \details{
-A tree structure of commonalities is built from the binary matrix\code{tt}. This tree structure can then be used with large frames of discernment and optimize the combination with Dempster's rule
+A tree structure of commonalities is built from the binary matrix \code{tt}. This tree structure can then be used with large frames of discernment to optimize the combination of support functions.
 }
 \examples{
 # Example from figure 12 of the cited reference.
@@ -32,7 +32,7 @@ A tree structure of commonalities is built from the binary matrix\code{tt}. This
  q_tree <- buildTree(x,q)
 }
 \references{
-Chaveroche, Franck Davoine, Véronique Cherfaoui. Eﬃcient Möbius Transformations and their applications to Dempster-Shafer Theory: Clarification and implementation. ArXiv preprint arXiv:2107.07359
+Chaveroche, Franck Davoine, Véronique Cherfaoui. Eﬃcient Möbius Transformations and their applications to Dempster-Shafer Theory: Clarification and implementation. ArXiv preprint arXiv:2107.07359.
 }
 \author{
 Peiyuan Zhu
