@@ -101,18 +101,18 @@ Of the three suspects, we see from our table of results that John has the highes
 Alternatively, we can perform combination with commonality functions. After combination, we convert commonality functions directly to belief and plausibility. 
 
 ```{r}
-bpa3<-dsrwonLogsumexp(bpa1, bpa2, use_qq = TRUE)
-belplau3 <- belplauHQQ(bpa3$qq,ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames)))
-round(belplau3, 5)
+# bpa3<-dsrwonLogsumexp(bpa1, bpa2, use_qq = TRUE)
+# belplau3 <- belplauHQQ(bpa3$qq,ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames)))
+# round(belplau3, 5)
 ```
 
 We can also convert commonality functions back to mass function first and then calculate belief and plausibility as before. 
 
 ```{r}
-bpa3$tt<-ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames))
-bpa3$spec <- matrix(c(1:nrow(bpa3$tt),mFromQQ(bpa3$qq,bpa3$tt)), ncol = 2, byrow = FALSE, dimnames = list(NULL, c("specnb","mass")))
-belplau3<-belplau(bpa3)
-round(belplau3, 5)
+# bpa3$tt<-ttmatrixFromQQ(bpa3$qq,as.integer(bpa3$infovar[1,2]),unlist(bpa3$valuenames))
+# bpa3$spec <- matrix(c(1:nrow(bpa3$tt),mFromQQ(bpa3$qq,bpa3$tt)), ncol = 2, byrow = FALSE, dimnames = list(NULL, c("specnb","mass")))
+# belplau3<-belplau(bpa3)
+# round(belplau3, 5)
 ```
 Now add singletons to see belief and plausibility for each person.
 
@@ -140,9 +140,9 @@ rownames(tt_abc) <- nameRows(tt_abc)
 Then, we apply Mobius inversion. With the mass function at hand, we can then use Fast Zeta Transform to compute belief and plausibility.
 
 ```{r}
-mass <- mFromQQRecursive(bpa3$qq,as.integer(bpa3$infovar[1,2]), method = "fmt",cnames=unlist(bpa3$valuenames))
-bpa3$tt <- tt_abc[mass>0,]
-bpa3$spec <- cbind(1:nrow(bpa3$tt),mass[mass>0])
-colnames(bpa3$spec) <- c("specnb","mass")
-belplau(bpa3, method = "fzt")
+# mass <- mFromQQRecursive(bpa3$qq,as.integer(bpa3$infovar[1,2]), method = "fmt",cnames=unlist(bpa3$valuenames))
+# bpa3$tt <- tt_abc[mass>0,]
+# bpa3$spec <- cbind(1:nrow(bpa3$tt),mass[mass>0])
+# colnames(bpa3$spec) <- c("specnb","mass")
+# belplau(bpa3, method = "fzt")
 ```
