@@ -47,6 +47,7 @@ arma::sp_mat iotaSparse(arma::sp_mat tt, bool display_progress = false) {
    if (Progress::check_abort()) break;
    p2.increment();
    
+   
    boost::dynamic_bitset<> i(n);
    i.set(); // full set
    bool included = false;
