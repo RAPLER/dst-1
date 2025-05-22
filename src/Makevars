@@ -1,1 +1,2 @@
-MAKEFLAGS="CFLAGS=-O3"
+CXX_STD = CXX17
+CXXFLAGS = -O3 -march=native -fno-math-errno
