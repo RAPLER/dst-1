@@ -1,5 +1,2 @@
-CXX_STD = CXX17
-
-CXXFLAGS = -O3 -Wall -march=native
-PKG_CPPFLAGS = -I../inst/include
-PKG_LIBS = -L/usr/local/lib -lmylib
+PKG_CXXFLAGS = -O3
+PKG_CFLAGS = -O3
