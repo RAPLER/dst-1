@@ -1,2 +1,5 @@
 CXX_STD = CXX17
-CXXFLAGS = -O3 -march=native -fno-math-errno
+
+CXXFLAGS = -O3 -Wall -march=native
+PKG_CPPFLAGS = -I../inst/include
+PKG_LIBS = -L/usr/local/lib -lmylib
