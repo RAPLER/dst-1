@@ -138,6 +138,9 @@ mFromQQ <- function(qq, n=NULL, cnames=NULL, method = NULL, sparse = "no", tt = 
     # Load qq, tt
     if(is.null(tt)) {
       tt <- ttmatrixFromQQ(qq,n,cnames,sparse)
+      if (isS4(tt) == FALSE) {
+        tt <- methods::as(tt, "RsparseMatrix")
+      }
     }
     
     #
