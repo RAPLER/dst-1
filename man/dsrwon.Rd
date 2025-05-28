@@ -11,8 +11,8 @@ dsrwon(
   use_ssnames = FALSE,
   use_qq = FALSE,
   use_sparse = "no",
-  method = NULL,
-  tree_type = NULL,
+  method = "emt-m",
+  tree_type = "single",
   varnames = NULL,
   relnb = NULL,
   skpt_tt = FALSE,
@@ -32,9 +32,9 @@ dsrwon(
 
 \item{use_sparse}{Make use of sparse matrices ("yes") or not ("no"). Default = "no".}
 
-\item{method}{= NULL}
+\item{method}{Can be "emt" or "emt-m", Default is "emt-m".}
 
-\item{tree_type}{tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL}
+\item{tree_type}{tree_type to use M trees ("multiple") or 1 tree ("single"). Default = "single"L}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
