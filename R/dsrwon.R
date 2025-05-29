@@ -362,11 +362,11 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
     # Augment q1 with q2, q2 with q1
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt1 <- ttmatrixFromQQ(q1,n,cnames,use_sparse)
+    tt1 <- ttmatrixFromQQ(q1,n,cnames,sparse = "yes")
     
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt2 <- ttmatrixFromQQ(q2,n,cnames,use_sparse)
+    tt2 <- ttmatrixFromQQ(q2,n,cnames,sparse = "yes")
     
     # Take union
     ttx <- rbind(tt1,tt2)
@@ -386,7 +386,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
       colnames(tty) <- colnames(ttx)
       rownames(tty) <- nameRows(tty)
       
-      x <- imputeQQ(tty,tt1,tt2,q1,q2,tree_type)
+      x <- imputeQQ(tty,tt1,tt2,q1,q2,tree_type = tree_type)
       q1 <- x$q1
       q2 <- x$q2
       
@@ -395,7 +395,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
     }
     
     # Combine
-    qq <- q1 * q2
+    qq <- unlist(q1) * unlist(q2)
     con <- 0
     tt <- NULL
     spec <- NULL
