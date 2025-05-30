@@ -10,10 +10,6 @@
 #include <progress_bar.hpp>
 #include "eta_progress_bar.hpp"
 
-//' superBcaFast is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
-//' @name superBcaFast
-//' @export
-
 using namespace Rcpp;
 
 int findLastX(const boost::dynamic_bitset<>& x) {
@@ -46,28 +42,29 @@ struct TreeNode {
 std::shared_ptr<TreeNode> insertNodeX(std::shared_ptr<TreeNode> node1, std::shared_ptr<TreeNode> node2) {
   if (!node2) return node1;
   
-  boost::dynamic_bitset<> mask(node1->x.size());
-  mask.set();  // all bits to 1
-  mask >>= (node1->x.size() - (node2->depth));  // keep only prefix bits
+  const boost::dynamic_bitset<>& x1 = node1->x;
+  const boost::dynamic_bitset<>& x2 = node2->x;
   
-  bool match = ((node1->x & mask) == (node2->x & mask));
+  boost::dynamic_bitset<> mask(x1.size());
+  mask.set();
+  mask >>= (x1.size() - (node2->depth));
+  
+  bool match = ((x1 & mask) == (x2 & mask));
   
   if (!match) {
-    // insert disjunction node
-    
-    boost::dynamic_bitset<> diff = node1->x ^ node2->x;
+    boost::dynamic_bitset<> diff = x1 ^ x2;
     size_t depth_disj = findFirstX(diff);
     
-    boost::dynamic_bitset<> x_disj = node1->x;
+    boost::dynamic_bitset<> x_disj = x1;
     x_disj.set(depth_disj);
     
     boost::dynamic_bitset<> mask(x_disj.size());
-    mask.set(); // all 1s
-    mask >>= (x_disj.size() - (depth_disj + 1)); 
+    mask.set();
+    mask >>= (x_disj.size() - (depth_disj + 1));
     
     x_disj &= mask;
     
-    bool is_same = (node1->x == x_disj);
+    bool is_same = (x1 == x_disj);
     auto node_disj = std::make_shared<TreeNode>(
       x_disj,
       is_same ? node1->q : -1,
@@ -75,7 +72,7 @@ std::shared_ptr<TreeNode> insertNodeX(std::shared_ptr<TreeNode> node1, std::shar
     );
     
     if (node_disj->depth < node2->depth && node_disj->depth < x_disj.size()) {
-      if (node1->x[node_disj->depth]) {
+      if (x1[node_disj->depth]) {
         node_disj->right = node1;
         node_disj->left = node2;
       } else {
@@ -83,22 +80,18 @@ std::shared_ptr<TreeNode> insertNodeX(std::shared_ptr<TreeNode> node1, std::shar
         node_disj->right = node2;
       }
       
-      //if (!is_same) {
-      //  node_disj = insertNodeX(node1, node_disj->right);
-      //}
-      
       return node_disj;
     }
   }
   
-  if (node1->x == node2->x) { 
+  if (x1 == x2) {
     node2->q = node1->q;
     node2->index = node1->index;
     node2->depth = node1->depth;
     return node2;
   }
   
-  if (node1->x[node2->depth] == node2->x[node2->depth]) {
+  if (x1[node2->depth] == x2[node2->depth]) {
     node2->right = insertNodeX(node1, node2->right);
   } else {
     node2->left = insertNodeX(node1, node2->left);
@@ -107,22 +100,24 @@ std::shared_ptr<TreeNode> insertNodeX(std::shared_ptr<TreeNode> node1, std::shar
   return node2;
 }
 
+
 std::shared_ptr<TreeNode> supersetX(std::shared_ptr<TreeNode> node, const boost::dynamic_bitset<>& w) {
   if (!node) return nullptr;
   
-  // Check if node is a supersetX of w and has a valid q value
-  if ((node->x & w) == w && node->q != -1) {
+  const boost::dynamic_bitset<>& x = node->x;
+  
+  // Check if node is a superset of w and has a valid q value
+  if ((x & w) == w && node->q != -1) {
     return node;
   }
   
-  // Check prefix up to depth (0-indexed): positions 0 to depth
+  // Check prefix up to depth
   if (node->depth >= 0) {
     boost::dynamic_bitset<> mask(w.size());
-    mask.set();  // All 1s
-    mask >>= (w.size() - (node->depth + 1));  // Keep only first (depth + 1) bits
+    mask.set();
+    mask >>= (w.size() - (node->depth + 1));
     
-    // If prefix bits of x and w differ, prune this branch
-    if (((node->x & mask) & w & mask) != (w & mask)) {
+    if (((x & mask) & w & mask) != (w & mask)) {
       return nullptr;
     }
   }
@@ -137,15 +132,15 @@ std::shared_ptr<TreeNode> supersetX(std::shared_ptr<TreeNode> node, const boost:
   }
 }
 
+
 std::shared_ptr<TreeNode> updateTreeFastRecX(std::shared_ptr<TreeNode> node, const boost::dynamic_bitset<>& xx,
                                              const boost::dynamic_bitset<>& s, std::shared_ptr<TreeNode> root) {
   if (node) {
-    
     if (node->q >= 0) {
-      boost::dynamic_bitset<> y = node->x;
+      const boost::dynamic_bitset<>& y = node->x;
       std::shared_ptr<TreeNode> e = supersetX(root, y | xx);
       if (e) {
-        boost::dynamic_bitset<> z = e->x;
+        const boost::dynamic_bitset<>& z = e->x;
         if (z != y) {
           boost::dynamic_bitset<> t = (y | s) & z;
           if (t == z) {
@@ -160,11 +155,11 @@ std::shared_ptr<TreeNode> updateTreeFastRecX(std::shared_ptr<TreeNode> node, con
     if (node->empty_set) {
       node->empty_set = updateTreeFastRecX(node->empty_set, xx, s, root);
     }
-    
   }
   
   return node;
 }
+
 
 std::shared_ptr<TreeNode> buildTreeFastX(const std::vector<boost::dynamic_bitset<>>& bitsets,
                                          const Rcpp::NumericVector& q,
@@ -260,6 +255,10 @@ Rcpp::NumericVector unravelTreeFastX(std::shared_ptr<TreeNode> tree_ptr) {
   
   return result;
 }
+
+//' superBcaFast is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
+//' @name superBcaFast
+//' @export
 
 // [[Rcpp::export]]
 Rcpp::List superBcaFast(const arma::mat& x_input,
