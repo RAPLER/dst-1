@@ -11,8 +11,8 @@ dsrwon(
   use_ssnames = FALSE,
   use_qq = FALSE,
   use_sparse = "no",
-  method = NULL,
-  tree_type = NULL,
+  method = "emt-m",
+  tree_type = "single",
   varnames = NULL,
   relnb = NULL,
   skpt_tt = FALSE,
@@ -32,9 +32,9 @@ dsrwon(
 
 \item{use_sparse}{Make use of sparse matrices ("yes") or not ("no"). Default = "no".}
 
-\item{method}{= NULL}
+\item{method}{Can be "emt" or "emt-m", Default is "emt-m".}
 
-\item{tree_type}{tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL}
+\item{tree_type}{tree_type to use M trees ("multiple") or 1 tree ("single"). Default = "single"L}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
@@ -76,6 +76,9 @@ y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
 y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
 
 # using commonalities
+bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
+m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"), method = "ezt-m")
+bma2 <- dsrwon(bma, bma, use_qq = TRUE, use_sparse = "yes")
 
 vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 dsrwon(vacuous, vacuous)

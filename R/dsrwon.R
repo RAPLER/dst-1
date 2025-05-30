@@ -10,8 +10,8 @@
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
 #' @param use_qq = TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE
 #' @param use_sparse Make use of sparse matrices ("yes") or not ("no"). Default = "no".
-#' @param tree_type tree_type to use M trees ("multiple") or 1 tree ("single"). Default = NULL
-#' @param method = NULL
+#' @param tree_type tree_type to use M trees ("multiple") or 1 tree ("single"). Default = "single"L
+#' @param method Can be "emt" or "emt-m", Default is "emt-m".
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
 #' @param skpt_tt Skip reconstruction of tt matrix. Default = FALSE.
 #' @param infovarnames Deprecated. Old name for \code{varnames}.
@@ -43,14 +43,14 @@
 #' y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
 #' 
 #' # using commonalities
-# #' bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
-# #' m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"), method = "ezt-m")
-# #' bma2 <- dsrwon(bma, bma, use_qq = TRUE)
+#' bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
+#' m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"), method = "ezt-m")
+#' bma2 <- dsrwon(bma, bma, use_qq = TRUE, use_sparse = "yes")
 #' 
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sparse = "no", method = NULL, tree_type = NULL, varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sparse = "no", method = "emt-m", tree_type = "single", varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
   # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows, dotprod
   #
@@ -356,17 +356,18 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
   # End case with use of subsets names
   #
   if (use_qq == TRUE) {
+    use_sparse = "yes"
     q1 <- x$qq
     q2 <- y$qq
     
     # Augment q1 with q2, q2 with q1
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt1 <- ttmatrixFromQQ(q1,n,cnames,use_sparse)
+    tt1 <- ttmatrixFromQQ(q1,n,cnames,sparse = "yes")
     
     n <- unname(x$infovar[,2])
     cnames <- x$valuenames[[1]]
-    tt2 <- ttmatrixFromQQ(q2,n,cnames,use_sparse)
+    tt2 <- ttmatrixFromQQ(q2,n,cnames,sparse = "yes")
     
     # Take union
     ttx <- rbind(tt1,tt2)
@@ -386,7 +387,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
       colnames(tty) <- colnames(ttx)
       rownames(tty) <- nameRows(tty)
       
-      x <- imputeQQ(tty,tt1,tt2,q1,q2,tree_type)
+      x <- imputeQQ(tty,tt1,tt2,q1,q2,tree_type = tree_type)
       q1 <- x$q1
       q2 <- x$q2
       
@@ -395,7 +396,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
     }
     
     # Combine
-    qq <- q1 * q2
+    qq <- unlist(q1) * unlist(q2)
     con <- 0
     tt <- NULL
     spec <- NULL
