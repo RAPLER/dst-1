@@ -45,7 +45,7 @@
 #' # using commonalities
 #' bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
 #' m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"), method = "ezt-m")
-#' bma2 <- dsrwon(bma, bma, use_qq = TRUE)
+#' bma2 <- dsrwon(bma, bma, use_qq = TRUE, use_sparse = "yes")
 #' 
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
@@ -356,6 +356,7 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
   # End case with use of subsets names
   #
   if (use_qq == TRUE) {
+    use_sparse = "yes"
     q1 <- x$qq
     q2 <- y$qq
     
