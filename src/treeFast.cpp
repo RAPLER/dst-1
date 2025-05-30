@@ -15,7 +15,6 @@ using std::shared_ptr;
 
 //' TreeFast is an algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
 //' @name treeFast
-//' @export
 
 int findLast(const dynamic_bitset<>& x) {
   for (int i = x.size() - 1; i >= 0; --i) {

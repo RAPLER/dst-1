@@ -88,7 +88,6 @@ superBcaFast <- function(x_input, y, a, y0 = 0L, flip = TRUE, tree_type = "singl
 
 #' TreeFast is an algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
 #' @name treeFast
-#' @export
 NULL
 
 buildTreeFast <- function(tt, q, display_progress = FALSE, indices = NULL) {
