@@ -77,6 +77,10 @@ iotaSparse <- function(tt, display_progress = FALSE) {
     .Call(`_dst_iotaSparse`, tt, display_progress)
 }
 
+superBcaFast <- function(x_input, y, a, y0 = 0L, flip = TRUE, tree_type = "single") {
+    .Call(`_dst_superBcaFast`, x_input, y, a, y0, flip, tree_type)
+}
+
 #' TreeFast is an algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
 NULL
 
