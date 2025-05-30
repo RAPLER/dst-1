@@ -12,7 +12,6 @@
 
 //' superBcaFast is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
 //' @name superBcaFast
-//' @export
 
 using namespace Rcpp;
 
