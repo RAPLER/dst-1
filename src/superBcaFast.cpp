@@ -10,6 +10,9 @@
 #include <progress_bar.hpp>
 #include "eta_progress_bar.hpp"
 
+//' superBcaFast is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
+//' @name superBcaFast
+
 using namespace Rcpp;
 
 int findLastX(const boost::dynamic_bitset<>& x) {
