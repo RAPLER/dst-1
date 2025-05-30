@@ -79,6 +79,7 @@ iotaSparse <- function(tt, display_progress = FALSE) {
 
 #' superBcaFast is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
 #' @name superBcaFast
+#' @export
 NULL
 
 superBcaFast <- function(x_input, y, a, y0 = 0L, flip = TRUE, tree_type = "single") {
