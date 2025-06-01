@@ -388,27 +388,6 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
               return a.count() < b.count();
             });
   
-  // Convert iota_bitsets to arma::mat
-  arma::mat W24(iota_bitsets.size(), n_cols, arma::fill::zeros);
-  for (size_t i = 0; i < iota_bitsets.size(); ++i) {
-    for (size_t j = 0; j < n_cols; ++j) {
-      if (iota_bitsets[i][j]) {
-        W24(i, j) = 1.0;
-      }
-    }
-  }
-  
-  // Convert ttylv to arma::mat
-  arma::mat tty(n_rows, n_cols, arma::fill::zeros);
-  for (size_t i = 0; i < n_rows; ++i) {
-    const auto& bitset = ttylv[i];
-    for (size_t j = 0; j < n_cols; ++j) {
-      if (bitset[j]) {
-        tty(i, j) = 1.0;
-      }
-    }
-  }
-  
   // Tree update logic
   NumericVector m;
   if (tree_type == "single") {
@@ -434,6 +413,27 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
     m = unravelTreeFastX(tree);
   } else if (tree_type == "multiple") {
     // (To be implemented)
+  }
+  
+  // Convert iota_bitsets to arma::sp_mat
+  arma::sp_mat W24(iota_bitsets.size(), n_cols);
+  for (size_t i = 0; i < iota_bitsets.size(); ++i) {
+    for (size_t j = 0; j < n_cols; ++j) {
+      if (iota_bitsets[i][j]) {
+        W24(i, j) = 1.0;
+      }
+    }
+  }
+  
+  // Convert ttylv to arma::sp_mat
+  arma::sp_mat tty(n_rows, n_cols);
+  for (size_t i = 0; i < n_rows; ++i) {
+    const auto& bitset = ttylv[i];
+    for (size_t j = 0; j < n_cols; ++j) {
+      if (bitset[j]) {
+        tty(i, j) = 1.0;
+      }
+    }
   }
   
   return Rcpp::List::create(
