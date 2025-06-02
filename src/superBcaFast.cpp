@@ -402,7 +402,8 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
                         double a,
                         int y0 = 0,
                         bool flip = true,
-                        std::string tree_type = "single") {
+                        std::string tree_type = "single",
+                        bool dsa = false) {
   
   arma::mat ttx = x_input;
   
@@ -594,12 +595,58 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
     }
   }
   
-  return Rcpp::List::create(
-    Rcpp::Named("tt") = tty,
-    Rcpp::Named("qq") = qq,
-    Rcpp::Named("W24") = W24,
-    Rcpp::Named("m") = m
-  );
+  if(!dsa) {
+  
+    return Rcpp::List::create(
+      Rcpp::Named("tt") = tty,
+      Rcpp::Named("qq") = qq,
+      Rcpp::Named("W24") = W24,
+      Rcpp::Named("m") = m
+    );
+  } else {
+    Rcpp::Rcout << "Computing belief/plausibility from mass function..." << std::endl;
+    
+    int M = n_cols;             // number of singleton hypotheses
+    int N = ttylv.size();       // number of focal elements
+    NumericVector bel(M, 0.0), disbel(M, 0.0);
+    
+    for (int i = 0; i < N; ++i) {
+      const auto& Wi = ttylv[i];
+      double mi = m[i];
+      
+      for (int j = 0; j < M; ++j) {
+        if (!Wi[j]) {
+          disbel[j] += mi; // mass assigned to subset of complement of h_j
+        }
+        if (Wi.none() || Wi[j]) {
+          bel[j] += mi; // mass assigned to subset of h_j
+        }
+      }
+    }
+    
+    NumericVector plau = 1 - disbel;
+    NumericVector rplau(M), unc(M);
+    for (int j = 0; j < M; ++j) {
+      unc[j] = plau[j] - bel[j];
+      rplau[j] = plau[j] / (1.0 - bel[j]);
+    }
+    
+    NumericMatrix result(M, 5);
+    result(_, 0) = bel;
+    result(_, 1) = disbel;
+    result(_, 2) = unc;
+    result(_, 3) = plau;
+    result(_, 4) = rplau;
+    colnames(result) = CharacterVector::create("bel", "disbel", "unc", "plau", "rplau");
+    
+    return Rcpp::List::create(
+      Rcpp::Named("tt") = tty,
+      Rcpp::Named("qq") = qq,
+      Rcpp::Named("W24") = W24,
+      Rcpp::Named("m") = m,
+      Rcpp::Named("belplau") = result
+    );
+  }
 }
 
 

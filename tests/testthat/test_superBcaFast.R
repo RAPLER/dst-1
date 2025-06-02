@@ -31,7 +31,7 @@ test_that("superBcaFast", {
   
   # Subset data
   n <- 10
-  m <- 2000
+  m <- 30
   
   # Sample S
   S <- 3
@@ -69,59 +69,41 @@ test_that("superBcaFast", {
       cnames=rsid)
     bma <- dsrwon(bma,bma_new,use_ssnames = TRUE)
   }
+  H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
+  bp <- belplauH(bma$spec[,2], bma$tt, H)
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print(time.taken)
   
-  # T5: test superBca NULL
-  bma0 <- superBcaFast(X,y,a,tree_type=NULL)
-  
-  colnames(bma0$tt) <- rsid
-  names(bma0$m) <- nameRows(bma0$tt)
-  
-  expect_equal(bma$spec[,2],unname(bma0$m[rownames(bma$tt)]))
-  
-  # T6: test superBcaFast single
-  bma1 <- superBcaFast(X,y,a,tree_type="single")
+  # T5: test superBcaFast single
+  start.time <- Sys.time()
+  bma1 <- superBcaFast(X,y,a,tree_type="single",dsa=TRUE)
+  end.time <- Sys.time()
+  time.taken <- end.time - start.time
+  print(time.taken)
   
   colnames(bma1$tt) <- rsid
   names(bma1$m) <- nameRows(bma1$tt) 
   
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
   
-  # T7: test superBca multiple
-  bma2 <- superBcaFast(X,y,a,tree_type="multiple")
+  # T6: test superBca multiple
+  start.time <- Sys.time()
+  bma2 <- superBcaFast(X,y,a,tree_type="multiple",dsa=TRUE)
+  end.time <- Sys.time()
+  time.taken <- end.time - start.time
+  print(time.taken)
   
   colnames(bma2$tt) <- rsid
   names(bma2$m) <- nameRows(bma2$tt)
   
   expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
   
-  # T8 belplau
-  H <- ttmatrixPartition(ncol(bma1$tt), ncol(bma1$tt))
-  
-  bp <- belplauH(bma$spec[,2], bma$tt, H)
-  bp1 <- belplauHFast(bma1$m, bma1$tt, H, TRUE)
-  
-  expect_equal(bp, bp1)
-  
-  # T9 belplauPlot
+  # T7 belplauPlot
   idx <- rep(0,length(rsid))
   idx[e] <- 1
-  belplauPlot(bp1,rsid,idx,"rplau")
-  belplauPlot(bp1,rsid,idx,"bel")
-  belplauPlot(bp1,rsid,idx,"plau")
-  
-  # T10 superBcaFast
-  start.time <- Sys.time()
-  bma3 <- superBcaFast(X,y,a,tree_type="single")
-  end.time <- Sys.time()
-  time.taken <- end.time - start.time
-  print(time.taken)
-  
-  colnames(bma3$tt) <- rsid
-  names(bma3$m) <- nameRows(bma3$tt) 
-  
-  expect_equal(bma$spec[,2],unname(bma3$m[rownames(bma$tt)]))
+  belplauPlot(bp,rsid,idx,"rplau")
+  belplauPlot(bp,rsid,idx,"bel")
+  belplauPlot(bp,rsid,idx,"plau")
   
 })

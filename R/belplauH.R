@@ -20,8 +20,8 @@
 #' rownames(hyp) <- nameRows(hyp)
 #' belplauH(MACC = x$spec[,2], W2 = x$tt, h = hyp)
 belplauH <-function(MACC, W2, h) {
-  print("compute belplau starts")
-  start.time <- Sys.time()
+  #print("compute belplau starts")
+  #start.time <- Sys.time()
   bel <- rep(0,nrow(h))
   disbel <- rep(0,nrow(h))
   pb <- progress_bar$new(
@@ -47,9 +47,9 @@ belplauH <-function(MACC, W2, h) {
   unc <- plau - bel
   z <- cbind(bel,disbel,unc,plau,rplau)
   rownames(z) <- rownames(h)
-  end.time <- Sys.time()
-  time.taken <- end.time - start.time
-  print("compute belplau finishes within")
-  print(time.taken)
+  #end.time <- Sys.time()
+  #time.taken <- end.time - start.time
+  #print("compute belplau finishes within")
+  #print(time.taken)
   return(z)
 }
