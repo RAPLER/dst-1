@@ -163,25 +163,22 @@ std::shared_ptr<TreeNode> updateTreeFastRecX(std::shared_ptr<TreeNode> node, con
 
 std::shared_ptr<TreeNode> buildTreeFastX(const std::vector<boost::dynamic_bitset<>>& bitsets,
                                          const Rcpp::NumericVector& q,
-                                         bool display_progress = false,
-                                         Rcpp::Nullable<Rcpp::IntegerVector> indices = R_NilValue) {
+                                         std::optional<std::vector<int>> indices = std::nullopt) {
   
   int n_rows = bitsets.size();
   
-  Rcpp::IntegerVector actual_indices;
-  if (indices.isNotNull()) {
-    actual_indices = indices.get();
+  std::vector<int> actual_indices;
+  
+  if (indices.has_value()) {
+    actual_indices = indices.value();
   } else {
-    actual_indices = Rcpp::seq(0, n_rows - 1);
+    actual_indices.resize(n_rows);
+    std::iota(actual_indices.begin(), actual_indices.end(), 0);
   }
   
   std::vector<int> depths(n_rows);
-  ETAProgressBar pb;
-  Progress p(n_rows, display_progress, pb);
-  
+
   for (int i = 0; i < n_rows; ++i) {
-    if (Progress::check_abort()) break;
-    p.increment();
     depths[i] = findLastX(bitsets[i]);  // Boost has find_last()
   }
   
@@ -255,6 +252,145 @@ Rcpp::NumericVector unravelTreeFastX(std::shared_ptr<TreeNode> tree_ptr) {
   
   return result;
 }
+
+// "multiple"
+
+std::vector<std::shared_ptr<TreeNode>> buildTreesFastX(const std::vector<boost::dynamic_bitset<>>& sets,
+                                                       const Rcpp::NumericVector& q,
+                                                       std::vector<int>& card_nodup) {
+  int n = sets.size();
+  std::vector<int> card(n);
+  
+  for (int i = 0; i < n; ++i) {
+    card[i] = sets[i].count();
+  }
+  
+  std::vector<int> sort_order(n);
+  std::iota(sort_order.begin(), sort_order.end(), 0);
+  std::sort(sort_order.begin(), sort_order.end(), [&](int a, int b) {
+    return card[a] < card[b];
+  });
+  
+  std::vector<int> card_sorted(n);
+  for (int i = 0; i < n; ++i) {
+    card_sorted[i] = card[sort_order[i]];
+  }
+  
+  std::unique_copy(card_sorted.begin(), card_sorted.end(), std::back_inserter(card_nodup));
+  
+  std::vector<std::shared_ptr<TreeNode>> trees(card_nodup.size(), nullptr);
+  
+  for (size_t i = 0; i < card_nodup.size(); ++i) {
+    int c = card_nodup[i];
+    std::vector<int> idx_vec;
+    
+    for (int j = 0; j < n; ++j) {
+      if (card[j] == c) idx_vec.push_back(j);
+    }
+    
+    std::vector<boost::dynamic_bitset<>> sub_sets;
+    Rcpp::IntegerVector indices(idx_vec.size());
+    
+    for (size_t k = 0; k < idx_vec.size(); ++k) {
+      sub_sets.push_back(sets[idx_vec[k]]);
+      indices[k] = idx_vec[k];
+    }
+    
+    std::vector<int> idx_std(indices.begin(), indices.end());
+    trees[i] = buildTreeFastX(sub_sets, q, idx_std);
+  }
+  
+  return trees;
+}
+
+
+Rcpp::NumericVector unravelTreesFastX(const std::vector<std::shared_ptr<TreeNode>>& trees) {
+  std::vector<std::pair<int, double>> values;
+  
+  for (const auto& root : trees) {
+    if (!root) continue;
+    
+    std::function<void(std::shared_ptr<TreeNode>)> traverse = [&](std::shared_ptr<TreeNode> node) {
+      if (!node) return;
+      
+      traverse(node->left);
+      
+      if (node->index >= 0 && !std::isnan(node->q)) {
+        values.emplace_back(node->index, node->q);
+      }
+      
+      traverse(node->right);
+      
+      if (node->empty_set) {
+        traverse(node->empty_set);
+      }
+    };
+    
+    traverse(root);
+  }
+  
+  std::sort(values.begin(), values.end(), [](const auto& a, const auto& b) {
+    return a.first < b.first;
+  });
+  
+  Rcpp::NumericVector result(values.size());
+  for (size_t i = 0; i < values.size(); ++i) {
+    result[i] = values[i].second;
+  }
+  
+  return result;
+}
+
+
+void updateTreesFastX(std::vector<std::shared_ptr<TreeNode>>& trees,
+                      const boost::dynamic_bitset<>& xx,
+                      const boost::dynamic_bitset<>& s,
+                      const std::vector<int>& card_nodup) {
+  
+  for (size_t t = 0; t < trees.size(); ++t) {
+    auto& root = trees[t];
+    if (!root) continue;
+    
+    std::function<std::shared_ptr<TreeNode>(std::shared_ptr<TreeNode>)> updateRec = [&](std::shared_ptr<TreeNode> node) -> std::shared_ptr<TreeNode> {
+      if (!node) return nullptr;
+      
+      if (node->q >= 0) {
+        const boost::dynamic_bitset<>& y = node->x;
+        int y_union_xx_card = (y | xx).count();
+        
+        for (size_t i = 0; i < card_nodup.size(); ++i) {
+          if (card_nodup[i] >= y_union_xx_card) {
+            for (size_t j = i; j < trees.size(); ++j) {
+              auto& target_root = trees[j];
+              if (!target_root) continue;
+              
+              auto e = supersetX(target_root, y | xx);
+              if (e) {
+                const boost::dynamic_bitset<>& z = e->x;
+                if (z != y && ((y | s) & z) == z) {
+                  node->q -= e->q;
+                }
+                goto NEXT_NODE;
+              }
+            }
+          }
+        }
+      }
+      
+      NEXT_NODE:
+        node->left = updateRec(node->left);
+      node->right = updateRec(node->right);
+      if (node->empty_set) {
+        node->empty_set = updateRec(node->empty_set);
+      }
+      
+      return node;
+    };
+    
+    updateRec(root);
+  }
+}
+
 
 //' superBcaFast is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
 //' @name superBcaFast
@@ -391,7 +527,7 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
   // Tree update logic
   NumericVector m;
   if (tree_type == "single") {
-    std::shared_ptr<TreeNode> tree = buildTreeFastX(ttylv, qq, false, R_NilValue);
+    std::shared_ptr<TreeNode> tree = buildTreeFastX(ttylv, qq, std::nullopt);
     
     Rcpp::Rcout << "Updating commonality tree using iota elements..." << std::endl;
     ETAProgressBar pb4;
@@ -413,6 +549,28 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
     m = unravelTreeFastX(tree);
   } else if (tree_type == "multiple") {
     // (To be implemented)
+    Rcpp::Rcout << "Updating commonality tree using iota elements..." << std::endl;
+    ETAProgressBar pb5;
+    Progress p5(n_cols, true, pb5);
+    
+    std::vector<int> card_nodup;
+    std::vector<std::shared_ptr<TreeNode>> trees = buildTreesFastX(ttylv, qq, card_nodup);
+    
+    for (int i = static_cast<int>(iota_bitsets.size()) - 1; i >= 0; --i) {
+      if (Progress::check_abort()) break;
+      p5.increment();
+      
+      const auto& xx = iota_bitsets[i];
+      boost::dynamic_bitset<> sup(n_cols);
+      for (int j = 0; j <= i; ++j) {
+        sup |= iota_bitsets[j];
+      }
+      
+      updateTreesFastX(trees, xx, sup, card_nodup);
+    }
+    
+    m = unravelTreesFastX(trees);
+    
   }
   
   // Convert iota_bitsets to arma::sp_mat

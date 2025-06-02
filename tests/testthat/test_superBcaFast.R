@@ -5,30 +5,26 @@ test_that("superBcaFast", {
   a <- 1e-3
   # test T1
   x <- matrix(c(0,1,1,1,1,0), nrow = 2, byrow = TRUE)
-  x <- methods::as(x, "RsparseMatrix")
-  
+
   y <- rep(1,1)
-  y <- methods::as(y, "RsparseMatrix")
-  
-  s1<-superBcaFast(x,y,a,tree_type = "single")
+
+  s1<-superBcaFast(x,y,a,tree_type = "multiple")
   
   # test T2
   x <- matrix(c(1,0,0,1,1,0), nrow = 2, byrow = TRUE)
-  x <- methods::as(x, "RsparseMatrix")
-  
+
   y <- c(0,1)
   
-  s2<-superBcaFast(x,y,a)
+  s2<-superBcaFast(x,y,a,tree_type = "single")
   
-  expect_equal(s1$m, s2$m,tree_type = "multiple")
+  expect_equal(s1$m, s2$m)
   
   # test T3
   x <- matrix(c(0,1,0,1,0,0), nrow = 2, byrow = TRUE)
-  x <- methods::as(x, "RsparseMatrix")
-  
+
   y <- rep(1,1)
   
-  s1<-superBcaFast(x,y,a,tree_type = "single")
+  s3<-superBcaFast(x,y,a,tree_type = "single")
   
   # T4
   # Test dsrwon with a generated binary matrix
@@ -86,7 +82,7 @@ test_that("superBcaFast", {
   expect_equal(bma$spec[,2],unname(bma0$m[rownames(bma$tt)]))
   
   # T6: test superBcaFast single
-  bma1 <- superBca(X,y,a,tree_type="single")
+  bma1 <- superBcaFast(X,y,a,tree_type="single")
   
   colnames(bma1$tt) <- rsid
   names(bma1$m) <- nameRows(bma1$tt) 
