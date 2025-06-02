@@ -604,6 +604,33 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
       Rcpp::Named("m") = m
     );
   } else {
+    Rcpp::Rcout << "Finding mass on the empty set" << std::endl;
+    double K = 0.0;
+    int empty_index = -1;
+    
+    for (size_t i = 0; i < ttylv.size(); ++i) {
+      if (ttylv[i].none()) {
+        K = m[i];
+        empty_index = static_cast<int>(i);
+        break;
+      }
+    }
+    
+    if (K > 0.0 && K < 1.0) {
+      Rcpp::Rcout << "Normalizing mass function: conflict mass K = " << K << ", applying m = m / (1 - K)" << std::endl;
+      for (size_t i = 0; i < m.size(); ++i) {
+        m[i] /= (1.0 - K);
+      }
+      if (empty_index >= 0) {
+        m[empty_index] = 0.0;  // 🧨 Reset empty set mass to zero!
+      }
+    } else if (K >= 1.0) {
+      Rcpp::Rcout << "Warning: total conflict mass K = " << K << ", normalization not possible (division by zero)" << std::endl;
+    } else {
+      Rcpp::Rcout << "No normalization needed: conflict mass K = " << K << std::endl;
+    }
+    
+    
     Rcpp::Rcout << "Computing belief/plausibility from mass function..." << std::endl;
     
     int M = n_cols;             // number of singleton hypotheses
@@ -615,11 +642,14 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
       double mi = m[i];
       
       for (int j = 0; j < M; ++j) {
-        if (!Wi[j]) {
-          disbel[j] += mi; // mass assigned to subset of complement of h_j
+        // Belief only from {j}
+        if (Wi.count() == 1 && Wi[j]) {
+          bel[j] += mi;
         }
-        if (Wi.none() || Wi[j]) {
-          bel[j] += mi; // mass assigned to subset of h_j
+        
+        // Disbelief from subsets of Theta \ {j} = sets not containing j
+        if (!Wi[j]) {
+          disbel[j] += mi;
         }
       }
     }

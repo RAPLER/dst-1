@@ -70,7 +70,7 @@ test_that("superBcaFast", {
     bma <- dsrwon(bma,bma_new,use_ssnames = TRUE)
   }
   H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
-  bp <- belplauH(bma$spec[,2], bma$tt, H)
+  bp <- belplau(bma, h=H)
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print(time.taken)
@@ -86,6 +86,7 @@ test_that("superBcaFast", {
   names(bma1$m) <- nameRows(bma1$tt) 
   
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
+  expect_equal(unname(bp),unname(bma1$belplau))
   
   # T6: test superBca multiple
   start.time <- Sys.time()
@@ -98,6 +99,7 @@ test_that("superBcaFast", {
   names(bma2$m) <- nameRows(bma2$tt)
   
   expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
+  expect_equal(unname(bp),unname(bma2$belplau))
   
   # T7 belplauPlot
   idx <- rep(0,length(rsid))
