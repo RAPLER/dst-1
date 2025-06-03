@@ -637,7 +637,7 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
    NumericVector bel(M, 0.0), disbel(M, 0.0);
    
    ETAProgressBar pb6;
-   Progress p6(iota_bitsets.size(), true, pb6);
+   Progress p6(N, true, pb6);
    
    for (int i = 0; i < N; ++i) {
      if (Progress::check_abort()) break;
