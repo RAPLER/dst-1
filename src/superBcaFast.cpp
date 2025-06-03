@@ -404,7 +404,6 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
                        bool flip = true,
                        std::string tree_type = "single",
                        bool dsa = false) {
- 
  arma::mat ttx = x_input;
  
  // Optional inversion of rows
@@ -637,7 +636,13 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
    int N = ttylv.size();       // number of focal elements
    NumericVector bel(M, 0.0), disbel(M, 0.0);
    
+   ETAProgressBar pb6;
+   Progress p6(iota_bitsets.size(), true, pb6);
+   
    for (int i = 0; i < N; ++i) {
+     if (Progress::check_abort()) break;
+     p6.increment();
+     
      const auto& Wi = ttylv[i];
      double mi = m[i];
      
