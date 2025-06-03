@@ -31,7 +31,7 @@ test_that("superBcaFast", {
   
   # Subset data
   n <- 10
-  m <- 30
+  m <- 100
   
   # Sample S
   S <- 3
