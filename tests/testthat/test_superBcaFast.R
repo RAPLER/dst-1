@@ -30,8 +30,8 @@ test_that("superBcaFast", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
-  m <- 100
+  n <- 30
+  m <- 30
   
   # Sample S
   S <- 3
@@ -70,6 +70,7 @@ test_that("superBcaFast", {
     bma <- dsrwon(bma,bma_new,use_ssnames = TRUE)
   }
   H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
+  bma <- nzdsr(bma)
   bp <- belplau(bma, h=H)
   end.time <- Sys.time()
   time.taken <- end.time - start.time
