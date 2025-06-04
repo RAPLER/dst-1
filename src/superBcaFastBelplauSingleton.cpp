@@ -346,7 +346,13 @@ Rcpp::List superBcaFastBelplauSingleton(const arma::mat& x_input,
  // Build tree from ttylv and qq
  std::shared_ptr<TreeNode> tree = buildTreeFastXX(ttylv, qq, std::nullopt);
  
+ ETAProgressBar pb3;
+ Progress p3(M, true, pb3);
+ 
  for (int j = 0; j < M; ++j) {
+   if (Progress::check_abort()) break;
+   p3.increment();
+   
    boost::dynamic_bitset<> sj(M);       // {j}
    sj.set(j);
    
