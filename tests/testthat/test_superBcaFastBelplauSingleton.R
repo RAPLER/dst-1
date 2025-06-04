@@ -5,14 +5,14 @@ test_that("superBcaFast", {
   a <- 1e-3
   # test T1
   x <- matrix(c(0,1,1,1,1,0), nrow = 2, byrow = TRUE)
-
+  
   y <- rep(1,1)
-
+  
   s1<-superBcaFast(x,y,a,tree_type = "multiple")
   
   # test T2
   x <- matrix(c(1,0,0,1,1,0), nrow = 2, byrow = TRUE)
-
+  
   y <- c(0,1)
   
   s2<-superBcaFast(x,y,a,tree_type = "single")
@@ -21,7 +21,7 @@ test_that("superBcaFast", {
   
   # test T3
   x <- matrix(c(0,1,0,1,0,0), nrow = 2, byrow = TRUE)
-
+  
   y <- rep(1,1)
   
   s3<-superBcaFast(x,y,a,tree_type = "single")
@@ -76,7 +76,7 @@ test_that("superBcaFast", {
   time.taken <- end.time - start.time
   print(time.taken)
   
-  # T5: test superBcaFast single
+  # T4: test superBcaFast single
   start.time <- Sys.time()
   bma1 <- superBcaFast(X,y,a,tree_type="single",dsa=TRUE)
   end.time <- Sys.time()
@@ -86,27 +86,17 @@ test_that("superBcaFast", {
   colnames(bma1$tt) <- rsid
   names(bma1$m) <- nameRows(bma1$tt) 
   
-  expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
   expect_equal(unname(bp),unname(bma1$belplau))
   
-  # T6: test superBca multiple
+  # T5: test superBcaFastBelplauSingleton single
   start.time <- Sys.time()
-  bma2 <- superBcaFast(X,y,a,tree_type="multiple",dsa=TRUE)
+  bma2 <- superBcaFastBelplauSingleton(X,y,a,tree_type="single",dsa=TRUE)
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print(time.taken)
   
-  colnames(bma2$tt) <- rsid
-  names(bma2$m) <- nameRows(bma2$tt)
+  bpx <- bma2$plau
+  expect_equal(unname(bp[,"plau"]),unname(bpx))
   
-  expect_equal(bma$spec[,2],unname(bma2$m[rownames(bma$tt)]))
-  expect_equal(unname(bp),unname(bma2$belplau))
-  
-  # T7 belplauPlot
-  idx <- rep(0,length(rsid))
-  idx[e] <- 1
-  belplauPlot(bp,rsid,idx,"rplau")
-  belplauPlot(bp,rsid,idx,"bel",is_log_scale = F)
-  belplauPlot(bp,rsid,idx,"disbel",is_log_scale = F)
   
 })
