@@ -610,7 +610,7 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
    for (size_t i = 0; i < ttylv.size(); ++i) {
      if (ttylv[i].none()) {
        K = m[i];
-       empty_index = static_cast<int>(i);
+       empty_index = i;
        break;
      }
    }
@@ -621,7 +621,7 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
        m[i] /= (1.0 - K);
      }
      if (empty_index >= 0) {
-       m[empty_index] = 0.0;  // 🧨 Reset empty set mass to zero!
+       m[empty_index] = 0;  // 🧨 Reset empty set mass to zero!
      }
    } else if (K >= 1.0) {
      Rcpp::Rcout << "Warning: total conflict mass K = " << K << ", normalization not possible (division by zero)" << std::endl;
@@ -678,7 +678,7 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
      Rcpp::Named("tt") = tty,
      Rcpp::Named("qq") = qq,
      Rcpp::Named("W24") = W24,
-     Rcpp::Named("empty_index") = empty_index,
+     Rcpp::Named("empty_index") = empty_index + 1, // vector index starts from 1 in R
      Rcpp::Named("con") = K,
      Rcpp::Named("m") = m,
      Rcpp::Named("belplau") = result

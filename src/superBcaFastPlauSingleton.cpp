@@ -236,12 +236,12 @@ std::vector<std::shared_ptr<TreeNode>> buildTreesFastXX(const std::vector<boost:
 
 
 
-//' superBcaFastBelplauSingleton is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
-//' @name superBcaFastBelplauSingleton
+//' superBcaFastPlauSingleton is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
+//' @name superBcaFastPlauSingleton
 //' @export
 
 // [[Rcpp::export]]
-Rcpp::List superBcaFastBelplauSingleton(const arma::mat& x_input,
+Rcpp::List superBcaFastPlauSingleton(const arma::mat& x_input,
                        const arma::vec& y,
                        double a,
                        int y0 = 0,

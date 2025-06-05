@@ -1,7 +1,7 @@
 # Tests "superBcaFast" function
 context("make a superBca")
 library(dst)
-test_that("superBcaFast", {
+test_that("superBcaFastPlauSingleton", {
   a <- 1e-3
   # test T1
   x <- matrix(c(0,1,1,1,1,0), nrow = 2, byrow = TRUE)
@@ -31,7 +31,7 @@ test_that("superBcaFast", {
   
   # Subset data
   n <- 20
-  m <- 30
+  m <- 100
   
   # Sample S
   S <- 3
@@ -64,7 +64,7 @@ test_that("superBcaFast", {
   
   for(i in 2:n) {
     print(i)
-    print(nzdsr(bma)$con)
+    #print(nzdsr(bma)$con)
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid)
@@ -87,17 +87,20 @@ test_that("superBcaFast", {
   colnames(bma1$tt) <- rsid
   names(bma1$m) <- nameRows(bma1$tt) 
   
+  expect_equal(bma$con,bma1$con)
   expect_equal(unname(bp),unname(bma1$belplau))
   
-  # T5: test superBcaFastBelplauSingleton single
+  # T5: test superBcaFastPlauSingleton single
   start.time <- Sys.time()
-  bma2 <- superBcaFastBelplauSingleton(X,y,a,tree_type="single",dsa=TRUE)
+  bma2 <- superBcaFastPlauSingleton(X,y,a,tree_type="single",dsa=TRUE)
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print(time.taken)
   
-  expect_equal(unname(bp[,"plau"]),unname(bma2$plau))
-  expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau))
+  colnames(bma1$tt) <- rsid
+  
+  expect_equal(unname(bp[,"plau"]),unname(bma2$plau)+bma1$con)
+  expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau)+bma1$con)
   
   
 })

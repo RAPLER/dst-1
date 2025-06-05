@@ -94,9 +94,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// superBcaFastBelplauSingleton
-Rcpp::List superBcaFastBelplauSingleton(const arma::mat& x_input, const arma::vec& y, double a, int y0, bool flip, std::string tree_type, bool dsa);
-RcppExport SEXP _dst_superBcaFastBelplauSingleton(SEXP x_inputSEXP, SEXP ySEXP, SEXP aSEXP, SEXP y0SEXP, SEXP flipSEXP, SEXP tree_typeSEXP, SEXP dsaSEXP) {
+// superBcaFastPlauSingleton
+Rcpp::List superBcaFastPlauSingleton(const arma::mat& x_input, const arma::vec& y, double a, int y0, bool flip, std::string tree_type, bool dsa);
+RcppExport SEXP _dst_superBcaFastPlauSingleton(SEXP x_inputSEXP, SEXP ySEXP, SEXP aSEXP, SEXP y0SEXP, SEXP flipSEXP, SEXP tree_typeSEXP, SEXP dsaSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -107,7 +107,7 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< bool >::type flip(flipSEXP);
     Rcpp::traits::input_parameter< std::string >::type tree_type(tree_typeSEXP);
     Rcpp::traits::input_parameter< bool >::type dsa(dsaSEXP);
-    rcpp_result_gen = Rcpp::wrap(superBcaFastBelplauSingleton(x_input, y, a, y0, flip, tree_type, dsa));
+    rcpp_result_gen = Rcpp::wrap(superBcaFastPlauSingleton(x_input, y, a, y0, flip, tree_type, dsa));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -227,7 +227,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},
     {"_dst_iotaSparse", (DL_FUNC) &_dst_iotaSparse, 2},
     {"_dst_superBcaFast", (DL_FUNC) &_dst_superBcaFast, 7},
-    {"_dst_superBcaFastBelplauSingleton", (DL_FUNC) &_dst_superBcaFastBelplauSingleton, 7},
+    {"_dst_superBcaFastPlauSingleton", (DL_FUNC) &_dst_superBcaFastPlauSingleton, 7},
     {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 4},
     {"_dst_updateTreeFast", (DL_FUNC) &_dst_updateTreeFast, 3},
     {"_dst_supersetFast", (DL_FUNC) &_dst_supersetFast, 2},

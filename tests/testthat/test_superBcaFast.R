@@ -30,7 +30,7 @@ test_that("superBcaFast", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
+  n <- 30
   m <- 30
   
   # Sample S
@@ -64,10 +64,11 @@ test_that("superBcaFast", {
   
   for(i in 2:n) {
     print(i)
+    #print(nzdsr(bma)$con)
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid)
-    bma <- dsrwon(bma,bma_new,use_ssnames = TRUE)
+    bma <- dsrwonLogsumexp(bma,bma_new,use_ssnames = TRUE)
   }
   H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
   bma <- nzdsr(bma)
@@ -86,6 +87,7 @@ test_that("superBcaFast", {
   colnames(bma1$tt) <- rsid
   names(bma1$m) <- nameRows(bma1$tt) 
   
+  expect_equal(bma$con,bma1$con)
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
   expect_equal(unname(bp),unname(bma1$belplau))
   
