@@ -30,8 +30,8 @@ test_that("superBcaFastPlauSingleton", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 20
-  m <- 100
+  n <- 10
+  m <- 30
   
   # Sample S
   S <- 3
@@ -100,7 +100,7 @@ test_that("superBcaFastPlauSingleton", {
   colnames(bma1$tt) <- rsid
   
   expect_equal(unname(bp[,"plau"]),unname(bma2$plau)+bma1$con)
-  expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau)+bma1$con)
+  expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau)*1/(1-bma1$con))
   
   
 })

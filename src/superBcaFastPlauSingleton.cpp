@@ -324,23 +324,9 @@ Rcpp::List superBcaFastPlauSingleton(const arma::mat& x_input,
    qq[i] = std::pow(1.0 - a, count_not_subsets);
  }
  
- size_t n_rows = ttylv.size();
- size_t n_cols = ttx.n_cols;
- 
- // Convert ttylv to arma::sp_mat
- arma::sp_mat tty(n_rows, n_cols);
- for (size_t i = 0; i < n_rows; ++i) {
-   const auto& bitset = ttylv[i];
-   for (size_t j = 0; j < n_cols; ++j) {
-     if (bitset[j]) {
-       tty(i, j) = 1.0;
-     }
-   }
- }
- 
  Rcpp::Rcout << "Computing plausibility from commonality function of singletons..." << std::endl;
  
- int M = n_cols;
+ int M = ttx.n_cols;
  NumericVector plau(M, 0.0);
  
  // Build tree from ttylv and qq
@@ -362,7 +348,6 @@ Rcpp::List superBcaFastPlauSingleton(const arma::mat& x_input,
  }
  
  return Rcpp::List::create(
-   Rcpp::Named("tt") = tty,
    Rcpp::Named("qq") = qq,
    Rcpp::Named("plau") = plau
  );
