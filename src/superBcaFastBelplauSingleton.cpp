@@ -338,7 +338,7 @@ Rcpp::List superBcaFastBelplauSingleton(const arma::mat& x_input,
    }
  }
  
- Rcpp::Rcout << "Computing belief/plausibility from commonality function using singleton optimization..." << std::endl;
+ Rcpp::Rcout << "Computing plausibility from commonality function of singletons..." << std::endl;
  
  int M = n_cols;
  NumericVector plau(M, 0.0);
@@ -358,9 +358,7 @@ Rcpp::List superBcaFastBelplauSingleton(const arma::mat& x_input,
    
    auto node_plau = supersetXX(tree, sj);
 
-   double c_sj = (node_plau) ? node_plau->q : 0.0;
-
-   plau[j] = c_sj;
+   plau[j] = node_plau->q;
  }
  
  return Rcpp::List::create(

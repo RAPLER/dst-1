@@ -30,7 +30,7 @@ test_that("superBcaFast", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 10
+  n <- 20
   m <- 30
   
   # Sample S
@@ -95,8 +95,8 @@ test_that("superBcaFast", {
   time.taken <- end.time - start.time
   print(time.taken)
   
-  bpx <- bma2$plau
-  expect_equal(unname(bp[,"plau"]),unname(bpx))
+  expect_equal(unname(bp[,"plau"]),unname(bma2$plau))
+  expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau))
   
   
 })
