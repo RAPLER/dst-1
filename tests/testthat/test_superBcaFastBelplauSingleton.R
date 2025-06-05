@@ -64,6 +64,7 @@ test_that("superBcaFast", {
   
   for(i in 2:n) {
     print(i)
+    print(nzdsr(bma)$con)
     bma_new <- bca(rbind(if (y[i]>0) X[i,1:m] >= 1 else
       (1-X[i,1:m]) >= 1,rep(1,m)), c(a,1-a),
       cnames=rsid)

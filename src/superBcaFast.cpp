@@ -678,6 +678,8 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
      Rcpp::Named("tt") = tty,
      Rcpp::Named("qq") = qq,
      Rcpp::Named("W24") = W24,
+     Rcpp::Named("empty_index") = empty_index,
+     Rcpp::Named("con") = K,
      Rcpp::Named("m") = m,
      Rcpp::Named("belplau") = result
    );
