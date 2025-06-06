@@ -407,10 +407,12 @@ Rcpp::List superBcaFast(const arma::mat& x_input,
  arma::mat ttx = x_input;
  
  // Optional inversion of rows
- for (size_t i = 0; i < y.n_elem; ++i) {
-   if (static_cast<int>(y(i)) == y0) {
-     for (size_t j = 0; j < ttx.n_cols; ++j) {
-       ttx(i, j) = 1.0 - ttx(i, j);
+ if (flip) {
+   for (size_t i = 0; i < y.n_elem; ++i) {
+     if (static_cast<int>(y(i)) == y0) {
+       for (size_t j = 0; j < ttx.n_cols; ++j) {
+         ttx(i, j) = 1.0 - ttx(i, j);
+       }
      }
    }
  }

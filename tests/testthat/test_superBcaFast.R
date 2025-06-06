@@ -30,7 +30,7 @@ test_that("superBcaFast", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 30
+  n <- 10
   m <- 30
   
   # Sample S
@@ -86,7 +86,9 @@ test_that("superBcaFast", {
   
   colnames(bma1$tt) <- rsid
   names(bma1$m) <- nameRows(bma1$tt) 
+  rownames(bma1$tt) <- nameRows(bma1$tt) 
   
+  expect_equal(bma$tt,as.matrix(bma1$tt)[rownames(bma$tt),])
   expect_equal(bma$con,bma1$con)
   expect_equal(bma$spec[,2],unname(bma1$m[rownames(bma$tt)]))
   expect_equal(unname(bp),unname(bma1$belplau))
