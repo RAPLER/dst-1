@@ -103,5 +103,7 @@ test_that("superBcaFastPlauSingleton", {
   expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau)*1/(1-bma1$con))
   expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau)*1/(1-bma1$con))
   
-  
+  # T6 test superBcaPlauSingleton
+  pl <- superBcaPlauSingleton(X,y,a)
+  expect_equal(pl,bma2$plau)
 })
