@@ -4,7 +4,7 @@
 \alias{superBcaPlauSingleton}
 \title{Fast combination of multiple simple support functions}
 \usage{
-superBcaPlauSingleton(x, y, a, y0 = 0, flip = TRUE)
+superBcaPlauSingleton(x, y, a, y0 = 0, flip = TRUE, normalize = TRUE)
 }
 \arguments{
 \item{x}{A binary matrix of simple support functions define on a same frame of discernment (Fod).}
@@ -16,9 +16,11 @@ superBcaPlauSingleton(x, y, a, y0 = 0, flip = TRUE)
 \item{y0}{A value used to check which rows of the matrix \code{x} are to be inverted. Set at 0 (FALSE).}
 
 \item{flip}{Parameter used when some rows of the table \code{x} need to be reversed. The default value is TRUE (check rows).}
+
+\item{normalize}{Parameter used when some rows of the vector \code{pl} need to be normalized. The default value is TRUE (check rows).}
 }
 \value{
-pl Plausibility vector (unnormalized)
+pl Plausibility vector
 }
 \description{
 Fast combination of multiple simple support functions

@@ -7,12 +7,13 @@
 #' @param a The mass value allotted to each simple support function. All support functions have the same mass. 
 #' @param y0 A value used to check which rows of the matrix \code{x} are to be inverted. Set at 0 (FALSE).
 #' @param flip Parameter used when some rows of the table \code{x} need to be reversed. The default value is TRUE (check rows).
-#' @return pl Plausibility vector (unnormalized)
+#' @param normalize Parameter used when some rows of the vector \code{pl} need to be normalized. The default value is TRUE (check rows).
+#' @return pl Plausibility vector
 #' @author Peiyuan Zhu
 #' @export
 #' @examples
 #' 1
-superBcaPlauSingleton <- function(x, y, a, y0=0, flip=TRUE) {
+superBcaPlauSingleton <- function(x, y, a, y0=0, flip=TRUE, normalize = TRUE) {
   if(flip) x[y==y0,] <- 1 - x[y==y0,]
   stopifnot(is.matrix(x), is.numeric(a), a >= 0, a <= 1)
   
@@ -23,7 +24,7 @@ superBcaPlauSingleton <- function(x, y, a, y0=0, flip=TRUE) {
   pl <- (1 - a)^exclude_counts
   
   # Normalize if needed (optional)
-  #pl <- pl / sum(pl)
+  if(normalize) pl <- pl / sum(pl)
   
   return(pl)
 }
