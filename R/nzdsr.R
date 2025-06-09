@@ -77,11 +77,8 @@ nzdsr<-function(x, sparse = "no", comm = "no") {
   mac<-x$spec[,2]
   nc=ncol(w1) 
   #
-  ## 2023-06-26 test reconstruct sort_order if missing
-  if (is.null(x$sort_order)) {
+  ## 2025-06-08 Reconstruct sort_order in any case
     x$sort_order<-order(apply(x$tt,1,sum))
-  }
-  # End 2023-06-26 Test
   #
   tri<-x$sort_order
   # 4. remove empty set and normalize masses
