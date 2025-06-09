@@ -42,6 +42,9 @@ addTobca <- function(x, tt, f) {
   if ((is.matrix(tt) ==FALSE) ) {
     stop("tt parameter must be a (0,1) or logical matrix.")
   }
+  if (isS4(x$tt) == TRUE) {
+    x$tt <- as.matrix(x$tt)
+  }
     if (ncol(x$tt) != ncol(tt)) {
     stop("Error in input arguments: number of columns of tt not equal to ncol(x$tt)") 
     }
