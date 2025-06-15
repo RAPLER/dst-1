@@ -74,7 +74,7 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
   #
   # check if m_empty present and if not 0
   if (sum((apply(xtest, 1, sum)) == 0) > 0) {
-    row_m_empty <- match(1:nrow(xtest), rownames(xtest) == "\u00f8")
+    row_m_empty <- match(1:nrow(xtest), apply(xtest, 1, sum) == 0)
     row_m_empty <- row_m_empty[1]
     if (!is.na(row_m_empty)) {
       if (x$spec[row_m_empty,2] > 0.000001) {

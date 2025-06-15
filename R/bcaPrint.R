@@ -50,7 +50,6 @@ bcaPrint <- function(x, remove = FALSE) {
     }
   }
   y <- as.data.frame(cbind(rownames(x$tt), x$spec))
-  colnames(y)[1] <- x$varnames[[1]]
   if (!is.null (x$qq) ) {
     message("Closure elements (with 0 mass) may have been added to the bca, since you use commonalities.")
   } else
