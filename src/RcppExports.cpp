@@ -94,23 +94,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// superBcaFastPlauSingleton
-Rcpp::List superBcaFastPlauSingleton(const arma::mat& x_input, const arma::vec& y, double a, int y0, bool flip, std::string tree_type, bool dsa);
-RcppExport SEXP _dst_superBcaFastPlauSingleton(SEXP x_inputSEXP, SEXP ySEXP, SEXP aSEXP, SEXP y0SEXP, SEXP flipSEXP, SEXP tree_typeSEXP, SEXP dsaSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< const arma::mat& >::type x_input(x_inputSEXP);
-    Rcpp::traits::input_parameter< const arma::vec& >::type y(ySEXP);
-    Rcpp::traits::input_parameter< double >::type a(aSEXP);
-    Rcpp::traits::input_parameter< int >::type y0(y0SEXP);
-    Rcpp::traits::input_parameter< bool >::type flip(flipSEXP);
-    Rcpp::traits::input_parameter< std::string >::type tree_type(tree_typeSEXP);
-    Rcpp::traits::input_parameter< bool >::type dsa(dsaSEXP);
-    rcpp_result_gen = Rcpp::wrap(superBcaFastPlauSingleton(x_input, y, a, y0, flip, tree_type, dsa));
-    return rcpp_result_gen;
-END_RCPP
-}
 // buildTreeFast
 SEXP buildTreeFast(const arma::sp_mat& tt, const Rcpp::NumericVector& q, bool display_progress, Rcpp::Nullable<Rcpp::IntegerVector> indices);
 RcppExport SEXP _dst_buildTreeFast(SEXP ttSEXP, SEXP qSEXP, SEXP display_progressSEXP, SEXP indicesSEXP) {
@@ -227,7 +210,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_dst_commSparse", (DL_FUNC) &_dst_commSparse, 4},
     {"_dst_iotaSparse", (DL_FUNC) &_dst_iotaSparse, 2},
     {"_dst_superBcaFast", (DL_FUNC) &_dst_superBcaFast, 7},
-    {"_dst_superBcaFastPlauSingleton", (DL_FUNC) &_dst_superBcaFastPlauSingleton, 7},
     {"_dst_buildTreeFast", (DL_FUNC) &_dst_buildTreeFast, 4},
     {"_dst_updateTreeFast", (DL_FUNC) &_dst_updateTreeFast, 3},
     {"_dst_supersetFast", (DL_FUNC) &_dst_supersetFast, 2},

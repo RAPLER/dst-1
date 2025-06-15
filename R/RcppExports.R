@@ -86,15 +86,6 @@ superBcaFast <- function(x_input, y, a, y0 = 0L, flip = TRUE, tree_type = "singl
     .Call(`_dst_superBcaFast`, x_input, y, a, y0, flip, tree_type, dsa)
 }
 
-#' superBcaFastPlauSingleton is a C++ algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
-#' @name superBcaFastPlauSingleton
-#' @export
-NULL
-
-superBcaFastPlauSingleton <- function(x_input, y, a, y0 = 0L, flip = TRUE, tree_type = "single", dsa = FALSE) {
-    .Call(`_dst_superBcaFastPlauSingleton`, x_input, y, a, y0, flip, tree_type, dsa)
-}
-
 #' TreeFast is an algorithm aimed to optimize the computation of multiple support functions defined on very large frames of discernment
 #' @name treeFast
 NULL
