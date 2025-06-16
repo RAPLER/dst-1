@@ -1,7 +1,7 @@
 # Tests "superBcaFast" function
 context("make a superBca")
 library(dst)
-test_that("superBcaFastPlauSingleton", {
+test_that("superBcaPlauSingleton", {
   a <- 1e-3
   # test T1
   x <- matrix(c(0,1,1,1,1,0), nrow = 2, byrow = TRUE)
@@ -72,7 +72,7 @@ test_that("superBcaFastPlauSingleton", {
   }
   H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
   bma <- nzdsr(bma)
-  bp <- belplau(bma, h=H)
+  pl <- as.numeric(pl[,"trplau"])
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print(time.taken)
@@ -90,20 +90,8 @@ test_that("superBcaFastPlauSingleton", {
   expect_equal(bma$con,bma1$con)
   expect_equal(unname(bp),unname(bma1$belplau))
   
-  # T5: test superBcaFastPlauSingleton single
-  start.time <- Sys.time()
-  bma2 <- superBcaFastPlauSingleton(X,y,a,tree_type="single",dsa=TRUE)
-  end.time <- Sys.time()
-  time.taken <- end.time - start.time
-  print(time.taken)
-  
-  colnames(bma1$tt) <- rsid
-  
-  expect_equal(unname(bp[,"plau"]),unname(bma2$plau)*1/(1-bma1$con))
-  expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau)*1/(1-bma1$con))
-  expect_equal(unname(bma1$belplau[,"plau"]),unname(bma2$plau)*1/(1-bma1$con))
-  
-  # T6 test superBcaPlauSingleton
-  pl <- superBcaPlauSingleton(X,y,a)
-  expect_equal(pl,bma2$plau)
+  # T5: test superBcaPlauSingleton
+  pl1 <- superBcaPlauSingleton(X,y,a)
+  expect_equal(pl,pl1)
+  expect_equal(pl,bma1$belplau[,"plau"]/sum(bma1$belplau[,"plau"]))
 })

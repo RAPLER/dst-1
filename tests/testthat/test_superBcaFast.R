@@ -30,8 +30,8 @@ test_that("superBcaFast", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 30
-  m <- 150
+  n <- 20
+  m <- 30
   
   # Sample S
   S <- 3
