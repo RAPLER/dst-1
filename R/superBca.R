@@ -22,7 +22,7 @@
 #' y <- matrix(c(TRUE, TRUE), ncol = 1 )
 #' a <- 0.9
 #' z <- superBca(x, y, a, tree_type="single")
-superBca<-function(x, y, a, y0=0, flip=TRUE, tree_type = "single") {
+superBca<-function(x, y, a, y0=0, flip=TRUE, tree_type = "single", cnames = NULL, varnames = NULL, valuenames = NULL, idvar = 1) {
   
   x <- methods::as(x, "RsparseMatrix")
   if(flip) x[y==y0,] <- 1 - x[y==y0,]
@@ -54,6 +54,19 @@ superBca<-function(x, y, a, y0=0, flip=TRUE, tree_type = "single") {
   
   # Output result
   z <- list("tt"=x_c, "qq"=qq, "m"=m)
+  
+  # Output result
+  # z <- list("tt"=x_c, "qq"=qq, "m"=m)
+  
+  # Build specification matrix spec
+  spec <- cbind((1:nrow(x_c)), m)
+  #colnames(spec) <- c("specnb", "mass")
+  #
+  infovar <- matrix(c(idvar, ncol(x_c)), ncol = 2)
+  z <-list(con = NULL, "tt"=x_c, "qq"=qq, "m"=m,  method = "emt-m", spec = spec , infovar = infovar, varnames = NULL, valuenames = NULL, ssnames = NULL, inforel = NULL) 
+  # end test
+  #
+  class(z) <- append(class(z), "bcaspec")
 
   return(z)
 }
