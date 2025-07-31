@@ -37,7 +37,7 @@
 #'  specrw <-  matrix(c(1,1,1,2,0.75,0.75,0.75,0.25), ncol = 2, 
 #'  dimnames = list(NULL, c("specnb", "mass")))
 #'   
-#'  # 3. Variables numbers and sizes
+#'  # 3. Variables Identification Numbers and sizes (put VIN in ascending order)
 #'  inforw <- matrix(c(4,5,2,2), ncol = 2, 
 #'  dimnames = list(NULL, c("varnb", "size")) )
 #' bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
@@ -73,6 +73,11 @@
   if ((is.matrix(infovar) ==FALSE) ) {
     stop("infovar parameter must be a 2 column numerical matrix with variables numbers in fist column and with sum of 2nd column = ncol(tt).")
   }
+  # verify that varaibles numbers are in ascending order
+  if ( sum(order(infovar[,1]) == 1:nrow(infovar) ) != nrow(infovar) ) {
+    stop("Error in tt matrix: Variables put side by side must be so that variable identification numbers of infovar parameter are in ascending order.") 
+  }
+  #
   if( (nrow(tt) != nrow(spec)) | (sum(infovar[,2]) != ncol(tt)) ){ 
     stop("Error in input arguments: check your input data.") 
   }

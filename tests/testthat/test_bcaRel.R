@@ -54,4 +54,14 @@ test_that("bcaRel", {
   inforvar <- matrix(c(1,3,3,3), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
   expect_error(bcaRel(tt = tt, spec = spec, infovar = inforvar, varnames = c(1, 3), relnb = 1), "Names of variables must start with a letter." ) 
   #
+  # T11. Variable identification numbers of infovar parameter must be in ascending order 
+  tt11 <- matrix(c(0,1,0,1,0,1,
+                   0,1,0,1,1,0,
+                   1,0,1,0,0,1,
+                   0,1,1,0,0,1,
+                   1,0,0,1,0,1,
+                   rep(1,6)), ncol = 6, byrow = TRUE, dimnames = list(NULL,c("a1no", "a1yes", "a2no", "a2yes", "bno", "byes")))
+  spec <- matrix(c(rep(1,5),2,rep(0.9,5),0.1), nrow = 6, ncol = 2)
+  infovar <- matrix(c(3,1,2,2,2,2), nrow = 3, ncol = 2, dimnames = list(NULL, c("varnb", "size") ) ) 
+  expect_error(bcaRel(tt = tt11, spec = spec, infovar = infovar, varnames = c("a1","a2", "b"), relnb = 1), "Error in tt matrix: Variables put side by side must be so that variable identification numbers of infovar parameter are in ascending order." ) 
 })

@@ -62,7 +62,7 @@ This function is used to represent a relation between two or more variables in t
  specrw <-  matrix(c(1,1,1,2,0.75,0.75,0.75,0.25), ncol = 2, 
  dimnames = list(NULL, c("specnb", "mass")))
   
- # 3. Variables numbers and sizes
+ # 3. Variables Identification Numbers and sizes (put VIN in ascending order)
  inforw <- matrix(c(4,5,2,2), ncol = 2, 
  dimnames = list(NULL, c("varnb", "size")) )
 bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
