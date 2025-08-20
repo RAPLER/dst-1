@@ -23,7 +23,7 @@ tt_SSMa1 <- matrix(c(1,0,0,1,1,1), nrow = 2 + 1, ncol = 2, byrow = TRUE)
 m_DSMa1 <- matrix(c(0.95,0.05,0), nrow = 2 + 1, ncol = 1)
 cnames_SSMa1 <- c("a1 is y", "a1 is n")
 varnames_SSMa1 <- "a1"
-idvar_SSMa1 <- 1
+idvar_SSMa1 <- 15
 DSMa1 <- bca(tt_SSMa1, m_DSMa1, cnames = cnames_SSMa1, idvar = idvar_SSMa1, varnames = varnames_SSMa1)
 bcaPrint(DSMa1)
 ```
@@ -33,7 +33,7 @@ tt_SSMa2 <- matrix(c(1,0,0,1,1,1), nrow = 2 + 1, ncol = 2, byrow = TRUE)
 m_DSMa2 <- matrix(c(0.01,0.99,0), nrow = 2 + 1, ncol = 1)
 cnames_SSMa2 <- c("a2 is y", "a2 is n") 
 varnames_SSMa2 <- "a2"
-idvar_SSMa2 <- 2
+idvar_SSMa2 <- 20
 DSMa2 <- bca(tt_SSMa2, m_DSMa2, cnames = cnames_SSMa2, idvar = idvar_SSMa2, varnames = varnames_SSMa2)
 bcaPrint(DSMa2)
 ```
@@ -43,7 +43,7 @@ tt_SSMalarm <- matrix(c(1,0,1,1), nrow = 1 + 1, ncol = 2, byrow = TRUE)
 m_DSMalarm <- matrix(c(1,0), nrow = 1 + 1, ncol = 1)
 cnames_SSMalarm <- c("alarm is y", "alarm is n") 
 varnames_SSMalarm <- "alarm"
-idvar_SSMalarm <- 3
+idvar_SSMalarm <- 30
 DSMalarm <- bca(tt_SSMalarm, m_DSMalarm, cnames = cnames_SSMalarm, idvar = idvar_SSMalarm, varnames = varnames_SSMalarm)
 bcaPrint(DSMalarm)
 ```
@@ -53,7 +53,7 @@ tt_SSMburglary <- matrix(c(1,1), nrow = 1, ncol = 2, byrow = TRUE)
 m_DSMburglary <- matrix(c(1), nrow = 1, ncol = 1)
 cnames_SSMburglary <- c("burglary is y", "burglary is n") 
 varnames_SSMburglary <- "burglary"
-idvar_SSMburglary <- 4
+idvar_SSMburglary <- 10
 DSMburglary <- bca(tt_SSMburglary, m_DSMburglary, cnames_SSMburglary, idvar = idvar_SSMburglary, varnames = varnames_SSMburglary)
 bcaPrint(DSMburglary)
 ```
@@ -69,7 +69,7 @@ tt_SSMR1 <- matrix(c(0,1,0,1,0,1,
                      1,1,1,1,1,1), nrow = 7 + 1, ncol = 6, byrow = TRUE, dimnames = list(NULL, c("burglary is y", "burglary is n", "a1 is y", "a1 is n", "alarm is y", "alarm is n")))
 spec_DSMR1 <- matrix(c(1,1,1,1,1,1,1,2,
                        1,1,1,1,1,1,1,0), nrow = 7 + 1, ncol = 2)
-infovar_SSMR1 <- matrix(c(4,1,3,2,2,2), nrow = 3, ncol = 2)
+infovar_SSMR1 <- matrix(c(10,15,30,2,2,2), nrow = 3, ncol = 2)
 varnames_SSMR1 <- c("burglary", "a1", "alarm")
 relnb_SSMR1 <- 1
 DSMR1 <- bcaRel(tt_SSMR1, spec_DSMR1, infovar_SSMR1, varnames_SSMR1, relnb_SSMR1)
@@ -82,7 +82,7 @@ tt_SSMR2 <- matrix(c(0,1,0,1,
                      1,0,1,0,
                      1,1,1,1), nrow = 3 + 1, ncol = 4, byrow = TRUE, dimnames = list(NULL, c("a2 is y", "a2 is n", "alarm is y", "alarm is n")))
 spec_DSMR2 <- matrix(c(1,1,1,2,1,1,1,0), nrow = 3 + 1, ncol = 2)
-infovar_SSMR2 <- matrix(c(2,3,2,2), nrow = 2, ncol = 2)
+infovar_SSMR2 <- matrix(c(20,30,2,2), nrow = 2, ncol = 2)
 varnames_SSMR2 <- c("a2", "alarm")
 relnb_SSMR2 <- 2
 DSMR2 <- bcaRel(tt_SSMR2, spec_DSMR2, infovar_SSMR2, varnames_SSMR2, relnb_SSMR2)
@@ -99,7 +99,7 @@ tt_SSMR3 <- matrix(c(0,1,0,1,0,1,
                      1,0,1,0,1,0,
                      1,1,1,1,1,1), nrow = 7 + 1, ncol = 6, byrow = TRUE, dimnames = list(NULL, c("burglary is y", "burglary is n", "a2 is y", "a2 is n", "alarm is y", "alarm is n")))
 spec_DSMR3 <- matrix(c(1,1,1,1,1,1,1,2,1,1,1,1,1,1,1,0), nrow = 7 + 1, ncol = 2)
-infovar_SSMR3 <- matrix(c(4,2,3,2,2,2), nrow = 3, ncol = 2)
+infovar_SSMR3 <- matrix(c(10,20,30,2,2,2), nrow = 3, ncol = 2)
 varnames_SSMR3 <- c("burglary", "a2", "alarm")
 relnb_SSMR3 <- 3
 DSMR3 <- bcaRel(tt_SSMR3, spec_DSMR3, infovar_SSMR3, varnames_SSMR3, relnb_SSMR3)
@@ -114,7 +114,7 @@ DSMa1_uproj <- extmin(DSMa1, DSMR1)
 DSMalarm_uproj <- extmin(DSMalarm, DSMR1)
 DSM1 <- dsrwon(DSMa1_uproj, DSMR1)
 DSM1 <- dsrwon(DSMalarm_uproj, DSM1)
-DSM1_dproj <- elim(DSM1, 1)
+DSM1_dproj <- elim(DSM1, 15)
 bcaPrint(DSM1_dproj)
 ```
 
@@ -130,7 +130,7 @@ bcaPrint(DSM2)
 # combine DSM2 and DSMR3 to eliminate to eliminate a2 and get DSM4
 DSM2_uproj <- extmin(DSM2, DSMR3)
 DSM4 <- dsrwon(DSM2_uproj, DSMR3)
-DSM4_dproj <- elim(DSM4, 2)
+DSM4_dproj <- elim(DSM4, 20)
 bcaPrint(DSM4_dproj)
 ```
 
@@ -140,7 +140,7 @@ DSM5 <- dsrwon(DSM4_dproj, DSM1_dproj)
 bcaPrint(DSM4_dproj)
 bcaPrint(DSM1_dproj)
 bcaPrint(DSM5)
-DSM5_dproj <- elim(DSM5, 3)
+DSM5_dproj <- elim(DSM5, 30)
 ```
 
 ```{r}
