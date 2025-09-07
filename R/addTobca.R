@@ -23,7 +23,7 @@
 addTobca <- function(x, tt, f) {
   #
   # Local variables: zt1, zt2, tt1 
-  # Functions calls: dotprod, reduction 
+  # Functions calls: dotprod
   #
   # 0. Catch old parameters names, if any and replace by the new ones
   #
@@ -53,7 +53,7 @@ addTobca <- function(x, tt, f) {
   # 2.1 Check for replicates 
   #
   zt1 <- dotprod(tt, t(x$tt), g = "&", f = "==")
-  zt2 <- apply(zt1, MARGIN = 1, FUN = "reduction", f = "|")
+  zt2 <- apply(zt1, MARGIN = 1, FUN = "Reduce", f = "|")
   tt1 <- tt[!zt2,]
   if (is.matrix(tt1) == FALSE) {
     tt1 <- matrix(tt1,ncol = length(tt1), dimnames = list(NULL, names(tt1)))
