@@ -27,7 +27,7 @@
 elim <- function(rel, xnb) {
   #
   # Local variables: size_vars, nbvar, size_vars_inv, varnb, varnb_inv, varRank, dim_to_keep, n, m, itab, fun3, proj, var_to_keep, varRank_to_keep, z2, w1, I12, m1, idnames
-  # Functions calls: matrixToMarray, reduction, marrayToMatrix, dotprod, bca
+  # Functions calls: matrixToMarray, marrayToMatrix, dotprod, bca
   #
   # 1. Checks and Some working vars
   #
@@ -55,7 +55,7 @@ elim <- function(rel, xnb) {
   n <- nrow(rel$tt)
   m <- as.vector(unlist(rel$spec[,2]) )   # extract mass vector
   itab <- matrixToMarray(rel$tt, valuenames = rel$valuenames)
-  fun3 <- function(x, oper) {reduction(x, f=oper)} # projection
+  fun3 <- function(x, oper) {Reduce(x, f=oper)} # projection
   proj <- apply(itab, c(dim_to_keep,(1+nbvar)), FUN= fun3, oper= "|")
   #
   # 3. transform projection array to tt matrix
