@@ -22,7 +22,7 @@
 bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
   #
   # Local variables: zdata, in_ztgo, ztgo, zl, ztgo_or, zz, x1, tr_x, 
-  # Functions calls: reduction, bca, dsrwon
+  # Functions calls: bca, dsrwon
   #
   ## 1. Checks
   # 1.1. class bcaspec
@@ -89,7 +89,7 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
       zb <- t(as.matrix(zb))
     }
     # disjunction of subsets of ztgo
-    ztgo_or=apply(zb, 2, FUN= function(zb) {reduction(zb, f="|") } ) 
+    ztgo_or=apply(zb, 2, FUN= function(zb) {Reduce(x=zb, f="|") } ) 
     #
     # 2.3 construct new tt matrix and new mass vestor
     #
