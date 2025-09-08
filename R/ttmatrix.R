@@ -46,7 +46,7 @@ ttmatrix <- function(x, sparse = "no") {
     ttmat <- methods::as(ttmat, "RsparseMatrix")
   } else if(sparse=="no") {
     z1l <- lapply(X = 1:length(x), FUN = function(X) {outer(x[[X]], x[[length(x)]], "==") } ) 
-    ttmat <- t(mapply(FUN= function(X,Y) {unlist(lapply(X=1:ncol(z1l[[length(z1l)]]), FUN =  function(X) { reduction(z1l[[Y]][,X], f = "|")}) ) }, Y=1:length(x) ) )
+    ttmat <- t(mapply(FUN= function(X,Y) {unlist(lapply(X=1:ncol(z1l[[length(z1l)]]), FUN =  function(X) { Reduce(z1l[[Y]][,X], f = "|")}) ) }, Y=1:length(x) ) )
   } else {
     stop("sparse can either be \"yes\" or \"no\" ")
   }
