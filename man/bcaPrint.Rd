@@ -2,9 +2,12 @@
 % Please edit documentation in R/bcaPrint.R
 \name{bcaPrint}
 \alias{bcaPrint}
+\alias{simpleDSMPrint}
 \title{Simple printing of the \code{tt} matrix and mass values of a basic chance assignment (bca)}
 \usage{
 bcaPrint(x, remove = FALSE)
+
+simpleDSMPrint(x, remove = FALSE)
 }
 \arguments{
 \item{x}{A list of class bcaspec.}
@@ -12,6 +15,8 @@ bcaPrint(x, remove = FALSE)
 \item{remove}{Default = FALSE. Put = TRUE to exclude subsets with zero mass.}
 }
 \value{
+A table of subsets with their associated mass. Subsets are identified by row names.
+
 A table of subsets with their associated mass. Subsets are identified by row names.
 }
 \description{
