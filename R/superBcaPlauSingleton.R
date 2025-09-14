@@ -7,8 +7,8 @@
 #' @param a The mass value allotted to each simple support function. All support functions have the same mass. 
 #' @param y0 A value used to check which rows of the matrix \code{x} are to be inverted. Set at 0 (FALSE).
 #' @param flip Parameter used when some rows of the table \code{x} need to be reversed. The default value is TRUE (check rows).
-#' @param normalize Parameter used when some rows of the vector \code{pl} need to be normalized. The default value is TRUE (check rows).
-#' @return pl Plausibility vector
+#' @param normalize Parameter used if plausibility values \code{pl} are wanted instead of probability distribution. The default value is TRUE (probability distribution of the singletons).
+#' @return pl Plausibility vector (normalize = FALSE) or probability distribution (default)
 #' @author Peiyuan Zhu
 #' @export
 #' @examples

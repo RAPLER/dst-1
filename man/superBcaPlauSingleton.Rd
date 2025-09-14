@@ -17,10 +17,10 @@ superBcaPlauSingleton(x, y, a, y0 = 0, flip = TRUE, normalize = TRUE)
 
 \item{flip}{Parameter used when some rows of the table \code{x} need to be reversed. The default value is TRUE (check rows).}
 
-\item{normalize}{Parameter used when some rows of the vector \code{pl} need to be normalized. The default value is TRUE (check rows).}
+\item{normalize}{Parameter used if plausibility values \code{pl} are wanted instead of probability distribution. The default value is TRUE (probability distribution of the singletons).}
 }
 \value{
-pl Plausibility vector
+pl Plausibility vector (normalize = FALSE) or probability distribution (default)
 }
 \description{
 Fast combination of multiple simple support functions
