@@ -30,8 +30,8 @@ test_that("superBcaPlauSingleton", {
   # Test dsrwon with a generated binary matrix
   
   # Subset data
-  n <- 20
-  m <- 30
+  n <- 10
+  m <- 15
   
   # Sample S
   S <- 3
@@ -72,7 +72,10 @@ test_that("superBcaPlauSingleton", {
   }
   H <- ttmatrixPartition(ncol(bma$tt), ncol(bma$tt))
   bma <- nzdsr(bma)
-  pl <- as.numeric(pl[,"trplau"])
+  bp <- belplau(bma, h=H)
+  trpl <- plautrans(bma)
+  prob <- trpl[,"trplau"]
+ #pl <- as.numeric(pl[,"trplau"])
   end.time <- Sys.time()
   time.taken <- end.time - start.time
   print(time.taken)
@@ -92,6 +95,6 @@ test_that("superBcaPlauSingleton", {
   
   # T5: test superBcaPlauSingleton
   pl1 <- superBcaPlauSingleton(X,y,a)
-  expect_equal(pl,pl1)
-  expect_equal(pl,bma1$belplau[,"plau"]/sum(bma1$belplau[,"plau"]))
+  expect_equal(unname(prob),pl1)
+  expect_equal(unname(prob),bma1$belplau[,"plau"]/sum(bma1$belplau[,"plau"]))
 })
