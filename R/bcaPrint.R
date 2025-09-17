@@ -22,7 +22,7 @@
 #' cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
 #'  bcaPrint(x)
 bcaPrint <- function(x, remove = FALSE) {
-  .Deprecated("simpleDSMPrint")
+  .Deprecated("simpleDSMPrint", msg = " simpleDSMPrint is the new name of function bcaPrint. ", old = "bcaPrint")
   #
   # Local variables: y 
   # Functions calls: None
