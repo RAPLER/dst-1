@@ -2,6 +2,7 @@
 #'
 #' This utility function does a simple printing of a bca
 #' 
+#' @aliases bcaPrint
 #' @param x A list of class bcaspec.
 #' @param remove Default = FALSE. Put = TRUE to exclude subsets with zero mass.
 #' @return A table of subsets with their associated mass. Subsets are identified by row names.
@@ -12,6 +13,7 @@
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), idvar = 1)
 #' bcaPrint(z)
+#' simpleDSMPrint(z)
 #' y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6,0.4), include_all = TRUE,
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
@@ -21,7 +23,7 @@
 #' byrow = TRUE), m = c(0.2,0.5, 0.3),
 #' cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
 #'  bcaPrint(x)
-bcaPrint <- function(x, remove = FALSE) {
+ simpleDSMPrint <- function(x, remove = FALSE) {
   .Deprecated("simpleDSMPrint", msg = " simpleDSMPrint is the new name for the bcaPrint function. ", old = "bcaPrint")
   #
   # Local variables: y 
@@ -67,4 +69,4 @@ bcaPrint <- function(x, remove = FALSE) {
 #' @author Claude Boivin
 #' @export
 #' @rdname bcaPrint
-simpleDSMPrint <- bcaPrint
+bcaPrint <- simpleDSMPrint
