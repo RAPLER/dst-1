@@ -13,6 +13,8 @@
 #' @param is_factor = FALSE Whether to plot all x labels
 #' @return a plot of a column of the belplau matrix or a numerical vector quantifying order of importance of the elements of the frame
 #' @author Peiyuan Zhu
+#' @importFrom dplyr mutate
+#' @importFrom tidyr %>%
 #' @importFrom rlang := sym
 #' @importFrom stats reorder quantile
 #' @importFrom ggplot2 ggplot geom_point aes labs theme_bw ylab
