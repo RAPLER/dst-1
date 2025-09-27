@@ -1,6 +1,6 @@
-#' Simple printing of the \code{tt} matrix and mass values of a basic chance assignment (bca)
+#' Simple printing of the \code{tt} matrix and mass values of a Dempster-Shafer Model
 #'
-#' This utility function does a simple printing of a bca
+#' This utility function does a simple printing of a DSM  (basic chance assignment).
 #' 
 #' @aliases bcaPrint
 #' @param x A list of class bcaspec.
@@ -12,19 +12,18 @@
 #' z <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), idvar = 1)
-#' bcaPrint(z)
-#' simpleDSMPrint(z)
+#' DSMprint(z)
 #' y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6,0.4), include_all = TRUE,
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
-#'  bcaPrint(y)
-#'  bcaPrint(y, remove = TRUE)
+#' DSMprint(y)
+#' DSMprint(y, remove = TRUE)
 #' x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3),
 #' cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
-#'  bcaPrint(x)
- simpleDSMPrint <- function(x, remove = FALSE) {
-  .Deprecated("simpleDSMPrint", msg = " simpleDSMPrint is the new name for the bcaPrint function. ", old = "bcaPrint")
+#' DSMprint(x)
+ DSMprint <- function(x, remove = FALSE) {
+  .Deprecated("DSMprint", msg = "DSMprint is the new function name for the bcaPrint function.", old = "bcaPrint")
   #
   # Local variables: y 
   # Functions calls: None
@@ -62,11 +61,11 @@
   rownames(y) <- NULL
   print(y)
 }
-#' simpleDSMPrint is  the new function name of function bcaPrint
+#' DSMprint is  the new function name of function bcaPrint
 #' #' @param x A list of class bcaspec.
 #' @param remove Default = FALSE. Put = TRUE to exclude subsets with zero mass.
 #' @return A table of subsets with their associated mass. Subsets are identified by row names.
 #' @author Claude Boivin
 #' @export
 #' @rdname bcaPrint
-bcaPrint <- simpleDSMPrint
+bcaPrint <- DSMprint
