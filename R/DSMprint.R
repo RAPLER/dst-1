@@ -61,11 +61,6 @@
   rownames(y) <- NULL
   print(y)
 }
-#' DSMprint is  the new function name of function bcaPrint
-#' #' @param x A list of class bcaspec.
-#' @param remove Default = FALSE. Put = TRUE to exclude subsets with zero mass.
-#' @return A table of subsets with their associated mass. Subsets are identified by row names.
-#' @author Claude Boivin
-#' @export
 #' @rdname bcaPrint
+#' @export
 bcaPrint <- DSMprint
