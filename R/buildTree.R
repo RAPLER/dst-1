@@ -2,7 +2,8 @@
 #' 
 #' @details A tree structure of commonalities is built from the binary matrix \code{tt}. This tree structure can then be used with large frames of discernment to optimize the combination of support functions.
 #' @param  tt A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the Frame of Discernment (FoD).
-#' @param  q Commonality values of the \code{tt} matrix.
+#' @param  qq Commonality values of the \code{tt} matrix.
+#' @param indices TO BE DOCUMENTED
 #' @return tree The tree structure.
 #' @author  Peiyuan Zhu
 #' @import methods bit

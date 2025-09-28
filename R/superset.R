@@ -1,5 +1,7 @@
 #' Find the q value of the smallest superset of a vector
 #' 
+#' @param node TO BE DOCUUMENTED
+#' @param w TO BE DOCUUMENTED
 superset<-function(node,w) {
   if(is.null(node)) {
     return(NULL)

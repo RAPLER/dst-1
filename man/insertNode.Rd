@@ -7,17 +7,16 @@
 insertNode(node1, node2)
 }
 \arguments{
+\item{node1}{TO BE DOCUUMENTED}
+
 \item{node2}{An existing tree structure}
-
-\item{x}{a boolean or binary vector coerced to bit vector.}
-
-\item{q}{a commonnality value associated to \code{x}.}
 }
 \value{
 The tree augmented structure.
 }
 \description{
-Insert bit vector and value into a node
+node1$x is a boolean or binary vector coerced to bit vector. 
+node1$q is a commonnality value associated to \code{x}.
 }
 \details{
 # TO DO

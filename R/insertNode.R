@@ -1,8 +1,9 @@
 #' Insert bit vector and value into a node
 #' 
+#' node1$x is a boolean or binary vector coerced to bit vector. 
+#' node1$q is a commonnality value associated to \code{x}.
 #' @details # TO DO
-#' @param  x a boolean or binary vector coerced to bit vector. 
-#' @param  q a commonnality value associated to \code{x}.
+#' @param node1 TO BE DOCUUMENTED
 #' @param node2 An existing tree structure
 #' @return The tree augmented structure.
 #' @author  Peiyuan Zhu

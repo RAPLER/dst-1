@@ -10,6 +10,8 @@ createNode(x, q, index = NULL)
 \item{x}{A boolean or binary vector coerced to bit vector.}
 
 \item{q}{A commonnality value associated to \code{x}.}
+
+\item{index}{TO BE DOCUMMENTED.}
 }
 \value{
 A list of length 5 containing the following components:  \itemize{

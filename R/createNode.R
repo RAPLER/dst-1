@@ -3,6 +3,7 @@
 #' @details Depth equals the greatest index corresponding to 1 in the bit vector \code{x}.
 #' @param  x A boolean or binary vector coerced to bit vector. 
 #' @param  q A commonnality value associated to \code{x}.
+#' @param index TO BE DOCUMMENTED.
 #' @return A list of length 5 containing the following components:  \itemize{
 #' \item x The binary table.
 #' \item q The commonalities.

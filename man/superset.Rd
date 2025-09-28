@@ -6,6 +6,11 @@
 \usage{
 superset(node, w)
 }
+\arguments{
+\item{node}{TO BE DOCUUMENTED}
+
+\item{w}{TO BE DOCUUMENTED}
+}
 \description{
 Find the q value of the smallest superset of a vector
 }

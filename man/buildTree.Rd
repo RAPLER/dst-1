@@ -9,7 +9,9 @@ buildTree(tt, qq, indices = NULL)
 \arguments{
 \item{tt}{A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the Frame of Discernment (FoD).}
 
-\item{q}{Commonality values of the \code{tt} matrix.}
+\item{qq}{Commonality values of the \code{tt} matrix.}
+
+\item{indices}{TO BE DOCUMENTED}
 }
 \value{
 tree The tree structure.
