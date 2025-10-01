@@ -13,13 +13,13 @@ ttmatrixFromQQ(qq, n, cnames, sparse = "no")
 
 \item{cnames}{A character vector containing the names of the elements of the frame of discernment}
 
-\item{sprase}{= c("yes","no") whether to use sparse matrix. Default = "no".}
+\item{sparse}{= c("yes","no") whether to use sparse matrix. Default = "no".}
 }
 \value{
 tt A corresponding logical description matrix
 }
 \description{
-Construct a description matrix from a qq vector
+This utility function is called when we need to reconstruct a tt matrix, e.g. to print a DSM.
 }
 \examples{
 tt<- t(matrix(c(1,0,1,1),ncol = 2))

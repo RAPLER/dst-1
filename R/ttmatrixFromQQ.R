@@ -1,9 +1,10 @@
 #' Construct a description matrix from a qq vector
 #' 
+#' This utility function is called when we need to reconstruct a tt matrix, e.g. to print a DSM.
 #' @param qq Commonality function
 #' @param n Dimension of the frame
 #' @param cnames A character vector containing the names of the elements of the frame of discernment
-#' @param sprase = c("yes","no") whether to use sparse matrix. Default = "no".
+#' @param sparse = c("yes","no") whether to use sparse matrix. Default = "no".
 #' @return tt A corresponding logical description matrix 
 #' @author Peiyuan Zhu
 #' @export
