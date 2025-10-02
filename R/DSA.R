@@ -1,4 +1,4 @@
-#' Calculation of the degrees of Belief and Plausibility of a basic chance assignment (bca).
+#' Calculation of the degrees of Belief and Plausibility of a Dempster-Shafer Model (basic chance assignment, bca).
 #'
 #'Degrees of Belief \code{Bel} and Plausibility \code{Pl} of the focal elements of a bca are computed. The ratio of the plausibility of a focal element against the plausibility of its contrary is also computed. Subsets with zero mass can be excluded from the calculations.\cr
 #' @details The degree of belief \code{Bel} is defined by: \cr
@@ -6,6 +6,7 @@
 #' The degree of plausibility \code{pl} is defined by: \cr
 #' \deqn{pl(A) = Sum[(m(B); B \cap A \neq \emptyset]}{pl(A) = Sum[(m(B); (B & A) not empty]} for every subset \code{B} of the frame of discernment. \cr
 #' The plausibility ratio of a focal element \code{A} versus its contrary \code{not A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
+#' @aliases belplau
 #' @param x A basic chance assignment mass function (see \code{\link{bca}}).
 #' @param remove = TRUE: Exclude subsets with zero mass.
 #' @param h = NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}
@@ -39,11 +40,12 @@
 #' belplau(xy1, remove = TRUE) 
 #' belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
 #' 
-belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
+DSA <-function (x, remove = FALSE, h = NULL, method = NULL) {
   #
   # Local variables:  xtest, row_m_empty, MACC, W2, INUL, MACC, W2)
   # Functions calls: belplauH, nameRows, ttmatrix
   #
+  .Deprecated("DSA", msg = "DSA is the new function name for the belplau function.", old = "belplau")
   # 1. Checking input data 
   #
   if ( inherits(x, "bcaspec") == FALSE) {
@@ -376,4 +378,6 @@ belplau<-function (x, remove = FALSE, h = NULL, method = NULL) {
     stop("Input method must be one of fzt, ezt, ezt-m")
   }
 }
-
+#' @rdname belplau
+#' @export
+belplau <- DSA
