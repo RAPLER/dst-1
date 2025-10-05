@@ -4,7 +4,7 @@
 #' The set \eqn{\Theta} is called the frame of discernment. Each subset \eqn{A} of  \eqn{Theta} with a positive mass value is called a focal element or a proposition. The associated mass value is a number of the \code{(0,1]} interval, called "basic chance assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
 #' 
 #' There is two ways of defining the bca: a (0,1) matrix or a list of subsets labels.
-#' @aliases bpa
+#' @aliases bpa bca
 #' @param tt Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
 #' @param ssnames A list of subsets names which will be obtained from the column names of the tt matrix.
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.
@@ -55,12 +55,13 @@
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-bca<-function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
+marginalDSM <- function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
   # Local variables: ztable, zdup, zframe, znames, str1, str2, tt_all, m_all
   # Functions calls: nameRows, DoSSnames
   #
-  # 1, Empty section
+  # 1
+  .Deprecated("marginalDSM", msg = "marginalDSM is the new function name for the bca function.", old = "bca")
   #
   # 2. Determine names of columns of tt matrix and fix some parameters
   #
@@ -215,4 +216,7 @@ bca<-function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cname
     class(y) <- append(class(y), "bcaspec")
     return(y)
   }
- } 
+} 
+#' @rdname bca
+#' @export
+bca <- marginalDSM
