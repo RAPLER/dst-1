@@ -2,6 +2,7 @@
 #' 
 #'The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and described by their respective basic chance assignments \code{x}  and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see function \code{\link{nzdsr}}).
 #'
+#' @aliases dsrwon
 #'The calculations make use of multiple cores available.
 #' @details The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.  
 #' @param x A basic chance assignment (see \code{\link{bca}}).
@@ -50,10 +51,11 @@
 #' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
 #' dsrwon(vacuous, vacuous)
 #' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sparse = "no", method = "emt-m", tree_type = "single", varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sparse = "no", method = "emt-m", tree_type = "single", varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
   # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
-  # Functions calls: nameRows, dotprod
+  # Functions calls: nameRows
   #
+  .Deprecated("DSC", msg = "DSC is the new function name for the dsrwon function.", old = "dsrwon")
   # 0. Catch old parameters names, if any and replace by the new ones
   #
   calls <- names(sapply(match.call(), deparse))[-1]
@@ -443,3 +445,6 @@ dsrwon<-function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_s
   }
   return(z)
 }
+#' @rdname dsrwon
+#' @export
+dsrwon <- DSC
