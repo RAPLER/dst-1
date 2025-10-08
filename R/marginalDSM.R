@@ -217,6 +217,6 @@ marginalDSM <- function(tt = NULL, m, qq = NULL, method = NULL, include_all = FA
     return(y)
   }
 } 
-#' @rdname bca
+#' @rdname marginalDSM
 #' @export
 bca <- marginalDSM

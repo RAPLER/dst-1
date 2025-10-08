@@ -445,6 +445,6 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sp
   }
   return(z)
 }
-#' @rdname dsrwon
+#' @rdname DSC
 #' @export
 dsrwon <- DSC

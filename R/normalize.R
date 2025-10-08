@@ -133,6 +133,6 @@ normalize <- function(x, sparse = "no", comm = "no") {
   #
   return(z)
 }
-#' @rdname nzdsr
+#' @rdname normalize
 #' @export
 nzdsr <- normalize

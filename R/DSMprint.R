@@ -61,6 +61,6 @@
   rownames(y) <- NULL
   print(y)
 }
-#' @rdname bcaPrint
+#' @rdname DSMprint
 #' @export
 bcaPrint <- DSMprint

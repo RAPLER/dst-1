@@ -6,6 +6,8 @@
 \title{Normalization of a basic chance assignment}
 \usage{
 normalize(x, sparse = "no", comm = "no")
+
+nzdsr(x, sparse = "no", comm = "no")
 }
 \arguments{
 \item{x}{A basic chance assignment, i.e. a object of class bcaspec.}

@@ -6,6 +6,8 @@
 \title{Simple printing of the \code{tt} matrix and mass values of a Dempster-Shafer Model}
 \usage{
 DSMprint(x, remove = FALSE)
+
+bcaPrint(x, remove = FALSE)
 }
 \arguments{
 \item{x}{A list of class bcaspec.}

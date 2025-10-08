@@ -378,6 +378,6 @@ DSA <-function (x, remove = FALSE, h = NULL, method = NULL) {
     stop("Input method must be one of fzt, ezt, ezt-m")
   }
 }
-#' @rdname belplau
+#' @rdname DSA
 #' @export
 belplau <- DSA

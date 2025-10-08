@@ -6,6 +6,8 @@
 \title{Calculation of the degrees of Belief and Plausibility of a Dempster-Shafer Model (basic chance assignment, bca).}
 \usage{
 DSA(x, remove = FALSE, h = NULL, method = NULL)
+
+belplau(x, remove = FALSE, h = NULL, method = NULL)
 }
 \arguments{
 \item{x}{A basic chance assignment mass function (see \code{\link{bca}}).}

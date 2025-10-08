@@ -27,6 +27,21 @@ DSC(
   skpt_tt = FALSE,
   infovarnames
 )
+
+dsrwon(
+  x,
+  y,
+  mcores = "no",
+  use_ssnames = FALSE,
+  use_qq = FALSE,
+  use_sparse = "no",
+  method = "emt-m",
+  tree_type = "single",
+  varnames = NULL,
+  relnb = NULL,
+  skpt_tt = FALSE,
+  infovarnames
+)
 }
 \arguments{
 \item{x}{A basic chance assignment (see \code{\link{bca}}).}
