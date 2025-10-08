@@ -1,6 +1,7 @@
 #' Normalization of a basic chance assignment
 #'
 #' It may occur that the result of the combination of two basic chance assignments with Dempster's Rule of combination contains a non-zero mass allocated to the empty set. The function \code{nzdsr} normalizes the result of function \code{dsrwon} by dividing the mass value of the non-empty subsets by 1 minus the mass of the empty set. 
+#' @aliases nzdsr
 #' @param x A basic chance assignment, i.e. a object of class bcaspec.
 #' @param sparse Put "yes" to use sparse matrix. Default = "no".
 #' @param comm Put "yes" to use commonality function. Default = "no".
@@ -35,11 +36,12 @@
 #' nzdsr(y2)  
 #' @export
 #' 
-nzdsr<-function(x, sparse = "no", comm = "no") {
+normalize <- function(x, sparse = "no", comm = "no") {
   #
   # Local variables: nc, vacuous, w1, w12, mac, MACC, empty, m_empty, tri, ind, m0, Q
   # Functions calls: nameRows
   #
+  .Deprecated("normalize", msg = "normalize is the new function name for the nzdsr function.", old = "nzdsr")
   ## 1. Checks
   if ( inherits(x, "bcaspec") == FALSE) {
     stop("Input argument not of class bcaspec.")
@@ -131,3 +133,6 @@ nzdsr<-function(x, sparse = "no", comm = "no") {
   #
   return(z)
 }
+#' @rdname nzdsr
+#' @export
+nzdsr <- normalize
