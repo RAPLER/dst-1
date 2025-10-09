@@ -2,6 +2,7 @@
 #'
 #' This function is used to represent a relation between two or more variables in their product space \code{P}. The relation can be described by more than one subset of \code{P}. Each subset can also  include more than one element. Complete disjunctive coding is used to represent one element in the input matrix of the function.
 #' 
+#' @aliases bcaRel
 #' @param tt The description matrix of the subsets establishing the relation. This matrix is obtained by putting the variables side by side, as in a truth table representation. For each variable, there are as many columns as possible values. Each row of the matrix is an element of a subset. Each element is described by a sequence of 0 (absence of value of a variable) or 1 (presence of value). This forms a complete disjunctive coding. CAUTION: Variables put side by side must be ordered by their *idvar* from left to right.
 #' @param spec A two column matrix. First column: numbers assigned to the sub-assemblies. Second column: the mass values of the sub-assemblies. If the subset has more than one element, the number of the subset and its associated mass value are repeated to match the number of elements in the subset.
 #' @param infovar  A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.
@@ -43,11 +44,12 @@
 #' bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
 #'  varnames = c("RdWorks", "Rain"), relnb = 6)
 #'
-  bcaRel <- function(tt, spec, infovar, varnames, valuenames, relnb = NULL, infovarnames, infovaluenames) {
+  jointDSM <- function(tt, spec, infovar, varnames, valuenames, relnb = NULL, infovarnames, infovaluenames) {
   #
   # Local variables: v, z1, colnz1, 
   # Functions calls: productSpace, bca
   #
+    .Deprecated("jointDSM", msg = "jointDSM is the new function name for the bcaRel function.", old = "bcaRel")
   # 1. Catch old parameters names, if anay and replace by the new ones
   #
   calls <- names(sapply(match.call(), deparse))[-1]
@@ -138,4 +140,8 @@
    zr <-bca(tt = z1, m = v, cnames = colnz1, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
    return(zr)
   }
-}
+  }
+  #' @rdname jointDSM
+  #' @export
+  bcaRel <- jointDSM
+  
