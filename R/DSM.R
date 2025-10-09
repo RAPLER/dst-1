@@ -55,13 +55,13 @@
 #' \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #' \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #' }
-marginalDSM <- function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
+DSM <- function(tt = NULL, m, qq = NULL, method = NULL, include_all = FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
   # Local variables: ztable, zdup, zframe, znames, str1, str2, tt_all, m_all
   # Functions calls: nameRows, DoSSnames
   #
   # 1
-  .Deprecated("marginalDSM", msg = "marginalDSM is the new function name for the bca function.", old = "bca")
+  .Deprecated("DSM", msg = "DSM is the new function name for the bca function.", old = "bca")
   #
   # 2. Determine names of columns of tt matrix and fix some parameters
   #
@@ -217,6 +217,6 @@ marginalDSM <- function(tt = NULL, m, qq = NULL, method = NULL, include_all = FA
     return(y)
   }
 } 
-#' @rdname marginalDSM
+#' @rdname DSM
 #' @export
-bca <- marginalDSM
+bca <- DSM
