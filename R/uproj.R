@@ -2,6 +2,7 @@
 #'
 #'This function works on a basic chance assignment (bca) \code{x} defined on a single variable or more. A relation of reference is given, and an extension of the space of \code{x} is made to the larger product space of the relation of reference. The basic chance assignment to extend and the relation of reference must have at least one common variable for the extension to occur. 
 #' 
+#' @aliases extmin
 #' @param rel1 An object of class bcaspec, i.e. a basic chance assignment defined on one variable or a relation.
 #' @param relRef The relation of reference. It can be an existing relation, or it can be constructed as a vacuous function. 
 #' @details The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the \code{tt} matrix. The relation of reference \code{relRef}  may be a relation already existing or simply the the vacuous relation defined on the product set of variables of interest.
@@ -19,22 +20,22 @@
 #'  dimnames = list(NULL, c("specnb", "mass")))
 #'  init_info <- matrix(c(3,4,7,8,4,2,2,2), ncol = 2,
 #'   dimnames = list(NULL, c("varnb", "size")) )
-#'  relRef <- bcaRel(tt = init_tt, spec = init_spec,
+#'  relRef <- jointDSM(tt = init_tt, spec = init_spec,
 #'   infovar = init_info, 
 #'   varnames = c("Sail", "Loading", "Weather", "Repairs"),
 #'   relnb = 0)
 #'  # a bcaspec defined on one variable
-#'  l_rel <- bca(tt = matrix(c(1,0,1,0,1,1), ncol = 2), 
+#'  l_rel <- DSM(tt = matrix(c(1,0,1,0,1,1), ncol = 2), 
 #'  m = c(0.3,0.5,0.2), cnames = c("true", "false"), 
 #'  infovar = matrix(c(4,2), ncol = 2, 
 #'  dimnames = list(NULL, c("varnb", "size"))), 
 #'  varnames = c("Loading"), 
 #'  inforel = matrix(c(7,1), ncol = 2, 
 #'  dimnames = list(NULL, c("relnb", "depth"))))
-#'  z <- extmin(l_rel, relRef)
+#'  z <- uproj(l_rel, relRef)
 #'  prmatrix(t(z$tt), collab = rep("", nrow(z$tt)))
 #'  
-extmin <- function(rel1, relRef) {
+uproj <- function(rel1, relRef) {
   #
   # Local variables: 
   # infovar, varnb_ps, nbvar, varnb_rel1, lvars, ind_lvars, lvman, 
@@ -44,6 +45,7 @@ extmin <- function(rel1, relRef) {
   #
   # Functions calls: None
   #
+  .Deprecated("uproj", msg = "uproj is the new function name for the extmin function.", old = "extmin")
   # A. Validation of input data
   # 1. inputs must be of class bcaspec
   if ( (inherits(rel1, "bcaspec") == FALSE) | (inherits(relRef, "bcaspec") == FALSE)) {
@@ -149,3 +151,6 @@ extmin <- function(rel1, relRef) {
   class(zr) <- append(class(zr), "bcaspec")
   return(zr)
 }
+#' @rdname uproj
+#' @export
+extmin <- uproj
