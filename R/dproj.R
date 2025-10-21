@@ -1,6 +1,7 @@
 #'  Reduction of a relation
 #' 
 #' This function works on a relation defined on a product of two variables or more.  Having fixed a variable to eliminate from the relation,  the reduced product space is determined and the corresponding reduced bca is computed.This operation is also called "marginalization".
+#' @aliases elim
 #' @param rel The relation to reduce, an object of class bcaspec.
 #' @param xnb Identification number of the variable to eliminate.
 #' @return r The reduced relation
@@ -21,14 +22,15 @@
 #'   infovar = wr_infovar, varnames = c("Roadworks","Rain"),
 #'   valuenames = list( RdWorks = c("Wy", "Wn"), Rain=c("Ry", "Rn") ))
 #' class(wr_rel) <- "bcaspec"
-#' bcaPrint(elim(wr_rel, xnb = 5))
-#' bcaPrint(elim(wr_rel, xnb = 4))
+#' DSMprint(dproj(wr_rel, xnb = 5))
+#' DSMprint(dproj(wr_rel, xnb = 4))
 #'  
-elim <- function(rel, xnb) {
+dproj <- function(rel, xnb) {
   #
   # Local variables: size_vars, nbvar, size_vars_inv, varnb, varnb_inv, varRank, dim_to_keep, n, m, itab, fun3, proj, var_to_keep, varRank_to_keep, z2, w1, I12, m1, idnames
   # Functions calls: matrixToMarray, marrayToMatrix, dotprod, bca
   #
+  .Deprecated("dproj", msg = "dproj is the new function name for the elim function.", old = "elim")
   # 1. Checks and Some working vars
   #
   if (inherits(rel, "bcaspec") == FALSE)  {
@@ -94,3 +96,6 @@ elim <- function(rel, xnb) {
   r <- bca(tt = tt, m = m1,  con = rel$con, infovar = infovar, varnames = idnames, valuenames = valuenames, inforel = inforel)
 return(r)
 }
+#' @rdname dproj
+#' @export
+elim <- dproj
