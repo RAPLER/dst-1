@@ -1,30 +1,32 @@
-#' Add some elements of 0 mass to an existing basic chance assignment. 
+#' Add some elements of 0 mass to an existing DSM. 
 #'
-#' Given a previously defined basic chance assignment (bca), the user may want to add some elements of the set of possible values or some subsets, even if they have zero mass value. This feature is useful, for example, to examine the measure of plausibility of these elements or subsets of zero mass value.
-#' @param x A basic chance assignment (see \code{\link{bca}}).
-#' @param tt A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the \code{tt} matrix of \code{x} (see \code{\link{bca}}). Each row of the matrix identify a subset of the set of possible values.
+#' Given a previously defined DSM, the user may want to add some elements of the set of possible values or some subsets, even if they have zero mass value. This feature is useful, for example, to examine the measure of plausibility of these elements or subsets of zero mass value.
+#' @aliases addTobca
+#' @param x A DSM (see \code{\link{DSM}}).
+#' @param tt A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the \code{tt} matrix of \code{x} (see \code{\link{DSM}}). Each row of the matrix identify a subset of the set of possible values.
 #' @param f Deprecated. Old name for \code{tt} matrix. 
 #' @return x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{tt}.
 #' @author Claude Boivin
 #' @export
 #' @examples  
-#' y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), 
+#' y <- DSM(tt = matrix(c(1,0,0,1,1,1),nrow=2, byrow = TRUE), 
 #' m = c(0.6, 0.4),  cnames = c("a", "b", "c"), idvar = 1)
-#' addTobca(y, matrix(c(0,1,0,0,0,1, 0,1,1), nrow = 3, byrow = TRUE))
-#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
+#' addToDSM(y, matrix(c(0,1,0,0,0,1, 0,1,1), nrow = 3, byrow = TRUE))
+#' x <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow=3, 
 #' byrow = TRUE), m=c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), idvar = 1)
 #' xy <- dsrwon(x,y)
-#' xy1 <- addTobca(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
+#' xy1 <- addToDSM(nzdsr(xy), matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 #' xy1
-#' # add all singletons to a bca
-#' addTobca(x, tt = diag(rep(1, ncol(x$tt) ) )  ) 
+#' # add all singletons to a DSM
+#' addToDSM(x, tt = diag(rep(1, ncol(x$tt) ) )  ) 
 #' 
-addTobca <- function(x, tt, f) {
+addToDSM <- function(x, tt, f) {
   #
   # Local variables: zt1, zt2, tt1 
   # Functions calls: dotprod
   #
+  .Deprecated("addToDSM", msg = "addToDSM is the new function name for the addTobca function.", old = "addTobca")
   # 0. Catch old parameters names, if any and replace by the new ones
   #
   # catch old parameter f and replace by tt if used instead of tt
@@ -107,3 +109,6 @@ addTobca <- function(x, tt, f) {
   x$ssnames <- DoSSnames(x$tt)
   return(x)
 } 
+#' @rdname addToDSM
+#' @export
+addTobca <- addToDSM
