@@ -1,11 +1,10 @@
 #' Add some elements of 0 mass to an existing DSM. 
 #'
-#' Given a previously defined DSM, the user may want to add some elements of the set of possible values or some subsets, even if they have zero mass value. This feature is useful, for example, to examine the measure of plausibility of these elements or subsets of zero mass value.
+#' You may want to add to a previously defined DSM some elements or some subsets of the state space (the set of possible values). The mass of these additional elements or subsets may be set to zero. This feature is useful when one wants to examine the plausibility measure of elements or subsets of zero mass.
 #' @aliases addTobca
 #' @param x A DSM (see \code{\link{DSM}}).
-#' @param tt A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the \code{tt} matrix of \code{x} (see \code{\link{DSM}}). Each row of the matrix identify a subset of the set of possible values.
-#' @param f Deprecated. Old name for \code{tt} matrix. 
-#' @return x The original basic chance assignment \code{x} augmented with the added subsets defined by \code{tt}.
+#' @param tt A matrix constructed in a boolean style (0,1) or a boolean matrix. The number of columns of the matrix \code{tt} must match the number of columns of the \code{tt} matrix of \code{x} (see \code{\link{DSM}}). Each row of the matrix identify a subset of the state space.
+#' @return x The original DSM \code{x} augmented with the added subsets defined by \code{tt}.
 #' @author Claude Boivin
 #' @export
 #' @examples  
@@ -21,7 +20,7 @@
 #' # add all singletons to a DSM
 #' addToDSM(x, tt = diag(rep(1, ncol(x$tt) ) )  ) 
 #' 
-addToDSM <- function(x, tt, f) {
+addToDSM <- function(x, tt) {
   #
   # Local variables: zt1, zt2, tt1 
   # Functions calls: dotprod
