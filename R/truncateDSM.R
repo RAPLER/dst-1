@@ -16,16 +16,16 @@
 #'0,1,1,0,
 #'1,1,1,1),ncol=4, byrow = TRUE), m = c(0.2, 0.5, 0.06, 0.04, 0.03, 0.17),
 #'cnames = c("a", "b", "c", "d"))
-#'DSMprint(x)
-#'tr_x <- DSMtrunc(x, seuil = 0.1)
-#'DSMprint(tr_x)
+#'printDSM(x)
+#'tr_x <- truncateDSM(x, seuil = 0.1)
+#'printDSM(tr_x)
 #' 
-DSMtrunc <-function(x, seuil, use_ssnames = FALSE) {
+truncateDSM <-function(x, seuil, use_ssnames = FALSE) {
   #
   # Local variables: zdata, in_ztgo, ztgo, zl, ztgo_or, zz, x1, tr_x, 
   # Functions calls: bca, dsrwon
   #
-  .Deprecated("DSMtrunc", msg = "DSMtrunc is the new function name for the bcaTrunc function.", old = "bcaTrunc")
+  .Deprecated("truncateDSM", msg = "truncateDSM is the new function name for the bcaTrunc function.", old = "bcaTrunc")
   ## 1. Checks
   # 1.1. class bcaspec
   #
@@ -220,6 +220,6 @@ DSMtrunc <-function(x, seuil, use_ssnames = FALSE) {
     return(y)
   }
 }
-#' @rdname DSMtrunc
+#' @rdname truncateDSM
 #' @export
-bcaTrunc <- DSMtrunc
+bcaTrunc <- truncateDSM
