@@ -1,29 +1,31 @@
-#'  Truncation of a basic chance assignment mass function
+#'  Truncation of the mass function of a DSM
 #' 
-#'When working with large frames of discernment, the bca resulting of repeated application of Dempster's Rule of Combination can become big. One way to handle this situation could be to group subsets whose mass is less than a small treshold value. The function \code{bcaTrunc} serves this purpose to reduce a large bca to its main elements.\cr
-#' @param x A bca to truncate.
+#'When working with large frames of discernment, the DSM resulting of repeated application of Dempster's Rule of Combination can become quite large. One way to handle this situation is to group together subsets whose mass is less than a small threshold value. The function \code{DSMtrunc} is used for this purpose.\cr
+#' @aliases bcaTrunc
+#' @param x A DSM to truncate.
 #' @param seuil A treshold value
 #' @param use_ssnames Put TRUE to use ssnames parameteer instead of description matrix. Default = FALSE.
-#' @return tr_x The bca object truncated.
+#' @return tr_x The DSM object truncated.
 #' @author Claude Boivin
 #' @export
 #' @examples 
-#'x <- bca(tt = matrix(c(0,1,0,0, 
+#'x <- DSM(tt = matrix(c(0,1,0,0, 
 #'0,0,1,1,
 #'1,1,0,0,
 #'1,0,1,0,
 #'0,1,1,0,
 #'1,1,1,1),ncol=4, byrow = TRUE), m = c(0.2, 0.5, 0.06, 0.04, 0.03, 0.17),
 #'cnames = c("a", "b", "c", "d"))
-#'bcaPrint(x)
-#'tr_x <- bcaTrunc(x, seuil = 0.1)
-#'bcaPrint(tr_x)
+#'DSMprint(x)
+#'tr_x <- DSMtrunc(x, seuil = 0.1)
+#'DSMprint(tr_x)
 #' 
-bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
+DSMtrunc <-function(x, seuil, use_ssnames = FALSE) {
   #
   # Local variables: zdata, in_ztgo, ztgo, zl, ztgo_or, zz, x1, tr_x, 
   # Functions calls: bca, dsrwon
   #
+  .Deprecated("DSMtrunc", msg = "DSMtrunc is the new function name for the bcaTrunc function.", old = "bcaTrunc")
   ## 1. Checks
   # 1.1. class bcaspec
   #
@@ -218,3 +220,6 @@ bcaTrunc <-function(x, seuil, use_ssnames = FALSE) {
     return(y)
   }
 }
+#' @rdname DSMtrunc
+#' @export
+bcaTrunc <- DSMtrunc
