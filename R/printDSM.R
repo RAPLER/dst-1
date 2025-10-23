@@ -9,21 +9,21 @@
 #' @author Claude Boivin
 #' @export
 #' @examples
-#' z <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' z <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), idvar = 1)
-#' DSMprint(z)
-#' y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
+#' printDSM(z)
+#' y <- DSM(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6,0.4), include_all = TRUE,
 #' cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
-#' DSMprint(y)
-#' DSMprint(y, remove = TRUE)
-#' x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' printDSM(y)
+#' printDSM(y, remove = TRUE)
+#' x <- DSM(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3),
 #' cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
-#' DSMprint(x)
- DSMprint <- function(x, remove = FALSE) {
-  .Deprecated("DSMprint", msg = "DSMprint is the new function name for the bcaPrint function.", old = "bcaPrint")
+#' printDSM(x)
+printDSM <- function(x, remove = FALSE) {
+  .Deprecated("printDSM", msg = "printDSM is the new function name for the bcaPrint function.", old = "bcaPrint")
   #
   # Local variables: y 
   # Functions calls: None
@@ -61,6 +61,6 @@
   rownames(y) <- NULL
   print(y)
 }
-#' @rdname DSMprint
+#' @rdname printDSM
 #' @export
-bcaPrint <- DSMprint
+bcaPrint <- printDSM
