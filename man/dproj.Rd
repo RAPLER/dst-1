@@ -3,26 +3,26 @@
 \name{dproj}
 \alias{dproj}
 \alias{elim}
-\title{Reduction of a relation}
+\title{Reduction of a jointDSM}
 \usage{
 dproj(rel, xnb)
 
 elim(rel, xnb)
 }
 \arguments{
-\item{rel}{The relation to reduce, an object of class bcaspec.}
+\item{rel}{The jointDSM to reduce, an object of class DSMspec.}
 
 \item{xnb}{Identification number of the variable to eliminate.}
 }
 \value{
-r The reduced relation
+r The reduced jointDSM
 }
 \description{
-This function works on a relation defined on a product of two variables or more.  Having fixed a variable to eliminate from the relation,  the reduced product space is determined and the corresponding reduced bca is computed.This operation is also called "marginalization".
+This function works on a jointDSM defined on a product of two variables or more.  Having fixed a variable to eliminate from the jointDSM,  the reduced product space is determined and the corresponding reduced bca is computed.This operation is also called "marginalization".
 }
 \examples{
  
-# We construct a relation between two variables to show marginalization.
+# We construct a jointDSM between two variables to show marginalization.
 wr_tt <- matrix(c(1,rep(0,3),rep(c(1,0),3),0,1,1,1,0,0,
 1,0,rep(1,5),0,1,1,0,rep(1,5)), ncol = 4, byrow = TRUE)
 colnames(wr_tt) <- c("Wy Ry", "Wy Rn", "Wn Ry", "Wn Rn")
@@ -35,7 +35,7 @@ wr_spec = matrix(c(1:8, 0.017344, 0.046656,
 wr_rel <- list(tt = wr_tt, con = 0.16, spec=wr_spec,
   infovar = wr_infovar, varnames = c("Roadworks","Rain"),
   valuenames = list( RdWorks = c("Wy", "Wn"), Rain=c("Ry", "Rn") ))
-class(wr_rel) <- "bcaspec"
+class(wr_rel) <- "DSMspec"
 DSMprint(dproj(wr_rel, xnb = 5))
 DSMprint(dproj(wr_rel, xnb = 4))
  

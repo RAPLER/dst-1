@@ -11,20 +11,16 @@
 \alias{multiple}
 \alias{cores}
 \alias{available.}
-\title{Combination of two mass functions}
+\title{Combination of two Dempster-Shafer models}
 \usage{
 DSC(
   x,
   y,
   mcores = "no",
   use_ssnames = FALSE,
-  use_qq = FALSE,
   use_sparse = "no",
-  method = "emt-m",
-  tree_type = "single",
   varnames = NULL,
   relnb = NULL,
-  skpt_tt = FALSE,
   infovarnames
 )
 
@@ -33,80 +29,66 @@ dsrwon(
   y,
   mcores = "no",
   use_ssnames = FALSE,
-  use_qq = FALSE,
   use_sparse = "no",
-  method = "emt-m",
-  tree_type = "single",
   varnames = NULL,
   relnb = NULL,
-  skpt_tt = FALSE,
   infovarnames
 )
 }
 \arguments{
-\item{x}{A basic chance assignment (see \code{\link{bca}}).}
+\item{x}{A Dempster-Shafer model (see \code{\link{DSM}}).}
 
-\item{y}{A basic chance assignment (see \code{\link{bca}}).}
+\item{y}{A Dempster-Shafer model (see \code{\link{DSM}}).}
 
 \item{mcores}{Make use of multiple cores ("yes") or not ("no"). Default = "no".}
 
 \item{use_ssnames}{= TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE}
 
-\item{use_qq}{= TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE}
-
 \item{use_sparse}{Make use of sparse matrices ("yes") or not ("no"). Default = "no".}
-
-\item{method}{Can be "emt" or "emt-m", Default is "emt-m".}
-
-\item{tree_type}{tree_type to use M trees ("multiple") or 1 tree ("single"). Default = "single"L}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
 
-\item{relnb}{Identification number of the relation. Can be omitted.}
-
-\item{skpt_tt}{Skip reconstruction of tt matrix. Default = FALSE.}
+\item{relnb}{Identification number of the jointDSM. Can be omitted.}
 
 \item{infovarnames}{Deprecated. Old name for \code{varnames}.}
 }
 \value{
-A basic chance assignment with these two components added: \itemize{
+A Dempster-Shafer model with these two components added: \itemize{
   \item I12 Intersection table of subsets.
   \item Sort_order Sort order of subsets.
   }
 }
 \description{
-The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and described by their respective basic chance assignments \code{x}  and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see function \code{\link{nzdsr}}).
+The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined on the same state-space model (SSM) and described by their respective basic mass assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (for the normalization operation, see function \code{\link{normalize}}).
 }
 \details{
-The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.
+The two DSM's \code{x} and \code{y} must be defined on the same SSM for the combination to take place. The jointDSM number of the x input is given to the output result.
 }
 \examples{
-y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+y1 <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 byrow = TRUE), m = c(0.2,0.5, 0.3), 
 cnames = c("a", "b", "c"),  
 varnames = "x", idvar = 1) 
-y2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+y2 <- DSM(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6, 0.4),  
 cnames = c("a", "b", "c"),  
 varnames = "x", idvar = 1)
-dsrwon(y1,y2)
+DSC(y1,y2)
 # Sparse matrices
 y1s <- y1
 y2s <- y2
 y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
-y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
-
-# using commonalities
-bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
-m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"), method = "ezt-m")
-bma2 <- dsrwon(bma, bma, use_qq = TRUE, use_sparse = "yes")
-
-vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-dsrwon(vacuous, vacuous)
+y1y2s <- DSC(y1s, y2s, use_ssnames = TRUE)
+vacuous <- DSM(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+DSC(vacuous, vacuous)
 }
 \references{
-Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
+\itemize{
+  \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
+  \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
+  \item Dempster, A., (2008). The Dempster–Shafer calculus for statisticians. International Journal of approximate reasoning, 48(2), 365-377.
+}
 }
 \author{
 Claude Boivin, Peiyuan Zhu

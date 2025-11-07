@@ -1,23 +1,19 @@
-#' Combination of two mass functions
+#' Combination of two Dempster-Shafer models
 #' 
-#'The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined  on the same frame of discernment and described by their respective basic chance assignments \code{x}  and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice  to the user to normalize the results or not (for the normalization operation, see function \code{\link{nzdsr}}).
+#' The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined on the same state-space model (SSM) and described by their respective basic mass assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (for the normalization operation, see function \code{\link{normalize}}).
 #'
 #' @aliases dsrwon
-#'The calculations make use of multiple cores available.
-#' @details The two bca's \code{x} and \code{y} must be defined on the same frame of discernment for the combination to take place. The relation number of the x input is given to the output result.  
-#' @param x A basic chance assignment (see \code{\link{bca}}).
-#' @param y A basic chance assignment (see \code{\link{bca}}).
+#' The calculations make use of multiple cores available.
+#' @details The two DSM's \code{x} and \code{y} must be defined on the same SSM for the combination to take place. The jointDSM number of the x input is given to the output result.  
+#' @param x A Dempster-Shafer model (see \code{\link{DSM}}).
+#' @param y A Dempster-Shafer model (see \code{\link{DSM}}).
 #' @param mcores Make use of multiple cores ("yes") or not ("no"). Default = "no".
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
-#' @param use_qq = TRUE to use qq instead of tt matrix to do the intersections. Default = FALSE
 #' @param use_sparse Make use of sparse matrices ("yes") or not ("no"). Default = "no".
-#' @param tree_type tree_type to use M trees ("multiple") or 1 tree ("single"). Default = "single"L
-#' @param method Can be "emt" or "emt-m", Default is "emt-m".
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
-#' @param skpt_tt Skip reconstruction of tt matrix. Default = FALSE.
 #' @param infovarnames Deprecated. Old name for \code{varnames}.
-#' @param relnb Identification number of the relation. Can be omitted.
-#' @return A basic chance assignment with these two components added: \itemize{
+#' @param relnb Identification number of the jointDSM. Can be omitted.
+#' @return A Dempster-Shafer model with these two components added: \itemize{
 #'   \item I12 Intersection table of subsets.
 #'   \item Sort_order Sort order of subsets.
 #'   }
@@ -27,31 +23,29 @@
 #' @importClassesFrom Matrix RsparseMatrix
 #' @export
 #' @examples 
-#' y1 <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' y1 <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"),  
 #' varnames = "x", idvar = 1) 
-#' y2 <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+#' y2 <- DSM(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"),  
 #' varnames = "x", idvar = 1)
-#' dsrwon(y1,y2)
+#' DSC(y1,y2)
 #' # Sparse matrices
 #' y1s <- y1
 #' y2s <- y2
 #' y1s$tt <- methods::as(y1$tt, "RsparseMatrix")
 #' y2s$tt <- methods::as(y2$tt, "RsparseMatrix")
-#' y1y2s <- dsrwon(y1s, y2s, use_ssnames = TRUE)
-#' 
-#' # using commonalities
-#' bma <- bca(tt=matrix(c(1,1,0,1,rep(1,4)), ncol = 4, byrow = TRUE), 
-#' m = c(0.1, 0.9), cnames = c("a", "b", "c", "d"), method = "ezt-m")
-#' bma2 <- dsrwon(bma, bma, use_qq = TRUE, use_sparse = "yes")
-#' 
-#' vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
-#' dsrwon(vacuous, vacuous)
-#' @references Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, pp. 57-61: Dempster's rule of combination.
-DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sparse = "no", method = "emt-m", tree_type = "single", varnames = NULL, relnb = NULL, skpt_tt = FALSE, infovarnames) {
+#' y1y2s <- DSC(y1s, y2s, use_ssnames = TRUE)
+#' vacuous <- DSM(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"))
+#' DSC(vacuous, vacuous)
+#' @references \itemize{
+#'   \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
+#'   \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
+#'   \item Dempster, A., (2008). The Dempster–Shafer calculus for statisticians. International Journal of approximate reasoning, 48(2), 365-377.
+#' }
+DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", varnames = NULL, relnb = NULL, infovarnames) {
   # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows
   #
@@ -68,27 +62,27 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sp
   # end catches
   #
   ## 1. Checks
-  # 1.1. x and y of class bcaspec
-  if ( (inherits(x, "bcaspec") == FALSE) | (inherits(y, "bcaspec") == FALSE)) {
-    stop("One or more inputs not of class bcaspec.")
+  # 1.1. x and y of class DSMspec
+  if ( (inherits(x, "DSMspec") == FALSE) | (inherits(y, "DSMspec") == FALSE)) {
+    stop("One or more inputs not of class DSMspec.")
   }
   #
   # 1.2. x and y must have the same number of variables
   if   ( nrow(x$infovar) != nrow(y$infovar) ) {
-    stop("Specification of parameter infovar of the two bca's must identical.")
+    stop("Specification of parameter infovar of the two DSM's must identical.")
   }
   #
   # 1.3.  Check mass vector
   m1 <- x$spec[,2]
   m2 <- y$spec[,2]
-  if ( ((abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001)) && use_qq == FALSE) {
+  if ( ((abs(sum(m1)-1)>0.000001) | (abs(sum(m2)-1)>0.000001))) {
     stop("Invalid data, sum of masses of one vector, or both, greater than one.")
   }
   # End input checks
   #
   # 1.4 prepare data for parallel processing 
-  # Put the bca with the largest number of subsets in second
-  if  ( nrow(x$spec) <= nrow(y$spec) && use_qq == FALSE) {
+  # Put the DSM with the largest number of subsets in second
+  if  ( nrow(x$spec) <= nrow(y$spec)) {
     zx <- x
     zy <-y
   } 
@@ -98,15 +92,15 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sp
   }
   #
   # Checks specific to the tt matrix, if there is one
-  if  ((!is.null(x$tt)) & (!is.null(y$tt) ) && use_qq == FALSE) {
+  if  ((!is.null(x$tt)) & (!is.null(y$tt) )) {
     # 
-    # x and y must have same frame of discernment
+    # x and y must have same SSM
     #  and same number of elements
     #
     x1<-rbind(zx$tt)  # (M x K) matrix or sparse matrix
     y1<-rbind(zy$tt)  # (N x K) matrix or sparse matrix
     if (ncol(x1) != ncol(y1)) {
-      stop("Nb of elements of frame x and frame y not equal.") 
+      stop("Nb of elements of SSM x and SSM y not equal.") 
     }
     #
     # x1 and x2 must have the same columns names put in the same order
@@ -115,22 +109,20 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sp
     coly <- colnames(y1)
     zorder_check <- sum(diag(outer(colx, coly, "==")))
     if(zorder_check < ncol(x1) ) {
-      stop("Value names of the two frames differ. Check value names of variables as well as their position.")
+      stop("Value names of the two SSMs differ. Check value names of variables as well as their position.")
     }
     #
   }
   #
   # Combine mass vectors
-  if (use_qq == FALSE) {
-    V12<-outer(zx$spec[,2],zy$spec[,2], "*")
-  }
+  V12<-outer(zx$spec[,2],zy$spec[,2], "*")
   #
   # End Section 1
   #
   # Section 2 Calculations with tt matrices, default setup)
   #
   #
-  if (use_ssnames == FALSE && use_qq == FALSE) {
+  if (use_ssnames == FALSE) {
     if ((is.null(zx$tt)) | (is.null(zy$tt) ) ) {
       stop("One or more description matrix missing.")
     }
@@ -245,16 +237,16 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sp
   #
   # 3. Intersections made with subsets names
   #
-  if (use_ssnames == TRUE && use_qq == FALSE) {
+  if (use_ssnames == TRUE) {
     if ((is.null(zx$ssnames)) | (is.null(zy$ssnames) ) ) {
       stop("One or more ssnames list is missing.")
     }
     #
     if (length(zx$ssnames[[length(zx$ssnames)]]) !=zx$infovar[1,2] ) {
-      stop("Number of elements of frame differs from infovar parameter.")
+      stop("Number of elements of SSM differs from infovar parameter.")
     }
     if (length(zy$ssnames[[length(zy$ssnames)]]) !=zy$infovar[1,2] ) {
-      stop("Number of elements of frame differs from infovar parameter.")
+      stop("Number of elements of SSM differs from infovar parameter.")
     }
     #
     # 3.1.compute intersections (N12 table) and transform to appropriate format
@@ -354,57 +346,7 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sp
     }
     #
   }
-  # 
-  # End case with use of subsets names
-  #
-  if (use_qq == TRUE) {
-    use_sparse = "yes"
-    q1 <- x$qq
-    q2 <- y$qq
-    
-    # Augment q1 with q2, q2 with q1
-    n <- unname(x$infovar[,2])
-    cnames <- x$valuenames[[1]]
-    tt1 <- ttmatrixFromQQ(q1,n,cnames,sparse = "yes")
-    
-    n <- unname(x$infovar[,2])
-    cnames <- x$valuenames[[1]]
-    tt2 <- ttmatrixFromQQ(q2,n,cnames,sparse = "yes")
-    
-    # Take union
-    ttx <- rbind(tt1,tt2)
-    
-    # Remove duplicates of the joint
-    ttx <- ttx[!duplicated(rownames(ttx)),]
-    
-    # Add closure elements
-    if (method=="emt" || method=="emt-m") { 
-      
-      if (method=="emt") {
-        if(use_sparse=="no") tty <- closure(ttx) else if(use_sparse=="yes") tty <- closureSparse(ttx) else stop("use_sparse can be either yes or no")
-      } else if (method=="emt-m") { 
-        if(use_sparse=="no") tty <- closure(ttx,FALSE) else if(use_sparse=="yes") tty <- closureSparse(ttx,FALSE) else stop("use_sparse can be either yes or no")
-      }
-      
-      colnames(tty) <- colnames(ttx)
-      rownames(tty) <- nameRows(tty)
-      
-      x <- imputeQQ(tty,tt1,tt2,q1,q2,tree_type = tree_type)
-      q1 <- x$q1
-      q2 <- x$q2
-      
-    } else {
-      stop("method needs to be one of emt, emt-m if use_qq is TRUE")
-    }
-    
-    # Combine
-    qq <- unlist(q1) * unlist(q2)
-    con <- 0
-    tt <- NULL
-    spec <- NULL
-  } else {
-    qq <- NULL
-  }
+  
   # 4. The result
   #
   ## 4.1 Naming the resulting variables and fix some parameters
@@ -428,20 +370,16 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_qq = FALSE, use_sp
   #
   # 4.2. construction of the result
   #
-  if (use_ssnames == FALSE && use_qq == FALSE) {
+  if (use_ssnames == FALSE) {
     z <- list(con = con, tt=tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order=1:nrow(tt))
-    class(z) <- append(class(z), "bcaspec") 
+    class(z) <- append(class(z), "DSMspec") 
   } 
   #
-  if (use_ssnames == TRUE && use_qq == FALSE) {
+  if (use_ssnames == TRUE) {
     znames <- W1_list[sort_order]
     znames <- lapply(X=1:length(znames), FUN = function(X) {if (length(znames[[X]]) == 0){ znames[[X]] <- "Empty"} else znames[[X]] })
     z <- list(con = con, tt = tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order = sort_order, ssnames = znames, sfod = zx$sfod)
-    class(z) <- append(class(z), "bcaspec") 
-  }
-  if (use_qq == TRUE) {
-    z <- list(con = con, tt = tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
-    class(z) <- append(class(z), "bcaspec") 
+    class(z) <- append(class(z), "DSMspec")
   }
   return(z)
 }

@@ -3,7 +3,7 @@
 #'This function works on a basic chance assignment (bca) \code{x} defined on a single variable or more. A relation of reference is given, and an extension of the space of \code{x} is made to the larger product space of the relation of reference. The basic chance assignment to extend and the relation of reference must have at least one common variable for the extension to occur. 
 #' 
 #' @aliases extmin
-#' @param rel1 An object of class bcaspec, i.e. a basic chance assignment defined on one variable or a relation.
+#' @param rel1 An object of class DSMspec, i.e. a basic chance assignment defined on one variable or a relation.
 #' @param relRef The relation of reference. It can be an existing relation, or it can be constructed as a vacuous function. 
 #' @details The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the \code{tt} matrix. The relation of reference \code{relRef}  may be a relation already existing or simply the the vacuous relation defined on the product set of variables of interest.
 #' 
@@ -24,7 +24,7 @@
 #'   infovar = init_info, 
 #'   varnames = c("Sail", "Loading", "Weather", "Repairs"),
 #'   relnb = 0)
-#'  # a bcaspec defined on one variable
+#'  # a DSMspec defined on one variable
 #'  l_rel <- DSM(tt = matrix(c(1,0,1,0,1,1), ncol = 2), 
 #'  m = c(0.3,0.5,0.2), cnames = c("true", "false"), 
 #'  infovar = matrix(c(4,2), ncol = 2, 
@@ -47,9 +47,9 @@ uproj <- function(rel1, relRef) {
   #
   .Deprecated("uproj", msg = "uproj is the new function name for the extmin function.", old = "extmin")
   # A. Validation of input data
-  # 1. inputs must be of class bcaspec
-  if ( (inherits(rel1, "bcaspec") == FALSE) | (inherits(relRef, "bcaspec") == FALSE)) {
-    stop("One or more inputs not of class bcaspec.")
+  # 1. inputs must be of class DSMspec
+  if ( (inherits(rel1, "DSMspec") == FALSE) | (inherits(relRef, "DSMspec") == FALSE)) {
+    stop("One or more inputs not of class DSMspec.")
   }
   #
   # 2. Stop if no variable common to the two relations
@@ -148,7 +148,7 @@ uproj <- function(rel1, relRef) {
   #
   # result  
   zr <-list(con = rel1$con, tt = rtt, spec = rel1$spec, infovar = infovar, varnames = relRef$varnames, valuenames= relRef$valuenames, inforel = relRef$inforel)
-  class(zr) <- append(class(zr), "bcaspec")
+  class(zr) <- append(class(zr), "DSMspec")
   return(zr)
 }
 #' @rdname uproj

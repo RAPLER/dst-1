@@ -4,13 +4,11 @@
 \alias{DSM}
 \alias{bpa}
 \alias{bca}
-\title{Basic chance assignment mass function}
+\title{Dempser-Shafer models}
 \usage{
 DSM(
   tt = NULL,
   m,
-  qq = NULL,
-  method = NULL,
   include_all = FALSE,
   cnames = NULL,
   con = NULL,
@@ -25,8 +23,6 @@ DSM(
 bca(
   tt = NULL,
   m,
-  qq = NULL,
-  method = NULL,
   include_all = FALSE,
   cnames = NULL,
   con = NULL,
@@ -39,17 +35,13 @@ bca(
 )
 }
 \arguments{
-\item{tt}{Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the frame of discernment \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
+\item{tt}{Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the SSM \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
 
-\item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the chance value allotted to the proposition represented by the row \code{k} of the matrix \code{tt}.}
+\item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the mass value allotted to the focal set represented by the row \code{k} of the matrix \code{tt}.}
 
-\item{qq}{Commonality functions from the frame of discernment to \eqn{[0,1]}}
+\item{include_all}{Default = FALSE. Put TRUE to include all elements with 0 mass in the DSM.}
 
-\item{method}{Default= NULL. Use Fast Zeta Transform ("fzt"), Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m"). If used, the \code{tt} matrix will be augmented with its closure elements.}
-
-\item{include_all}{Default = FALSE. Put TRUE to include all elements with 0 mass in the bca.}
-
-\item{cnames}{A character vector containing the names of the elements of the frame of discernment \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
+\item{cnames}{A character vector containing the names of the elements of the SSM \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
 
 \item{con}{The measure of conflict can be provided. 0 by default.}
 
@@ -61,55 +53,51 @@ bca(
 
 \item{varnames}{The name of the variable. Generated if omitted.}
 
-\item{valuenames}{A list of the names of the variables with the name of the elements of their frame of discernment.}
+\item{valuenames}{A list of the names of the variables with the name of the elements of their SSM.}
 
-\item{inforel}{Not used here. Defined within function \code{\link{bcaRel}}.}
+\item{inforel}{Not used here. Defined within function \code{\link{jointDSM}}.}
 }
 \value{
-y An object of class \code{bcaspec} called a bca for "basic chance assignment": \itemize{
-  \item tt  The table of focal elements. Rownames of the matrix of focal elements are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
-  \item qq  Commonality functions from the frame of discernment to \eqn{[0,1]}
+y An object of class \code{DSMspec} called a DSM for "Dempster-Shafer model": \itemize{
+  \item tt  The table of focal sets. Rownames of the matrix of focal sets are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
   \item spec  A two column matrix. First column contains numbers given to the subsets, 1 to  \code{nrow(tt)}. Second column contains the mass values of the subsets. 
   \item con  The measure of conflict.
-  \item infovar  The number of the variable and the size of the frame of discernment.
+  \item infovar  The number of the variable and the size of the SSM.
   \item varnames  The name of the variable.
-  \item valuenames  A list of length 1 consisting of the name of the variable with the names of the elements of the frame of discernment (the column names of the \code{tt} matrix).
+  \item valuenames  A list of length 1 consisting of the name of the variable with the names of the elements of the SSM (the column names of the \code{tt} matrix).
   \item ssnames A list of subsets names done from the column names of the tt matrix.
-  \item inforel  Set at 0. used in function \code{\link{bcaRel}}.
+  \item inforel  Set at 0. used in function \code{\link{jointDSM}}.
   }
 }
 \description{
-Function \code{bca} is used to define subsets of a finite set \eqn{\Theta} of possible values and to assign their corresponding mass value.\cr
-The set \eqn{\Theta} is called the frame of discernment. Each subset \eqn{A} of  \eqn{Theta} with a positive mass value is called a focal element or a proposition. The associated mass value is a number of the \code{(0,1]} interval, called "basic chance assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
+Function \code{DSM} is used to define subsets of a finite set \eqn{\Theta} of possible values and to assign their corresponding mass value.\cr
+The set \eqn{\Theta} is called the state-space model (SSM) or "frame of discernment". Each subset \eqn{A} of \eqn{Theta} with a positive mass value is called a focal set. The associated mass value is a number of the \code{(0,1]} interval, called "basic mass assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
 }
 \details{
-There is two ways of defining the bca: a (0,1) matrix or a list of subsets labels.
+There is two ways of defining the DSM: a (0,1) matrix or a list of subsets labels.
 }
 \examples{
 tt<- t(matrix(c(1,0,1,1),ncol = 2))
 m<- c(.9,.1)
 cnames <- c("yes","no")
-bca(tt, m)
-bca(tt, m, cnames)
+DSM(tt, m)
+DSM(tt, m, cnames)
 tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 colnames(tt1) <- c("yes", "no")
 m <- c(.9, .1)
-bca(tt=tt1, m, idvar = 1)
-y <- bca(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
+DSM(tt=tt1, m, idvar = 1)
+y <- DSM(tt=matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6,0.4), include_all = TRUE,
 cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
- bcaPrint(y)
-vacuous <- bca(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
- bcaPrint(vacuous)
-x <- bca(tt=matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
-byrow = TRUE), m = c(0.2,0.5, 0.3),
-cnames = c("a", "b", "c"), idvar = 1, method = "ezt-m")
-x$qq
+ printDSM(y)
+vacuous <- DSM(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
+ printDSM(vacuous)
 }
 \references{
 \itemize{
-\item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
-\item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
+  \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
+  \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
+  \item Dempster, A., (2008). The Dempster–Shafer calculus for statisticians. International Journal of approximate reasoning, 48(2), 365-377.
 }
 }
 \author{

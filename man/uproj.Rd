@@ -10,7 +10,7 @@ uproj(rel1, relRef)
 extmin(rel1, relRef)
 }
 \arguments{
-\item{rel1}{An object of class bcaspec, i.e. a basic chance assignment defined on one variable or a relation.}
+\item{rel1}{An object of class DSMspec, i.e. a basic chance assignment defined on one variable or a relation.}
 
 \item{relRef}{The relation of reference. It can be an existing relation, or it can be constructed as a vacuous function.}
 }
@@ -36,7 +36,7 @@ dimnames = list(NULL, c("3", "2", "1", "0",
   infovar = init_info, 
   varnames = c("Sail", "Loading", "Weather", "Repairs"),
   relnb = 0)
- # a bcaspec defined on one variable
+ # a DSMspec defined on one variable
  l_rel <- DSM(tt = matrix(c(1,0,1,0,1,1), ncol = 2), 
  m = c(0.3,0.5,0.2), cnames = c("true", "false"), 
  infovar = matrix(c(4,2), ncol = 2, 

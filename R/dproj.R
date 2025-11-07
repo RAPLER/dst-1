@@ -1,14 +1,14 @@
-#'  Reduction of a relation
+#'  Reduction of a jointDSM
 #' 
-#' This function works on a relation defined on a product of two variables or more.  Having fixed a variable to eliminate from the relation,  the reduced product space is determined and the corresponding reduced bca is computed.This operation is also called "marginalization".
+#' This function works on a jointDSM defined on a product of two variables or more.  Having fixed a variable to eliminate from the jointDSM,  the reduced product space is determined and the corresponding reduced bca is computed.This operation is also called "marginalization".
 #' @aliases elim
-#' @param rel The relation to reduce, an object of class bcaspec.
+#' @param rel The jointDSM to reduce, an object of class DSMspec.
 #' @param xnb Identification number of the variable to eliminate.
-#' @return r The reduced relation
+#' @return r The reduced jointDSM
 #' @author Claude Boivin
 #' @export
 #' @examples  
-#' # We construct a relation between two variables to show marginalization.
+#' # We construct a jointDSM between two variables to show marginalization.
 #' wr_tt <- matrix(c(1,rep(0,3),rep(c(1,0),3),0,1,1,1,0,0,
 #' 1,0,rep(1,5),0,1,1,0,rep(1,5)), ncol = 4, byrow = TRUE)
 #' colnames(wr_tt) <- c("Wy Ry", "Wy Rn", "Wn Ry", "Wn Rn")
@@ -21,7 +21,7 @@
 #' wr_rel <- list(tt = wr_tt, con = 0.16, spec=wr_spec,
 #'   infovar = wr_infovar, varnames = c("Roadworks","Rain"),
 #'   valuenames = list( RdWorks = c("Wy", "Wn"), Rain=c("Ry", "Rn") ))
-#' class(wr_rel) <- "bcaspec"
+#' class(wr_rel) <- "DSMspec"
 #' DSMprint(dproj(wr_rel, xnb = 5))
 #' DSMprint(dproj(wr_rel, xnb = 4))
 #'  
@@ -33,13 +33,13 @@ dproj <- function(rel, xnb) {
   .Deprecated("dproj", msg = "dproj is the new function name for the elim function.", old = "elim")
   # 1. Checks and Some working vars
   #
-  if (inherits(rel, "bcaspec") == FALSE)  {
-    stop("Rel input not of class bcaspec.")
+  if (inherits(rel, "DSMspec") == FALSE)  {
+    stop("Rel input not of class DSMspec.")
   }
   size_vars <- rel$infovar[,2]    # vector of the sizes of axes
   nbvar <- length(size_vars)
   if (nbvar < 2)  {
-    stop("Input is not a relation. No variable to eliminate.")
+    stop("Input is not a jointDSM. No variable to eliminate.")
   }
   # Some working vars
   size_vars_inv <- size_vars[nbvar:1]   # same order as APL prog
@@ -93,7 +93,7 @@ dproj <- function(rel, xnb) {
   inforel <- rel$inforel
   #
   # 6. Result
-  r <- bca(tt = tt, m = m1,  con = rel$con, infovar = infovar, varnames = idnames, valuenames = valuenames, inforel = inforel)
+  r <- DSM(tt = tt, m = m1,  con = rel$con, infovar = infovar, varnames = idnames, valuenames = valuenames, inforel = inforel)
 return(r)
 }
 #' @rdname dproj

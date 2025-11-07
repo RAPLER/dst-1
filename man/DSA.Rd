@@ -3,52 +3,50 @@
 \name{DSA}
 \alias{DSA}
 \alias{belplau}
-\title{Calculation of the degrees of Belief and Plausibility of a Dempster-Shafer Model (basic chance assignment, bca).}
+\title{Calculate the degrees of unambiguous support (p), unambiguous contradiction (q), and ambiguity (r) of a list of hypothesis based on a Dempster-Shafer Model (DSM).}
 \usage{
-DSA(x, remove = FALSE, h = NULL, method = NULL)
+DSA(x, remove = FALSE, h = NULL)
 
-belplau(x, remove = FALSE, h = NULL, method = NULL)
+belplau(x, remove = FALSE, h = NULL)
 }
 \arguments{
-\item{x}{A basic chance assignment mass function (see \code{\link{bca}}).}
+\item{x}{A DSM (see \code{\link{DSM}}).}
 
 \item{remove}{= TRUE: Exclude subsets with zero mass.}
 
 \item{h}{= NULL: Hypothesis to be tested. Description matrix in the same format than \code{x$tt}}
-
-\item{method}{= NULL: Use Fast Zeta Transform ("fzt") or Efficient Zeta Transform ("ezt") or Efficient Zeta Transform on a meet-closed subset ("ezt-m")}
 }
 \value{
-A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal elements: \itemize{
- \item Column 1: the degree of Belief \code{bel};
- \item Column 2: the degree of Disbellief (belief in favor of the contrary hypothesis) \code{disbel};
- \item Column 3: the degree of Epistemic uncertainty \code{unc};
- \item Column 4: the degree of Plausibility \code{plau};
+A matrix of \code{M} rows by 3 columns is returned, where \code{M} is the number of focal sets: \itemize{
+ \item Column 1: the degree of unambiguous support (Belief) \code{p};
+ \item Column 2: the degree of unambiguous contradiction (Disbelief) \code{q};
+ \item Column 3: the degree of ambiguity (Epistemic uncertainty) \code{r};
+ \item Column 4: the degree of non-contradiction (Plausibility) \code{plau};
  \item Column 5: the Plausibility ratio \code{rplau}.
    }
 }
 \description{
-Degrees of Belief \code{Bel} and Plausibility \code{Pl} of the focal elements of a bca are computed. The ratio of the plausibility of a focal element against the plausibility of its contrary is also computed. Subsets with zero mass can be excluded from the calculations.\cr
+Degrees of unambiguous support \code{p} and unambiguous contradiction \code{q} of the focal sets of a DSM are computed. The ratio of the plausibility of a focal set against the plausibility of its contrary is also computed. Subsets with zero mass can be excluded from the calculations.\cr
 }
 \details{
-The degree of belief \code{Bel} is defined by: \cr
-\deqn{bel(A) = Sum((m(B); B \subseteq A))}{bel(A) = Sum((m(B); B <= A))} for every subset B of A.\cr
-The degree of plausibility \code{pl} is defined by: \cr
-\deqn{pl(A) = Sum[(m(B); B \cap A \neq \emptyset]}{pl(A) = Sum[(m(B); (B & A) not empty]} for every subset \code{B} of the frame of discernment. \cr
-The plausibility ratio of a focal element \code{A} versus its contrary \code{not A} is defined by:  \eqn{Pl(A)/(1-Bel(A))}.
+The degree of unambiguous support (belief) \code{p} is defined by: \cr
+\deqn{p(A) = Sum((m(B); B \subseteq A))}{p(A) = Sum((m(B); B <= A))} for every subset B of A.\cr
+The degree of non-contradiction (plausibility) \code{plau} is defined by: \cr
+\deqn{plau(A) = Sum[(m(B); B \cap A \neq \emptyset]}{pl(A) = Sum[(m(B); (B & A) not empty]} for every subset \code{B} of the state-space model. \cr
+The plausibility ratio of a focal set \code{A} versus its contrary \code{not A} is defined by:  \eqn{(1-q(A))/(1-p(A))}.
 }
 \examples{
-x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+x <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 byrow = TRUE), m = c(0.2,0.5, 0.3), 
 cnames = c("a", "b", "c"), varnames = "x", idvar = 1)
 belplau(x)
-y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+y <- DSM(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 byrow = TRUE), m = c(0.6, 0.4),  
 cnames = c("a", "b", "c"),  varnames = "y", idvar = 1)
 xy <- nzdsr(dsrwon(x,y))
 belplau(xy)
 print("compare all elementary events")
-xy1 <- addTobca(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
+xy1 <- addToDSM(x = xy, tt = matrix(c(0,1,0,0,0,1), nrow = 2, byrow = TRUE))
 belplau(xy1) 
 belplau(xy1, remove = TRUE) 
 belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
@@ -56,8 +54,9 @@ belplau(xy1, h = matrix(c(1,0,0,0,1,1), nrow = 2, byrow = TRUE))
 }
 \references{
 \itemize{
-\item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 39-43.
-\item Williams, P., (1990). An interpretation of Shenoy and Shafer's axioms for local computation. International Journal of Approximate Reasoning 4, pp. 225-232.
+  \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 39-43.
+  \item Williams, P., (1990). An interpretation of Shenoy and Shafer's axioms for local computation. International Journal of Approximate Reasoning 4, pp. 225-232.
+  \item Dempster, A., (2008). The Dempster–Shafer calculus for statisticians. International Journal of approximate reasoning, 48(2), 365-377.
 }
 }
 \author{

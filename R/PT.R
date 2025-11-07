@@ -1,20 +1,21 @@
 #' Plausibility transformation of the singletons of a frame
 #'
 #' Given a mass function defined on some subsets of a frame \eqn{\Theta}, the application of the plausibility transformation to the singletons of \eqn{\Theta} yields the probability distribution associated with this mass function. 
-#' @param x A bca mass function.
+#' @aliases plaustrans
+#' @param x A DSM.
 #' @details We compute the plausibility measure of all the singletons of the frame of discernment. The probability distribution of the singletons is obtained from their plausibility measures.
 #' @return The matrix of singletons with their plausibility transformation added in the last column.
 #' @author Claude Boivin
 #' @references Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.
 #' @examples  
-#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
+#' x <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), 
 #' varnames = "x", idvar = 1)
-#' plautrans(x)
+#' PT(x)
 #' @export
 #' 
-plautrans <- function(x) {
+PT <- function(x) {
   #
   # Local variables: nc, row_m_empty, zx, nsing, z1, zs, zzs, zord, trplau
   # Functions calls: tabresul
@@ -62,3 +63,6 @@ plautrans <- function(x) {
   y<-cbind(zs[,1:nsing],trplau)
   return(y)
 }
+#' @rdname PT
+#' @export
+plaustrans <- PT

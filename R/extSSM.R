@@ -1,23 +1,23 @@
-#' Extension of the frame of discernment of a variable
+#' Extension of the state-space model of a variable
 #' 
-#' This function works on a basic chance assignment (bca) \code{x} defined on a single variable. Iy= t Allows the addition of new values to the frame of discernment. 
-#' 
-#' @param x An object of bca class, i.e. a basic chance assignment defined on one variable
+#' This function works on a Dempster-Shafer model (DSM) \code{x} defined on a single state-sapce model (SSM). It allows the addition of new values to the SSM. 
+#' @aliases extFrame
+#' @param x An object of DSM class, i.e. a basic chance assignment defined on one SSM
 #' @param use_ssnames Default= FALSE. Put TRUE if use of subset names is wanted.
-#' @param lab A character vector containing the names of the elements to add to the frame of discernment.
-#' @return zxtnd The bca with its frame extended
+#' @param lab A character vector containing the names of the elements to add to the SSM.
+#' @return zxtnd The DSM with its SSM extended
 #' @author Claude Boivin
 #' @export
 #' @examples 
-#' s1_e1 <- bca(tt = matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
+#' s1_e1 <- DSM(tt = matrix(c(1,0,1,1),nrow = 2, byrow = TRUE), 
 #' m = c(0.6,0.4), cnames = c("S1","S2"), varnames = "v1", idvar = 1) 
-#' s13_names <- extFrame(s1_e1, lab = "S3", use_ssnames =TRUE)
-#' s13 <- extFrame(s1_e1, lab = "S3")
-extFrame <- function(x, use_ssnames = FALSE, lab = NULL) {
+#' s13_names <- extSSM(s1_e1, lab = "S3", use_ssnames =TRUE)
+#' s13 <- extSSM(s1_e1, lab = "S3")
+extSSM <- function(x, use_ssnames = FALSE, lab = NULL) {
   # 1. Parameter checks
   #
-  if ( inherits(x, "bcaspec") == FALSE) {
-    stop("Input x not of class bcaspec.")
+  if ( inherits(x, "DSMspec") == FALSE) {
+    stop("Input x not of class DSMspec.")
   }
   if( (is.character(lab) == FALSE) ) { 
     stop("parameter lab must be a character string") 
@@ -25,17 +25,17 @@ extFrame <- function(x, use_ssnames = FALSE, lab = NULL) {
   zcomp=lapply(X=1:length(colnames(x$tt)), FUN = function(X) {colnames(x$tt)[X] == lab})
   zcompSum =unlist(lapply(X=1:length(zcomp), FUN = function(X) {sum(zcomp[[X]]) } ) )
   if(sum(zcompSum) > 0 ) {
-    stop("One on more new labels already in the frame. Labels cannot be reppeated.") 
+    stop("One on more new labels already in the SSM. Labels cannot be reppeated.") 
   }
   #
   # 2. Computation
   zxtnd <- x
   zx <- matrix(rep(c(rep(0,-1+nrow(x$tt) ),1),length(lab)), ncol = length(lab) )
   names(zx) <- eval(lab)
-  zxtnd$tt <- cbind(x$tt, zx)      # Adding a value "d" to the frame and
+  zxtnd$tt <- cbind(x$tt, zx)      # Adding a value "d" to the SSM and
   colnames(zxtnd$tt) <- c(colnames(x$tt), lab)
   # moving the ignorance from the Fod of x to the Fod of zxtnd 
-  # update the size of the frame
+  # update the size of the SSM
   zxtnd$infovar[,"size"] <- length(lab)+x$infovar[,"size"]
   # update the valuenames
   zxtnd$valuenames[[1]] <- colnames(zxtnd$tt)
@@ -47,3 +47,6 @@ extFrame <- function(x, use_ssnames = FALSE, lab = NULL) {
   }
   return(zxtnd)
 }
+#' @rdname extSSM
+#' @export
+extFrame <- extSSM

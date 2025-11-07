@@ -12,13 +12,3 @@
 #' @keywords internal
 "_PACKAGE"
 NULL
-
-## usethis namespace: start
-#' @importFrom Rcpp sourceCpp
-## usethis namespace: end
-NULL
-
-## usethis namespace: start
-#' @useDynLib dst, .registration = TRUE
-## usethis namespace: end
-NULL
