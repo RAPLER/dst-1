@@ -11,6 +11,7 @@
 #' @param use_ssnames = TRUE to use ssnames instead of tt matrix to do the intersections. Default = FALSE
 #' @param use_sparse Make use of sparse matrices ("yes") or not ("no"). Default = "no".
 #' @param varnames A character string to name the resulting variable. named "z" if omitted.
+#' @param skpt_tt Skip reconstruction of tt matrix. Default = FALSE.
 #' @param infovarnames Deprecated. Old name for \code{varnames}.
 #' @param relnb Identification number of the jointDSM. Can be omitted.
 #' @return A Dempster-Shafer model with these two components added: \itemize{
@@ -45,7 +46,7 @@
 #'   \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #'   \item Dempster, A., (2008). The Dempster–Shafer calculus for statisticians. International Journal of approximate reasoning, 48(2), 365-377.
 #' }
-DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", varnames = NULL, relnb = NULL, infovarnames) {
+DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", varnames = NULL, skpt_tt = FALSE, relnb = NULL, infovarnames) {
   # Local variables: m1, m2, q1, q2, zx, zy, colx, coly, zorder_check, x1, y1, z, zz1 ,W1_list, W1s, W1cs, V12, N12, W1, I12, MAC, nMAC
   # Functions calls: nameRows
   #

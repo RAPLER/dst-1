@@ -20,6 +20,7 @@ DSC(
   use_ssnames = FALSE,
   use_sparse = "no",
   varnames = NULL,
+  skpt_tt = FALSE,
   relnb = NULL,
   infovarnames
 )
@@ -31,6 +32,7 @@ dsrwon(
   use_ssnames = FALSE,
   use_sparse = "no",
   varnames = NULL,
+  skpt_tt = FALSE,
   relnb = NULL,
   infovarnames
 )
@@ -47,6 +49,8 @@ dsrwon(
 \item{use_sparse}{Make use of sparse matrices ("yes") or not ("no"). Default = "no".}
 
 \item{varnames}{A character string to name the resulting variable. named "z" if omitted.}
+
+\item{skpt_tt}{Skip reconstruction of tt matrix. Default = FALSE.}
 
 \item{relnb}{Identification number of the jointDSM. Can be omitted.}
 
