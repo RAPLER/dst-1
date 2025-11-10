@@ -4,12 +4,13 @@
 \alias{DSM}
 \alias{bpa}
 \alias{bca}
-\title{Dempser-Shafer models}
+\title{Unidimensional Dempser-Shafer model}
 \usage{
 DSM(
   tt = NULL,
   m,
   include_all = FALSE,
+  ssr = NULL,
   cnames = NULL,
   con = NULL,
   ssnames = NULL,
@@ -24,6 +25,7 @@ bca(
   tt = NULL,
   m,
   include_all = FALSE,
+  ssr = NULL,
   cnames = NULL,
   con = NULL,
   ssnames = NULL,
@@ -35,25 +37,27 @@ bca(
 )
 }
 \arguments{
-\item{tt}{Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the SSM \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
+\item{tt}{Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the SSR \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.}
 
 \item{m}{A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the mass value allotted to the focal set represented by the row \code{k} of the matrix \code{tt}.}
 
 \item{include_all}{Default = FALSE. Put TRUE to include all elements with 0 mass in the DSM.}
 
-\item{cnames}{A character vector containing the names of the elements of the SSM \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
+\item{ssr}{State space representation. Contains all the information pertaining to the underlying state space. See \code{SSR}.}
+
+\item{cnames}{A character vector containing the names of the elements of the SSR \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.}
 
 \item{con}{The measure of conflict can be provided. 0 by default.}
 
 \item{ssnames}{A list of subsets names which will be obtained from the column names of the tt matrix.}
 
-\item{idvar}{The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted.}
+\item{idvar}{The number given to the variable. A number is necessary to manage relations between variables of multidimensional state spaces and enable computations on a graph. 0 if omitted.}
 
-\item{infovar}{A two-column matrix containing variable identification numbers and the number of elements of the variable. Generated if omitted.}
+\item{infovar}{A two-column matrix containing variable identification number and the number of elements of the variable. Generated if omitted.}
 
 \item{varnames}{The name of the variable. Generated if omitted.}
 
-\item{valuenames}{A list of the names of the variables with the name of the elements of their SSM.}
+\item{valuenames}{A list of the names of the variables with the name of the elements of their SSR.}
 
 \item{inforel}{Not used here. Defined within function \code{\link{jointDSM}}.}
 }
@@ -71,7 +75,7 @@ y An object of class \code{DSMspec} called a DSM for "Dempster-Shafer model": \i
 }
 \description{
 Function \code{DSM} is used to define subsets of a finite set \eqn{\Theta} of possible values and to assign their corresponding mass value.\cr
-The set \eqn{\Theta} is called the state-space model (SSM) or "frame of discernment". Each subset \eqn{A} of \eqn{Theta} with a positive mass value is called a focal set. The associated mass value is a number of the \code{(0,1]} interval, called "basic mass assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
+The set \eqn{\Theta} is called the state-space representation (SSR) or "frame of discernment". Each subset \eqn{A} of \eqn{Theta} with a positive mass value is called a focal set. The associated mass value is a number of the \code{(0,1]} interval, called "basic mass assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
 }
 \details{
 There is two ways of defining the DSM: a (0,1) matrix or a list of subsets labels.

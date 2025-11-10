@@ -1,20 +1,21 @@
-#' Dempser-Shafer models
+#' Unidimensional Dempser-Shafer model
 #' 
 #' Function \code{DSM} is used to define subsets of a finite set \eqn{\Theta} of possible values and to assign their corresponding mass value.\cr
-#' The set \eqn{\Theta} is called the state-space model (SSM) or "frame of discernment". Each subset \eqn{A} of \eqn{Theta} with a positive mass value is called a focal set. The associated mass value is a number of the \code{(0,1]} interval, called "basic mass assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
+#' The set \eqn{\Theta} is called the state-space representation (SSR) or "frame of discernment". Each subset \eqn{A} of \eqn{Theta} with a positive mass value is called a focal set. The associated mass value is a number of the \code{(0,1]} interval, called "basic mass assignment" (the basic probability assignment of Shafer's book). All other subsets that have not received a positive mass value are assumed to have a mass value of zero.
 #' 
 #' There is two ways of defining the DSM: a (0,1) matrix or a list of subsets labels.
 #' @aliases bpa bca
-#' @param tt Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the SSM \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
+#' @param tt Mandatory. A (0,1)-matrix or a boolean matrix. The number of columns must match the number of elements (values) of the SSR \eqn{\Theta}. Each row is a subset of \eqn{\Theta}. The last row is the frame \eqn{\Theta}, represented by a vector of 1's.
 #' @param ssnames A list of subsets names which will be obtained from the column names of the tt matrix.
 #' @param m A numeric vector of length equal to the number of rows of the matrix  \code{tt}. Values of \code{m} must lie in the interval \code{(0,1]} and must add to one. The mass \code{m(k)} represents the mass value allotted to the focal set represented by the row \code{k} of the matrix \code{tt}.
 #' @param include_all Default = FALSE. Put TRUE to include all elements with 0 mass in the DSM.
-#' @param cnames A character vector containing the names of the elements of the SSM \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
+#' @param ssr State space representation. Contains all the information pertaining to the underlying state space. See \code{SSR}.
+#' @param cnames A character vector containing the names of the elements of the SSR \eqn{\Theta}. The length must be equal to the number of elements of \eqn{\Theta}. The names are first searched in the \code{valuenames} parameter. If NULL, column names of the matrix \code{tt} are taken if present. Otherwise, names are generated.
 #' @param con The measure of conflict can be provided. 0 by default. 
-#' @param idvar The number given to the variable. A number is necessary to manage relations between variables  and make computations on a graph. 0 if omitted. 
-#' @param infovar  A two-column matrix containing variable identification numbers and the number of elements of the variable. Generated if omitted.
+#' @param idvar The number given to the variable. A number is necessary to manage relations between variables of multidimensional state spaces and enable computations on a graph. 0 if omitted. 
+#' @param infovar  A two-column matrix containing variable identification number and the number of elements of the variable. Generated if omitted.
 #' @param varnames The name of the variable. Generated if omitted.
-#' @param valuenames A list of the names of the variables with the name of the elements of their SSM.
+#' @param valuenames A list of the names of the variables with the name of the elements of their SSR.
 #' @param inforel Not used here. Defined within function \code{\link{jointDSM}}.
 #' @return y An object of class \code{DSMspec} called a DSM for "Dempster-Shafer model": \itemize{
 #'   \item tt  The table of focal sets. Rownames of the matrix of focal sets are generated from the column names of the elements of the frame. See \code{\link{nameRows}} for details.
@@ -49,7 +50,7 @@
 #'   \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
 #'   \item Dempster, A., (2008). The Dempster–Shafer calculus for statisticians. International Journal of approximate reasoning, 48(2), 365-377.
 #' }
-DSM <- function(tt = NULL, m, include_all = FALSE, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
+DSM <- function(tt = NULL, m, include_all = FALSE, ssr = NULL, cnames = NULL, con = NULL, ssnames = NULL, idvar = NULL, infovar = NULL, varnames = NULL, valuenames = NULL, inforel=NULL) {
   #
   # Local variables: ztable, zdup, zframe, znames, str1, str2, tt_all, m_all
   # Functions calls: nameRows, DoSSnames
@@ -66,17 +67,22 @@ DSM <- function(tt = NULL, m, include_all = FALSE, cnames = NULL, con = NULL, ss
  }
   #
   # Check column names
-  if (is.null(cnames)) {    
+  if (is.null(cnames) & is.null(ssr)) {    
     cnames <- colnames(tt, do.NULL = FALSE, prefix = "col") 
   } 
   #
   # Check for duplicates column names
+  if (!is.null(cnames)) {
   ztable <- outer(cnames, cnames, "==")
   zdup <- apply(ztable, 2, sum)
   if (sum(zdup) != ncol(tt)) {
     stop("Error in input arguments: Duplicate names in column names of tt matrix or in column names supplied.") 
   }
+  }
   #
+  if (is.null(cnames) &!is.null(ssr)) {
+    cnames <- ssr$valuenames[[1]]
+  }
   # Check mass vector
   #
   if((abs(sum(m)-1)>0.000001) | (length(tt[,1])!=length(m)) ) { 
@@ -86,7 +92,13 @@ DSM <- function(tt = NULL, m, include_all = FALSE, cnames = NULL, con = NULL, ss
     colnames(tt) <- cnames # for the case where tt matrix had no column names
     rownames(tt) <- nameRows(tt)
     if (is.null(con)) { con <- 0 }
-    if (is.null(idvar)) { idvar <- 0 }
+    #
+    if (!is.null(ssr) ) {
+      idvar <- ssr$idvar
+    }
+    if (is.null(idvar) & is.null(ssr) ) { 
+      idvar <- 0 
+      }
     #
     # including all elements of the frame in the DSM
     # encode the complete tt matrix
@@ -100,25 +112,35 @@ DSM <- function(tt = NULL, m, include_all = FALSE, cnames = NULL, con = NULL, ss
   #
   # 3. Build infovar parameter
   #
-    if (is.null(infovar)) {
+    if (is.null(infovar) & is.null(ssr) ) {
       infovar <- matrix(c(idvar, ncol(tt)), ncol = 2)
+      colnames(infovar) <- c("varnb", "size")
+      idvar <- infovar[,1]
     }
-    colnames(infovar) <- c("varnb", "size")
-    idvar <- infovar[,1]
+    if (is.null(infovar) & !is.null(ssr) ) {
+      infovar=ssr$infovar
+    }
     #
     # 4. Build varnames and valuenames (former = infovaluenames)
     #
     # check and use varnames if provided
     if (include_all == TRUE) {
-    if (is.null(valuenames) | missing(valuenames)) {
+    if (is.null(ssr) & (is.null(valuenames) | missing(valuenames)) ) {
       valuenames <- split(colnames(tt_all), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
+    }
+      if (!is.null(ssr) ) {
+        valuenammes <- ssr$valuenames[[1]]
       }
     }
     else {
-      if (is.null(valuenames) | missing(valuenames)) {
+      if (is.null(ssr) & is.null(valuenames) | missing(valuenames)) {
         valuenames <- split(colnames(tt), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
       }
     }
+    if (!is.null(ssr) ) {
+      valuenammes <- ssr$valuenames[[1]]
+    }
+    #
     if (!is.null(varnames)) {
       if (is.numeric(varnames)) {
         stop("Names of variables must start with a letter.")
@@ -127,9 +149,12 @@ DSM <- function(tt = NULL, m, include_all = FALSE, cnames = NULL, con = NULL, ss
         stop("number of variable names  not equal to number of variables") }
       names(valuenames) <- varnames
     }
-    if (is.null(varnames)) {
+    if (is.null(ssr) & is.null(varnames)) {
       varnames <- names(valuenames)
-      } 
+    } 
+    if (!is.null(ssr) ) {
+      varnames= ssr$varnames
+    }
     #
     # 5. Build specification matrix spec
     #
@@ -182,7 +207,7 @@ DSM <- function(tt = NULL, m, include_all = FALSE, cnames = NULL, con = NULL, ss
     y<-list(con = con, tt = tt, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
     # end test
     #
-    class(y) <- append(class(y), "DSMspec")
+    class(y) <- append(class(y), c("bcaspec", "DSMspec") )
     return(y)
   }
 } 
