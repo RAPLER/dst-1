@@ -10,6 +10,7 @@
 #'  \item Column 5: the Plausibility ratio \code{rplau}.
 #'    }
 #' @author Peiyuan Zhu
+#' @import progress
 #' @export
 #' @examples 
 #' x <- DSM(tt = matrix(c(1,1,0,1,1,1), nrow = 2, byrow = TRUE), m = c(0.8, 0.2), cnames = c(1,2,3))
