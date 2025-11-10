@@ -371,14 +371,14 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", var
   # 4.2. construction of the result
   #
   if (use_ssnames == FALSE) {
-    z <- list(con = con, tt=tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order=1:nrow(tt))
+    z <- list(con = con, tt=tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order=1:nrow(tt))
     class(z) <- append(class(z), "DSMspec") 
   } 
   #
   if (use_ssnames == TRUE) {
     znames <- W1_list[sort_order]
     znames <- lapply(X=1:length(znames), FUN = function(X) {if (length(znames[[X]]) == 0){ znames[[X]] <- "Empty"} else znames[[X]] })
-    z <- list(con = con, tt = tt, qq=qq, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order = sort_order, ssnames = znames, sfod = zx$sfod)
+    z <- list(con = con, tt = tt, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel, sort_order = sort_order, ssnames = znames, sfod = zx$sfod)
     class(z) <- append(class(z), "DSMspec")
   }
   return(z)
