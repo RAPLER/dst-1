@@ -29,6 +29,7 @@ Imports:
     rlang,
     utils,
     bit,
+    progress
 Suggests: 
     igraph,
     knitr,

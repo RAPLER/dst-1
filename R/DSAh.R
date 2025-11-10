@@ -20,7 +20,11 @@
 DSAh <-function(MACC, W2, h) {
   p <- rep(0,nrow(h))
   q <- rep(0,nrow(h))
+  pb <- progress_bar$new(
+    format = "  computing belplau [:bar] :percent eta: :eta",
+    total = nrow(W2), clear = FALSE, width= 100)
   for (i in 1:nrow(W2)) {
+    pb$tick()
     for (j in 1:nrow(h)) {
       # if bpa$tt[i,] is contained in h[j,]
       if (all(h[j,]-W2[i,] >= 0)) {
