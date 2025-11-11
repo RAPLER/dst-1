@@ -22,9 +22,9 @@ PT <- function(x) {
   #
   # 1. checking input data 
   #
-  # 1.1. Input must be of class bcaspec
-  if ( inherits(x, "bcaspec") == FALSE) {
-    stop("Input argument not of class bcaspec.")
+  # 1.1. Input must be of class DSMspec
+  if ( inherits(x, "DSMspec") == FALSE) {
+    stop("Input argument not of class DSMspec.")
   }
   #
   # 1.2. check if m_empty present and if not 0
@@ -33,19 +33,19 @@ PT <- function(x) {
     row_m_empty <- row_m_empty[1]
     if (!is.na(row_m_empty)) {
       if (x$spec[row_m_empty,2] > 0) {
-        stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
+        stop("Invalid data: Empty set among the focal elements. Normalization necessary. See function normalize.")
       }
     }
   }
   #
   # 2. processing  
   #
-  # 2.1 add all the singletons to the input bca
+  # 2.1 add all the singletons to the input DSM
   nc <-ncol(x$tt)
-  x <- addTobca(x = x,tt = diag(nc))
+  x <- addToDSM(x = x,tt = diag(nc))
   #
   # 2.2 eliminate duplicates singletons if any  
-  x <- nzdsr(x)
+  x <- normalize(x)
   #
   # 2.3. compute measures of belief and plausibility with fn tabresul
   zx<-rbind(tabresul(x, singletonsOnly = TRUE)$mbp)

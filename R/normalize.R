@@ -43,8 +43,8 @@ normalize <- function(x, sparse = "no", comm = "no") {
   #
   .Deprecated("normalize", msg = "normalize is the new function name for the nzdsr function.", old = "nzdsr")
   ## 1. Checks
-  if ( inherits(x, "bcaspec") == FALSE) {
-    stop("Input argument not of class bcaspec.")
+  if ( inherits(x, "DSMspec") == FALSE) {
+    stop("Input argument not of class DSMspec.")
   }
   
   # 1.1 Check commonality function
@@ -126,7 +126,7 @@ normalize <- function(x, sparse = "no", comm = "no") {
   # construction of the result
   if (comm=="no") {
     z <- list(con = con, tt = tt, qq = NULL, spec = spec, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
-    class(z) <- append(class(z), "bcaspec")
+    class(z) <- append(class(z),c("DSMspec",  "bcaspec") )
   } else {
     z <- list(con = 0, tt = NULL, qq = x$qq, spec = NULL, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
   }

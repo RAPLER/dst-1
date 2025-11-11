@@ -33,7 +33,7 @@ test_that("bcaspec_1", {
  tt<- t(matrix(c(1,0,1,1),ncol=2))
  m = c(0.3, 0.7)
  cnames <- c("yes","no")
- expect_error(bca(tt, m, cnames, varnames = c("burglary", "boom") ), "number of variable names  not equal to number of variables" )
+ expect_error(bca(tt=tt, m=m, cnames=cnames, varnames = c("burglary", "boom") ), "number of variable names  not equal to number of variables" )
  #
   # T6: take names from "valuenames" parameter only if it is a string. If the matrix f is defined on a product space, the names must be the column names of the matrix. 
   tt1=matrix(c(rep(TRUE,3),FALSE, rep(TRUE,4)), ncol=4, byrow=TRUE)

@@ -37,8 +37,8 @@ addToDSM <- function(x, tt) {
   #
   # 1. Parameter checks
   #
-  if ( inherits(x, "bcaspec") == FALSE) {
-    stop("Input x not of class bcaspec.")
+  if ( inherits(x, "DSMspec") == FALSE) {
+    stop("Input x not of class DSMspec.")
   }
   if ((is.matrix(tt) ==FALSE) ) {
     stop("tt parameter must be a (0,1) or logical matrix.")

@@ -1,6 +1,6 @@
 #' Prepare a table of results
 #'
-#' This utility function is a more detailed version of the \code{belplau} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{belplau}, function \code{tabresul} does not reconstruct the row names from the column names. You can assign short rownames of your choice to the tt matrix of your resulting bca before calling function \code{tabresul}.
+#' This utility function is a more detailed version of the \code{DSA} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{DSA}, function \code{tabresul} does not reconstruct the row names from the column names. You can assign short rownames of your choice to the tt matrix of your resulting bca before calling function \code{tabresul}.
 #' @aliases tabresul
 #' @param x A basic chance assignment (bca)
 #' @param removeZeroes = TRUE removes subsets with 0 mass.
@@ -35,7 +35,7 @@
 tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {  
   #
   # Local variables: row_m_empty, macc, W2, INUL, macc1, W2a, BP, ztab, r, r1, mbp 
-  # Functions calls: belplau
+  # Functions calls: DSA
   #
   # 1. check input data 
   #
@@ -57,7 +57,7 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   # Processing
   # 3.1. Compute Bel and Pl functions and prepare final result
   #
-  BP<-belplau(x)
+  BP<-DSA(x)
   ztab <- cbind(x$tt, x$spec[,2], BP)
   colnames(ztab)[1+ncol(x$tt)] <- "mass"
   # Order the subsets so the frame is in the last position of tt matrix

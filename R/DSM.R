@@ -207,7 +207,7 @@ DSM <- function(tt = NULL, m, include_all = FALSE, ssr = NULL, cnames = NULL, co
     y<-list(con = con, tt = tt, spec = spec , infovar = infovar, varnames = varnames, valuenames = valuenames, ssnames = znames, inforel = inforel) 
     # end test
     #
-    class(y) <- append(class(y), c("bcaspec", "DSMspec") )
+    class(y) <- append(class(y), c("DSMspec", "bcaspec") )
     return(y)
   }
 } 
