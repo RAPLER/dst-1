@@ -48,7 +48,7 @@ DSA <-function (x, remove = FALSE, h = NULL) {
   .Deprecated("DSA", msg = "DSA is the new function name for the belplau function.", old = "belplau")
   # 1. Checking input data 
   #
-  if ( inherits(x, "DSMspec") == FALSE) {
+  if (inherits(x, c("DSMspec", "bcaspec")) == FALSE) {
     stop("Input argument not of class DSMspec.")
   }
   # computation using description matrix tt

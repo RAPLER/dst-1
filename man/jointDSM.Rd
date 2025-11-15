@@ -3,7 +3,7 @@
 \name{jointDSM}
 \alias{jointDSM}
 \alias{bcaRel}
-\title{Representation of a mass function in a product space}
+\title{Multidimensional DS Model}
 \usage{
 jointDSM(
   tt,
@@ -55,7 +55,10 @@ An object of class \code{bcaspec} called a bca for "basic chance assignment". Th
 }
 }
 \description{
-This function is used to represent a relation between two or more variables in their product space \code{P}. The relation can be described by more than one subset of \code{P}. Each subset can also  include more than one element. Complete disjunctive coding is used to represent one element in the input matrix of the function.
+Function \code{jointDSM} is used to assign a mass function to subsets defined in a multidimensional state space of a finite set \eqn{\Theta} of possible values and to assign their corresponding mass value.\cr
+}
+\details{
+represent a relation between two or more variables in their product  space \code{P}. The relation can be described by more than one subset of \code{P}. Each subset can also  include more than one element. Complete disjunctive coding is used to represent one element in the input matrix of the function.
 }
 \examples{
 # A logical implication rule
