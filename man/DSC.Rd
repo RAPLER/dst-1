@@ -63,10 +63,10 @@ A Dempster-Shafer model with these two components added: \itemize{
   }
 }
 \description{
-The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined on the same state-space model (SSM) and described by their respective basic mass assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (for the normalization operation, see function \code{\link{normalize}}).
+The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined on the same state-space representation (SSR) and described by their respective basic mass assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (for the normalization operation, see function \code{\link{normalize}}).
 }
 \details{
-The two DSM's \code{x} and \code{y} must be defined on the same SSM for the combination to take place. The jointDSM number of the x input is given to the output result.
+The two DSM's \code{x} and \code{y} must be defined on the same SSR for the combination to take place. The jointDSM number of the x input is given to the output result.
 }
 \examples{
 y1 <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3, 

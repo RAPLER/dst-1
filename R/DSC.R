@@ -1,10 +1,10 @@
 #' Combination of two Dempster-Shafer models
 #' 
-#' The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined on the same state-space model (SSM) and described by their respective basic mass assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (for the normalization operation, see function \code{\link{normalize}}).
+#' The unnormalized Dempster's rule is used to combine two mass functions \code{mx} and \code{my} defined on the same state-space representation (SSR) and described by their respective basic mass assignments \code{x} and \code{y}. Dempster's rule of combination is applied. The normalization is not done, leaving the choice to the user to normalize the results or not (for the normalization operation, see function \code{\link{normalize}}).
 #'
 #' @aliases dsrwon
 #' The calculations make use of multiple cores available.
-#' @details The two DSM's \code{x} and \code{y} must be defined on the same SSM for the combination to take place. The jointDSM number of the x input is given to the output result.  
+#' @details The two DSM's \code{x} and \code{y} must be defined on the same SSR for the combination to take place. The jointDSM number of the x input is given to the output result.  
 #' @param x A Dempster-Shafer model (see \code{\link{DSM}}).
 #' @param y A Dempster-Shafer model (see \code{\link{DSM}}).
 #' @param mcores Make use of multiple cores ("yes") or not ("no"). Default = "no".
@@ -64,7 +64,7 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", var
   #
   ## 1. Checks
   # 1.1. x and y of class DSMspec
-  if ( (inherits(x, "DSMspec") == FALSE) | (inherits(y, "DSMspec") == FALSE)) {
+  if ( (inherits(x, c("DSMspec", "bcaspec")) == FALSE) | (inherits(y, c("DSMspec", "bcaspec")) == FALSE)) {
     stop("One or more inputs not of class DSMspec.")
   }
   #
@@ -95,13 +95,13 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", var
   # Checks specific to the tt matrix, if there is one
   if  ((!is.null(x$tt)) & (!is.null(y$tt) )) {
     # 
-    # x and y must have same SSM
+    # x and y must have same SSR
     #  and same number of elements
     #
     x1<-rbind(zx$tt)  # (M x K) matrix or sparse matrix
     y1<-rbind(zy$tt)  # (N x K) matrix or sparse matrix
     if (ncol(x1) != ncol(y1)) {
-      stop("Nb of elements of SSM x and SSM y not equal.") 
+      stop("Nb of elements of SSR x and SSR y not equal.") 
     }
     #
     # x1 and x2 must have the same columns names put in the same order
@@ -110,7 +110,7 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", var
     coly <- colnames(y1)
     zorder_check <- sum(diag(outer(colx, coly, "==")))
     if(zorder_check < ncol(x1) ) {
-      stop("Value names of the two SSMs differ. Check value names of variables as well as their position.")
+      stop("Value names of the two SSRs differ. Check value names of variables as well as their position.")
     }
     #
   }
@@ -244,10 +244,10 @@ DSC <- function(x, y, mcores = "no", use_ssnames = FALSE, use_sparse = "no", var
     }
     #
     if (length(zx$ssnames[[length(zx$ssnames)]]) !=zx$infovar[1,2] ) {
-      stop("Number of elements of SSM differs from infovar parameter.")
+      stop("Number of elements of SSR differs from infovar parameter.")
     }
     if (length(zy$ssnames[[length(zy$ssnames)]]) !=zy$infovar[1,2] ) {
-      stop("Number of elements of SSM differs from infovar parameter.")
+      stop("Number of elements of SSR differs from infovar parameter.")
     }
     #
     # 3.1.compute intersections (N12 table) and transform to appropriate format
