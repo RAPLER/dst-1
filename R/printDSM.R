@@ -30,7 +30,7 @@ printDSM <- function(x, remove = FALSE) {
   #
   # Input check. 
   # x must be a bca specification
-  if ( inherits(x, "bcaspec") == FALSE) {
+  if (inherits(x, c("DSMspec", "bcaspec")) == FALSE)  {
     stop("Input argument not of class bcaspec.")
   }
   # x must have tt and spec
