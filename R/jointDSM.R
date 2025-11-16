@@ -1,23 +1,22 @@
-#' Representation of a mass function in a product space
+#' Multidimensional DS Model
 #'
-#' This function is used to represent a relation between two or more variables in their product space \code{P}. The relation can be described by more than one subset of \code{P}. Each subset can also  include more than one element. Complete disjunctive coding is used to represent one element in the input matrix of the function.
+#' Function \code{jointDSM} is used to assign mass values to subsets defined in a finite multidimensional state space \eqn{P}, which is the product space of unidimensional spaces \eqn{\Theta_1}, \eqn{\Theta_2}, ..., \eqn{\Theta_n}. To achieve the definition of the joint DSM of a focal element, a relation between two or more unidimensional SSR is described by one or more subsets of \eqn{\Theta_1}, \eqn{\Theta_2}, ..., \eqn{\Theta_n}. Hence each subset can possibly include more than one element. Complete disjunctive coding is used to represent a subset in the input matrix of the function.
 #' 
 #' @aliases bcaRel
-#' @param tt The description matrix of the subsets establishing the relation. This matrix is obtained by putting the variables side by side, as in a truth table representation. For each variable, there are as many columns as possible values. Each row of the matrix is an element of a subset. Each element is described by a sequence of 0 (absence of value of a variable) or 1 (presence of value). This forms a complete disjunctive coding. CAUTION: Variables put side by side must be ordered by their *idvar* from left to right.
-#' @param spec A two column matrix. First column: numbers assigned to the sub-assemblies. Second column: the mass values of the sub-assemblies. If the subset has more than one element, the number of the subset and its associated mass value are repeated to match the number of elements in the subset.
-#' @param infovar  A two column matrix containing variable identification numbers and the number of elements of each variable. The identification numbers must be ordered in increasing number.
-#' @param varnames The names of the variables.
-#' @param infovarnames Deprecated. Old name for \code{varnames}.
-#' @param valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
-#' @param infovaluenames Deprecated. Old name for \code{valuenames}. 
-#' @param relnb A number given to the relation. Set at 0 if omitted.
-#' @return An object of class \code{bcaspec} called a bca for "basic chance assignment". This is a list containing the following components:  \itemize{
+#' @param tt The description matrix of the subsets establishing the relation between \eqn{\Theta_1}, \eqn{\Theta_2}, ..., \eqn{\Theta_n}. This matrix is made of one or more subsets and the whole SSR in the last row. The columns of the matrix are defined by putting the SSRs side by side, ordered by their *idvar* from left to right. The first columns  are the labels of the first SSR, followed by the labels of the second SSR till the end. For each SSR, there are as many columns as there is possible values. A subset is then defined in the way of a truth table representation, where we keep the "TRUE" part of the table. Hence each row of the table is an element of a subset, described by a sequence of 0 (absence of value) or 1 (presence of value). This is called a complete disjunctive coding. CAUTION: SSRs put side by side must be ordered by their *idvar* from left to right.
+#' 
+#' @param spec A two column matrix. First column: numbers assigned to the subsets. Second column: the mass values of the subsets. If a subset has more than one element (row), the number of the subset and its associated mass value are repeated to match the number of elements (rows) of the subset.
+#' @param infovar  A two column matrix containing SSR identification numbers and the number of elements of each SSR. The identification numbers must be ordered in increasing number.
+#' @param varnames The names of the SSR.
+#' @param valuenames A list of the names of the SSR with the name of the elements of their SSR.
+#' @param relnb A number given to the jointDSM. Set at 0 if omitted.
+#' @return An object of class \code{DSMspec} called a DSM or "basic mass assignment". This is a list containing the following components:  \itemize{
 #' \item con The measure of conflict.
-#' \item tt The resulting table of subsets. Rownames of the matrix of subsets are generated from the column names of the elements of the product frame. See \code{\link{nameRows}} for details.
+#' \item tt The resulting table of subsets in its joint statte Space representation. Rownames of the matrix of subsets are generated from the column names of the elements of the product space. See \code{\link{nameRows}} for details.
 #' \item spec The resulting two-column matrix of specification numbers with associated mass values.
-#' \item infovar The two-column matrix of variables number and size given in the input data.
-#' \item valuenames A list of the names of the variables with the name of the elements of their frame of discernment.
-#' \item inforel A two-column matrix containing the relation number and the depth (number of variables) of the relation.
+#' \item infovar The two-column matrix of SSR number and size given in the input data.
+#' \item valuenames A list of the names of the SSR with the name of their elements.
+#' \item inforel A two-column matrix containing the relation number and the number of SSRs of the relation.
 #' } 
 #' @author Claude Boivin
 #' @export
@@ -28,39 +27,32 @@
 #' # that a stands for Rain: {yes, no} and b stands for
 #' # Roadworks: {yes, no}. From experience,
 #' # I am 75 % sure that there will be RoadWorks if there is no rain.
+#' # 0. Define State space representations
+#' ssWorks <- SSR(varnames = "W", idvar = 4, size = 2, cnames = c("Wy", "Wn") )
+#' ssRain <- SSR(varnames = "R", idvar = 5, size = 2, cnames = c("Ry", "Rn") )
 #' 
 #'  # 1. The tt table of the logical implication
 #'  ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
 #'  nrow = 4, byrow = TRUE, 
-#'  dimnames = list(NULL, c("rWdy", "rWdn", "Ry", "Rn")) )
+#'  dimnames = list(NULL, c("Wy", "Wn", "Ry", "Rn")) )
 #'  
 #'  # 2. The mass distribution
 #'  specrw <-  matrix(c(1,1,1,2,0.75,0.75,0.75,0.25), ncol = 2, 
 #'  dimnames = list(NULL, c("specnb", "mass")))
 #'   
 #'  # 3. Variables Identification Numbers and sizes (put VIN in ascending order)
-#'  inforw <- matrix(c(4,5,2,2), ncol = 2, 
-#'  dimnames = list(NULL, c("varnb", "size")) )
-#' bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
+#'  inforw - matrix(c(ssWorks$infovar, ssRain$infovar), ncol =2, byrow = TRUE,  dimnames = list(NULL, c("varnb", "size")) )
+#'  
+#' rel <- bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
 #'  varnames = c("RdWorks", "Rain"), relnb = 6)
 #'
-  jointDSM <- function(tt, spec, infovar, varnames, valuenames, relnb = NULL, infovarnames, infovaluenames) {
+  jointDSM <- function(tt, spec, infovar, varnames, valuenames, relnb = NULL) {
   #
   # Local variables: v, z1, colnz1, 
-  # Functions calls: productSpace, bca
+  # Functions calls: productSpace, DSM
   #
     .Deprecated("jointDSM", msg = "jointDSM is the new function name for the bcaRel function.", old = "bcaRel")
   # 1. Catch old parameters names, if anay and replace by the new ones
-  #
-  calls <- names(sapply(match.call(), deparse))[-1]
-  if(any("infovarnames" %in% calls) & missing(varnames)) {
-    warning("Parameter name 'infovarnames' is deprecated. Use 'varnames' instead.")
-    varnames <- infovarnames
-  }
-  if(any("infovaluenames" %in% calls) & missing(valuenames)) {
-    warning("Parameter name 'infovaluenames' is deprecated. Use 'valuenames' instead.")
-    valuenames <- infovaluenames
-  }
   #
   # 2. checks
   if ((is.matrix(spec) == FALSE) ) {
@@ -110,7 +102,7 @@
   varnb <- (infovar)[,1]
   if (length(varnb) < 2) # No transfo if only 1 variable.
     { 
-    zr <- bca(tt, (spec)[,2], cnames = colnames(tt), idvar = varnb)
+    zr <- DSM(tt, (spec)[,2], cnames = colnames(tt), idvar = varnb)
     return(zr)
     } 
     else
@@ -137,7 +129,7 @@
     #
     # Result
     #
-   zr <-bca(tt = z1, m = v, cnames = colnz1, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
+   zr <-DSM(tt = z1, m = v, cnames = colnz1, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
    return(zr)
   }
   }
