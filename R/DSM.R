@@ -34,7 +34,7 @@
 #' m<- c(.9,.1)
 #' cnames <- c("yes","no")
 #' DSM(tt, m)
-#' DSM(tt, m, cnames)
+#' DSM(tt, m, cnames=cnames)
 #' tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 #' colnames(tt1) <- c("yes", "no")
 #' m <- c(.9, .1)
@@ -45,6 +45,9 @@
 #'  printDSM(y)
 #' vacuous <- DSM(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
 #'  printDSM(vacuous)
+#'  ss_Theta <- SSR(varnames = "x", idvar = 1, size = 3, cnames = c("a", "b", "c"))
+#'  X <- DSM(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), ssr = ss_Theta)
+#'  printDSM(X)
 #' @references \itemize{
 #'   \item Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey, p. 38: Basic probability assignment.
 #'   \item Guan, J. W. and Bell, D. A., (1991). Evidence Theory and its Applications. Elsevier Science Publishing company inc., New York, N.Y., p. 29: Mass functions and belief functions 
@@ -121,7 +124,7 @@ DSM <- function(tt = NULL, m, include_all = FALSE, ssr = NULL, cnames = NULL, co
       infovar=ssr$infovar
     }
     #
-    # 4. Build varnames and valuenames (former = infovaluenames)
+    # 4. Build varnames and valuenames 
     #
     # check and use varnames if provided
     if (include_all == TRUE) {
@@ -129,7 +132,8 @@ DSM <- function(tt = NULL, m, include_all = FALSE, ssr = NULL, cnames = NULL, co
       valuenames <- split(colnames(tt_all), rep(paste(rep("v",length(idvar)),c(1:length(idvar)),sep=""), infovar[,2]))
     }
       if (!is.null(ssr) ) {
-        valuenammes <- ssr$valuenames[[1]]
+        # valuenames <- ssr$valuenames[[1]]
+        valuenames <- ssr$valuenames
       }
     }
     else {
@@ -138,10 +142,12 @@ DSM <- function(tt = NULL, m, include_all = FALSE, ssr = NULL, cnames = NULL, co
       }
     }
     if (!is.null(ssr) ) {
-      valuenammes <- ssr$valuenames[[1]]
+      # valuenames <- ssr$valuenames[[1]]
+      valuenames <- ssr$valuenames
+      varnames= ssr$varnames
     }
     #
-    if (!is.null(varnames)) {
+    if (is.null(ssr) & (!is.null(varnames)) ) {
       if (is.numeric(varnames)) {
         stop("Names of variables must start with a letter.")
         }
@@ -152,9 +158,6 @@ DSM <- function(tt = NULL, m, include_all = FALSE, ssr = NULL, cnames = NULL, co
     if (is.null(ssr) & is.null(varnames)) {
       varnames <- names(valuenames)
     } 
-    if (!is.null(ssr) ) {
-      varnames= ssr$varnames
-    }
     #
     # 5. Build specification matrix spec
     #

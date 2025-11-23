@@ -85,7 +85,7 @@ tt<- t(matrix(c(1,0,1,1),ncol = 2))
 m<- c(.9,.1)
 cnames <- c("yes","no")
 DSM(tt, m)
-DSM(tt, m, cnames)
+DSM(tt, m, cnames=cnames)
 tt1<- t(matrix(c(1,0,1,1),ncol = 2))
 colnames(tt1) <- c("yes", "no")
 m <- c(.9, .1)
@@ -96,6 +96,9 @@ cnames = c("a", "b", "c"),varnames = "y", idvar = 1)
  printDSM(y)
 vacuous <- DSM(matrix(c(1,1,1), nrow = 1), m = 1, cnames = c("a","b","c"), ssnames = c("a","b","c"))
  printDSM(vacuous)
+ ss_Theta <- SSR(varnames = "x", idvar = 1, size = 3, cnames = c("a", "b", "c"))
+ X <- DSM(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), ssr = ss_Theta)
+ printDSM(X)
 }
 \references{
 \itemize{
