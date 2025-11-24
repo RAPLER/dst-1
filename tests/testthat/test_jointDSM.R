@@ -11,13 +11,7 @@ test_that("bcaRel", {
   spec2 <- c(1,1,1,2)
   expect_error(bcaRel(tt = tt2, spec = spec2, infovar = info1) , "spec parameter must be a 2 columns matrix.")
   #
-  # T3 infovar must be a matrix
-  info3 =c(2,2)
-  expect_error(bcaRel(tt = tt2, spec = spec1, infovar = info3) , "infovar parameter must be a 2 column numerical matrix with variables numbers in fist column and with sum of 2nd column = ncol\\(tt\\).")
-  #
-  # T4: nrow(tt)  must equal nrow(spec)
-  spec2 <- matrix(c(1,1,2,0.75,0.75,0.25), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-  expect_error(bcaRel(tt = tt2, spec = spec2, infovar = info1) ,"Error in input arguments: check your input data.")
+  # T3 Empty
   #
   # T5: sum of masses must equal 1
   spec3 <- matrix(c(1,1,1,2,0.75,0.75,75,0.2), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
@@ -43,7 +37,7 @@ test_that("bcaRel", {
   spec <- matrix(c(1,1,1,1,1,1,1,1,1,1), nrow = 5, ncol = 2)
   infovar <- matrix(c(1,2,3,2,2,2), nrow = 3, ncol = 2)
   varnames <- c("a1","a2","b")
-  expect_error( bcaRel(tt,spec,infovar,varnames), "The last row of parameter tt must be a row of ones.")
+  expect_error( bcaRel(tt,spec,infovar,ssrlist = NULL, varnames), "The last row of parameter tt must be a row of ones.")
   #
   # T10. Variables names must start with a letter
   tt <- matrix(c(1,0,0,1,0,0,

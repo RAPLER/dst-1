@@ -5,20 +5,38 @@
 \alias{bcaRel}
 \title{Multidimensional DS Model}
 \usage{
-jointDSM(tt, spec, infovar, varnames, valuenames, relnb = NULL)
+jointDSM(
+  tt,
+  spec,
+  infovar = NULL,
+  ssrlist = NULL,
+  varnames,
+  valuenames,
+  relnb = NULL
+)
 
-bcaRel(tt, spec, infovar, varnames, valuenames, relnb = NULL)
+bcaRel(
+  tt,
+  spec,
+  infovar = NULL,
+  ssrlist = NULL,
+  varnames,
+  valuenames,
+  relnb = NULL
+)
 }
 \arguments{
 \item{tt}{The description matrix of the subsets establishing the relation between \eqn{\Theta_1}, \eqn{\Theta_2}, ..., \eqn{\Theta_n}. This matrix is made of one or more subsets and the whole SSR in the last row. The columns of the matrix are defined by putting the SSRs side by side, ordered by their *idvar* from left to right. The first columns  are the labels of the first SSR, followed by the labels of the second SSR till the end. For each SSR, there are as many columns as there is possible values. A subset is then defined in the way of a truth table representation, where we keep the "TRUE" part of the table. Hence each row of the table is an element of a subset, described by a sequence of 0 (absence of value) or 1 (presence of value). This is called a complete disjunctive coding. CAUTION: SSRs put side by side must be ordered by their *idvar* from left to right.}
 
 \item{spec}{A two column matrix. First column: numbers assigned to the subsets. Second column: the mass values of the subsets. If a subset has more than one element (row), the number of the subset and its associated mass value are repeated to match the number of elements (rows) of the subset.}
 
-\item{infovar}{A two column matrix containing SSR identification numbers and the number of elements of each SSR. The identification numbers must be ordered in increasing number.}
+\item{infovar}{A two column matrix containing SSR identification numbers and the number of elements of each SSR. The identification numbers must be ordered in increasing number. May be omitted if the state space list is given (parameter *ssrlist*).}
 
-\item{varnames}{The names of the SSR.}
+\item{ssrlist}{The list of 1D state spaces to use.}
 
-\item{valuenames}{A list of the names of the SSR with the name of the elements of their SSR.}
+\item{varnames}{The names of the SSR. May be omitted if the state space list is given (parameter *ssrlist*).}
+
+\item{valuenames}{A list of the names of the SSR with the name of the elements of their SSR. May be omitted if the state space list is given (parameter *ssrlist*).}
 
 \item{relnb}{A number given to the jointDSM. Set at 0 if omitted.}
 }
@@ -27,7 +45,7 @@ An object of class \code{DSMspec} called a DSM or "basic mass assignment". This 
 \item con The measure of conflict.
 \item tt The resulting table of subsets in its joint statte Space representation. Rownames of the matrix of subsets are generated from the column names of the elements of the product space. See \code{\link{nameRows}} for details.
 \item spec The resulting two-column matrix of specification numbers with associated mass values.
-\item infovar The two-column matrix of SSR number and size given in the input data.
+\item infovar The two-column matrix of SSR number and size.
 \item valuenames A list of the names of the SSR with the name of their elements.
 \item inforel A two-column matrix containing the relation number and the number of SSRs of the relation.
 }
@@ -42,24 +60,21 @@ Function \code{jointDSM} is used to assign mass values to subsets defined in a f
 # that a stands for Rain: {yes, no} and b stands for
 # Roadworks: {yes, no}. From experience,
 # I am 75 \% sure that there will be RoadWorks if there is no rain.
+
 # 0. Define State space representations
 ssWorks <- SSR(varnames = "W", idvar = 4, size = 2, cnames = c("Wy", "Wn") )
 ssRain <- SSR(varnames = "R", idvar = 5, size = 2, cnames = c("Ry", "Rn") )
+ssrWR <- list(ssWorks, ssRain)
 
  # 1. The tt table of the logical implication
- ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1),
- nrow = 4, byrow = TRUE, 
- dimnames = list(NULL, c("Wy", "Wn", "Ry", "Rn")) )
+ ttrwf <- matrix(c(0,1,1,0,1,0,1,0,1,0,0,1,1,1,1,1), nrow = 4, byrow = TRUE, 
+ dimnames = list(NULL, unlist(sapply(ssrWR, `[[`,4))) )
  
  # 2. The mass distribution
  specrw <-  matrix(c(1,1,1,2,0.75,0.75,0.75,0.25), ncol = 2, 
  dimnames = list(NULL, c("specnb", "mass")))
   
- # 3. Variables Identification Numbers and sizes (put VIN in ascending order)
- inforw - matrix(c(ssWorks$infovar, ssRain$infovar), ncol =2, byrow = TRUE,  dimnames = list(NULL, c("varnb", "size")) )
- 
-rel <- bcaRel(tt = ttrwf, spec = specrw, infovar = inforw,
- varnames = c("RdWorks", "Rain"), relnb = 6)
+ rel <- jointDSM(tt = ttrwf, spec = specrw, ssrlist = ssrWR, relnb = 6)
 
 }
 \author{
