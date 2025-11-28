@@ -7,7 +7,7 @@
 PTsimDSM(x, y, a, y0 = 0, flip = TRUE)
 }
 \arguments{
-\item{x}{A binary matrix where each row represents a focal element that is not the full SSM.}
+\item{x}{A binary matrix where each row represents a focal element that is not the full SSR.}
 
 \item{y}{A logical column matrix indicating which rows of \code{x} may need inversion.}
 
@@ -21,11 +21,11 @@ PTsimDSM(x, y, a, y0 = 0, flip = TRUE)
 A numeric plausibility vector \code{plau}.
 }
 \description{
-Performs the plausibility transform on the combination of multiple simple Dempster-Shafer models (simDSMs) defined over a large state-space model (SSM).
+Performs the plausibility transform on the combination of multiple simple Dempster-Shafer models (simDSMs) defined over a large state-space representation (SSR).
 }
 \details{
-This function handles the case where several simple Dempster-Shafer models are combined on a very large SSM.  
-Each row of the binary matrix \code{x} represents a focal element from one simDSM that is *not* the entire SSM.  
+This function handles the case where several simple Dempster-Shafer models are combined on a very large SSR.  
+Each row of the binary matrix \code{x} represents a focal element from one simDSM that is *not* the entire SSR.  
 These focal elements can be specified directly or as complements, depending on which is more efficient to encode.  
 A logical column matrix \code{y} identifies which rows of \code{x} need to be inverted (using the value \code{y0} as the check).
 }
