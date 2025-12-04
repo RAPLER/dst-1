@@ -1,0 +1,399 @@
+---
+title: "Bayes_Rule"
+author: "Peiyuan Zhu, Claude Boivin"
+date: "2023-11-02"
+output: rmarkdown::html_vignette
+# output: word_document
+vignette: >
+  %\VignetteIndexEntry{Bayes_Rule}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, include=FALSE}
+# devtools::load_all(".") # only used in place of dst when testing with R-devel
+library(dst) 
+# knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+In Mathematical Theory of Evidence Glenn Shafer talked about how Dempster's rule of combination generalizes Bayesian conditioning. In this document we investigate numerically how a simple Bayesian model can be encoded into the language of belief function. 
+
+We will also show how the language of propositional logic can be used to encode Bayesian conditioning.
+
+Recall the Bayes Rule of conditioning in simple terms:
+
+$$P(H|E) = \dfrac{P(H) \cdot P(E|H)} {P(E)}$$
+Let's see how this is translated in the belief functions setup.
+
+#  1. Simple Bayes Example
+
+In particular, the Bayesian belief functions concentrates their masses on the singletons only, unlike more general basic mass assignment functions. For instance, in a state space or frame $\Theta=\{a,b,c\}$, basic mass assignment $m(\{a\})=0.2$, $m(\{b\})=0.3$ and $m(\{c\})=0.5$ defines a Bayesian belief function. 
+
+In the Bayesian language, this is the prior distribution $P(H)$. Function *DSM* is used to set the distribution of *H*.
+
+```{r bpa1 definition,  echo = FALSE, warning=FALSE}
+Theta<-matrix(c(1,0,0,0,1,0,0,0,1,1,1,1), nrow = 4, byrow = TRUE)
+H <- DSM(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), cnames = c("a", "b", "c"), idvar = 1)
+cat("The prior distribution H","\n")
+printDSM(H)
+# round(belplau(H, h=Theta), digits = 3)
+```
+The law of conditional probability is a special case of Dempster's rule of combination that all the masses focus on the event is conditioned. For instance, basic mass assignment focuses all the masses on subset $E =\{b,c\}$. Hence, using function *DSM*, we set $m(\{b,c\})=1$. 
+
+```{r bpa2 definition,  echo = FALSE, warning=FALSE}
+bpa2 <- DSM(tt=rbind(diag(x=1, nrow=3), matrix(c(0,1,1,1,1,1), nrow=2, byrow = TRUE)), m = c(0,0,0,1,0), cnames = c("a", "b", "c"), idvar = 1)
+Event <-  addToDSM(bpa2, tt = diag(x=1, nrow = 3))
+cat("Setting an Event E = {b,c} with mass = 1","\n")
+printDSM(Event)
+```
+
+Now we set the computation of Bayes's Theorem in motion. 
+
+In a first step, we use function *DSC* to combine our two basic mass assignments H and Event E. The non-normalized Dempster Rule of combination gives a mass distribution *H_Event* composed of two parts:
+
+1. the distribution of the product $P(H) \cdot P(E|H)$ on $\Theta$;
+2. a mass allotted to the empty set $m(\varnothing)$.
+
+```{r H_Event Dempster_rule1,  echo = FALSE, warning=FALSE}
+H_Event <- dsrwon(H, bpa2)
+cat("The combination of H and Event E","\n")
+printDSM(H_Event)
+```
+It turns out that we can obtain the marginal $P(E)$ from $m(\varnothing)$:
+$$P(E) = 1 - m(\varnothing)$$.
+
+Hence, $P(E)$ is nothing else than the normalization constant of Dempster's rule of combination. 
+
+In our second step of computation we use function *normalize*, to apply the normalization constant to distribution *H_Event*, which gives the posterior distribution $P(H|E)$
+ 
+```{r H_Event Dempster_rule2,  echo = FALSE, warning=FALSE}
+H_given_E <- nzdsr(H_Event)
+cat("The posterior distribution P(H|E)","\n")
+printDSM(H_given_E)
+```
+
+Note that *H_given_E* is defined only on singletons and the mass allocated to $\Theta$ is zero. Hence $bel(\cdot) = P(\cdot) = Pl(\cdot)$, as shown by the following table.
+
+ 
+```{r H_Event Dempster_rule3,  echo = FALSE, warning=FALSE}
+round(belplau(H_given_E, h=Theta), digits = 3)
+```
+
+# 2. Example with  two variables
+
+In the first example, the conditioning event was a subset of the state space $\Theta$ of variable *H*. We now show the computation of Bayes's rule of conditioning by Dempster's Rule in the case of two variables. 
+
+Let's say we have a variable X defined on $\Theta = \{a, b, c\}$ as before.
+```{r bpa1_copy,  echo = FALSE, warning=FALSE}
+ss_Theta <- SSR(varnames = "x", idvar = 1, size = 3, cnames = c("a", "b", "c"))
+# Theta<-matrix(c(1,0,0,0,1,0,0,0,1,1,1,1), nrow = 4, byrow = TRUE)
+X <- DSM(tt=matrix(c(1,0,0,0,1,0,0,0,1), nrow = 3, byrow = TRUE), m = c(0.2, 0.3, 0.5), ssr = ss_Theta)
+cat("The prior distribution","\n")
+printDSM(X)
+```
+let's add a second variable E defined on a state space with three outcomes $\Lambda =\{d, e, f\}$ .
+
+$P(\{d|a\})=0.1$, $P(\{d|b\})=0.2$ and $P(\{d|c\})=0.7$. 
+
+This distribution will be encoded in the product space $\Theta \times \Lambda$ by setting 
+
+$m(\{a,d\}) = 0.1$; $m(\{b,d\}) = 0.2$; $m(\{c,d\}) = 0.7$
+
+We now do this using function *jointDSM*.
+
+```{r relation,  echo = FALSE, warning=FALSE}
+cat("Set information on state space, description matrix and mass vector","\n")
+ss_Lambda <- SSR(varnames = "y", idvar = 4, size = 3, cnames = c("d", "e", "f"))
+cat("Note that variables numbers of the state space representation must be in increasing order","\n")
+# 
+tt_EX <- matrix(c(1,0,0,1,0,0,
+                   0,1,0,1,0,0,
+                   0,0,1,1,0,0,
+                   1,1,1,1,1,1), ncol = 6, byrow = TRUE, dimnames = list(NULL, c(ss_Theta$valuenames[[1]], ss_Lambda$valuenames[[1]])))
+cat("a) The description matrix of the relation P(d | X) between X and E","\n")
+tt_EX
+#
+cat("Check that Columns of matrix follow variables ordering. ","\n")
+#
+spec_EX <-  matrix(c(1:4, 0.1, 0.2, 0.7, 0 ), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+cat("b) Mass specifications","\n")
+spec_EX
+#
+rel_EX <- jointDSM(tt = tt_EX, spec = spec_EX, ssrlist = list(ss_Theta, ss_Lambda), relnb = 1)
+cat("c) The relation between Evidence E and X","\n")
+printDSM(rel_EX)
+```
+
+Now we combine Prior $P(X)$ with rel_EX, first by up-projecting the Prior to the state space $\Theta \times \Lambda$, then applying DSC.
+
+```{r X_xtnd,  echo = FALSE, warning=FALSE}
+X_xtnd <- uproj(X, relRef = rel_EX)
+cat("Prior X extended in product space of (X,E","\n")
+printDSM(X_xtnd)
+```
+Combine X extended and E_X in the product space $\Theta \times \Lambda$.
+```{r relation2,  echo = FALSE, warning=FALSE}
+comb_X_EX <- DSC(X_xtnd, rel_EX)
+cat("Mass distribution of the combination of X extended and E_X","\n")
+printDSM(comb_X_EX)
+```
+As we can see, we have
+
+1. the distribution of the product $P(X) \cdot P(E|X)$ on $\Theta \times \Lambda$;
+
+2. a mass allotted to the empty set $m(\varnothing)$, which is $1 - P(E)$.
+
+Using function *normalize*, we apply the normalization constant to obtain the desired result. Then, using  function  *dproj*, we obtain the marginal of X, which turns out to be $P(X | E = d)$
+
+```{r relation3,  echo = FALSE, warning=FALSE}
+norm_comb_X_EX <- normalize(comb_X_EX)
+cat("The normalized mass distribution of the combination of X extended and E_X","\n")
+printDSM(norm_comb_X_EX)
+dist_XgE <- dproj(norm_comb_X_EX, xnb = 4)
+cat("The posterior distribution P(X|E) for (a,d), (b,d), (c,d), after eliminating variable E","\n")
+printDSM(dist_XgE)
+```
+
+# 3. Bayes's rule: a backward reasoning process
+
+It is interesting to look at Bayes's rule in Dempster's rule of combination as a backward reasoning process. We start with an hypothesis or goal and try to see if it confirms our evidence. In the next section, we will reverse the process, start from the evidence and use logical implications to prove the hypothesis. 
+
+Let's say our car won't start this morning. We think that maybe the  battery is at fault.
+Hypothesis: battery at fault implies Evidence: car won't start.
+
+We consider a variable H defined on a state space $SSh = \{hy, hn\}$
+(hy for yes or true; hn for no or false),
+
+and a variable E defined on a state space $SSe = \{ey, en\}$
+(ey for yes or true; en for no or false).
+
+ The cause or hypothesis "Battery at fault" implies "E = ey ("car won't  start".
+H = hy -> E = ey
+
+We know the conditional distribution or likelihood of E = ey given H:
+$P(E =ey|H=hy)=0.8;$
+$P(E =ey|H=hn)=0.2;$
+
+We also know something about our battery, which we take as a prior on H:
+P(battery at fault = 0.4)
+$P(H=hy)=0.4; P(H=hn)=0.6$.
+
+We have all the ingredients of bayes rule of conditioning necessary to compute the posterior probability $P(H \mid E = ey)$, going from the evidence E to the hypothesis H. Instead of using Bayes formula, we use DSC to do the same thing.
+
+```{r bpa31,  echo = FALSE, warning=FALSE}
+ss_H <- SSR(varnames = "H", idvar = 1, size = 2, cnames = c("hy", "hn"))
+#
+H <- DSM(tt=matrix(c(1,0,0,1), nrow = 2, byrow = TRUE), m = c(0.4, 0.6), ssr = ss_H)
+cat("The prior distribution of H","\n")
+printDSM(H)
+```
+Let's add the second variable E.
+
+$P(\{E=ey|H=hy\})=0.8$, 
+$P(\{E=ey|H=hn\})=0.2$. 
+
+The conditional distribution $P(ey|H)$ is encoded in the product space $SS_H \times SS_E$ by setting 
+
+$m(\{hy,ey\}) = 0.8$; $m(\{hn,ey\}) = 0.2$.
+
+This is done by using function *jointDSM*.
+
+```{r relation1,  echo = FALSE, warning=FALSE}
+cat("Specify information on state space, description matrix and mass vector","\n")
+ss_E <- SSR(varnames = "E", idvar = 4, size = 2, cnames = c("ey", "en"))
+# 
+tt_HE <- matrix(c(1,0,1,0,
+                   0,1,1,0,
+                   1,1,1,1), ncol = 4, byrow = TRUE, dimnames = list(NULL, c(ss_H$valuenames[[1]], ss_E$valuenames[[1]])))
+cat("a) The description matrix of the relation between H and E","\n")
+tt_HE
+#
+spec_HE <-  matrix(c(1:3, 0.8, 0.2, 0 ), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+cat("b) The mass specifications","\n")
+spec_HE
+# 
+rel_HE <- jointDSM(tt = tt_HE, spec = spec_HE, ssrlist = list(ss_H, ss_E), relnb = 1)
+cat("c) The relation between Evidence E and H","\n")
+printDSM(rel_HE)
+```
+
+Now we combine Prior $P(H)$ with rel_HE. 
+But first, we need to extent *H* to the space $H \times E$.
+
+```{r H_xtnd33,  echo = FALSE, warning=FALSE}
+H_xtnd <- uproj(H, relRef = rel_HE)
+cat("Prior H extended in the product space of (H,E","\n")
+printDSM(H_xtnd)
+```
+Combine H extended and rel_HE in the product space $\H \times \E$.
+```{r relation43,  echo = FALSE, warning=FALSE}
+comb_H_HE <- dsrwon(H_xtnd, rel_HE)
+cat("The mass distribution after combination of H extended and rel_HE","\n")
+printDSM(comb_H_HE)
+```
+As we can see, the distribution of the direct sum $P(H) \oplus P(E|H)$ on $H \times E$ has two components:
+1. the product $P(H) \cdot P(E|H)$ on $H \times E$ 
+
+2. the mass allotted to the empty set $m(\varnothing)$, which is $1 - P(E=ey)$.
+
+Using function *normalize*, we apply the normalization constant to obtain the desired result. Then, using  function  *dproj*, we obtain the marginal of H, which is the posterior distribution $P(H | E = ey)$.
+
+```{r relation5,  echo = FALSE, warning=FALSE}
+norm_comb_H_HE <- nzdsr(comb_H_HE)
+cat("The normalized mass distribution of the combination of H extended and E_H","\n")
+printDSM(norm_comb_H_HE)
+dist_HgE <- elim(norm_comb_H_HE, xnb = 4)
+cat("\n")
+cat("The posterior distribution P(H|E) for (hy,ey), (hn,ey), after eliminating variable E","\n")
+printDSM(dist_HgE)
+#
+```
+
+# 4. Using an ppropositional logic: a forward reasoning process
+
+Let's say again our car won't start this morning. This time, we follow another line of reasoning. We begin with the evidence and  try to find which component is at fault: Is it the battery, the electrical system, an empty fuel tank, etc.?
+
+Consider the same hypothesis as  before.
+Evidence: car won't start. implies Hypothesis: battery at fault.
+
+We consider again a variable H2 defined on $SSh = \{hy, hn\}$
+and a variable E2 defined on $SSe = \{ey, en\}$.
+
+Now, we want to go from the evidence to the hypothesis:
+E2 = ey (car won't  start) -> H2 = hy (Battery at fault).
+
+Again, we use what we know about our battery, which we take as a prior on H2:
+P(battery at fault = 0.4)
+$P(H=hy)=0.4; P(H=hn)=0.6$.
+
+Instead of using a conditional distribution of E2 = ey given H2,
+we use an implication rule:
+
+$P(E2=ey -> H2=hy) = 0.8$;
+$P(E2=ey -> H2=hn) = 0.2$.
+
+We now have three specifications to combine:
+
+1. The Evidence,
+2. some data, the prior distribution of H2,
+3. the implication rule,
+
+1. Evidence
+let's add the evidence on the variable E with two outcomes $SS_E =\{ey, en\}$ .
+
+$P(E=ey)=1$. 
+
+```{r bpa41,  echo = FALSE, warning=FALSE}
+ss_E2 <- SSR(varnames = "E2", idvar = 11, size = 2, cnames = c("ey", "en"))
+#
+E2 <- DSM(tt=matrix(c(1,0,1,1), nrow = 2, byrow = TRUE), m = c(1, 0), ssr = ss_E2)
+cat("The evidence","\n")
+printDSM(E2)
+```
+2. Some data on H2
+
+```{r bpa42,  echo = FALSE, warning=FALSE}
+ss_H2 <- SSR(varnames = "H2", idvar = 12, size = 2, cnames = c("hy", "hn"))
+#
+H2 <- DSM(tt=matrix(c(1,0,0,1), nrow = 2, byrow = TRUE), m = c(0.4, 0.6), ssr = ss_H2)
+cat("The prior distribution","\n")
+printDSM(H2)
+```
+
+3. Implication rule
+
+Now, we encode the implication e -> H2 in the product space $SS_E \times SS_H2$ by setting 
+
+$m(\{(ey,hy), (en,hy), (en,hn) \}) = 0.8$; 
+$m(\{(ey,hn), (en,hy), (en,hn) \}) = 0.2$.
+Recall that $(P \implies Q) \iff (\neg P \lor Q)$
+
+We now do this using function *jointDSM*.
+
+```{r relation42,  echo = FALSE, warning=FALSE}
+cat("Specify information on state space, description matrix and mass vector","\n")
+tt_E2H2<- matrix(c(1,0,1,0,
+                   0,1,1,0,
+                   0,1,0,1,
+                   1,0,0,1,
+                   0,1,1,0,
+                   0,1,0,1,
+                   1,1,1,1), ncol = 4, byrow = TRUE, dimnames = list(NULL, c(ss_E2$valuenames[[1]], ss_H2$valuenames[[1]])))
+cat("a) The description matrix of the relation between E2 and H2","\n")
+tt_E2H2
+#
+spec_E2H2<-  matrix(c(rep(c(1,0.8),3),rep(c(2,0.2),3),c(3,0) ), ncol = 2,byrow = TRUE, dimnames = list(NULL, c("specnb", "mass")))
+cat("b) Mass specifications","\n")
+spec_E2H2
+# 
+rel_E2H2<- jointDSM(tt = tt_E2H2, spec = spec_E2H2, ssrlist = list(ss_E2, ss_H2), relnb = 2)
+cat("c) The implication rule rel_E2H2 (ey -> H2","\n")
+printDSM(rel_E2H2)
+```
+
+## Going forward from Evidence to Hypothesis
+
+First, we use DSC to combine the evidence E2 with the implication rule E2H2. This operation is called "Modus Ponens" in propositional logic. Before using DSC, we first up project the DSM of E2 to the state space $E2 \times H2$.
+
+```{r E2_xtnd43,  echo = FALSE, warning=FALSE}
+E2_xtnd <- uproj(E2, relRef = rel_E2H2)
+cat("Evidence E2 up-projected in product space  (E2 x H2","\n")
+printDSM(E2_xtnd)
+```
+
+Now we Combine E2 up-projected and rel_E2H2 in the product space $H2 \times E2$.
+```{r relation52,  echo = FALSE, warning=FALSE}
+comb_E2_E2H2<- DSC(E2_xtnd, rel_E2H2)
+cat("Mass distribution of the combination of H2 extended and rel_E2H2: comb_E2_E2H2","\n")
+printDSM(comb_E2_E2H2)
+```
+As we can see, the modus ponens is the conditional probability distribution $P(E2 = ey \mid H2)$.
+
+Now we combine the Prior $P(H2)$ with comb_E2_E2H2. 
+First, we need to extent *H2* to the space $E2 \times H2$.
+
+```{r H2_xtnd43,  echo = FALSE, warning=FALSE}
+H2_xtnd <- uproj(H2, relRef = rel_E2H2)
+cat("Prior H2 up-projected in product space of (E2 x H2","\n")
+printDSM(H2_xtnd)
+```
+Then we combine H2 extended and comb_E2_E2H2 in the product space $E2 \times H2$.
+```{r relation6,  echo = FALSE, warning=FALSE}
+comb_H2_E2H2<- DSC(H2_xtnd, comb_E2_E2H2)
+cat("Mass distribution of the combination of H2 extended and E2H2","\n")
+printDSM(comb_H2_E2H2)
+```
+
+As we can see, we obtain the same result as in section 3. 
+The modus ponens
+$P(E=ey) \oplus (m(\{(ey,hy), (en,hy), (en,hn) \}),m(\{(ey,hn), (en,hy), (en,hn) \}) )$
+
+is equal to 
+
+$(P(H=hy), P(H=hn))\oplus (P(\{E=ey|H=hy\}), P(\{E=ey|H=hn\}) )$. 
+
+Using function *normalize*, we apply the normalization constant to obtain again the desired result. Then, using  function  *dproj*, we obtain the marginal of H2, which is $P(H2 | E = ey)$
+
+```{r relation7,  echo = FALSE, warning=FALSE}
+norm_comb_H2_E2H2<- nzdsr(comb_H2_E2H2)
+cat("The normalized mass distribution of the combination of H2 extended and E_H2","\n")
+printDSM(norm_comb_H2_E2H2)
+dist_H2gE <- elim(norm_comb_H2_E2H2, xnb = 11)
+cat("The posterior distribution P(H2|E) for (hy,ey), (hn,ey), after eliminating variable E","\n")
+printDSM(dist_H2gE)
+```
+
+
+
+
+
+
