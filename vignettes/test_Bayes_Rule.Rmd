@@ -18,8 +18,8 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup, include=FALSE}
-# devtools::load_all(".") # only used in place of dst when testing with R-devel
-library(dst) 
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst) 
 # knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -234,13 +234,14 @@ H_xtnd <- uproj(H, relRef = rel_HE)
 cat("Prior H extended in the product space of (H,E","\n")
 printDSM(H_xtnd)
 ```
-Combine H extended and rel_HE in the product space $\H \times \E$.
+Combine H extended and rel_HE in the product space $H \times E$.
 ```{r relation43,  echo = FALSE, warning=FALSE}
 comb_H_HE <- dsrwon(H_xtnd, rel_HE)
 cat("The mass distribution after combination of H extended and rel_HE","\n")
 printDSM(comb_H_HE)
 ```
 As we can see, the distribution of the direct sum $P(H) \oplus P(E|H)$ on $H \times E$ has two components:
+
 1. the product $P(H) \cdot P(E|H)$ on $H \times E$ 
 
 2. the mass allotted to the empty set $m(\varnothing)$, which is $1 - P(E=ey)$.
@@ -258,7 +259,7 @@ printDSM(dist_HgE)
 #
 ```
 
-# 4. Using an ppropositional logic: a forward reasoning process
+# 4. Using propositional logic: a forward reasoning process
 
 Let's say again our car won't start this morning. This time, we follow another line of reasoning. We begin with the evidence and  try to find which component is at fault: Is it the battery, the electrical system, an empty fuel tank, etc.?
 
@@ -315,6 +316,7 @@ Now, we encode the implication e -> H2 in the product space $SS_E \times SS_H2$ 
 
 $m(\{(ey,hy), (en,hy), (en,hn) \}) = 0.8$; 
 $m(\{(ey,hn), (en,hy), (en,hn) \}) = 0.2$.
+
 Recall that $(P \implies Q) \iff (\neg P \lor Q)$
 
 We now do this using function *jointDSM*.
@@ -356,7 +358,7 @@ comb_E2_E2H2<- DSC(E2_xtnd, rel_E2H2)
 cat("Mass distribution of the combination of H2 extended and rel_E2H2: comb_E2_E2H2","\n")
 printDSM(comb_E2_E2H2)
 ```
-As we can see, the modus ponens is the conditional probability distribution $P(E2 = ey \mid H2)$.
+As we  are reasoning from effect to cause, the modus ponens gives the conditional probability distribution $P(H2 \mid E2 = ey)$.
 
 Now we combine the Prior $P(H2)$ with comb_E2_E2H2. 
 First, we need to extent *H2* to the space $E2 \times H2$.
@@ -373,7 +375,8 @@ cat("Mass distribution of the combination of H2 extended and E2H2","\n")
 printDSM(comb_H2_E2H2)
 ```
 
-As we can see, we obtain the same result as in section 3. 
+As we can see, we obtain the same result as in section 3. However, the interpretation differs.
+
 The modus ponens
 $P(E=ey) \oplus (m(\{(ey,hy), (en,hy), (en,hn) \}),m(\{(ey,hn), (en,hy), (en,hn) \}) )$
 
