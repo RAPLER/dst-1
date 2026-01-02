@@ -1,7 +1,7 @@
 #' Plausibility transformation of the singletons of a frame
 #'
 #' Given a mass function defined on some subsets of a frame \eqn{\Theta}, the application of the plausibility transformation to the singletons of \eqn{\Theta} yields the probability distribution associated with this mass function. 
-#' @aliases plaustrans
+#' @aliases plautrans
 #' @param x A DSM.
 #' @details We compute the plausibility measure of all the singletons of the frame of discernment. The probability distribution of the singletons is obtained from their plausibility measures.
 #' @return The matrix of singletons with their plausibility transformation added in the last column.
@@ -65,4 +65,4 @@ PT <- function(x) {
 }
 #' @rdname PT
 #' @export
-plaustrans <- PT
+plautrans <- PT
