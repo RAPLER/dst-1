@@ -1,7 +1,7 @@
 ---
 title: "Peeling algorithm on Zadeh's Example"
 author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
-date: "2022-03-03"
+date: "2026-01-10"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{Peeling algorithm on Zadeh's Example}
@@ -11,8 +11,8 @@ vignette: >
 
 ```{r setup, include=FALSE}
 #
-# devtools::load_all(".") # only used in place of dst when testing with R-devel
-library(dst)  # attach package dst
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# library(dst)  # attach package dst
 #
 # knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(
@@ -23,7 +23,9 @@ knitr::opts_chunk$set(
 
 # Summary
 
-The criticism of Dempster-Shafer Theory (DST) by L. A. Zadeh ^[L. A. Zadeh. A mathematical theory of evidence (book review). AI Magazine, 55(81—83), 1984] has generated a lot of discussions and articles on the subject of conflicting evidence. In 2005, R. Haenni ^[R. Haenni. Shedding New Light on Zadeh’s Criticism of Dempster’s Rule of Combination. Conference: Information Fusion, 2005 8th International Conference] showed that the surprising result obtained by applying Dempster's rule to Zadeh's example was more due to the modelling of the situation than Dempster's rule not working. I add my grain of salt to the debate on Zadeh's example by showing a formulation of the problem as a small belief network and using Dempster's rule of combination to obtain a realistic result. This belief network gives the same results as the combination of the two evidences with the disjunctive rule of combination ^[P. Smets (1993). Belief Functions: The Disjunctive Rule of Combination and the Generalized Bayesian Theorem. IRIDIA - Université Libre de Bruxelles, Brussels, Belgium]. At the same time, I show how to do the calculations using my *R* package *dst*^[https://cran.r-project.org/package=dst].
+The criticism of Dempster-Shafer Theory (DST) by L. A. Zadeh ^[L. A. Zadeh. A mathematical theory of evidence (book review). AI Magazine, 55(81—83), 1984] has generated a lot of discussions and articles on the subject of conflicting evidence. In 2005, R. Haenni ^[R. Haenni. Shedding New Light on Zadeh’s Criticism of Dempster’s Rule of Combination. Conference: Information Fusion, 2005 8th International Conference] showed that the surprising result obtained by applying Dempster's rule to Zadeh's example was more due to the modelling of the situation than Dempster's rule not working. I add my grain of salt to the debate on Zadeh's example by showing two different formulations of the problem where Dempster's rule of combination give a realistic result. A first one is a small belief network. This belief network gives the same results as the combination of the two evidences with the disjunctive rule of combination ^[P. Smets (1993). Belief Functions: The Disjunctive Rule of Combination and the Generalized Bayesian Theorem. IRIDIA - Université Libre de Bruxelles, Brussels, Belgium]. The second formulation 
+
+At the same time, I show how to do the calculations using my *R* package *dst*^[https://cran.r-project.org/package=dst].
 
 
 
@@ -33,33 +35,36 @@ We suppose that a patient is examined by two doctors, A and B. A’s diagnosis i
 Zadeh considers the same space of diseases {M, T, C} for the two experts. Hence, after the combination of the two pieces of evidence by Dempster's rule, we find as a result that the belief of a brain tumor is certain. 
 
 ```{r "Zadeh's example", echo = FALSE, warning=FALSE}
-# Diagnosis from Expert 1. Coding the evidence with the bca function
-Expert1 <- bca(tt = matrix(c(1,0,0,0,1,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis1", idvar = 1)
+# Diagnosis from Expert 1. Coding the evidence with function DSM
+cat("State space representation of the two Experts","\r")
+ss_Experts <- SSR(varnames = "Diagnosis", idvar = 1, size = 3, cnames =c("M", "T", "C"))
+cat("\r")
+Expert1 <- DSM(tt = matrix(c(1,0,0,0,1,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), ssr = ss_Experts)
 # show the definition of Expert1
 cat("Space of possibilities and Basic Chance Assignment of Expert 1")
 Expert1$valuenames
 cat("\r")
-bcaPrint(Expert1)
+printDSM(Expert1)
 #
-# Diagnosis from Expert 2. Coding the evidence with the bca function
-Expert2 <- bca(tt = matrix(c(0,1,0,0,0,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.01, 0.99, 0), cnames =c("M", "T", "C"), varnames = "Diagnosis2", idvar = 2)
+# Diagnosis from Expert 2. Coding the evidence with function DSM
+Expert2 <- DSM(tt = matrix(c(0,1,0,0,0,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.99, 0.01, 0), ssr = ss_Experts)
 # show the definition of Expert2
 cat("\r")
 cat("Space of possibilities and Basic Chance Assignment of Expert 2")
 Expert2$valuenames
 cat("\r")
-bcaPrint(Expert2)
+printDSM(Expert2)
 # Combination of Expert 1 and Expert 2 using Dempster's rule
 cat("\r")
 cat("Combination of the two experts by Dempster's rule")
-Ze1e2 <- nzdsr(dsrwon(Expert1, Expert2, relnb = 1))
+Ze1e2 <- normalize(DSC(Expert1, Expert2, relnb = 1))
 zz <- tabresul(Ze1e2)
 format(as.data.frame(zz$mbp), digits=2)
 ```
 
 Indeed, the result does not reflect the opinions of the two experts. Before rejecting Dempster's rule as inappropriate to this situation, let's look more closely at the problem at hand. 
 
-# A correct solution using Dempster's rule of combination
+# A correct non-contradictory solution using Dempster's rule of combination
 
 ## Diagnosis of the two experts
 
@@ -70,28 +75,34 @@ $F(D1) = \{M, T\}$. For simplicity, we write $D1 =\{M, T\}$.
 The same line of reasoning is applied to *Expert number two*. The whole mass of one is allotted to the set {T, C}, and the third possibility (M) is not considered at all.
 Hence $D2 = \{T, C\}$.
 
-I show the coding of these two pieces of evidence with the function *bca* of the package *dst*. 
+I show the coding of these two pieces of evidence with the function *DSM* of the package *dst*. 
 ```{r "pieces of evidence", echo = FALSE, warning=FALSE}
-library(dst)  # attach package dst
+# library(dst)  # attach package dst
 #
+cat("State space representation of Expert 1","\r")
+ss_Expert1 <- SSR(varnames = "D1", idvar = 1, size = 2, cnames =c("M", "T"))
+cat("\r")
 # Diagnosis from first expert (evidence e1 attached to variable D1)
-e1 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("M", "T"), varnames = "D1", idvar = 1)
+e1 <- DSM(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), ssr = ss_Expert1)
 #
 # show the definition of e1
 cat("Space of possibilities and Basic Chance Assignment of Expert 1")
 e1$valuenames
 cat("\r")
-bcaPrint(e1)
+printDSM(e1)
 #
 # Diagnosis from second expert (evidence e2 attached to variable D2)
-e2 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), cnames =c("C", "T"), varnames = "D2", idvar = 2)
+cat("State space representation of Expert 2","\r")
+ss_Expert2 <- SSR(varnames = "D2", idvar = 2, size = 2, cnames =c("C", "T"))
+cat("\r")
+e2 <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.99, 0.01, 0), ssr = ss_Expert2)
 #
 # show the definition of e2
 cat("\r")
 cat("Space of possibilities and Basic Chance Assignment of Expert 2")
 e2$valuenames
 cat("\r")
-bcaPrint(e2)
+printDSM(e2)
 ```
 
 ## Linking the Experts to... the Patient
@@ -105,24 +116,27 @@ r1: $D1 \cup D2 \rightarrow D$.
 
 The relation *r1* is represented in the product space $\prod(D1, D2, D)$ by one focal set of mass one:
 
-$m(M C M + M C C + M T M + M T T + T C T + T C C + T T T) = 1$ (for simplicity, the "+" sign is used as the $\vee$ disjunctive operator in the functions of the package dst). Now I use the function *bcaRel* to code this relation.
+$m(M C M + M C C + M T M + M T T + T C T + T C C + T T T) = 1$ (for simplicity, the "+" sign is used as the $\vee$ disjunctive operator in the functions of the package dst). Now I use the function *jointDSM* to code this relation.
 
 ```{r "relation", echo = FALSE, warning=FALSE}
+cat("State space representation of Patient","\r")
+cat("\r")
+ss_Patient <- SSR(varnames = "D", idvar = 3, size = 3, cnames =c("M", "T", "C"))
+#
+cat("State space representation of Expert 1, Expert 2 and Patient","\r")
+ss_E1E2P <- list(ss_Expert1, ss_Expert2, ss_Patient)
+# 
 # 1. Defining the relation with a (0,1) matrix
-tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), ncol = 7,byrow = TRUE)
-colnames(tt_r1) = c("M", "T", "C", "T", "M", "T", "C")
+tt_r1 <- matrix(c(1,0,1,0,1,0,0,1,0,1,0,0,0,1,1,0,0,1,1,0,0,1,0,0,1,0,1,0,0,1,1,0,0,1,0,0,1,1,0,0,0,1,0,1,0,1,0,1,0,1,1,1,1,1,1,1), ncol = 7,byrow = TRUE, dimnames = list(NULL, unlist(sapply(ss_E1E2P, `[[`,4))))
 #
 # 2. Setting the mass function
 spec_r1 = matrix(c(rep(1,7),2, rep(1,7), 0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
 #
-# 3. Names of variables names and dimension of their space of possibilities
-info_r1 =matrix(c(1:3, 2,2,3), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-#
 #  The relation between e1, e2 and a patient p
-r1 <-bcaRel(tt = tt_r1, spec = spec_r1, infovar = info_r1, varnames = c("D1", "D2", "D"), relnb = 1)
+r1 <-jointDSM(tt = tt_r1, spec = spec_r1, ssrlist = ss_E1E2P, relnb = 1)
 #
 cat(" The relation r1")
-bcaPrint(r1)
+printDSM(r1)
 ```
 
 ## The belief network
@@ -168,7 +182,7 @@ plot(meddiag_hg, vertex.label = V(meddiag_hg)$name, vertex.size=(3+6*V(meddiag_h
 
 ## Calculations on the Belief Network: The peeling algorithm
 
-Our goal is the calculation of the belief function of the variable of interest "D" (Disease of the patient). We apply an algorithm called "Peeling" to the belief network. This is a process of successive elimination of variables (peeling) until only  the variable of interest (*D* here) remains. The elimination of a variable has the effect of integrating its contribution to the reduced graph. 
+Our goal is the calculation of the belief function of the variable of interest "D" (Disease of the patient). We apply an algorithm called "Peeling" to the belief network. This is a process of successive elimination of variables (peeling) until only  the variable of interest (here *D*) remains. The elimination of a variable has the effect of integrating its contribution to the reduced graph. 
 
 Four parameters are necessary to trigger the algorithm. The first three are already defined when constructing the hypergraph. The fourth parameter is an order of elimination of the variables that we have to set.
 
@@ -198,13 +212,13 @@ elim_order = c(1, 2, 3)
 The calculations involved follow the principles of the valuation language of Shenoy ^[P. P. Shenoy. A Valuation-Based Language for Expert systems. International Journal of Approximate Reasoning 1989, 3 383--411]; see also ^[P. P. Shenoy. Valuation-Based Systems. Third School on Belief Functions and Their Applications, Stella Plage, France. September 30, 2015]. The variables are linked to functions (called valuations). A function can be a piece of evidence attached to a variable or a relation between two or more variables.
 
 Three kinds of operations are involved in the process of variable elimination:
-a) the minimal (vacuous) extension of a mass function to a larger space of possibilities;
+a) the minimal (vacuous) extension of a mass function to a larger space of possibilities (up-projection);
 b) the combination of two mass functions by Dempster's rule;
-c) the marginalization of a mass function, i.e. eliminating a variable to reduce the function to a smaller space of possibilities. Let's do it.
+c) the marginalization of a mass function, i.e. eliminating a variable to reduce the function to a smaller space of possibilities (dowm-projection). Let's do it.
 
-First step: Eliminate variable D1 (Diagnosis1). The mass function *e1* is  extended to the space $\prod(D1, D2, D)$; then *e1 extended* is combined with *r1* by Dempster's rule; finally, D1 is eliminated by marginalizing the result of the combination to $\prod(D2, D)$. The mass function obtained is named *rel_2*.
+First step: Eliminate variable D1 (Diagnosis1). The mass function *e1* is  extended (up-projected) to the space $\prod(D1, D2, D)$; then *e1 extended* is combined with *r1* by Dempster's rule; finally, D1 is eliminated by marginalizing  (down-proojecting) the result of the combination to $\prod(D2, D)$. The mass function obtained is named *rel_2*.
 
-Second step: Eliminate variable D2 (Diagnosis2). Evidence *e2* is extended to the space $\prod(D2, D)$; Then *e2 extended* is combined with *rel_2* by Dempster's rule; the result of the combination is marginalized to D to produce the final result.
+Second step: Eliminate variable D2 (Diagnosis2). Evidence *e2* is extended (up-projected) to the space $\prod(D2, D)$; Then *e2 extended* is combined with *rel_2* by Dempster's rule; the result of the combination is marginalized (down-projected) to D to produce the final result.
 
 ## The result
 
@@ -213,7 +227,7 @@ Second step: Eliminate variable D2 (Diagnosis2). Evidence *e2* is extended to th
 p <- peeling(vars_def = meddiag_vars1, hgm = meddiag_hgm, hg_rel_names = meddiag_data_names, elim_order = c(1, 2, 3), verbose = FALSE ) 
 #
 # add singletons with 0 mass to show all singletons in the results
-p_sing <- addTobca(x = p,  tt = matrix(c(1,0,0,0,0,1), ncol=3))
+p_sing <- addToDSM(x = p,  tt = matrix(c(1,0,0,0,0,1), ncol=3))
 # "The final result after elimination of variable D2"
 cat("\  ")
 zz <- tabresul(p_sing)
@@ -222,11 +236,57 @@ format(as.data.frame(zz$mbp), digits=2)
 
 The plausibility ratio column shows that the odds of $M \vee C$ against T are 50:1.  hence, the disease of the patient must be M or C. We also see that each single hypothesis, M and C, remains highly plausible (0.99). Although there is some support for T, its plausibility is very weak at 0.019. 
 
-Finally, we use the plausibility transformation ^[Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314–330] to look at the results from the point of view of probability distribution. We see again that the odds for M against T or for C against T are very similar.
-
-
+Finally, we use the plausibility transformation ^[Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314–330] to look at the results from the point of view of probability distribution (function *PT*). We see again that the odds for M against T or for C against T are the same.
 
 ```{r, echo = FALSE, warning=FALSE}
-format(as.data.frame(plautrans(p) ), digits = 4)
+format(as.data.frame(PT(p) ), digits = 4)
 ```
+
+# Another simple solution using the product space of D1 and D2
+
+Simply consider the product space $\prod(D1, D2)$, up-project e1 and e2, then apply Dempster's rule on them.
+
+We construct the vacuous product space $\prod(D1, D2)$ by allotting all the mass to the frame:
+$m(M C + M T + T C + T T) = 1$ (for simplicity, the "+" sign is used as the $\vee$ disjunctive operator in the functions of the package dst). Now I use the function *jointDSM* to code this relation.
+
+```{r "relation2", echo = FALSE, warning=FALSE}
+# The state space representation of the product space
+ss12 <- list(ss_Expert1,ss_Expert2) 
+# 1. Defining the relation with a (0,1) matrix
+tt_r2 <- matrix(rep(1,4), nrow = 1, ncol = 4, dimnames = list(NULL, unlist(sapply(ss12, `[[`,4))) )
+colnames(tt_r2) = c("M", "T", "C", "T")
+#
+# 2. Setting the mass function
+spec_r2 <-  matrix(c(1,1), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+#
+#  The product space D1 x D2 
+ r2 <- jointDSM(tt = tt_r2, spec = spec_r2, ssrlist = ss12, relnb = 6)
+#
+cat(" The relation r2")
+printDSM(r2)
+```
+
+## Up-projection of e1 and e2, and combination
+
+```{r Combination, echo = FALSE, warning=FALSE}
+# cat("\  ")
+# up-project e1
+e1_p <- uproj(e1, r2)
+printDSM(e1_p)
+# 
+# up-project e2
+e2_p <- uproj(e2, r2)
+printDSM(e2_p)
+# 
+# Combination
+e1e2 <- DSC(e1_p, e2_p)
+printDSM(e1e2)
+result <- DSA(e1e2)
+format(as.data.frame(result), digits=2)
+```
+
+## Plausibility trnsformation
+
+```{r, echo = FALSE, warning=FALSE}
+format(as.data.frame(PT(e1e2) ), digits = 4)
 
