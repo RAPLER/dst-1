@@ -2,12 +2,12 @@
 % Please edit documentation in R/PT.R
 \name{PT}
 \alias{PT}
-\alias{plaustrans}
+\alias{plautrans}
 \title{Plausibility transformation of the singletons of a frame}
 \usage{
 PT(x)
 
-plaustrans(x)
+plautrans(x)
 }
 \arguments{
 \item{x}{A DSM.}
