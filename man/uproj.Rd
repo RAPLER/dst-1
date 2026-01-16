@@ -24,7 +24,7 @@ This function works on a basic chance assignment (bca) \code{x} defined on a sin
 The \code{relRef} parameter is used to extract all the information on the variables, namely their identification numbers and the number of elements of each variable, variables names and columns names of the \code{tt} matrix. The relation of reference \code{relRef}  may be a relation already existing or simply the the vacuous relation defined on the product set of variables of interest.
 }
 \examples{
-# Making a vacuous reference relation and extending a bca to its space.
+# Making a vacuous reference relation and extending a DSM to its space.
 init_tt = matrix(rep(1,10),nrow = 1, 
 dimnames = list(NULL, c("3", "2", "1", "0", 
  "true", "false",  "foul", "fair",  "true", "false")) )

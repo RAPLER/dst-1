@@ -12,7 +12,7 @@
 #' @references G. Shafer and P. P. Shenoy. Local Computations in Hypertrees. School of Business, University of Kansas, Lawrence, KS, 1991. See p. 78, vacuous extension of a belief function.
 #' @export
 #' @examples
-#' # Making a vacuous reference relation and extending a bca to its space.
+#' # Making a vacuous reference relation and extending a DSM to its space.
 #' init_tt = matrix(rep(1,10),nrow = 1, 
 #' dimnames = list(NULL, c("3", "2", "1", "0", 
 #'  "true", "false",  "foul", "fair",  "true", "false")) )
@@ -145,6 +145,11 @@ uproj <- function(rel1, relRef) {
   }
   zorder <- apply(zz2,2,sum)
   rtt <- rtt[,zorder]
+  # check that rtt is a matrix (mod 2026-01-13)
+  if (is.matrix(rtt) == FALSE) {
+    rtt <- t(as.matrix(rtt) )
+    rownames(rtt) = nameRows(rtt)
+  }
   #
   # result  
   zr <-list(con = rel1$con, tt = rtt, spec = rel1$spec, infovar = infovar, varnames = relRef$varnames, valuenames= relRef$valuenames, inforel = relRef$inforel)
