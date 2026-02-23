@@ -2,9 +2,12 @@
 % Please edit documentation in R/DSAh.R
 \name{DSAh}
 \alias{DSAh}
+\alias{belplauH}
 \title{Calculate degree of unambiguous support (p), unambiguous contradiction (q), ambiguity (r), plausibility, and plausibility ratio}
 \usage{
 DSAh(MACC, W2, h)
+
+belplauH(MACC, W2, h)
 }
 \arguments{
 \item{MACC}{Vector of masses e.g. x$spec[,2]}

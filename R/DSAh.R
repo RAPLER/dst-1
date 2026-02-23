@@ -1,4 +1,5 @@
 #' Calculate degree of unambiguous support (p), unambiguous contradiction (q), ambiguity (r), plausibility, and plausibility ratio
+#' @aliases belplauH
 #' @param MACC Vector of masses e.g. x$spec[,2]
 #' @param W2 Description matrix e.g. x$tt
 #' @param h Hypotheses to be tested, same format as x$tt
@@ -19,6 +20,7 @@
 #' rownames(hyp) <- nameRows(hyp)
 #' DSAh(MACC = x$spec[,2], W2 = x$tt, h = hyp)
 DSAh <-function(MACC, W2, h) {
+  .Deprecated("DSMprint", msg = "DSAh is the new function name for the belplauH function.", old = "belplauH")
   p <- rep(0,nrow(h))
   q <- rep(0,nrow(h))
   pb <- progress_bar$new(
@@ -44,3 +46,6 @@ DSAh <-function(MACC, W2, h) {
   rownames(z) <- rownames(h)
   return(z)
 }
+#' @rdname DSAh
+#' @export
+belplauH <- DSAh
