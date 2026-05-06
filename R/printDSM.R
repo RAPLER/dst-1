@@ -3,7 +3,7 @@
 #' This utility function does a simple printing of a DSM  (basic chance assignment).
 #' 
 #' @aliases bcaPrint
-#' @param x A list of class bcaspec.
+#' @param x A list of class DSMspec.
 #' @param remove Default = FALSE. Put = TRUE to exclude subsets with zero mass.
 #' @return A table of subsets with their associated mass. Subsets are identified by row names.
 #' @author Claude Boivin
@@ -29,9 +29,9 @@ printDSM <- function(x, remove = FALSE) {
   # Functions calls: None
   #
   # Input check. 
-  # x must be a bca specification
-  if (inherits(x, c("DSMspec", "bcaspec")) == FALSE)  {
-    stop("Input argument not of class bcaspec.")
+  # x must be a DSM specification
+  if (inherits(x, c("DSMspec", "DSMspec")) == FALSE)  {
+    stop("Input argument not of class DSMspec.")
   }
   # x must have tt and spec
   if (is.null(x$tt) || is.null(x$spec)) {
@@ -53,7 +53,7 @@ printDSM <- function(x, remove = FALSE) {
   }
   y <- as.data.frame(cbind(rownames(x$tt), x$spec))
   if (!is.null (x$qq) ) {
-    message("Closure elements (with 0 mass) may have been added to the bca, since you use commonalities.")
+    message("Closure elements (with 0 mass) may have been added to the DSM, since you use commonalities.")
   } else
   if (remove == TRUE) {
   y <- y[y[,ncol(y)] > 0,]

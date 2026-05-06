@@ -10,7 +10,7 @@ printDSM(x, remove = FALSE)
 bcaPrint(x, remove = FALSE)
 }
 \arguments{
-\item{x}{A list of class bcaspec.}
+\item{x}{A list of class DSMspec.}
 
 \item{remove}{Default = FALSE. Put = TRUE to exclude subsets with zero mass.}
 }
