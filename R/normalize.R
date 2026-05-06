@@ -129,6 +129,7 @@ normalize <- function(x, sparse = "no", comm = "no") {
     class(z) <- append(class(z),c("DSMspec",  "bcaspec") )
   } else {
     z <- list(con = 0, tt = NULL, qq = x$qq, spec = NULL, infovar = infovar, varnames = varnames, valuenames = valuenames, inforel = inforel)
+    class(z) <- append(class(z),c("DSMspec",  "bcaspec") )
   }
   #
   return(z)
