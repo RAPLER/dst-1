@@ -1,8 +1,8 @@
 #' Prepare a table of results
 #'
-#' This utility function is a more detailed version of the \code{DSA} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{DSA}, function \code{tabresul} does not reconstruct the row names from the column names. You can assign short rownames of your choice to the tt matrix of your resulting bca before calling function \code{tabresul}.
+#' This utility function is a more detailed version of the \code{DSA} function. Different tables of measures of belief, plausibility and of the plausibility ratio can be obtained, namely by removing subsets with zero mass if present, or by asking for singletons only. Unlike function \code{DSA}, function \code{tabresul} does not reconstruct the row names from the column names. You can assign short rownames of your choice to the tt matrix of your resulting DSM before calling function \code{tabresul}.
 #' @aliases tabresul
-#' @param x A basic chance assignment (bca)
+#' @param x A basic chance assignment (DSM)
 #' @param removeZeroes = TRUE removes subsets with 0 mass.
 #' @param singletonsOnly = TRUE reduces the table of results to elementary events (singletons).
 #' @return A list of two elements: \itemize{
@@ -11,18 +11,18 @@
 #'   }
 #' @author Claude Boivin
 #' @examples  
-#' x <- bca(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3,
+#' x <- DSM(tt = matrix(c(0,1,1,1,1,0,1,1,1),nrow = 3,
 #' byrow = TRUE), m = c(0.2,0.5, 0.3), 
 #' cnames = c("a", "b", "c"), 
 #' varnames = "x", idvar = 1)
-#' y <- bca(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
+#' y <- DSM(tt = matrix(c(1,0,0,1,1,1),nrow = 2, 
 #' byrow = TRUE), m = c(0.6, 0.4),  
 #' cnames = c("a", "b", "c"), varnames = "y", idvar = 1)
-#' xy <- dsrwon(x,y)
-#' xyNorm <- nzdsr(xy)
+#' xy <- DSC(x,y)
+#' xyNorm <- normalize(xy)
 #' tabresul(xyNorm) 
 #' ## print("Show all elementary events")
-#' xy1 <- addTobca(nzdsr(dsrwon(x,y)), 
+#' xy1 <- addToDSM(normalize(DSC(x,y)), 
 #' matrix(c(0,1,0,0,0,1), 
 #' nrow = 2, byrow = TRUE))
 #' tabresul(xy1)
@@ -39,8 +39,8 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
   #
   # 1. check input data 
   #
-  if ( inherits(x, "bcaspec") == FALSE) {
-    stop("Input argument not of class bcaspec.")
+  if ( inherits(x, "DSMspec") == FALSE) {
+    stop("Input argument not of class DSMspec.")
   }
   #
   # check if m_empty present and if not 0
@@ -49,7 +49,7 @@ tabresul <- function(x, singletonsOnly = FALSE, removeZeroes = FALSE) {
     row_m_empty <- row_m_empty[1]
     if (!is.na(row_m_empty)) {
       if (x$spec[row_m_empty,2] > 0) {
-        stop("Invalid data: Empty set among the focal elements. Normalization necessary. See nzdsr function.")
+        stop("Invalid data: Empty set among the focal elements. Normalization necessary. See normalize function.")
       }
     }
   }
