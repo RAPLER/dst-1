@@ -43,3 +43,4 @@ vignettes/*.pdf
 .Rproj.user
 .DS_Store
 *.tmp
+.positai

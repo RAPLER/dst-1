@@ -6,3 +6,5 @@
 ^.Rd2pdf*\*
 ^CRAN-SUBMISSION$
 ^.github$
+^\.positai$
+^\.claude$
