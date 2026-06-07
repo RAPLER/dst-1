@@ -64,7 +64,7 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
   #
   # Local variables: varmarge, ordelim, var_to_elim, i, j, irel_to_elim, rels_nb, rels_names, nb_rel, yv, yv2, yinfov, infovar, infovalues, init_tt, init_spec, init_info, relRef, xtnd_rel, name_relXtnd, name_newcol, newrelnb, name_rel_comb, name_rel_marge, rel_marginalized
   #
-  # Functions calls: nameCols, extmin, dsrwon, nzdsr, elim 
+  # Functions calls: nameCols, uproj, DSC, normalize, dproj 
   #
   # 1. Inputs checks
   #1.1. hgm not a matrix
@@ -168,14 +168,14 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
    # The loop 
       for(j in 1:nb_rel) {
         # A: Extending relations
-        xtnd_rel <- extmin(get(hg_rel_names[rels_nb[j]]), relRef)
+        xtnd_rel <- uproj(get(hg_rel_names[rels_nb[j]]), relRef)
         name_relXtnd[j] <- paste(hg_rel_names[rels_nb[j]],"_ext", sep="")
         assign(name_relXtnd[j], xtnd_rel)
         # B: combine two extended relations
         if ( verbose == TRUE ) {
           cat("\n","combining extended relation number :" ,j, "\n")
           }
-        rel_comb <- nzdsr(dsrwon(rel_comb, get(name_relXtnd[j]), relnb = newrelnb) )
+        rel_comb <- normalize(DSC(rel_comb, get(name_relXtnd[j]), relnb = newrelnb) )
         # C: remove old relation from hypergraph
         hgm[,rels_nb[j]] <- 0
         }    # End Loop 2
@@ -191,7 +191,7 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
    #
    newrelnb <- 1+ncol(hgm)
    name_rel_marge <- paste("rel", as.character(newrelnb),sep="")
-   rel_marginalized <- elim(get(name_rel_comb), xnb = ordelim[i]) 
+   rel_marginalized <- dproj(get(name_rel_comb), xnb = ordelim[i]) 
    #
    # 4.6. Update hypergraph and relations
    # add new relation to hypergraph
@@ -232,7 +232,7 @@ peeling <- function ( vars_def, hgm, hg_rel_names, elim_order, verbose = FALSE) 
     if ( verbose == TRUE )  {
       cat("combining extended relation number :" ,j, "\n")
       }
-    rel_comb <- nzdsr(dsrwon(rel_comb, get(hg_rel_names[rels_nb[j]]), relnb = newrelnb) )
+    rel_comb <- normalize(DSC(rel_comb, get(hg_rel_names[rels_nb[j]]), relnb = newrelnb) )
     # B: remove old relation from hypergraph
     hgm[,rels_nb[j]] <- 0
   }
