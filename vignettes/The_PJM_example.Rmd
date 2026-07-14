@@ -1,7 +1,7 @@
 ---
-title: "The original peter, John and Mary example"
-author: Claude Boivin, Stat ASSQ
-date: 2019-04-09, extended 2024-02-09, revised 2024-03-05
+title: "The Peter, John and Mary example of combination of belief functions"
+author: Claude Boivin^[Retired Statistician, Stat.ASSQ]
+date: 2019-04-09, revised 2026-04-18
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{The original peter, John and Mary example}
@@ -11,53 +11,55 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# devtools::load_all(".") # only used in place of dst when testing development version
-library(dst)
+devtools::load_all(".") # only used in place of dst when testing development version
+# library(dst)
 ```
-# The original Peter Paul and Mary example from P. Smets
-Ref.: Smets, P. (1988) Belief Functions. Non-Standard Logics for Automated Reasoning (P. Smets, A. Mandani, D. Dubois, H. Prade, ed.), Academic Press, New York, p. 254-286
 
-## The facts (from Smets's example)
+## The facts^[Smets, P. (1988) Belief Functions. Non-Standard Logics for Automated Reasoning (P. Smets, A. Mandani, D. Dubois, H. Prade, ed.), Academic Press, New York, p. 254-286]
 
-Witness 1: A janitor who was asleep claims he heard the victim yelling and then saw a small man running out of the victim's house. 
+Mr Jones has been murdered. There are three suspects, Peter, John and Mary, and some witnesses.
+
+Witness one is a janitor who was asleep just before the murder. He claims to have heard the victim scream, then seen a short man run out of the victim's house. 
+
+Witness two is an old lady with a bad sighting, who lives across the street. She claims to have seen the crime from her window and states that the murderer was much taller than the victim.
+
 Peter and John are men.
 John and Mary are small.
+Peter is a tall man, taller than the victim.
 
-Witness 2: An old lady with a bad sighting, who lives across the street from the victim and who saw the crime through her window and claims the murderer was much taller than the victim.
-Peter is a tall man.
-
-Witness 3: Peter's girlfriend testifies that Peter was at her home far away from the victim's house when the crime happened.
-An alibi, pointing to John or Mary..
-
-Firstly, I show how to solve the problem by pooling the evidence with Dempster's Rule. Secondly, I solve the same problem with a belief network.
+First, we show how to combine the facts using Dempster's rule. Second, we show how to represent this problem using a belief network.
 
 ## 1. The pooling of evidence
-We consider one variable with 3 values:
+
+A state space is defined by the three suspects. Let's call it "Culprit".
 $$Culprit = \{Peter, John, Mary\}$$
-We assess (giving a weight) the three pieces of evidence collected on the crime scene.
-
-We combine them with Dempster's Rule.
-
-```{r Pooling1, echo = FALSE, warning=FALSE}
-cat("Witness1, A janitor asleep","\n")
-witness1 <- bca(tt = matrix(c(1,1,0,0,1,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.5, 0.2, 0.3), cnames =c("Peter", "John", "Mary"), varnames = "AMurder", idvar = 1)
-bcaPrint(witness1)
+Function SSR is called to define the state space representation 
+```{r state_space, echo = TRUE, warning=FALSE}
+# cat("State space representation of the Culprit","\n" )
+ss_Culprit <- SSR(varnames = "AMurder", idvar = 1, size = 3, cnames = c("Peter", "John", "Mary"))
 #
-cat("Add all singletons in order to view results later","\n")
-witness1_plus_singl <- addTobca(witness1, tt = diag(3))
-bcaPrint(witness1_plus_singl)
+```
+
+After defining the culprit's SSR, we use function DSM to assess the pieces of evidence collected on the crime scene.
+
+```{r Pooling1, echo = TRUE, warning=FALSE}
+# cat("Witness1, A janitor asleep","\n")
+witness1 <- DSM(tt = matrix(c(1,1,0,0,1,1,1,1,1), ncol=3, byrow=TRUE), m= c(0.5, 0.2, 0.3), ssr = ss_Culprit)
+printDSM(witness1)
 #
-cat("Witness2, An old lady with bad sighting saw a tall man","\n")
-tall <- bca(tt = matrix(c(1,0,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.6, 0.4), cnames =c("Peter", "John", "Mary"), varnames = "AMurder", idvar = 1)
-bcaPrint(tall)
+# cat("Witness2, An old lady with bad sighting saw a tall man","\n")
+tall <- DSM(tt = matrix(c(1,0,0,1,1,1), ncol=3, byrow=TRUE), m= c(0.6, 0.4),ssr = ss_Culprit)
+printDSM(tall)
 ```
 
 ### Combination by Dempster's Rule
-Consider the first two witness. Witness1 says a man (m = 0.5), small (m = 0.2). Witness2 says a tall man (Peter, m = 0.6). 
+
+We use function DSC combine evidences using Dempster's Rule. Witness1 says a man (m = 0.5), small (m = 0.2). Witness2 says a tall man (Peter, m = 0.6). There is a bit of contradiction between witnesses. Hence function normalize will be called on the result of DSC.
 
 ```{r Pooling2, echo = FALSE, warning=FALSE}
-w_and_tall <- dsrwon(witness1_plus_singl, tall)
-norm_w_and_tall <- nzdsr(w_and_tall)
+# w_and_tall <- DSC(witness1_plus_singl, tall)
+w_and_tall <- DSC(witness1, tall)
+norm_w_and_tall <- normalize(w_and_tall)
 result <- tabresul(norm_w_and_tall)
 cat("Combination of witnesses 1 and 2","\n")
 round(result$mbp, digits = 2)
@@ -65,34 +67,38 @@ cat("Conflict between evidence","\n")
 result$Conflict
 
 ```
-
-Peter (a tall man) is the more plausible culprit (belief of 0.55 with plausibility ratio of 2). This is the one for which the two pieces of evidence are the less contradictory. John and Mary are small, Mary is a woman They have each one a belief score of 0, since no evidence points exactly toward them.
+We observe that Peter's plausibility ratio is 2 compared to John or Marie. No fact directly points to John or Marie. We would like to know John's plausibility ratio, as well as Marie's. We will therefore add these hypotheses to the result with a mass of zero.
+```{r Pooling999, echo = TRUE, warning=FALSE}
+#
+cat("Add all singletons in order to compare them","\n")
+norm_w_and_tall_plus_singl <- addToDSM(norm_w_and_tall, tt = diag(3))
+result <- tabresul(norm_w_and_tall_plus_singl)
+round(result$mbp, digits = 2)
+```
+Peter (a tall man) is the more plausible culprit (belief of 0.55 with plausibility ratio of 2). This is the one for which the two pieces of evidence are the less contradictory. John and Mary are small, Mary is a woman They have each one a belief score of 0, since no evidence points exactly toward them. 
 
 ### Adding a third piece of evidence
+Witness 3: Peter's girlfriend testifies that Peter was at her home far away from the victim's house when the crime happened. Peter's girlfriend says Peter was with him all night. We use function DSC to apply Dempster's Rule and combine her testimony with the previous results.
 
-Peter's girlfriend says Peter was with him all night. We use Dempster's Rule to combine her testimony with the previous results.
-
-```{r Pooling3, echo = FALSE, warning=FALSE}
-girlfriend <- bca(tt = matrix(c(0,1,1,1,1,1), ncol=3, byrow=TRUE), m= c(1, 0), cnames =c("Peter", "John", "Mary"), varnames = "AMurder", idvar = 1)
+```{r Pooling3, echo = TRUE, warning=FALSE}
+girlfriend <- DSM(tt = matrix(c(0,1,1,1,1,1), ncol=3, byrow=TRUE), m= c(1, 0), ssr = ss_Culprit)
 cat("Witness 3, the girlfriend clears Peter","\n")
-bcaPrint(girlfriend)
-girlfriend_w_and_tall <- dsrwon(w_and_tall, girlfriend)
-norm_girlfriend_w_and_tall <- nzdsr(girlfriend_w_and_tall)
-tabresul(norm_girlfriend_w_and_tall)
+printDSM(girlfriend)
+girlfriend_w_and_tall <- DSC(norm_w_and_tall_plus_singl, girlfriend)
+norm_girlfriend_w_and_tall <- normalize(girlfriend_w_and_tall)
+result <- tabresul(norm_girlfriend_w_and_tall)
+round(result$mbp, digits = 3)
 #
-# # Test en normalisant pas-à-pas
-# girlfriend_w_and_tall2 <- dsrwon(norm_w_and_tall, girlfriend)
-# norm_girlfriend_w_and_tall2 <- nzdsr(girlfriend_w_and_tall2)
-# End test
 ```
+If we accept the girlfriend's testimony, Peter is now exonerated. However, if there is any doubt, the likelihood ratio between Pierre and John or Marie will vary from 0 to 2, depending on the degree of doubt placed on the girlfriend's testimony.
 
-We see from the results that Peter remains the more plausible culprit His plausibility ratio is now of one, instead of 2. The result can vary from 2 to 0, depending of the degree of doubt we cast on the testimony of the girlfriend.
+You can test the effect of the girlfriend's testimony by changing the weighting assigned to it and observe its influence on the plausibility of Pierre's guilt.
 
-## 2. Solving the same problem using a belief network
+## 2. Viewing the problem as a belief network
 
 ### Facts and relations
 
-Instead of viewing the three suspects Peter, John, Mary as value of a variable, we consider them as binary variables.
+Instead of grouping the three suspects Peter, John and Marie into the same state space, we consider that each suspect has their own state space: guilty (yes) or not guilty (no).
 
 Peter:
 $$P = \{yes, no\}$$
@@ -100,19 +106,27 @@ John:
 $$J = \{yes, no\}$$
 Mary:
 $$M = \{yes, no\}$$
-We assess the evidence of witness 1 in the product space $F_{PJM} = \prod(P, J, M)$.
+The testimony of a witness *k* is represented by a Dempster-Shafer Model
+$$DSM_k(tt_k,m_k),$$
+where $tt_k$ is the table of states induced by $witness_k$ in the product space $F_{PJM}$ and $m_k$ the vector of masses associated to the states.
 
-We assess the evidence of witness 2 in the space $F_{P}$.
+The combination of evidences is summarized by the equation
+$$ DSM_{F_{PJM}}(tt, m) = \bigoplus_{k=1}^{n} DSM_k(tt_k,m_k).$$
 
-We assess the evidence of witness 3 in the product space $F_{JM} = \prod(J, M)$.
+All evidences can be combined in the state space representation given by the product space $F_{PJM} = \prod(P, J, M)$, provided that they are defined in that space. If two evidences are not defined on the same space, they can be extended appropriately to the state space representation *F* to make them combinable. Let's see how it works.
 
-To obtain the correct marginals, we need to add a relation between the three binary variables. For example, we want to obtain the same result if we put $Peter = \{no\}$ instead of $(John, Mary) =\{\{yes, no\}, \{no, yes\}\}$ for witness 3. The following relation serves this purpose.
+Evidence of witness 1 is defined in the product space $F_{PJM} = \prod(P, J, M)$. Here is the code for witness 1.
 
-In the product space $F_{PJM} = \prod(P, J, M)$, we consider the union of three subsets: $\{Peter, ¬John, ¬Mary\}, \{¬Peter, John, ¬Mary\}, \{¬Peter, ¬John, Mary\}$, where "¬" means "negation". We put a mass of 1 to this relation. This relation says simply that the culprit is one of the three suspects and there is only one culprit. We could interpret this as the statement of the detective.
+```{r network1a, echo = TRUE, warning=FALSE}
+# cat(" Define state space representations of marginals P, J, M","\n")
+ss_P <- SSR(varnames = "Peter", idvar = 1, size = 2, cnames = c("yes", "no"))
+ss_J <- SSR(varnames = "John", idvar = 2, size = 2, cnames = c("yes", "no"))
+ss_M <- SSR(varnames = "Mary", idvar = 3, size = 2, cnames = c("yes", "no"))
 
-```{r network1, echo = FALSE, warning=FALSE}
-cat("witness 1 induced relation ","\n")
-cat("The description matrix of the relation","\n")
+# cat("witness 1 induced relation ","\n")
+# cat(" Define state space representation F_PJM","\n")
+ssr_PJM <- list(ss_P, ss_J, ss_M)
+# cat("The description matrix of the relation","\n")
 witness1_tt <- matrix(c(1,0,0,1,0,1,
                         0,1,1,0,0,1,
                         0,1,1,0,0,1,
@@ -121,30 +135,42 @@ witness1_tt <- matrix(c(1,0,0,1,0,1,
 colnames(witness1_tt) <- rep(c("yes", "no"), 3 )
 witness1_tt
 witness1_spec <- matrix(c(1,1,2,2,3, rep(0.5, 2), rep(0.2, 2), 0.3), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-witness1_info <- matrix(c(1:3, rep(2,3)), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-witness1_rel <- bcaRel(tt = witness1_tt, spec = witness1_spec, infovar = witness1_info, varnames = c("Peter", "John", "Mary"), relnb = 1)
-cat(" the testimony Peter or John (0.5), John or Mary (0.2) in the product space","\n")
-bcaPrint(witness1_rel)
+
+witness1_rel <- jointDSM(tt = witness1_tt, spec = witness1_spec, ssrlist = ssr_PJM, relnb = 1)
+# cat(" the testimony Peter or John (0.5), John or Mary (0.2) in the product space","\n")
+printDSM(witness1_rel)
+```
+Evidence of witness 2 is defined in the space $F_{P}$.
+
+```{r network1b, echo = TRUE, warning=FALSE}
 #
-cat("Evidence for witness 2","\n")
-witness2 <- bca(tt = matrix(c(1,0,1,1), ncol=2, byrow=TRUE), m= c(0.6, 0.4), cnames =c("yes", "no"), varnames = "Peter", idvar = 1)
-cat("Peter (.6)","\n")
-bcaPrint(witness2)
-#
-cat("witness 3 induced relation ","\n")
-cat("The description matrix of the relation","\n")
+# cat("Evidence for witness 2","\n")
+witness2 <- DSM(tt = matrix(c(1,0,1,1), ncol=2, byrow=TRUE), m= c(0.6, 0.4), ssr = ss_P)
+# cat("Peter (.6)","\n")
+printDSM(witness2)
+```
+Evidence of witness 3 is defined in the product space $F_{JM} = \prod(J, M)$.
+
+```{r network1c, echo = TRUE, warning=FALSE}
+# cat("witness 3 induced relation ","\n")
+# cat("The description matrix of the relation","\n")
 witness3_tt <- matrix(c(0,1,1,0,
                         1,0,0,1,
                         1,1,1, 1), ncol=4, byrow=TRUE)
 colnames(witness3_tt) <- rep(c("yes", "no"), 2 )
 witness3_tt
 witness3_spec <- matrix(c(1,1,2, 1, 1, 0), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-witness3_info <- matrix(c(2:3, rep(2,2)), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-witness3_rel <- bcaRel(tt = witness3_tt, spec = witness3_spec, infovar = witness3_info, varnames = c("John", "Mary"), relnb = 2)
-cat("The testimony John or Mary (1) expressed in the product space","\n")
-bcaPrint(witness3_rel)
+witness3_rel <- jointDSM(tt = witness3_tt, spec = witness3_spec, ssrlist = list(ss_J, ss_M), relnb = 2)
+# cat("The testimony John or Mary (1) expressed in the product space","\n")
+printDSM(witness3_rel)
+```
+Finally, a constraint on the product space  $F_{PJM}$ must be added to reflect the fact that there can only be one culprit. For example, we want to obtain the same result if we put $Peter = \{no\}$ instead of $(John, Mary) =\{\{yes, no\}, \{no, yes\}\}$ for witness 3.Hence, we put a mass of 1 on the subset 
+
+$C = \{Peter, ¬John, ¬Mary\}\cup \{¬Peter, John, ¬Mary\}\cup \{¬Peter, ¬John, Mary\}$ ("¬" means "negation"). 
+
+```{r network1d, echo = TRUE, warning=FALSE}
 #
-cat("Defining a relation linking the three variables in PxJxM","\n")
+# cat("Adding a constraint on the state space F_PJM","\n")
 # 1. The tt table
 tt_PJM <- matrix(c(1,0,0,1,0,1,
                    0,1,1,0,0,1,
@@ -156,20 +182,17 @@ tt_PJM <- matrix(c(1,0,0,1,0,1,
 # 2. The mass distribution
 spec_PJM <-  matrix(c(rep(1,6),2, 0) , ncol = 2, byrow = TRUE,
 dimnames = list(NULL, c("specnb", "mass")))
-#   
-# 3. Variables numbers and sizes
-info_PJM <- matrix(c(1:3,2,2,2), ncol = 2, 
-dimnames = list(NULL, c("varnb", "size")) )
-PJM_rel <- bcaRel(tt = tt_PJM, spec = spec_PJM, infovar = info_PJM,
-  varnames = c("Peter", "John", "Mary"), relnb = 3)
-cat("Linking the variables","\n")
-cat("Detective's assumption expressed in the product space","\n")
-bcaPrint(PJM_rel)
+#
+PJM_rel <- jointDSM(tt = tt_PJM, spec = spec_PJM, ssrlist = ssr_PJM, relnb = 3)
+# cat("Linking the variables","\n")
+# cat("Detective's assumption expressed in the product space","\n")
+printDSM(PJM_rel)
 #
 ```
-Finally we have 3 variables, one piece of evidence against Peter, two evidences expressed as relations and a relation between suspects.
 
-We construct the hypergraph and use the peeling algorithm to obtain the belief function of the variable Culprit.  
+Finally we have a state space which is the combination 3 variables, one piece of evidence against Peter, one evidence expressed in the product space  $F_{PJM}$ the other in the product space  $F_{JM}$ and a constraint in $F_{PJM}$ saying there can be only one culprit.
+
+We construct the hypergraph, use function *uproj* to extend all the relations in the product space $\prod(P,J, M)$ combine the relations with function *DSC*, then use function *dproj* to obtain the three marginals.
 
 ### The Hypergraph
 
@@ -218,151 +241,102 @@ cat("\n")
 
 ### Study of extensions and combinations
 ```{r Combining the evidence, echo = FALSE, warning=FALSE}
-cat("Combining in the product space P x J x M","\n")
-cat("We use witness1_rel relation as a reference to extend the others.", "\n")
-#
-# cat("witness 1 induced relation ","\n")
-# cat("The description matrix of the relation","\n")
-# witness1_tt <- matrix(c(1,0,0,1,0,1,
-#                         0,1,1,0,0,1,
-#                         0,1,1,0,0,1,
-#                         0,1,0,1,1,0,
-#                         1,1,1,1,1, 1), ncol=6, byrow=TRUE)
-# colnames(witness1_tt) <- rep(c("yes", "no"), 3 )
-# witness1_tt
-# witness1_spec <- matrix(c(1,1,2,2,3, rep(0.5, 2), rep(0.2, 2), 0.3), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-# witness1_info <- matrix(c(1:3, rep(2,3)), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-# witness1_rel <- bcaRel(tt = witness1_tt, spec = witness1_spec, infovar = witness1_info, varnames = c("Peter", "John", "Mary"), relnb = 1)
-# cat(" the testimony Peter or John (0.5), John or Mary (0.2) in the product space","\n")
-# bcaPrint(witness1_rel)
-# #
-# cat("Evidence for witness 2","\n")
-# witness2 <- bca(tt = matrix(c(1,0,1,1), ncol=2, byrow=TRUE), m= c(0.6, 0.4), cnames =c("yes", "no"), varnames = "Peter", idvar = 1)
-# cat("peter (.6)","\n")
-# bcaPrint(witness2)
-# #
-# cat("witness 3 induced relation ","\n")
-# cat("The description matrix of the relation","\n")
-# witness3_tt <- matrix(c(0,1,1,0,
-#                         1,0,0,1,
-#                         1,1,1, 1), ncol=4, byrow=TRUE)
-# colnames(witness3_tt) <- rep(c("yes", "no"), 2 )
-# witness3_tt
-# witness3_spec <- matrix(c(1,1,2, 1, 1, 0), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
-# witness3_info <- matrix(c(2:3, rep(2,2)), ncol = 2, dimnames = list(NULL, c("varnb", "size")) )
-# witness3_rel <- bcaRel(tt = witness3_tt, spec = witness3_spec, infovar = witness3_info, varnames = c("John", "Mary"), relnb = 2)
-# cat("The testimony John or Mary (1) expressed in the product space","\n")
-# bcaPrint(witness3_rel)
+cat("Combining evidence in the product space P x J x M","\n")
+cat("We use the constraint PJM_rel as a reference to extend the others.", "\n")
 #
 cat("Extend Witness2 on PJM","\n")
-w2_xtnd <- extmin(witness2, relRef = witness1_rel)
-bcaPrint(w2_xtnd)
+w2_xtnd <- uproj(witness2, relRef = PJM_rel)
+printDSM(w2_xtnd)
 cat("Extend Witness 3 on PJM","\n")
-w3_xtnd <- extmin(witness3_rel, relRef = witness1_rel)
-bcaPrint(w3_xtnd)
+w3_xtnd <- uproj(witness3_rel, relRef = PJM_rel)
+printDSM(w3_xtnd)
 #
-cat("Combining the three relations on PJM","\n")
-cat("Combining w2_xtnd with witness1_rel","\n")
-rel_comb <- dsrwon(w2_xtnd,witness1_rel)
-cat("rel_comb", "\n")
-bcaPrint(rel_comb)
-#
-# rel_comb2_norm <- nzdsr(rel_comb2)
-# bcaPrint(rel_comb2_norm)
-#
-cat("Combining rel_comb with w3_xtnd","\n")
-rel_comb2 <- dsrwon(rel_comb,w3_xtnd )
+cat("Combining the four relations on PJM","\n")
+cat("Combining PJM_rel with witness1_rel","\n")
+rel_comb1 <- DSC(PJM_rel,witness1_rel)
+cat("rel_comb1", "\n")
+printDSM(rel_comb1)
+
+cat("Combining rel_comb1 with w2_xtnd","\n")
+rel_comb2 <- DSC(rel_comb1, w2_xtnd)
 cat("rel_comb2", "\n")
-bcaPrint(rel_comb2)
+printDSM(rel_comb2)
+#
+cat("Combining rel_comb2 with w3_xtnd","\n")
+rel_comb3 <- DSC(rel_comb2,w3_xtnd )
+cat("rel_comb3", "\n")
+printDSM(rel_comb3)
 #
 cat("Redo the combinations with a modifiied representation of witness 3","\n")
 cat("Define w3 par ¬Peter (1), instead of jojn or Mary","\n")
 #
-witness3b <- bca(tt = matrix(c(0,1,1,1), ncol=2, byrow=TRUE), m= c(1, 0), cnames =c("yes", "no"), varnames = "Peter", idvar = 1)
-bcaPrint(witness3b)
+witness3b <- DSM(tt = matrix(c(0,1,1,1), ncol=2, byrow=TRUE), m= c(1, 0), cnames =c("yes", "no"), varnames = "Peter", idvar = 1)
+printDSM(witness3b)
 #
 cat("Extend Witness 3 on PJM","\n")
-w3b_xtnd <- extmin(witness3b, relRef = witness1_rel)
-bcaPrint(w3b_xtnd)
+w3b_xtnd <- uproj(witness3b, relRef = PJM_rel)
+printDSM(w3b_xtnd)
 #
 cat("combining with w3b_xtnd.  ")
 cat("Note the differennce with the preceding result","\n")
-rel_comb2b <- dsrwon(rel_comb,w3b_xtnd )
-bcaPrint(rel_comb2b)
-# cat("Normalizing...","\n")
-# rel_comb2b_norm <- nzdsr(rel_comb2b)
-# bcaPrint(rel_comb2b_norm)
-# rel_comb2b_norm$con
+rel_comb3b <- DSC(rel_comb2,w3b_xtnd )
+printDSM(rel_comb3b)
+
+# cat("combining with w3b_xtnd.  ")
+# cat("Note the differennce with the preceding result","\n")
+# rel_comb2b <- DSC(rel_comb,w3b_xtnd )
+# printDSM(rel_comb2b)
+cat("Normalizing...","\n")
+# rel_comb3b_norm <- normalize(rel_comb3b)
+# printDSM(rel_comb3b_norm)
+# rel_comb3b_norm$con
 #
-cat("Combining rel_comb2 rith PJM_rel","\n")
-rel_comb3 <- dsrwon(rel_comb2,PJM_rel )
-bcaPrint(rel_comb3)
+# cat("Combining rel_comb2 rith PJM_rel","\n")
+# rel_comb3 <- DSC(rel_comb2,PJM_rel )
+# printDSM(rel_comb3)
 #
-cat("Combining rel_comb2b rith PJM_rel","\n")
-rel_comb3b <- dsrwon(rel_comb2b,PJM_rel )
-bcaPrint(rel_comb3b)
+# cat("Combining rel_comb2b rith PJM_rel","\n")
+# rel_comb3b <- DSC(rel_comb2b,PJM_rel )
+# printDSM(rel_comb3b)
 cat("Now we obtain the same result","\n")
-rel_comb3_norm <- nzdsr(rel_comb3)
-bcaPrint(rel_comb3_norm)
-rel_comb3_norm$con
-#
-rel_comb3b_norm <- nzdsr(rel_comb3b)
-bcaPrint(rel_comb3b_norm)
+# rel_comb3_norm <- dst::normalize(rel_comb3)
+# printDSM(rel_comb3_norm)
+# rel_comb3_norm$con
+# Test
+rel_comb3b_norm <- dst::normalize(rel_comb3b)
+printDSM(rel_comb3b_norm)
 rel_comb3b_norm$con
-#
+# end test
 #
 cat("Compute marginals","\n")
 cat("Peter","\n")
-m_PJ <- elim(rel_comb3b_norm, xnb = 3)
-m_P <- elim(m_PJ, xnb = 2)
-bcaPrint(m_P)
+m_PJ <- dproj(rel_comb3b_norm, xnb = 3)
+m_P <- dproj(m_PJ, xnb = 2)
+printDSM(m_P)
 cat("John or Mary","\n")
-m_JM <- elim(rel_comb3b_norm, xnb = 1)
-bcaPrint(m_JM)
+m_JM <- dproj(rel_comb3b_norm, xnb = 1)
+printDSM(m_JM)
 cat("John","\n")
-m_J <- elim(m_JM, xnb = 3)
-bcaPrint(m_J)
+m_J <- dproj(m_JM, xnb = 3)
+printDSM(m_J)
 cat("Mary","\n")
-m_M <- elim(m_JM, xnb = 2)
-bcaPrint(m_M)
+m_M <- dproj(m_JM, xnb = 2)
+printDSM(m_M)
 #
 # cat("Combining rel_comb2 rith PJM_rel","\n")
-# rel_comb3 <- dsrwon(rel_comb2,PJM_rel )
-# bcaPrint(rel_comb3)
-# rel_comb3_norm <- nzdsr(rel_comb3)
-# bcaPrint(rel_comb3_norm)
+# rel_comb3 <- DSC(rel_comb2,PJM_rel )
+# printDSM(rel_comb3)
+# rel_comb3_norm <- normalize(rel_comb3)
+# printDSM(rel_comb3_norm)
 # rel_comb3_norm$con
 # #
 # cat("Combining rel_comb2b rith PJM_rel","\n")
-# rel_comb3b <- dsrwon(rel_comb2b,PJM_rel )
-# bcaPrint(rel_comb3b)
-# rel_comb3b_norm <- nzdsr(rel_comb3b)
-# bcaPrint(rel_comb3b_norm)
+# rel_comb3b <- DSC(rel_comb2b,PJM_rel )
+# printDSM(rel_comb3b)
+# rel_comb3b_norm <- normalize(rel_comb3b)
+# printDSM(rel_comb3b_norm)
 # rel_comb3b_norm$con
 # #
 # cat("Compare rel_comb3 and rel_comb3b")
 # all.equal(rel_comb3_norm,rel_comb3b_norm)
-```
-
-### Computation of the belief function of the variable of interest, using the peeling algorithm
-
-Our variable of interest is one of the three suspects. We have to choose an order of elimination of the variables manually, since we don't have an algorithm at our disposal yet, and call the peeling three times For example, we can choose to eliminate Peter first, then John to know about Mary.
-
-Hence, the peeling is not very useful here, We can answer all our questions in the  product space $F_{PJM} = \prod(P, J, M)$.
-
-```{r peeling, echo = FALSE, warning=FALSE}
-# cat("\  ")
-bel_culprit <- peeling(vars_def = PJM_vars1, hgm = PJM_hgm, hg_rel_names = PJM_data_names, elim_order = c(1, 2, 3), verbose = TRUE ) 
-cat("Result for the variable of interest","\n")
-zz <- tabresul(bel_culprit)
-format(as.data.frame(zz$mbp), digits=2)
-cat("Contradiction Indice: ", bel_culprit$con)
-#
-# # add singletons with 0 mass to show all singletons in the results
-# p_sing <- addTobca(x = bel_culprit,  tt = matrix(c(1,0,0,0,1,0,0,0,1), ncol=3))
-# cat("The final result after elimination of variables","\n")
-# cat("\n  ")
-# zz <- tabresul(p_sing)
-# format(as.data.frame(zz$mbp), digits=2)
-# cat("Contradiction Indice: ", bel_culprit$con)
 ```
