@@ -11,8 +11,8 @@ vignette: >
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-devtools::load_all(".") # only used in place of dst when testing development version
-# library(dst)
+# devtools::load_all(".") # only used in place of dst when testing development version
+library(dst)
 ```
 
 ## The facts^[Smets, P. (1988) Belief Functions. Non-Standard Logics for Automated Reasoning (P. Smets, A. Mandani, D. Dubois, H. Prade, ed.), Academic Press, New York, p. 254-286]
