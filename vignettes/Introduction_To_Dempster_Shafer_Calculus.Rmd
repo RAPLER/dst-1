@@ -1,0 +1,486 @@
+---
+title: "Introduction to Dempster-Shafer Calculus with the dst package"
+author: "Claude Boivin^[Retired Statistician, Stat.ASSQ]"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction_To_Dempster_Shafer_Calculus}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+#
+devtools::load_all(".") # only used in place of dst when testing with R-devel
+# attach package dst
+# library(dst) 
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## 1. Introduction
+In this vignette, we use an simple example to show how to use the package *dst* to learn the basics of Dempster-Shafer Calculus, also known by the name "belief Functions" given by Glenn Shafer in his book "A Mathematical Theory of Evidence"^[Shafer, G., (1976). A Mathematical Theory of Evidence. Princeton University Press, Princeton, New Jersey. 297 pp.].
+
+We have adopted  the terminology proposed by Dempster in his 2007 paper "The Dempster-Shafer calculus for statisticians"^[A. P. Dempster, The Dempster-Shafer calculus for statisticians, Int. J. Approx. Reason. (2008), pp 365-377]. See also chapter 14 of the Handbook of Bayesian, Fiducial, and Frequentist Inference^[Handbook of Bayesian, Fiducial, and Frequentist Inference, edited by James Berger, Xiao-Li Meng, Nancy Reid, and Min-ge Xie, Boca Raton, FL: Chapman & Hall/CRC Press, 2024, xiii + 405 pp.,] by R. Gong.
+
+Following Dempster, we summarize a Dempster-Shafer analysis by this representation:
+      DSA = (SSR + DSM) x DSC, where
+      
+      SSR means State Space Representation,
+      DSM: Dempster-Shafer Model,
+      DSC: Dempster-Shafer Computation.
+
+These are the building blocks of a Dempster-Shafer Analysis or DSA. The package uses these acronyms.
+
+1.1. We use function *SSR* to specify a State Space Representation, that is a set of possible states of say a situation or variable *A* under study. We can consider one or more variables *A*, *B*, etc., and define a SSR for each one. These SSR's can then be joined to obtain a multidimensional representation of the world under study. The goal of the study being to find which state is the true state.
+
+1.2 We use the *DSM* function to assign a non-negative number *m* between 0 and 1 to one of the subsets of the SSR that constitutes a hypothesis under study. The chosen subsets represent the assertions you make or the evidence you have regarding your hypothesis. The number associated with a subset represents the strength of your assertion or evidence.^[D. H. Krantz and J. Miyamoto, Priors and Likelihood Ratios as Evidence, JASA June 1983, Vol. 382, pp. 418-423]. You can consider more than one subset. The sum of these numbers must be less or equal to one. This set of numbers is the mass function of a Dempster-Shafer model (DSM).
+
+1.3 Function *DSA* is used to evaluate your hypothesis (subsets). For each hypothesis, three measures are computed:
+1. the degree of support for the hypothesis (also called Belief), noted *p*;
+2. the degree of support against the hypothesis, noted *q*;
+3. the degree of uncommitted support *r*;
+4. the degree of non contradiction of the hypothesis, noted plau (plausibility).
+Notice that
+
+$r = 1 -p - q$;
+
+$plau(A)= 1 - q(A)$.
+
+1.4 We use function *PT* to obtain a probability distribution from a *DSM*.
+
+1.5 We show how to construct a joint DSM on a multidimensional state space with two or more unidimensional SSRs. 
+
+1.6 We show how to extend a DSM to a larger State space in order to combine it with another DSM already defined on this larger state space. The function *uproj* performs this operation.
+
+1.7 We show how to use function *DSC* to combine the mass functions of two DSM's defined in the same state space.   
+
+1.8 Sometimes, combining two DSMs gives some contradictory results, represented by a positive mass assigned to the empty subset. The *normalize* function recalculates the mass distribution after removing the mass of the empty set.
+
+1.9 We demonstrate how to obtain a reduced space by removing a dimension from a DSM. This operation can be repeated on a multidimensional SSR until only one dimension remains. This operation, called marginalization, is performed by the *dproj* function.
+
+1.10. We show how to manage a DSM:
+- add subsets with 0 mass to the DSM (function *addToDSM*), useful when one want to study the distribution of the singletons;
+- coarsen a state space with function *truncateDSM*;
+- print a DSM (function *printDSM*).
+
+## 2. A tour of the package with a simple example from genetics
+
+TODO: Exposition of the example
+
+### 2.1 State Space Representations of data and constraints
+
+We have two individuals with three SNP's.
+
+here a table to do  with Latex
+
+Y	X1 X2	X3
+
+Case 1: 1	1	1	0
+
+Case 2: 0	1	0	0
+
+In addition, we have a fifth variable of the names of the SNP's. We want to find if one SNP distinguishes from others
+
+Using function SSR, we define these five univariate state spaces.
+With function DSM, we add their respective univariate DSM.
+```{r, state_space21, echo = TRUE, warning=FALSE}
+# cat("Function SSR is used to define the State space representation of the Attributes X1,, X2, X3, Y","\n" )
+# cat("Function DSM is used to specify the subsets of the attribute X1, X2, X3, Y and Z that have a positive weight","\n")
+# cat("Attribute X1", "\n")
+ss_X1 <- SSR(varnames = "X1", idvar = 1, size = 2, cnames = c("x11", "x10"))
+X1 <- DSM(tt = matrix(c(1,0,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_X1)
+printDSM(X1)
+# 
+# cat("Attribute X2", "\n")
+ss_X2 <- SSR(varnames = "X2", idvar = 2, size = 2, cnames = c("x21", "x20"))
+# cat("Attribute X3", "\n")
+X2 <- DSM(tt = matrix(c(1,0,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_X2)
+printDSM(X2)
+#
+ss_X3 <- SSR(varnames = "X3", idvar = 3, size = 2, cnames = c("x31", "x30"))
+# cat("Attribute Y", "\n")
+X3 <- DSM(tt = matrix(c(0,1,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_X3)
+printDSM(X3)
+# 
+ss_Y <- SSR(varnames = "Y", idvar = 4, size = 2, cnames = c("y1", "y0"))
+# cat("Attribute Z", "\n")
+Y <- DSM(tt = matrix(c(1,0,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_Y)
+printDSM(Y)
+# 
+ss_Z <- SSR(varnames = "Z", idvar = 5, size = 3, cnames = c("X1", "X2", "X3"))
+```
+
+We want to test the following relation between Y and the SNP's, namely
+
+$Y_n = X_{nZ}$.
+
+We want to test it with the first individual, then add the second and so on.
+
+To do this, we must combine the five univariate SSR to obtain the multivariate state space representation of the world under study.
+$SSY_n = \prod(X1, X2, X3, Y, Z)_n$.
+
+We encode the description matrix of the relation we wish to study into a joint DSM named *rel_XYZ*. We put an arbitrary mass value of 0.2 on this DSM.
+
+```{r, state_space22, echo = TRUE, warning=FALSE}
+# cat("State space represemtation of the product space","\n")
+ss_XYZ <- list(ss_X1, ss_X2, ss_X3, ss_Y, ss_Z)
+cat("Constraint in the product space X1 x X2 x X3 x Y x Z","\n")
+# 1. define the tt matrix rel_XYZ_tt, which encodes the subset S
+# The boolean table rel_XYZ is already in the data folder of the package
+rel_XYZ_tt <- rbind(as.matrix(rel_XYZ), rep(1,11) )
+# 2. define the spec matrix. 
+# Here we have one subset of 24 elements
+# 
+rel_XYZ_spec <- matrix(c(rep(1,24),2,rep(0.2,24),0.8), ncol = 2, dimnames = list(NULL, c("specnb", "mass")))
+# 3. Obtain Joint DSM
+rel_XYZ<-  jointDSM(tt = rel_XYZ_tt, spec = rel_XYZ_spec, ssrlist = ss_XYZ, relnb = 1)
+printDSM(rel_XYZ)
+#
+```
+### The Hypergraph
+```{r, fig.show='hold', fig_caption: yes, echo=FALSE, message=FALSE}
+if (requireNamespace("igraph", quietly = TRUE) ) {
+  library(igraph)
+  cat("Encode pieces of evidence and relations with an incidence matrix","\n")
+  N <- 5 # 5 variables
+  ev_X1 <- 1*1:N %in% X1$infovar[,1]
+  ev_X2 <- 1*1:N %in% X2$infovar[,1]
+  ev_X3 <- 1*1:N %in% X3$infovar[,1]
+  ev_Y <- 1*1:N %in% Y$infovar[,1]
+  r_XYZ <- 1*1:N %in% rel_XYZ$infovar[,1]
+  #
+  # the incidence matrix
+  gen_hgm <- matrix(c(ev_X1, ev_X2, ev_X3, ev_Y, r_XYZ), ncol = 5, dimnames = list(c("X1", "X2", "X3", "Y", "Z"), c("ev_X1", "ev_X2", "ev_X3", "ev_Y", "r_XYZ")))
+  cat("The incidence matrix of the Hypergraph","\n")
+  print(gen_hgm)
+  #
+  cat("information on variables necessary for the Peeling algorithm","\n")
+  gen_vars1 <- c(rel_XYZ$valuenames)
+  gen_vars <- rbind(rel_XYZ$infovar)
+  gen_var_names <-names(gen_vars1)
+  rownames(gen_vars) <- gen_var_names
+  gen_rel_names <- c("X1", "X2", "X3", "Y", "rel_XYZ")
+  #
+  # infos on relations
+  gen_data_names <- c("X1", "X2", "X3", "Y", "Z", "rel_XYZ")
+  gen <- list(gen_hgm, gen_var_names, gen_data_names)
+  print(gen)
+  #
+  ## The graph structure of the problem
+  #
+  library(igraph)
+  gen_hg <- graph_from_biadjacency_matrix(incidence = gen_hgm, directed = FALSE, multiple = FALSE, weighted = NULL,add.names = NULL)
+  V(gen_hg)
+  # Show variables as circles, relations and evidence as rectangles
+ V(gen_hg)$shape <- c("circle", "crectangle")[V(gen_hg)$type+1]
+ V(gen_hg)$label.cex <- 0.6
+ V(gen_hg)$label.font <- 2
+  # render graph
+  plot(gen_hg, vertex.label = V(gen_hg)$name, vertex.size=(12+6*V(gen_hg)$type)*2,  sub="Example from genetics")
+  ##
+  #
+  cat("\n")
+}
+```
+
+### Marginalization using the peeling algorithm for the first patient.
+
+2. Incidence matrix of the graph (nodes and edges)
+```{r Print incidence matrix,  echo = FALSE, warning=FALSE}
+cat("Row names are variables names (nodes).","\n")
+cat("Column names are for pieces of evidence and relations (edges).","\n")
+cat("Incidence matrix of the hypergraph","\n")
+print(gen_hgm)
+```
+
+It is not necessary to up-project each single variable to the product space (joint SSR) $\prod(X1, X2, X3, Y, Z)$. Given the structure of the incidence matrix of the hypergraph, we up-project only a first variable (say X1) to the product space.The up-projected X1 is combined with  *rel_XYZ*, which has the effect of transferring its information to the joint DSM. Then we can marginalize to  a smaller product space $\prod(X2, X3, Y, Z)$ by dropping X1.
+
+The process (up-projecting, combination, mmarginalization) is repeated until only the variable of interest *Z* remain. 
+Here is the peeling step by step.
+
+```{r peeling_gen1, echo = FALSE, warning=FALSE}
+ Patient1 <- peeling(vars_def = gen_vars1, hgm = gen_hgm,
+  hg_rel_names = gen_rel_names, elim_order = 1:5, verbose = TRUE)
+```
+We can now do a Dempster-Shafer Analysis of the result *Patient1*
+
+```{r DSA_gen1, echo = FALSE, warning=FALSE}
+DSA(Patient1)
+DSA(Patient1, h=diag(1,3))
+```
+
+### Marginalization  for the second patient
+
+Data for patient 2 is:
+X1=1, X2=0, X3=0, Y=0
+
+We Define the DSM's acordingly.
+We could also enter the result of Patient 1 as evidence for Z. It would add an evidence edge to the node *Z* of the hypergraph. Here we choose to keep the result of each patient and combine them after.
+
+```{r, state_space23, echo = TRUE, warning=FALSE}
+cat("Function DSM is used to specify the subsets of the attribute X1, X2, X3, Y for Patient 2","\n")
+# cat("Attribute X1", "\n")
+X1 <- DSM(tt = matrix(c(1,0,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_X1)
+printDSM(X1)
+# 
+# cat("Attribute X2", "\n")
+X2 <- DSM(tt = matrix(c(0,1,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_X2)
+printDSM(X2)
+#
+X3 <- DSM(tt = matrix(c(0,1,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_X3)
+printDSM(X3)
+# 
+Y <- DSM(tt = matrix(c(0,1,1,1), ncol=2, byrow=TRUE), m= c(1, 0), ssr = ss_Y)
+printDSM(Y)
+#
+```
+Peeling of patient 2
+
+```{r peeling_gen2, echo = FALSE, warning=FALSE}
+ Patient2 <- peeling(vars_def = gen_vars1, hgm = gen_hgm,
+  hg_rel_names = gen_rel_names, elim_order = 1:5, verbose = TRUE)
+```
+We can now do a Dempster-Shafer Analysis of *Patient2*
+
+```{r DSA_gen2, echo = FALSE, warning=FALSE}
+DSA(Patient2)
+DSA(Patient2, h=diag(1,3))
+```
+Now we combinee the two patients
+
+```{r DSC_gen, echo = FALSE, warning=FALSE}
+Patients <- DSC(Patient1, Patient2)
+DSA(Patients)
+DSA(Patients, h=diag(1,3))
+cat("Probability distribution of the singletons")
+PT(Patients)
+```
+
+## 3. Another simple example
+
+In this example, we show how Dempster-Shafer calculus can serve as a system of logic-based inference.
+
+I'm planning a trip to the Gaspé Peninsula next weekend. I want to arrive in time to have dinner with friends. I know that if the weather is very nice, there will be roadwork that will delay me by an hour. However, I know that there is no roadwork when it's raining and  very windy.
+
+Therefore, I have a state space consisting of three variables:
+R (Rain, yes or no): Status {Ry, Rn} (Ry stands for rain, Rn for no rain)
+W (Wind, yes or no): State {Wy, Wn}
+RdW (Roadwork): State {Yes, No}.
+
+### 3.1 Defining State Space Representations and constraints
+
+Putting together all these variables, we construct a State Space Representation of this journey at a point of time *t*.
+
+$SSJ_t = \prod(R, W, RdW)_t$.
+
+The dimension of this state space is 2x2x2 = 8. We want to know which state is the true state at some point of time *t*.
+
+Two states cannot occur, (Ry,Wy,Yes) and (Rn, Wn, No). There are six other possible combinations of the Rain, Wind and roadWorks.
+
+$ S =\{(Ry, Wy, No), (Ry, Wn, Yes), (Ry, Wn, No), (Rn, Wy, Yes), (Rn, Wy, No), (Rn, Wn, Yes)}$
+
+These combinations are elements of the product space $SSJ_t = \prod(R, W, RdW)_t$. The number of elements of $SSJ_t$ is $2^3 = 8$.  The six possible combinations of the Rain Wind and roadWorks determine a subset *S* of the SSR $SSJ_t$. 
+
+This is the first constraint of our problem. We express it in the product space $SSJ_t = \prod(R, W, RdW)_t$. Function SSR is used to specify the state space of each attribute. Then Function jointDSM is used to set the constraint by putting a mass of 1 to the subset *S*.
+
+```{r, state_space1, echo = TRUE, warning=FALSE}
+# cat("Function SSR is used to define the State space representation of the Attribute Rain, Wind, Roadworks","\n" )
+# cat("Attribute Rain", "\n")
+ss_R <- SSR(varnames = "Rain", idvar = 1, size = 2, cnames = c("Ry", "Rn"))
+# cat("Attribute Wind", "\n")
+ss_W <- SSR(varnames = "Wind", idvar = 2, size = 2, cnames = c("Wy", "Wn"))
+# cat("Attribute Roadworks", "\n")
+ss_rdW <- SSR(varnames = "Roadworks", idvar = 3, size = 2, cnames = c("Yes", "No"))
+# cat("State space represemtation of the product space","\n")
+ss_RWrdW <- list(ss_R, ss_W, ss_rdW)
+cat("Constraint in the product space R x W x rdW","\r")
+# 1. define the tt matrixRWrdW_tt, which encodes the subset S
+RWrdW_tt <- matrix(c(1,0,1,0,0,1,
+                     1,0,0,1,1,0,
+                     1,0,0,1,0,1,
+                     0,1,1,0,1,0,
+                     0,1,1,0,0,1,
+                     0,1,0,1,1,0,
+                     rep(1,6)), ncol=6, byrow=TRUE, dimnames = list(NULL, unlist(sapply(ss_RWrdW, `[[`,4))))
+# 2. define the spec matrix. 
+# Here we have one subset of six elements
+# 
+RWrdW_spec = matrix(c(rep(1,6),2,rep(1,6),0), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+# 
+# 4. call of the function with the name of the variables and the numbering of the relation
+# 
+RWrdW_rel <-  jointDSM(tt = RWrdW_tt, spec = RWrdW_spec, ssrlist = ss_RWrdW, relnb = 1)
+# 
+printDSM(RWrdW_rel)
+#
+```
+
+A second constraint is given by the weather forecast (F1) for the weekend. There is a 50% probability of strong winds. The probability of a calm day, no rain, no winds is only 20%. This constraint is expressed in the product space $SSF1_t = \prod(R, W)_t$.
+
+```{r, state_space3, echo = TRUE, warning=FALSE}
+# cat("State space represemtation of the product space","\n")
+ss_RW <- list(ss_R, ss_W)
+cat("Constraint in the product space R x W","\r")
+# 1. define the tt matrix RW1_tt, which encodes the subset S
+RW1_tt <- matrix(c(1,0,1,0,
+                   0,1,1,0,
+                   0,1,0,1,
+                  rep(1,4)), ncol=4, byrow=TRUE, dimnames = list(NULL, unlist(sapply(ss_RW, `[[`,4))))
+#
+# 2. define the spec matrix. 
+RW1_spec = matrix(c(rep(1,2),2,3,rep(0.5,2),0.2,.3), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+# 
+# 3. call of the function with the name of the variables and the numbering of the relation
+RW1_rel <-  jointDSM(tt = RW1_tt, spec = RW1_spec, ssrlist = ss_RW, relnb = 2)
+# 
+# Relation vetween the three doors A, B and C
+printDSM(RW1_rel)
+
+```
+We have also another distinct weathher forecast.  It gives a 30% probability of rain. The probability of a combination of rain and strong winds is 60%. This third constraint is also expressed in the product space $SSF1_t = \prod(R, W)_t$.
+
+```{r, state_space4, echo = TRUE, warning=FALSE}
+# cat("State space represemtation of the product space","\n")
+cat("Constraint in the product space R x W previously defined","\r")
+# 1. define the tt matrix RW1_tt, which encodes the subset S
+RW2_tt <- matrix(c(1,0,1,0,
+                   1,0,0,1,
+                   1,0,1,0,
+                  rep(1,4)), ncol=4, byrow=TRUE, dimnames = list(NULL, unlist(sapply(ss_RW, `[[`,4))))
+#
+# 2. define the spec matrix. 
+RW2_spec = matrix(c(rep(1,2),2,3,rep(0.3,2),0.6,.1), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+# 
+# 3. call of the function with the name of the variables and the numbering of the relation
+RW2_rel <-  jointDSM(tt = RW2_tt, spec = RW2_spec, ssrlist = ss_RW, relnb = 3)
+# 
+# Relation vetween the three doors A, B and C
+printDSM(RW2_rel)
+
+```
+
+Recall the equation that summarizes Dempster-Shafer calculus:
+
+DSA = (SSR + DSM) x DSC,
+
+Applied to this small problem, this means that:
+
++++++++++++++rendue là
+
+1. we take the DSMs of the constraints defined in the same SSR, combine them and and extend to the joint SSR of our problem;
+
+2. we combine the extended DSMs with the joint DSM;
+
+3. we project the combined DSM onto the margins of the individual variables.
+
+We have two DSMs, RW1_rel and RW2_rel, defined on the same joint space
+
+```{r, state_space2, echo = TRUE, warning=FALSE}
+# cat("Function SSR is used to define the State space representation of the Attribute Rain","\n" )
+ss_Rain <- SSR(varnames = "Rain", idvar = 1, size = 2, cnames = c("Ry", "Rn"))
+cat("Function DSM is used to specify the subsets of the attribute Rain that have a positive weight","\n")
+rain <- DSM(tt = matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0.45, 0.55, 0), ssr = ss_Rain)
+printDSM(rain)
+```
+=====
+1. update weather
+2. no rdW if rain (0.9)
+3. prior on rdW. there is rdW on this route 60% of the time
+
+Autre approche
+Use Bwd chaining to explain
+My friend is late. I want to look at the causes of his retard and estimate when He will arrive.
+I know it was raining hard this morning and there was sun at noon.
+=====
+
+
+What can I infer about the sun? I look at the statistics on rain to establish a  relation between rain and sun, hence think my problem in the state space Rain x Sun. If there is rain, there is, generally, no sun. So I put a mass value of 0.45 on the state "no sun". On the other side, no rain does not mean sun; it can also be cloudy. Hence "no rain" is compatible with the state {"sun", "no sun"}, which receive a mass value of 0.55.
+
+Hence, I have defined a belief function by using a known probability distribution on some situation to associate it with another situation where probabilities are unknown. Now, I show how to use function *bca* to encode the events of interest and their mass value. This done, I cant look at the measures of belief and plausibility with function *belplau*.
+
+
+```{r}
+# Evidence for sun
+# All the events of interest are encoded in a binary matrix tt.  
+# Each column of the matrix is a possible value. 
+# Each row is subset of the set of possible values, described by a complete disjunctive coding
+Weather_tt <- matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE)
+Weather <-  bca(tt = Weather_tt, m= c(0, 0.45, 0.55), cnames =c("Sun", "NoSun"), varnames = "Weather", idvar = 1)
+Weather$tt
+# The belief function of Weather
+belplau(Weather)
+tabresul(Weather)
+```
+We don't have a probability distribution here; only one of the two elementary events has received a mass value; The elementary  event "no sun" has a degree of support (belief) of 0.45 and the elementary  event "sun" has a degree of support of 0. The remaining mass of 0.55 has been allotted to the frame ${'Sun', 'NoSun'}$. This is the expression of the part of ignorance that remains. The chances of "sun" are not very good at 0.55. The odds "Sun/No Sun"" are at 0.55. This is the plausibility ratio  given by function *tabresul*. Maybe look at July for my vacation instead of August? Another story. 
+
+If we want to express the result within probability theory, we can apply a transformation to the plausibility distribution of the elementary events to obtain a probability distribution. This is called the plausibility transformation ^[Cobb, B. R. and Shenoy, P.P. (2006). On the plausibility transformation method for translating belief function models to probability models. Journal of Approximate Reasoning, 41(3), April 2006, 314--330.].
+
+```{r}
+plautrans(Weather)
+```
+The plausibility transformation gives a probability of sun 0f 0.35. 
+
+On my trip to Forillon National Park, there will be roadworks eventually. If so I could be arriving too late to set my tent in daylight. From experience, I know that there are generally no roadworks when the weather is bad. However, there could some emergencies. Hence I consider that there still remain 10% chance oh roadworks although it's raining. Let's encode the relation between Weather and Roadworks, using the function *bcaRel*. This encoding is a simple implication rule *a -> b* where a stands for *rain = yes* and b stands for *rdworks = no*.
+
+```{r}
+# Relation between Rain and Roadworks
+# Define variable Rain. Values: Ry for rain = yes, Rn for rain = no
+rain <-  bca(tt = matrix(c(1,0,0,1,1,1), ncol = 2, byrow = TRUE), m=c(0,0, 1), cnames=c("Ry", "Rn"),  varnames = "Rain", idvar = 5)
+# Define variable Roadworks Values: Wy for rdworks = yes, Wn for rdworks = no
+# Define variable Roadworks
+rdworks <-  bca(tt= matrix(c(1,0,0,1,1,1), ncol=2, byrow=TRUE), m= c(0, 0, 1), cnames =c("Wy", "Wn"), varnames = "RdWorks", idvar = 4)
+# Establish the relation between Rain and Roadworks
+# A simple implication rule
+# the binary matrix
+ttrwt <- matrix(c(0,1,0,1,
+                  0,1,1,0,
+                  1,0,0,1,
+                  1,1,1,1), nrow=4, byrow = TRUE, dimnames = list(NULL, c("Wy", "Wn", "Ry", "Rn")) )
+# I use the function nameRows to name the rows here
+rownames(ttrwt) <- nameRows(ttrwt)
+ttrwt
+inforwt <- matrix(c(4,5,2,2), ncol = 2,  dimnames = list(NULL, c("varnb", "size")) )
+specrwt <-  matrix(c(1,1,1,2,
+                     0.9,0.9,0.9,0.1), ncol = 2, dimnames = list(NULL, c("specnb", "mass"))) 
+# The relation
+noW_if_R <- bcaRel(tt = ttrwt, spec = specrwt, infovar = inforwt, varnames = c("RdWorks", "Rain"), relnb = 1)
+ noW_if_R
+```
+
+It is cloudy on my day of departure. Forecast are 60 % chances of rain today.  We now change the distribution of the bcaspec *rdworks* in order to reflect this condition.
+```{r}
+# Evidence of rain on the day of departure
+rain$spec[,2] <- c(0.6, 0, 0.4)
+bcaPrint(rain)
+```
+Finally, I would like to combine this piece of evidence with the relation between Rain and roadworks in order to evaluate the chances of roadworks on the day of my trip. I proceed in three steps to achieve that:
+Firstly extend the Evidence (variable Rain) to the product space Rain x Roadworks.
+Secondly, combine the two relations.
+Thirdly, marginalize to the variable Roadworks.
+
+First step is done using the function *extmin*.
+```{r}
+# Evidence of rain extended to the space W x R
+rain_xtnd <- extmin(rain, noW_if_R)
+bcaPrint(rain_xtnd)
+```
+Second step is done using functions *dsrwon* and *nzdsr*).
+```{r}
+# combine the relation noW_if_R with variable rain extended on W x R (rain_xtnd)
+comb_rel <- nzdsr(dsrwon(rain_xtnd, noW_if_R))
+bcaPrint(comb_rel)
+```
+Third step: Marginalization is done using function *elim*.
+```{r}
+# marginalize to variable roadworks by eliminating variable rain (variable nb = 5)
+roadworks_ev <- elim(comb_rel, xnb = 5)
+belplau(roadworks_ev)
+# use function addTobca to show all the singletons
+roadworks_ev_plus_sing <- addTobca(roadworks_ev, tt = matrix(c(1,0), ncol = 2))
+tabresul(roadworks_ev_plus_sing)
+plautrans(roadworks_ev_plus_sing)
+```
+Finally the results. Function *belplau* shows that the odds of "No roadworks" vs Roadworks are 2.17. Using the plausibility transformation, I obtain a probability of "No Roadworks" of 0.68.
